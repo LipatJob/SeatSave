@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SeatSave.EF;

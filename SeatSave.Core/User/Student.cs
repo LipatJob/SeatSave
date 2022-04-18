@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeatSave.Core.User
+﻿namespace SeatSave.Core.User
 {
 
-    public class Student : UserModel
+    public class Student : Visitor
     {
         public static string UserType = "Student";
 

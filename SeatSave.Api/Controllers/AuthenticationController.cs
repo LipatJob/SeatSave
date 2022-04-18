@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SeatSave.Api.DTO;
@@ -15,7 +14,7 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private IConfiguration config;
+        private readonly IConfiguration config;
         private readonly SeatSaveContext dbContext;
 
         public AuthenticationController(IConfiguration config, SeatSaveContext dbContext)
@@ -50,7 +49,11 @@ namespace SeatSave.Api.Controllers
                 new Claim(ClaimTypes.Role, user.UserType)
             };
 
-            var token = new JwtSecurityToken(config["Jwt:Issuer"], config["Jwt:Audience"], claims, expires: DateTime.Now.AddMinutes(30), signingCredentials: credentials);
+            var token = new JwtSecurityToken(config["Jwt:Issuer"],
+                                             config["Jwt:Audience"],
+                                             claims,
+                                             expires: DateTime.Now.AddMinutes(30),
+                                             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

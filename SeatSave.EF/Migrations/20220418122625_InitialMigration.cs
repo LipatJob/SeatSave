@@ -10,8 +10,7 @@ namespace SeatSave.EF.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "Users",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
@@ -20,8 +19,7 @@ namespace SeatSave.EF.Migrations
                     UserType = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
 

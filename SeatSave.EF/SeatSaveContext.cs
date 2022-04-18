@@ -13,6 +13,9 @@ namespace SeatSave.EF
         public DbSet<Faculty> FacultyMembers { get; set; }
         public DbSet<Librarian> Librarians { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

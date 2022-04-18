@@ -15,10 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+    options.TokenValidationParameters = new TokenValidationParameters {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -29,10 +27,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
+builder.Services.AddSwaggerGen(options => {
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
         Description = "JWT Authorization header using the bearer scheme",
         Name = "Authorization",
         In = ParameterLocation.Header,
@@ -54,7 +50,9 @@ if (builder.Environment.IsDevelopment())
         var folder = Environment.SpecialFolder.LocalApplicationData;
         var path = Environment.GetFolderPath(folder);
         var DbPath = System.IO.Path.Join(path, "SeatSave.db");
-        options.UseSqlite($"Data Source={DbPath}");
+        options.UseSqlite(
+            $"Data Source={DbPath}",
+            e => e.MigrationsAssembly("SeatSave.EF"));
     });
 }
 

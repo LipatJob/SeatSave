@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SeatSave.Api.DTO;
-using SeatSave.Core;
+using SeatSave.Core.User;
 using SeatSave.EF;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -39,7 +39,7 @@ namespace SeatSave.Api.Controllers
             return NotFound("User not found");
         }
 
-        private string Generate(User user)
+        private string Generate(UserModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -55,7 +55,7 @@ namespace SeatSave.Api.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private User Authenticate(UserLogin userLogin)
+        private UserModel? Authenticate(UserLogin userLogin)
         {
             using (dbContext)
             {
@@ -65,7 +65,6 @@ namespace SeatSave.Api.Controllers
                     return currentUser;
                 }
             }
-
             return null;
         }
     }

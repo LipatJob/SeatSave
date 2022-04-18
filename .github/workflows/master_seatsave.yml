@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - SeatSave.Api/**
+      - SeatSave.Core/**
+      - SeatSave.EF/**
   workflow_dispatch:
 
 jobs:

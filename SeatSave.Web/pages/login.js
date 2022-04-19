@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { authService } from '../lib/authService';
+import Router from 'next/router';
 
 export default function Login() {
   async function onSubmit() {
-    const response = await fetch(`${process.env.API_URL}/Api/Authentication`, {
-      method: 'POST',
-      body: {
-        username: 'student@gmail.com',
-        password: '1234',
-      },
-    });
-    const data = await response.json();
-    console.log(data);
+    const user = await authService.login();
+    if (user == null) {
+      return;
+    }
+
+    Router.push('/');
   }
+
+  useEffect(() => {
+    // redirect to home if already logged in
+    if (authService.getUser() != null) {
+      Router.push('/');
+    }
+  }, []);
+
   return (
     <div className='grid grid-cols-2 gap-x-20'>
       <div>
@@ -59,10 +66,4 @@ export default function Login() {
       </form>
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  return {
-    props: {}, // will be passed to the page component as props
-  };
 }

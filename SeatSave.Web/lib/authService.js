@@ -1,23 +1,24 @@
-async function login(email, password, userType) {
+async function login(email, password, userGroup) {
   const response = await fetch(`${process.env.API_URL}/Api/Authentication`, {
     method: 'POST',
     body: {
       username: email,
       password: password,
+      userGroup: userGroup,
     },
   });
   const user = await response.json();
-  localStorage.setItem('user' + userType, JSON.stringify(user));
+  localStorage.setItem('user' + userGroup, JSON.stringify(user));
 
   return user;
 }
 
-function logout(userType) {
-  localStorage.removeItem('user' + userType);
+function logout(userGroup) {
+  localStorage.removeItem('user' + userGroup);
 }
 
-function getUser(userType) {
-  return localStorage.getItem('user' + userType);
+function getUser(userGroup) {
+  return localStorage.getItem('user' + userGroup);
 }
 
 export const authService = {

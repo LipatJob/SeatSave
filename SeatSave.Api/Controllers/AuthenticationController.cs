@@ -62,7 +62,7 @@ namespace SeatSave.Api.Controllers
         {
             using (dbContext)
             {
-                var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == userLogin.Email.ToLower() && e.Password == e.Password);
+                var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == userLogin.Email.ToLower() && e.Password == e.Password && e.UserGroup == userLogin.UserGroup);
                 if (currentUser != null)
                 {
                     return currentUser;

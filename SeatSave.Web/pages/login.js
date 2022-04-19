@@ -3,6 +3,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Login() {
+  async function onSubmit() {
+    const response = await fetch(`${process.env.API_URL}/Api/Authentication`, {
+      method: 'POST',
+      body: {
+        username: 'student@gmail.com',
+        password: '1234',
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+  }
   return (
     <div className='grid grid-cols-2 gap-x-20'>
       <div>
@@ -35,7 +46,9 @@ export default function Login() {
               placeholder='*******'
             />
           </div>
-          <button type='button'>LOG IN</button>
+          <button type='button' onClick={onSubmit}>
+            LOG IN
+          </button>
           <p>
             Don't have an account?{' '}
             <Link href='/register' className='font-bold'>
@@ -46,4 +59,10 @@ export default function Login() {
       </form>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {}, // will be passed to the page component as props
+  };
 }

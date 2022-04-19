@@ -21,7 +21,8 @@ namespace SeatSave.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Librarian>().HasData(
-                new Librarian {
+                new Librarian
+                {
                     Id = 1,
                     Email = "librarian@gmail.com",
                     FirstName = "Text",
@@ -29,7 +30,8 @@ namespace SeatSave.EF
                     Password = "1234"
                 });
             modelBuilder.Entity<Student>().HasData(
-               new Student {
+               new Student
+               {
                    Id = 2,
                    Email = "student@gmail.com",
                    FirstName = "Text",
@@ -38,7 +40,8 @@ namespace SeatSave.EF
                    Program = "CS",
                    Year = 1,
                },
-               new Student {
+               new Student
+               {
                    Id = 3,
                    Email = "another_student@gmail.com",
                    FirstName = "Text",

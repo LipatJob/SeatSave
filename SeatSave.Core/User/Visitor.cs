@@ -15,6 +15,7 @@ namespace SeatSave.Core.User
         public void Borrow()
         {
             // TODO: Logic for borrowing
+            throw new NotImplementedException("TODO");
         }
     }
 }

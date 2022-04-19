@@ -8,16 +8,16 @@ namespace SeatSave.Api.Controllers
     public class UserController : ControllerBase
     {
         [HttpGet]
-        public void GetAll() { /* TODO */ }
+        public IActionResult GetAll() { throw new NotImplementedException("TODO"); }
         [HttpGet]
-        public void GetSpecific() { /* TODO */ }
+        public IActionResult GetSpecific() { throw new NotImplementedException("TODO"); }
         [HttpPost]
-        public void Add() { /* TODO */ }
+        public IActionResult Add() { throw new NotImplementedException("TODO"); }
         [HttpPut]
-        public void Update() { /* TODO */ }
+        public IActionResult Update() { throw new NotImplementedException("TODO"); }
         [HttpDelete]
-        public void Delete() { /* TODO */ }
+        public IActionResult Delete() { throw new NotImplementedException("TODO"); }
         [HttpGet]
-        public void GetCurrent() { /* TODO */ }
+        public IActionResult GetCurrent() { throw new NotImplementedException("TODO"); }
     }
 }

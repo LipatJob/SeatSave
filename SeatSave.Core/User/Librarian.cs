@@ -2,7 +2,7 @@
 {
     public class Librarian : UserModel
     {
-        public static string UserType = "Librarian";
+        public const string UserType = "Librarian";
 
         public Librarian() : base(UserType)
         {

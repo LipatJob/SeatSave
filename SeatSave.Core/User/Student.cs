@@ -3,7 +3,7 @@
 
     public class Student : Visitor
     {
-        public static string UserType = "Student";
+        public const string UserType = "Student";
 
         public Student() : base(UserType)
         {

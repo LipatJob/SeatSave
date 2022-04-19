@@ -7,14 +7,14 @@ namespace SeatSave.Api.Controllers
     public class RegularDayAvailabilityController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAll() { throw new NotImplementedException("TODO"); }
-        [HttpGet]
-        public IActionResult GetSpecific() { throw new NotImplementedException("TODO"); }
+        public IActionResult GetAll() { return Ok("To be implemented"); }
+        [HttpGet("{id}")]
+        public IActionResult GetSpecific(int id) { return Ok("To be implemented"); }
         [HttpPost]
-        public IActionResult Add() { throw new NotImplementedException("TODO"); }
+        public IActionResult Add() { return Ok("To be implemented"); }
         [HttpPut]
-        public IActionResult Update() { throw new NotImplementedException("TODO"); }
+        public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]
-        public IActionResult Delete() { throw new NotImplementedException("TODO"); }
+        public IActionResult Delete() { return Ok("To be implemented"); }
     }
 }

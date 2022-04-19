@@ -1,4 +1,6 @@
-﻿namespace SeatSave.Core.User
+﻿using System.Runtime.Serialization;
+
+namespace SeatSave.Core.User
 {
 
     public class UserModel

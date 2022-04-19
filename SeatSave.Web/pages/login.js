@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { authService } from '../lib/authService';
+import { visitorAuthService } from '../lib/visitorAuthService';
 import Router from 'next/router';
 
 export default function Login() {
   async function onSubmit() {
-    const user = await authService.login();
+    const user = await visitorAuthService.login();
     if (user == null) {
       return;
     }
@@ -16,7 +16,7 @@ export default function Login() {
 
   useEffect(() => {
     // redirect to home if already logged in
-    if (authService.getUser() != null) {
+    if (visitorAuthService.getUser() != null) {
       Router.push('/');
     }
   }, []);
@@ -34,14 +34,15 @@ export default function Login() {
       </div>
       <form>
         <div className='flex flex-col items-center gap-y-4'>
-          <h1>Welcome Back!</h1>
+          <h1 className='text-center text-dusk-blue'>Welcome Back!</h1>
           <div className='w-full'>
             <p htmlFor='email'>Email</p>
             <input
               id='email'
-              type='text'
+              type='email'
               name='email'
               placeholder='student@live.mcl.edu.ph'
+              className='w-full'
             />
           </div>
           <div className='w-full'>
@@ -51,6 +52,7 @@ export default function Login() {
               type='password'
               name='password'
               placeholder='*******'
+              className='w-full'
             />
           </div>
           <button type='button' onClick={onSubmit}>

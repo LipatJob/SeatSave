@@ -2,13 +2,15 @@
 {
     public class Librarian : UserModel
     {
-        public const string UserType = "Librarian";
+        public new const string UserType = "Librarian";
+        public new const string UserGroup = "Librarian";
 
-        public Librarian() : base(UserType)
+
+        public Librarian() : base(UserType, UserGroup)
         {
         }
 
-        protected Librarian(string UserType) : base(UserType)
+        protected Librarian(string UserType) : base(UserType, UserGroup)
         {
         }
     }

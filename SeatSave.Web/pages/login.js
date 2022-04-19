@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { visitorAuthService } from '../lib/visitorAuthService';
 import Router from 'next/router';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   async function onSubmit() {
-    const user = await visitorAuthService.login();
+    const user = await visitorAuthService.login(email, password);
     if (user == null) {
       return;
     }
@@ -43,6 +46,7 @@ export default function Login() {
               name='email'
               placeholder='student@live.mcl.edu.ph'
               className='w-full'
+              onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div className='w-full'>
@@ -53,6 +57,7 @@ export default function Login() {
               name='password'
               placeholder='*******'
               className='w-full'
+              onChange={(event) => setPassword(event.target.value)}
             />
           </div>
           <button type='button' onClick={onSubmit}>

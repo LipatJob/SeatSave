@@ -1,8 +1,7 @@
 import { authService } from './authService';
-
-const userType = 'librarian';
+const userGroup = 'Librarian';
 export const librarianAuthService = {
-  login: (email, password) => authService.getUser(email, password, userType),
-  logout: () => authService.logout(userType),
-  getUser: () => authService.getUser(userType),
+  login: (email, password) => authService.login(email, password, userGroup),
+  logout: () => authService.logout(userGroup),
+  getUser: () => authService.getUser(userGroup),
 };

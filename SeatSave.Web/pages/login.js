@@ -26,8 +26,8 @@ export default function Login() {
   }, []);
 
   return (
-    <div className='grid grid-cols-2 page-container gap-x-20'>
-      <div>
+    <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <div className='hidden sm:block'>
         <Image
           src='/LoginDecoration.svg'
           className='w-full h-auto'
@@ -38,7 +38,7 @@ export default function Login() {
       </div>
       <form className=''>
         <h1 className='mb-16 text-center text-dusk-blue'>Welcome Back!</h1>
-        <div className='mx-20'>
+        <div className='sn:mx-20'>
           <div className='flex flex-col items-center mb-12 gap-y-8'>
             <div className='w-full'>
               <p htmlFor='email' className='font-light body-small'>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { visitorAuthService } from '../lib/visitorAuthService';
 import Router from 'next/router';
+import Button from '../components/common/buttons/Button';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ export default function Login() {
   }, []);
 
   return (
-    <div className='grid grid-cols-2 gap-x-20'>
+    <div className='grid grid-cols-2 page-container gap-x-20'>
       <div>
         <Image
           src='/LoginDecoration.svg'
@@ -35,40 +36,46 @@ export default function Login() {
           height={500}
         />
       </div>
-      <form>
-        <div className='flex flex-col items-center gap-y-4'>
-          <h1 className='text-center text-dusk-blue'>Welcome Back!</h1>
-          <div className='w-full'>
-            <p htmlFor='email'>Email</p>
-            <input
-              id='email'
-              type='email'
-              name='email'
-              placeholder='student@live.mcl.edu.ph'
-              className='w-full'
-              onChange={(event) => setEmail(event.target.value)}
-            />
+      <form className=''>
+        <h1 className='mb-16 text-center text-dusk-blue'>Welcome Back!</h1>
+        <div className='mx-20'>
+          <div className='flex flex-col items-center mb-12 gap-y-8'>
+            <div className='w-full'>
+              <p htmlFor='email' className='font-light body-small'>
+                Email
+              </p>
+              <input
+                id='email'
+                type='email'
+                name='email'
+                placeholder='student@live.mcl.edu.ph'
+                className='w-full p-2 border border-solid border-dawn body-normal'
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </div>
+            <div className='w-full'>
+              <p htmlFor='email' className='font-light body-small'>
+                Password
+              </p>
+              <input
+                id='password'
+                type='password'
+                name='password'
+                placeholder='*******'
+                className='w-full p-2 border border-solid border-dawn body-normal'
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </div>
           </div>
-          <div className='w-full'>
-            <p htmlFor='email'>Password</p>
-            <input
-              id='password'
-              type='password'
-              name='password'
-              placeholder='*******'
-              className='w-full'
-              onChange={(event) => setPassword(event.target.value)}
-            />
+          <div className='flex flex-col items-center'>
+            <Button text='LOG IN' className='w-full py-3 mb-4 '></Button>
+            <p className='body-small'>
+              Don't have an account?{' '}
+              <Link href='/register'>
+                <span className='font-bold text-dusk-blue'>Create</span>
+              </Link>
+            </p>
           </div>
-          <button type='button' onClick={onSubmit}>
-            LOG IN
-          </button>
-          <p>
-            Don't have an account?{' '}
-            <Link href='/register' className='font-bold'>
-              Create
-            </Link>
-          </p>
         </div>
       </form>
     </div>

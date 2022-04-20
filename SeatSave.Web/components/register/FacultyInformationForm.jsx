@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function FacultyInformationForm() {
+export default function FacultyInformationForm({ onChange }) {
   return (
     <div className='w-full'>
       <p className='font-light body-small'>Office</p>
@@ -8,7 +8,8 @@ export default function FacultyInformationForm() {
         name='office'
         id='office'
         className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-        onChange={() => false}
+        onChange={onChange}
+        required
       >
         <option value='CCIS'>CCIS</option>
         <option value='MITL'>MITL</option>

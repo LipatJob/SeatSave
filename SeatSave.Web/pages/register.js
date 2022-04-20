@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 
 import Image from 'next/image';
 
@@ -6,6 +6,29 @@ import AccountInformationForm from '../components/register/AccountInformationFor
 import VisitorInformationForm from '../components/register/VisitorInformationForm';
 
 export default function Register() {
+  const [formData, setFormData] = useState({});
+
+  const [formPart, setFormPart] = useState(0);
+
+  const goToNextFormPart = (accountInformation) => {
+    setFormData((oldFormData) =>
+      Object.assign(oldFormData, accountInformation),
+    );
+    setFormPart((oldFormPart) => oldFormPart + 1);
+    console.log(formData);
+  };
+
+  const goToPreviousFormPart = () => {
+    setFormPart((oldFormPart) => oldFormPart - 1);
+  };
+
+  const submitVisitorInformationForm = (visitorInformation) => {
+    setFormData((oldFormData) =>
+      Object.assign(oldFormData, visitorInformation),
+    );
+    console.log(formData);
+  };
+
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
       <div className='hidden sm:block'>
@@ -17,8 +40,13 @@ export default function Register() {
           height={500}
         />
       </div>
-      <VisitorInformationForm />
-      {/* <AccountInformationForm /> */}
+      {formPart === 0 && <AccountInformationForm onSubmit={goToNextFormPart} />}
+      {formPart === 1 && (
+        <VisitorInformationForm
+          onSubmit={submitVisitorInformationForm}
+          onBack={goToPreviousFormPart}
+        />
+      )}
     </div>
   );
 }

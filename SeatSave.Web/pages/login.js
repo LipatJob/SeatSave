@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { visitorAuthService } from '../lib/visitorAuthService';
+import Router from 'next/router';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function onSubmit() {
+    const user = await visitorAuthService.login(email, password);
+    if (user == null) {
+      return;
+    }
+
+    Router.push('/');
+  }
+
+  useEffect(() => {
+    // redirect to home if already logged in
+    if (visitorAuthService.getUser() != null) {
+      Router.push('/');
+    }
+  }, []);
+
   return (
     <div className='grid grid-cols-2 gap-x-20'>
       <div>
@@ -16,14 +37,16 @@ export default function Login() {
       </div>
       <form>
         <div className='flex flex-col items-center gap-y-4'>
-          <h1>Welcome Back!</h1>
+          <h1 className='text-center text-dusk-blue'>Welcome Back!</h1>
           <div className='w-full'>
             <p htmlFor='email'>Email</p>
             <input
               id='email'
-              type='text'
+              type='email'
               name='email'
               placeholder='student@live.mcl.edu.ph'
+              className='w-full'
+              onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div className='w-full'>
@@ -33,9 +56,13 @@ export default function Login() {
               type='password'
               name='password'
               placeholder='*******'
+              className='w-full'
+              onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-          <button type='button'>LOG IN</button>
+          <button type='button' onClick={onSubmit}>
+            LOG IN
+          </button>
           <p>
             Don't have an account?{' '}
             <Link href='/register' className='font-bold'>

@@ -2,7 +2,8 @@
 {
     public class Visitor : UserModel
     {
-        public Visitor(string UserType) : base(UserType)
+        public new const string UserGroup = "Visitor";
+        public Visitor(string UserType) : base(UserType, UserGroup)
         {
         }
 

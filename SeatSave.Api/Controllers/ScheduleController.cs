@@ -7,12 +7,12 @@ namespace SeatSave.Api.Controllers
     public class ScheduleController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAvailableDays() { throw new NotImplementedException("TODO"); }
+        public IActionResult GetAvailableDays() { return Ok("To be implemented"); }
 
         [HttpGet("{id}/periods")]
-        public IActionResult GetAvailablePeriodsForDay() { throw new NotImplementedException("TODO"); }
+        public IActionResult GetAvailablePeriodsForDay() { return Ok("To be implemented"); }
 
         [HttpGet("periods")]
-        public IActionResult GetPeriods() { throw new NotImplementedException("TODO"); }
+        public IActionResult GetPeriods() { return Ok("To be implemented"); }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Faculty : Visitor
     {
-        public static string UserType = "Faculty";
+        public const string UserType = "Faculty";
         public Faculty() : base(UserType)
         {
         }

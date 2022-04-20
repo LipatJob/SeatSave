@@ -2,7 +2,7 @@
 {
     public class Staff : Visitor
     {
-        public static string UserType = "Staff";
+        public const string UserType = "Staff";
 
         public Staff() : base(UserType)
         {

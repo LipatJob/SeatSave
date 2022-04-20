@@ -3,10 +3,10 @@ import Image from 'next/image';
 export default function NavbarLogo() {
   return (
     <>
-      <div className='lg:hidden mt-2'>
+      <div className='mt-2 lg:hidden'>
         <Image src='/logo-icon.png' width={54} height={54} />
       </div>
-      <div className='hidden lg:block mt-2'>
+      <div className='hidden mt-2 lg:block'>
         <Image src='/logo.png' width={246} height={53} />
       </div>
     </>

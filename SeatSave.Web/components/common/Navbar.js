@@ -1,5 +1,15 @@
+import VisitorNavbar from './navbar/VisitorNavbar';
+import LibrarianNavbar from './navbar/LibrarianNavbar';
 import LoginNavbar from './navbar/LoginNavbar';
 
 export default function Navbar() {
-  return <LoginNavbar />;
+  let page = 'LOGIN';
+
+  if (page == 'VISITOR') {
+    return <VisitorNavbar />;
+  } else if (page == 'LIBRARIAN') {
+    return <LibrarianNavbar />;
+  } else {
+    return <LoginNavbar />;
+  }
 }

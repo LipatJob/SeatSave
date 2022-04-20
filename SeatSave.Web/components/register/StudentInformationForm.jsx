@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function StudentInformationForm() {
+export default function StudentInformationForm({ onChange }) {
   return (
     <>
       <div className='w-full'>
@@ -9,7 +9,8 @@ export default function StudentInformationForm() {
           name='department'
           id='department'
           className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-          onChange={() => false}
+          onChange={onChange}
+          required
         >
           <option value='CCIS'>CCIS</option>
           <option value='MITL'>MITL</option>
@@ -24,7 +25,7 @@ export default function StudentInformationForm() {
           name='programStrand'
           id='programStrand'
           className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-          onChange={() => false}
+          onChange={onChange}
         >
           <option value='IS'>IS</option>
           <option value='CS'>CS</option>
@@ -37,7 +38,7 @@ export default function StudentInformationForm() {
           name='yearGrade'
           id='yearGrade'
           className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-          onChange={() => false}
+          onChange={onChange}
         >
           <option value='First Year'>First Year</option>
           <option value='Second Year'>Second Year</option>

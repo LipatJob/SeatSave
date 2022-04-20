@@ -64,7 +64,11 @@ export default function Login() {
             </div>
           </div>
           <div className='flex flex-col items-center text-center'>
-            <Button text='LOG IN' className='w-full py-3.5 mb-6' />
+            <Button
+              text='LOG IN'
+              className='w-full py-3.5 mb-6'
+              onClick={onSubmit}
+            />
             <p className='body-small'>
               Don't have an account?{' '}
               <Link href='/register'>

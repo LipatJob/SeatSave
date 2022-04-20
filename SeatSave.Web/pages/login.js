@@ -36,10 +36,10 @@ export default function Login() {
           height={500}
         />
       </div>
-      <form className=''>
+      <form className='flex flex-col items-center'>
         <h1 className='mb-16 text-center text-dusk-blue'>Welcome Back!</h1>
-        <div className='sn:mx-20'>
-          <div className='flex flex-col items-center mb-12 gap-y-8'>
+        <div className='w-full sm:max-w-md'>
+          <div className='flex flex-col items-center mb-12 gap-y-7'>
             <div className='w-full'>
               <p htmlFor='email' className='font-light body-small'>
                 Email

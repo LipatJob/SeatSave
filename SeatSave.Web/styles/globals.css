@@ -46,6 +46,9 @@
     padding-left: 35px;
     padding-right: 35px;
   }
+  .body-normal {
+    @apply text-lg lg:text-xl
+  }
 
   .body-small {
     @apply text-base lg:text-lg

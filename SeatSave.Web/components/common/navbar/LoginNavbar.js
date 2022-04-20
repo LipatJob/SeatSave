@@ -2,8 +2,8 @@ import NavbarLogo from './NavbarLogo';
 
 export default function LoginNavbar() {
   return (
-    <div className='flex flex-col justify-center bg-dusk-blue h-20'>
-      <div className='page-container w-full'>
+    <div className='flex flex-col justify-center h-20 bg-dusk-blue'>
+      <div className='w-full page-container'>
         <NavbarLogo />
       </div>
     </div>

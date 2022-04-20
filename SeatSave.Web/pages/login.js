@@ -49,7 +49,7 @@ export default function Login() {
                 type='email'
                 name='email'
                 placeholder='student@live.mcl.edu.ph'
-                className='w-full p-2 border border-solid border-dawn body-normal'
+                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
                 onChange={(event) => setEmail(event.target.value)}
               />
             </div>
@@ -62,17 +62,17 @@ export default function Login() {
                 type='password'
                 name='password'
                 placeholder='*******'
-                className='w-full p-2 border border-solid border-dawn body-normal'
+                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
           </div>
-          <div className='flex flex-col items-center'>
-            <Button text='LOG IN' className='w-full py-3 mb-4 '></Button>
+          <div className='flex flex-col items-center text-center'>
+            <Button text='LOG IN' className='w-full py-3.5 mb-6'></Button>
             <p className='body-small'>
               Don't have an account?{' '}
               <Link href='/register'>
-                <span className='font-bold text-dusk-blue'>Create</span>
+                <span className='font-bold text-bluish body-small'>Create</span>
               </Link>
             </p>
           </div>

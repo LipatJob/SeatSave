@@ -6,6 +6,8 @@
 
 @layer base {
   body {
+    @apply text-lg lg:text-xl;
+    
     font-family: 'Red Hat Text', sans-serif;
   }
 
@@ -23,10 +25,6 @@
 
   h4 {
     @apply text-xl lg:text-3xl
-  }
-
-  p {
-    @apply text-lg lg:text-xl
   }
 }
 

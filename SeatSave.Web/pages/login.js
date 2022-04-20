@@ -41,9 +41,7 @@ export default function Login() {
         <div className='w-full sm:max-w-md'>
           <div className='flex flex-col items-center mb-12 gap-y-7'>
             <div className='w-full'>
-              <p htmlFor='email' className='font-light body-small'>
-                Email
-              </p>
+              <p className='font-light body-small'>Email</p>
               <input
                 id='email'
                 type='email'
@@ -54,9 +52,7 @@ export default function Login() {
               />
             </div>
             <div className='w-full'>
-              <p htmlFor='email' className='font-light body-small'>
-                Password
-              </p>
+              <p className='font-light body-small'>Password</p>
               <input
                 id='password'
                 type='password'

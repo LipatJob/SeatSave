@@ -56,7 +56,7 @@ export default function AccountInformationForm() {
           </div>
         </div>
         <div className='flex flex-col items-center text-center'>
-          <Button text='CONTINUE' className='w-full py-3.5 mb-6'></Button>
+          <Button text='CONTINUE' className='w-full py-3.5 mb-6' />
           <p className='body-small'>
             Already have an account?{' '}
             <Link href='/login'>

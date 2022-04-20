@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { visitorAuthService } from '../lib/visitorAuthService';
 import Router from 'next/router';
+import { visitorAuthService } from '../lib/visitorAuthService';
 import Button from '../components/common/buttons/Button';
 
 export default function Login() {
@@ -64,7 +64,7 @@ export default function Login() {
             </div>
           </div>
           <div className='flex flex-col items-center text-center'>
-            <Button text='LOG IN' className='w-full py-3.5 mb-6'></Button>
+            <Button text='LOG IN' className='w-full py-3.5 mb-6' />
             <p className='body-small'>
               Don't have an account?{' '}
               <Link href='/register'>

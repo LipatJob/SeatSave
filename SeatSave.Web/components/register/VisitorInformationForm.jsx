@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { BiArrowBack } from 'react-icons/bi';
 import Button from '../common/buttons/Button';
 import StaffInformationForm from './StaffInformationForm';
 import FacultyInformationForm from './FacultyInformationForm';
 import StudentInformationForm from './StudentInformationForm';
-import { BiArrowBack } from 'react-icons/bi';
 
 export default function VisitorInformationForm() {
   const [visitorType, setVisitorType] = useState('');

@@ -1,88 +1,121 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import Button from '../common/buttons/Button';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 export default function AccountInformationForm({ onSubmit }) {
-  const [formData, setFormData] = useState({});
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const SignupSchema = Yup.object().shape({
+    firstname: Yup.string().required('This field is required'),
+    lastname: Yup.string().required('This field is required'),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('This field is required'),
+    password: Yup.string()
+      .min(5, 'Password must be at least 5 characters')
+      .required('This field is required'),
+  });
 
   return (
-    <form className='flex flex-col items-center'>
+    <div className='flex flex-col items-center'>
       <h1 className='mb-16 text-center text-dusk-blue'>Create Your Account</h1>
-      <div className='sm:max-w-md'>
-        <div className='flex flex-col items-center mb-12 gap-y-7'>
-          <div className='grid w-full grid-cols-2 gap-4'>
-            <div className='w-full'>
-              <p className='font-light body-small'>First Name</p>
-              <input
-                id='firstname'
-                type='text'
-                name='firstname'
-                placeholder='First Name'
-                className='w-full'
-                onChange={(e) => handleInputChange(e)}
-                required
-              />
+      <Formik
+        initialValues={{
+          firstname: '',
+          lastname: '',
+          email: '',
+          password: '',
+        }}
+        validationSchema={SignupSchema}
+        onSubmit={(values) => {
+          // same shape as initial values
+          console.log(values);
+          onSubmit(values);
+        }}
+      >
+        {({ errors, touched }) => (
+          <Form>
+            <div className='sm:max-w-md'>
+              <div className='flex flex-col items-center mb-12 gap-y-7'>
+                <div className='grid w-full grid-cols-2 gap-4'>
+                  <div className='w-full'>
+                    <p className='font-light body-small'>First Name</p>
+                    <Field
+                      id='firstname'
+                      type='text'
+                      name='firstname'
+                      placeholder='First Name'
+                      className='w-full'
+                    />
+                    <ErrorMessage
+                      name='firstname'
+                      component='span'
+                      className='text-error'
+                    />
+                  </div>
+                  <div className='w-full'>
+                    <p className='font-light body-small'>Last Name</p>
+                    <Field
+                      id='lastname'
+                      type='text'
+                      name='lastname'
+                      placeholder='Last Name'
+                      className='w-full'
+                    />
+                    <ErrorMessage
+                      name='lastname'
+                      component='span'
+                      className='text-error'
+                    />
+                  </div>
+                </div>
+                <div className='w-full'>
+                  <p className='font-light body-small'>Email</p>
+                  <Field
+                    id='email'
+                    type='email'
+                    name='email'
+                    placeholder='student@live.mcl.edu.ph'
+                    className='w-full'
+                  />
+                  <ErrorMessage
+                    name='email'
+                    component='span'
+                    className='text-error'
+                  />
+                </div>
+                <div className='w-full'>
+                  <p className='font-light body-small'>Password</p>
+                  <Field
+                    id='password'
+                    type='password'
+                    name='password'
+                    placeholder='*******'
+                    className='w-full'
+                  />
+                  <ErrorMessage
+                    name='password'
+                    component='span'
+                    className='text-error'
+                  />
+                </div>
+              </div>
+              <div className='flex flex-col items-center text-center'>
+                <button type='submit' className='button w-full py-3.5 mb-6'>
+                  CONTINUE
+                </button>
+                <p className='body-small'>
+                  Already have an account?{' '}
+                  <Link href='/login'>
+                    <span className='font-bold text-bluish body-small'>
+                      LOG IN
+                    </span>
+                  </Link>
+                </p>
+              </div>
             </div>
-            <div className='w-full'>
-              <p className='font-light body-small'>Last Name</p>
-              <input
-                id='lastname'
-                type='text'
-                name='lastname'
-                placeholder='Last Name'
-                className='w-full'
-                onChange={(e) => handleInputChange(e)}
-                required
-              />
-            </div>
-          </div>
-          <div className='w-full'>
-            <p className='font-light body-small'>Email</p>
-            <input
-              id='email'
-              type='email'
-              name='email'
-              placeholder='student@live.mcl.edu.ph'
-              className='w-full'
-              onChange={(e) => handleInputChange(e)}
-              required
-            />
-          </div>
-          <div className='w-full'>
-            <p className='font-light body-small'>Password</p>
-            <input
-              id='password'
-              type='password'
-              name='password'
-              placeholder='*******'
-              className='w-full'
-              onChange={(e) => handleInputChange(e)}
-              required
-            />
-          </div>
-        </div>
-        <div className='flex flex-col items-center text-center'>
-          <Button
-            text='CONTINUE'
-            className='w-full py-3.5 mb-6'
-            onClick={() => onSubmit(formData)}
-          />
-          <p className='body-small'>
-            Already have an account?{' '}
-            <Link href='/login'>
-              <span className='font-bold text-bluish body-small'>LOG IN</span>
-            </Link>
-          </p>
-        </div>
-      </div>
-    </form>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 }

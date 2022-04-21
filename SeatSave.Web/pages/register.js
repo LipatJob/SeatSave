@@ -6,22 +6,11 @@ import AccountInformationForm from '../components/register/AccountInformationFor
 import VisitorInformationForm from '../components/register/VisitorInformationForm';
 
 export default function Register() {
-  const [formData, setFormData] = useState({});
-  const [formPart, setFormPart] = useState(0);
-
-  const goToNextFormPart = (accountInformation) => {
-    setFormData((oldFormData) =>
-      Object.assign(oldFormData, accountInformation),
-    );
-    setFormPart((oldFormPart) => oldFormPart + 1);
-    console.log(formData);
-  };
-
-  const goToPreviousFormPart = () => {
-    setFormPart((oldFormPart) => oldFormPart - 1);
-  };
-
+  const [formPartData, setFormPartData] = useState([]);
+  const [formPartIndex, setFormPartIndex] = useState(0);
   const submitData = async () => {
+    const formData = { ...formPartData[0], ...formPartData[1] };
+
     console.log(formData);
     const response = await fetch(`${process.env.API_URL}/Api/User`, {
       method: 'POST',
@@ -34,15 +23,32 @@ export default function Register() {
     console.log(json);
   };
 
-  const submitVisitorInformationForm = (data) => {
-    setFormData((oldFormData) => Object.assign(oldFormData, data));
+  const setFormIndexData = (index, data) => {
+    setFormPartData((oldFormPartData) => {
+      const newFormPartData = [...oldFormPartData];
+      newFormPartData[index] = data;
+      return newFormPartData;
+    });
+  };
+
+  const goToNextFormPart = (submittedFormData) => {
+    setFormIndexData(formPartIndex, submittedFormData);
+    setFormPartIndex((oldFormPartIndex) => oldFormPartIndex + 1);
+  };
+
+  const goToPreviousFormPart = () => {
+    setFormPartIndex((oldFormPartIndex) => oldFormPartIndex - 1);
+  };
+
+  const SubmitForm = (submittedFormData) => {
+    setFormIndexData(formPartIndex, submittedFormData);
     submitData();
   };
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
       <div className='hidden sm:block'>
-        {formPart === 0 && (
+        {formPartIndex === 0 && (
           <Image
             src='/RegisterPart1.svg'
             className='w-full h-auto'
@@ -51,7 +57,7 @@ export default function Register() {
             height={500}
           />
         )}
-        {formPart === 1 && (
+        {formPartIndex === 1 && (
           <Image
             src='/RegisterPart2.svg'
             className='w-full h-auto'
@@ -61,10 +67,12 @@ export default function Register() {
           />
         )}
       </div>
-      {formPart === 0 && <AccountInformationForm onSubmit={goToNextFormPart} />}
-      {formPart === 1 && (
+      {formPartIndex === 0 && (
+        <AccountInformationForm onSubmit={goToNextFormPart} />
+      )}
+      {formPartIndex === 1 && (
         <VisitorInformationForm
-          onSubmit={submitVisitorInformationForm}
+          onSubmit={SubmitForm}
           onBack={goToPreviousFormPart}
         />
       )}

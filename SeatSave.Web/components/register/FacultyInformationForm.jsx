@@ -7,7 +7,7 @@ export default function FacultyInformationForm({ onChange }) {
       <select
         name='office'
         id='office'
-        className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+        className='w-full'
         onChange={onChange}
         required
       >

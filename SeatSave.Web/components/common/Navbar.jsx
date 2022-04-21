@@ -1,3 +1,4 @@
+import React from 'react';
 import VisitorNavbar from './navbar/VisitorNavbar';
 import LibrarianNavbar from './navbar/LibrarianNavbar';
 import LoginNavbar from './navbar/LoginNavbar';
@@ -10,13 +11,12 @@ export default function Navbar({ page }) {
     'ManageSeats',
     'ManageDateTime',
   ];
-  const loginPages = ['Register', 'VisitorLogin', 'LibrarianLogin'];
 
   if (visitorPages.includes(page)) {
     return <VisitorNavbar />;
-  } else if (librarianPages.includes(page)) {
+  } if (librarianPages.includes(page)) {
     return <LibrarianNavbar />;
-  } else {
+  } 
     return <LoginNavbar />;
-  }
+  
 }

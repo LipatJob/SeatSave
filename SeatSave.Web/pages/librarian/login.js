@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { librarianAuthService } from '../../lib/librarianAuthService';
 import Router from 'next/router';
+import { librarianAuthService } from '../../lib/librarianAuthService';
+import Button from '../../components/common/buttons/Button';
 
-export default function Login() {
+export default function LibrarianLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,8 +26,8 @@ export default function Login() {
   }, []);
 
   return (
-    <div className='grid grid-cols-2 gap-x-20'>
-      <div>
+    <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <div className='hidden sm:block'>
         <Image
           src='/LoginDecoration.svg'
           className='w-full h-auto'
@@ -35,40 +36,46 @@ export default function Login() {
           height={500}
         />
       </div>
-      <form>
-        <div className='flex flex-col items-center gap-y-4'>
-          <h1 className='text-center text-dusk-blue'>Welcome Back!</h1>
-          <div className='w-full'>
-            <p htmlFor='email'>Email</p>
-            <input
-              id='email'
-              type='email'
-              name='email'
-              placeholder='librarian@mcl.edu.ph'
-              className='w-full'
-              onChange={(event) => setEmail(event.target.value)}
-            />
+      <form className='flex flex-col items-center'>
+        <h1 className='mb-16 text-center text-dusk-blue'>Welcome Back!</h1>
+        <div className='w-full sm:max-w-md'>
+          <div className='flex flex-col items-center mb-12 gap-y-7'>
+            <div className='w-full'>
+              <p className='font-light body-small'>Email</p>
+              <input
+                id='email'
+                type='email'
+                name='email'
+                placeholder='librarian@mcl.edu.ph'
+                className='w-full p-2  py-2.5  border border-solid border-dawn body-normal'
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </div>
+            <div className='w-full'>
+              <p className='font-light body-small'>Password</p>
+              <input
+                id='password'
+                type='password'
+                name='password'
+                placeholder='*******'
+                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </div>
           </div>
-          <div className='w-full'>
-            <p htmlFor='email'>Password</p>
-            <input
-              id='password'
-              type='password'
-              name='password'
-              placeholder='*******'
-              className='w-full'
-              onChange={(event) => setPassword(event.target.value)}
+          <div className='flex flex-col items-center text-center'>
+            <Button
+              text='LOG IN'
+              className='w-full py-3.5 mb-6 '
+              onClick={(e) => onSubmit(e)}
             />
-          </div>
-          <button type='button' onClick={onSubmit}>
-            LOG IN
-          </button>
-          <p>
-            Can't access your account?{' '}
-            <Link href='/register' className='font-bold'>
-              Contact the administrators
+            <p className='body-small'>Can't access your account?</p>
+            <Link href='mailto:lipatjj@live.mcl.edu.ph'>
+              <p className='font-bold text-bluish body-small'>
+                Contact the administrators
+              </p>
             </Link>
-          </p>
+          </div>
         </div>
       </form>
     </div>

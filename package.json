@@ -5,7 +5,7 @@
   "scripts": {
     "dev-api": "dotnet watch run --project .\\SeatSave.Api\\",
     "dev-client": "cd SeatSave.Web && npm run dev",
-    "dev": "npm run dev-api & npm run dev-client",
+    "dev": "start npm run dev-api && start npm run dev-client",
     "db-update": "dotnet ef database update",
     "db-migrate": "dotnet ef migrations add"
   }

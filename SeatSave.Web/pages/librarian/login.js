@@ -5,7 +5,7 @@ import Router from 'next/router';
 import { librarianAuthService } from '../../lib/librarianAuthService';
 import Button from '../../components/common/buttons/Button';
 
-export default function Login() {
+export default function LibrarianLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,7 +26,7 @@ export default function Login() {
   }, []);
 
   return (
-    <div className='sm:grid sm:grid-cols-2 page-container gap-x-20'>
+    <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
       <div className='hidden sm:block'>
         <Image
           src='/LoginDecoration.svg'
@@ -67,16 +67,14 @@ export default function Login() {
             <Button
               text='LOG IN'
               className='w-full py-3.5 mb-6 '
-              onClick={onSubmit}
+              onClick={(e) => onSubmit(e)}
             />
-            <p className='body-small'>
-              Can't access your account?
-              <Link href='mailto:lipatjj@live.mcl.edu.ph'>
-                <p className='font-bold text-bluish body-small'>
-                  Contact the administrators
-                </p>
-              </Link>
-            </p>
+            <p className='body-small'>Can't access your account?</p>
+            <Link href='mailto:lipatjj@live.mcl.edu.ph'>
+              <p className='font-bold text-bluish body-small'>
+                Contact the administrators
+              </p>
+            </Link>
           </div>
         </div>
       </form>

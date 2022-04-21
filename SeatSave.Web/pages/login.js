@@ -5,7 +5,7 @@ import Router from 'next/router';
 import { visitorAuthService } from '../lib/visitorAuthService';
 import Button from '../components/common/buttons/Button';
 
-export default function Login() {
+export default function VisitorLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -67,7 +67,7 @@ export default function Login() {
             <Button
               text='LOG IN'
               className='w-full py-3.5 mb-6'
-              onClick={onSubmit}
+              onClick={(e) => onSubmit(e)}
             />
             <p className='body-small'>
               Don't have an account?{' '}

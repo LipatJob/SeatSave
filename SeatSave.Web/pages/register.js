@@ -1,82 +1,62 @@
-﻿import React from 'react';
-import Link from 'next/link';
+﻿import React, { useState } from 'react';
+
 import Image from 'next/image';
 
+import AccountInformationForm from '../components/register/AccountInformationForm';
+import VisitorInformationForm from '../components/register/VisitorInformationForm';
+
 export default function Register() {
+  const [formData, setFormData] = useState({});
+  const [formPart, setFormPart] = useState(0);
+
+  const goToNextFormPart = (accountInformation) => {
+    setFormData((oldFormData) =>
+      Object.assign(oldFormData, accountInformation),
+    );
+    setFormPart((oldFormPart) => oldFormPart + 1);
+    console.log(formData);
+  };
+
+  const goToPreviousFormPart = () => {
+    setFormPart((oldFormPart) => oldFormPart - 1);
+  };
+
+  const submitVisitorInformationForm = (visitorInformation) => {
+    setFormData((oldFormData) =>
+      Object.assign(oldFormData, visitorInformation),
+    );
+    console.log(formData);
+  };
+
   return (
-    <div>
-      <h1>Register</h1>
-      <div className='grid grid-cols-2 gap-x-20'>
-        <div>
+    <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <div className='hidden sm:block'>
+        {formPart === 0 && (
           <Image
-            src='/LoginDecoration.svg'
+            src='/RegisterPart1.svg'
             className='w-full h-auto'
             layout='responsive'
             width={500}
             height={500}
           />
-        </div>
-        <div className='flex flex-col items-center gap-y-4'>
-          <h1 className='text-center text-dusk-blue'>Create Your Account</h1>
-          <div className='flex flex-row w-full'>
-            <div className='w-[50%]'>
-              <p htmlFor='email' className='font-light body-small'>
-                First Name
-              </p>
-              <input
-                id='firstname'
-                type='text'
-                name='firstname'
-                placeholder='First Name'
-                className='w-full'
-              />
-            </div>
-            <div className='w-[50%]'>
-              <p htmlFor='email' className='font-light body-small'>
-                Last Name
-              </p>
-              <input
-                id='lastname'
-                type='text'
-                name='lastname'
-                placeholder='First Name'
-                className='w-full'
-              />
-            </div>
-          </div>
-          <div className='w-full'>
-            <p htmlFor='email' className='font-light body-small'>
-              Email
-            </p>
-            <input
-              id='email'
-              type='text'
-              name='email'
-              placeholder='student@live.mcl.edu.ph'
-              className='w-full'
-            />
-          </div>
-          <div className='w-full'>
-            <p htmlFor='email' className='font-light body-small'>
-              Password
-            </p>
-            <input
-              id='password'
-              type='password'
-              name='password'
-              placeholder='*******'
-              className='w-full'
-            />
-          </div>
-          <button type='button'>Continue</button>
-          <p className='body-small'>
-            Already a user?{' '}
-            <Link href='/register' className='font-bold'>
-              LOG IN
-            </Link>
-          </p>
-        </div>
+        )}
+        {formPart === 1 && (
+          <Image
+            src='/RegisterPart2.svg'
+            className='w-full h-auto'
+            layout='responsive'
+            width={500}
+            height={500}
+          />
+        )}
       </div>
+      {formPart === 0 && <AccountInformationForm onSubmit={goToNextFormPart} />}
+      {formPart === 1 && (
+        <VisitorInformationForm
+          onSubmit={submitVisitorInformationForm}
+          onBack={goToPreviousFormPart}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 ﻿import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import Image from 'next/image';
 
@@ -8,19 +9,30 @@ import VisitorInformationForm from '../components/register/VisitorInformationFor
 export default function Register() {
   const [formPartData, setFormPartData] = useState([]);
   const [formPartIndex, setFormPartIndex] = useState(0);
+  const router = useRouter();
+
   const submitData = async () => {
     const formData = { ...formPartData[0], ...formPartData[1] };
 
     console.log(formData);
-    const response = await fetch(`${process.env.API_URL}/Api/User`, {
+    const requestData = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
-    });
-    const json = await response.json();
-    console.log(json);
+    };
+
+    fetch(`${process.env.API_URL}/Api/User`, requestData)
+      .then((res) => {
+        const json = res.json();
+        console.log(json);
+        router.push('/login?RegisterSuccessful=True');
+      })
+      .catch((error) => {
+        console.log('there was an error');
+        console.log(error);
+      });
   };
 
   const setFormIndexData = (index, data) => {
@@ -40,7 +52,7 @@ export default function Register() {
     setFormPartIndex((oldFormPartIndex) => oldFormPartIndex - 1);
   };
 
-  const SubmitForm = (submittedFormData) => {
+  const submitLastFormPart = (submittedFormData) => {
     setFormIndexData(formPartIndex, submittedFormData);
     submitData();
   };
@@ -72,7 +84,7 @@ export default function Register() {
       )}
       {formPartIndex === 1 && (
         <VisitorInformationForm
-          onSubmit={SubmitForm}
+          onSubmit={submitLastFormPart}
           onBack={goToPreviousFormPart}
         />
       )}

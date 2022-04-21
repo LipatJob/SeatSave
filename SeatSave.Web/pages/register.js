@@ -21,11 +21,22 @@ export default function Register() {
     setFormPart((oldFormPart) => oldFormPart - 1);
   };
 
-  const submitVisitorInformationForm = (visitorInformation) => {
-    setFormData((oldFormData) =>
-      Object.assign(oldFormData, visitorInformation),
-    );
+  const submitData = async () => {
     console.log(formData);
+    const response = await fetch(`${process.env.API_URL}/Api/User`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    const json = await response.json();
+    console.log(json);
+  };
+
+  const submitVisitorInformationForm = (data) => {
+    setFormData((oldFormData) => Object.assign(oldFormData, data));
+    submitData();
   };
 
   return (

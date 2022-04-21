@@ -3,22 +3,22 @@ async function login(email, password, userGroup) {
     method: 'POST',
     body: {
       username: email,
-      password: password,
-      userGroup: userGroup,
+      password,
+      userGroup,
     },
   });
   const user = await response.json();
-  localStorage.setItem('user' + userGroup, JSON.stringify(user));
+  localStorage.setItem(`user${userGroup}`, JSON.stringify(user));
 
   return user;
 }
 
 function logout(userGroup) {
-  localStorage.removeItem('user' + userGroup);
+  localStorage.removeItem(`user${userGroup}`);
 }
 
 function getUser(userGroup) {
-  return localStorage.getItem('user' + userGroup);
+  return localStorage.getItem(`user${userGroup}`);
 }
 
 export const authService = {

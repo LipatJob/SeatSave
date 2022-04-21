@@ -7,6 +7,6 @@
         {
         }
 
-        public string Department { get; set; }
+        public string FacultyOffice { get; set; }
     }
 }

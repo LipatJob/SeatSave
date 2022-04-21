@@ -5,8 +5,8 @@ export default function StaffInformationForm({ onChange }) {
     <div className='w-full'>
       <p className='font-light body-small'>Office</p>
       <select
-        name='staffOffice'
-        id='staffOffice'
+        name='office'
+        id='office'
         className='w-full'
         onChange={onChange}
         required

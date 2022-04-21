@@ -12,19 +12,27 @@
   }
 
   h1 {
-    @apply font-bold text-4xl lg:text-6xl
+    @apply font-bold text-4xl lg:text-6xl;
   }
 
   h2 {
-    @apply font-medium text-3xl lg:text-5xl
+    @apply font-medium text-3xl lg:text-5xl;
   }
 
   h3 {
-    @apply text-2xl lg:text-4xl
+    @apply text-2xl lg:text-4xl;
   }
 
   h4 {
-    @apply text-xl lg:text-3xl
+    @apply text-xl lg:text-3xl;
+  }
+
+  input, textarea, select {
+    @apply border border-dawn focus:border-dusk-blue focus:border-2 focus:outline-none p-3;
+  }
+
+  label {
+    @apply font-light text-base lg:text-lg;
   }
 }
 
@@ -49,6 +57,6 @@
   }
 
   .body-small {
-    @apply text-base lg:text-lg
+    @apply text-base lg:text-lg;
   }
 }

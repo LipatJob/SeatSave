@@ -1,3 +1,4 @@
+import React from 'react';
 import NavbarLogo from './NavbarLogo';
 import DesktopMenu from './DesktopMenu';
 import AccountButton from './AccountButton';

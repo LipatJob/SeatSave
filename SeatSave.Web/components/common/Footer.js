@@ -2,12 +2,12 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className='bottom-0 w-full z-0'>
+    <footer className='bottom-0 z-0 w-full'>
       <div className='bg-rodeo-dust'>
-        <div className='page-container-small flex flex-col lg:flex-row py-6 lg:py-12 justify-between'>
+        <div className='flex flex-col justify-between py-6 page-container-small lg:flex-row lg:py-12'>
           <div className='flex flex-col gap-2'>
-            <p className='text-sm lg:text-base font-bold'>Links</p>
-            <div className='flex flex-col lg:flex-row gap-2 lg:gap-4'>
+            <p className='text-sm font-bold lg:text-base'>Links</p>
+            <div className='flex flex-col gap-2 lg:flex-row lg:gap-4'>
               <a href='' className='text-sm lg:text-base'>
                 <u>Malayan Colleges Laguna</u>
               </a>

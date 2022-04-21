@@ -8,5 +8,8 @@
     "dev": "start npm run dev-api && start npm run dev-client",
     "db-update": "dotnet ef database update",
     "db-migrate": "dotnet ef migrations add"
+  },
+  "dependencies": {
+    "react-modal": "^3.14.4"
   }
 }

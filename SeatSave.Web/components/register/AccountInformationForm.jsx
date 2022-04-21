@@ -26,7 +26,7 @@ export default function AccountInformationForm({ onSubmit }) {
                 type='text'
                 name='firstname'
                 placeholder='First Name'
-                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+                className='w-full'
                 onChange={(e) => handleInputChange(e)}
                 required
               />
@@ -38,7 +38,7 @@ export default function AccountInformationForm({ onSubmit }) {
                 type='text'
                 name='lastname'
                 placeholder='Last Name'
-                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+                className='w-full'
                 onChange={(e) => handleInputChange(e)}
                 required
               />
@@ -51,7 +51,7 @@ export default function AccountInformationForm({ onSubmit }) {
               type='email'
               name='email'
               placeholder='student@live.mcl.edu.ph'
-              className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+              className='w-full'
               onChange={(e) => handleInputChange(e)}
               required
             />
@@ -63,7 +63,7 @@ export default function AccountInformationForm({ onSubmit }) {
               type='password'
               name='password'
               placeholder='*******'
-              className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+              className='w-full'
               onChange={(e) => handleInputChange(e)}
               required
             />

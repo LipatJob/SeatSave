@@ -38,7 +38,7 @@ export default function VisitorInformationForm({ onSubmit, onBack }) {
             <select
               name='userType'
               id='userType'
-              className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+              className='w-full'
               onChange={(e) => handleInputChange(e)}
               required
             >

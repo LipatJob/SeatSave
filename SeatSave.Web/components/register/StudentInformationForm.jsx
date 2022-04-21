@@ -8,7 +8,7 @@ export default function StudentInformationForm({ onChange }) {
         <select
           name='department'
           id='department'
-          className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+          className='w-full'
           onChange={onChange}
           required
         >
@@ -24,7 +24,7 @@ export default function StudentInformationForm({ onChange }) {
         <select
           name='programStrand'
           id='programStrand'
-          className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+          className='w-full'
           onChange={onChange}
         >
           <option value='IS'>IS</option>
@@ -37,7 +37,7 @@ export default function StudentInformationForm({ onChange }) {
         <select
           name='yearGrade'
           id='yearGrade'
-          className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
+          className='w-full'
           onChange={onChange}
         >
           <option value='First Year'>First Year</option>

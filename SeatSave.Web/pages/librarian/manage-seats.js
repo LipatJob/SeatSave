@@ -71,7 +71,7 @@ export default function ManageSeats() {
         </>
       ) : null}
       <div className='pb-4 h-fit '>
-        <h1>ManageSeats</h1>
+        <h1>Manage Seats</h1>
       </div>
       <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
         <div id='leftPanel' className=' lg:col-span-1'>

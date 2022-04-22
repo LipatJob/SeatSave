@@ -37,8 +37,8 @@ namespace SeatSave.EF
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "1234",
-                   Program = "CS",
-                   Year = 1,
+                   ProgramStrand = "CS",
+                   YearGrade = "First Year",
                },
                new Student
                {
@@ -47,8 +47,8 @@ namespace SeatSave.EF
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "password",
-                   Program = "IT",
-                   Year = 1,
+                   ProgramStrand = "IT",
+                   YearGrade = "First Year",
                });
         }
     }

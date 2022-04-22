@@ -1,16 +1,14 @@
 import React from 'react';
+import { Field } from 'formik';
 
-export default function StaffInformationForm({ onChange }) {
+export default function StaffInformationForm() {
   return (
     <div className='w-full'>
       <p className='font-light body-small'>Office</p>
-      <select
-        name='staffOffice'
-        id='staffOffice'
-        className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-        onChange={onChange}
-        required
-      >
+      <Field as='select' name='office' id='office' className='w-full'>
+        <option value='' disabled>
+          Select Office
+        </option>
         <option value='Office of the President'>Office of the President</option>
         <option value='Office of the Executive Vice President'>
           Office of the Executive Vice President
@@ -19,7 +17,7 @@ export default function StaffInformationForm({ onChange }) {
         <option value='OVPAA'>OVPAA</option>
         <option value='OVPF'>OVPF</option>
         <option value='OAVPAS'>I-OAVPAS</option>
-      </select>
+      </Field>
     </div>
   );
 }

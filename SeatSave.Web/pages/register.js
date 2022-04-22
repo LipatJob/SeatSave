@@ -1,4 +1,5 @@
 ﻿import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import Image from 'next/image';
 
@@ -6,32 +7,60 @@ import AccountInformationForm from '../components/register/AccountInformationFor
 import VisitorInformationForm from '../components/register/VisitorInformationForm';
 
 export default function Register() {
-  const [formData, setFormData] = useState({});
-  const [formPart, setFormPart] = useState(0);
+  const [formPartData, setFormPartData] = useState([]);
+  const [formPartIndex, setFormPartIndex] = useState(0);
+  const router = useRouter();
 
-  const goToNextFormPart = (accountInformation) => {
-    setFormData((oldFormData) =>
-      Object.assign(oldFormData, accountInformation),
-    );
-    setFormPart((oldFormPart) => oldFormPart + 1);
+  const submitData = async () => {
+    const formData = { ...formPartData[0], ...formPartData[1] };
+
     console.log(formData);
+    const requestData = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    };
+
+    fetch(`${process.env.API_URL}/Api/User`, requestData)
+      .then((res) => {
+        const json = res.json();
+        console.log(json);
+        router.push('/login?RegisterSuccessful=True');
+      })
+      .catch((error) => {
+        console.log('there was an error');
+        console.log(error);
+      });
+  };
+
+  const setFormIndexData = (index, data) => {
+    setFormPartData((oldFormPartData) => {
+      const newFormPartData = [...oldFormPartData];
+      newFormPartData[index] = data;
+      return newFormPartData;
+    });
+  };
+
+  const goToNextFormPart = (submittedFormData) => {
+    setFormIndexData(formPartIndex, submittedFormData);
+    setFormPartIndex((oldFormPartIndex) => oldFormPartIndex + 1);
   };
 
   const goToPreviousFormPart = () => {
-    setFormPart((oldFormPart) => oldFormPart - 1);
+    setFormPartIndex((oldFormPartIndex) => oldFormPartIndex - 1);
   };
 
-  const submitVisitorInformationForm = (visitorInformation) => {
-    setFormData((oldFormData) =>
-      Object.assign(oldFormData, visitorInformation),
-    );
-    console.log(formData);
+  const submitLastFormPart = (submittedFormData) => {
+    setFormIndexData(formPartIndex, submittedFormData);
+    submitData();
   };
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
       <div className='hidden sm:block'>
-        {formPart === 0 && (
+        {formPartIndex === 0 && (
           <Image
             src='/RegisterPart1.svg'
             className='w-full h-auto'
@@ -40,7 +69,7 @@ export default function Register() {
             height={500}
           />
         )}
-        {formPart === 1 && (
+        {formPartIndex === 1 && (
           <Image
             src='/RegisterPart2.svg'
             className='w-full h-auto'
@@ -50,10 +79,12 @@ export default function Register() {
           />
         )}
       </div>
-      {formPart === 0 && <AccountInformationForm onSubmit={goToNextFormPart} />}
-      {formPart === 1 && (
+      {formPartIndex === 0 && (
+        <AccountInformationForm onSubmit={goToNextFormPart} />
+      )}
+      {formPartIndex === 1 && (
         <VisitorInformationForm
-          onSubmit={submitVisitorInformationForm}
+          onSubmit={submitLastFormPart}
           onBack={goToPreviousFormPart}
         />
       )}

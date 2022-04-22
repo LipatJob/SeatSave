@@ -1,154 +1,180 @@
-export default function BookASeat() {
-  return (
-    <div class='min-h-screen min-w-screen flex items-center justify-center'>
-      <div class='w-3/4 min-h-screen m-20 rounded-md'>
-        <h1 class='text-6xl pl-48 pt-20 font-bold'>Book a Seat</h1>
-        <h2 class='text-2xl pl-48 pt-5'>
-          Center for Learning and Information Resources - Einstein Bldg.
-        </h2>
+import React from 'react';
 
-        <div class='flex justify-center'>
-          <h1 class='text-2xl font-bold pt-20'>Select your date</h1>
+export default function BookASeat() {
+  function submitBooking(e) {
+    e.preventDefault();
+    console.log('Submitted!');
+  }
+
+  return (
+    <div className='min-h-screen min-w-screen flex items-center justify-center'>
+      <div className='w-3/4 min-h-screen m-20 rounded-md'>
+        <h1 className='text-center lg:text-center md:text-center xl:text-left xl:pl-48 pt-10 font-bold'>
+          Book a Seat
+        </h1>
+        <h4 className='text-center lg:text-center md:text-center xl:text-left xl:pl-48 pt-5 pb-10'>
+          Center for Learning and Information Resources - Einstein Bldg.
+        </h4>
+
+        <div className='flex justify-center'>
+          <h5 className='font-bold pt-20'>Select your date</h5>
         </div>
 
-        <div class='flex justify-center'>
-          <div class='py-6 w-3/4 flex flex-nowrap overflow-x-auto'>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+        <div className='flex justify-center'>
+          <div className='py-6 w-3/4 flex flex-nowrap overflow-x-auto'>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
-            <button class='bg-pearl-bush rounded-md w-56 mx-5'>
-              <h5 class='text-2xl py-4 px-16'>April 21, 2022</h5>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
+            </button>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
+            </button>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
+            </button>
+            <button className='bg-pearl-bush rounded-md w-56 mx-5'>
+              <h5 className='py-4 px-16'>April 21, 2022</h5>
             </button>
           </div>
         </div>
 
-        <div class='flex justify-center'>
-          <h1 class='text-2xl font-bold pt-20'>Select your time</h1>
+        <div className='flex justify-center'>
+          <h5 className='font-bold pt-20'>Select your time</h5>
         </div>
 
-        <div class='flex justify-center'>
-          <div class='py-6 w-3/4 flex flex-nowrap overflow-x-auto'>
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
+        <div className='flex justify-center'>
+          <div className='py-6 w-3/4 flex flex-nowrap overflow-x-auto'>
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
                 3:00
                 <br />
                 4:00
-              </h3>
+              </h5>
             </button>
 
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
-                4:00
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
                 <br />
-                5:00
-              </h3>
+                4:00
+              </h5>
             </button>
 
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
-                4:00
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
                 <br />
-                5:00
-              </h3>
+                4:00
+              </h5>
             </button>
 
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
-                4:00
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
                 <br />
-                5:00
-              </h3>
+                4:00
+              </h5>
             </button>
 
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
-                4:00
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
                 <br />
-                5:00
-              </h3>
+                4:00
+              </h5>
             </button>
 
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
-                4:00
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
                 <br />
-                5:00
-              </h3>
+                4:00
+              </h5>
             </button>
 
-            <button class='bg-pearl-bush rounded-md w-30 mx-5'>
-              <h3 class='text-2xl px-12 py-4'>
-                4:00
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
                 <br />
-                5:00
-              </h3>
+                4:00
+              </h5>
+            </button>
+
+            <button className='bg-pearl-bush rounded-md w-30 mx-5'>
+              <h5 className='px-12 py-4'>
+                3:00
+                <br />
+                4:00
+              </h5>
             </button>
           </div>
         </div>
 
-        <div class='flex justify-center'>
-          <h1 class='text-2xl font-bold pt-20'>Pick your seat</h1>
+        <div className='flex justify-center'>
+          <h5 className='font-bold pt-20'>Pick your seat</h5>
         </div>
 
-        <div class='flex justify-center'>
-          <div class='bg-pearl-bush py-6 w-3/6 h-96 m-6 rounded-lg overflow-x-auto'>
-            <div class='grid grid-cols-2'>
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 1</h2>
-                <h2 class='text-2xl text-white pb-3'>E1</h2>
+        <div className='flex justify-center'>
+          <div className='bg-pearl-bush py-6 w-3/4 sm:w-3/6 h-96 m-6 rounded-lg overflow-x-auto'>
+            <div className='grid grid-cols-1 sm:grid-cols-2'>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 2</h2>
-                <h2 class='text-2xl text-white pb-3'>E2</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 3</h2>
-                <h2 class='text-2xl text-white pb-3'>E3</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 4</h2>
-                <h2 class='text-2xl text-white pb-3'>E4</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 5</h2>
-                <h2 class='text-2xl text-white pb-3'>E5</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 6</h2>
-                <h2 class='text-2xl text-white pb-3'>E6</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 7</h2>
-                <h2 class='text-2xl text-white pb-3'>E7</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
 
-              <button class='bg-dusk-blue rounded-md m-5'>
-                <h2 class='text-2xl text-white px-3 pt-3'>Einstein - 8</h2>
-                <h2 class='text-2xl text-white pb-3'>E8</h2>
+              <button className='bg-dusk-blue rounded-md m-5'>
+                <h5 className='text-white px-3 pt-3'>Einstein - 1</h5>
+                <h5 className='text-white pb-3'>E1</h5>
               </button>
             </div>
           </div>
@@ -157,9 +183,13 @@ export default function BookASeat() {
         <br />
         <br />
 
-        <div class='flex justify-center'>
-          <button class='bg-bluish rounded-md m-5'>
-            <h2 class='text-2xl font-bold text-white p-4'>Book your seat!</h2>
+        <div className='flex justify-center'>
+          <button
+            onClick={submitBooking}
+            type='button'
+            className='px-4 py-2 text-xl font-bold text-white uppercase rounded-lg bg-bluish hover:bg-dusk-blue'
+          >
+            <h5 className='font-bold text-white p-4'>Book your seat!</h5>
           </button>
         </div>
       </div>

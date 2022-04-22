@@ -7,7 +7,7 @@
 @layer base {
   body {
     @apply text-lg lg:text-xl;
-    
+
     font-family: 'Red Hat Text', sans-serif;
   }
 
@@ -27,12 +27,28 @@
     @apply text-xl lg:text-3xl;
   }
 
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     @apply p-3 border border-dawn focus:border-dusk-blue focus:border-2 focus:outline-none;
   }
 
   label {
     @apply text-base font-light lg:text-lg;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.85em;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(0 0% 100% / 1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(220 0% 69% / 1);
+    border: 0.25em solid hsl(0 0% 100% / 1);
+    border-radius: 100vw;
   }
 }
 
@@ -51,6 +67,9 @@
     margin-right: auto;
     padding-left: 35px;
     padding-right: 35px;
+  }
+  .body-normal {
+    @apply text-lg lg:text-xl;
   }
 
   .body-small {

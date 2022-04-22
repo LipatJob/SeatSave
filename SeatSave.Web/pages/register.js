@@ -91,3 +91,5 @@ export default function Register() {
     </div>
   );
 }
+
+Register.page = 'Register'

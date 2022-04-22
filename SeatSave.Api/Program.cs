@@ -60,7 +60,7 @@ if (builder.Environment.IsDevelopment())
         var DbPath = System.IO.Path.Join(path, "SeatSave.db");
         options.UseSqlite(
             $"Data Source={DbPath}",
-            e => e.MigrationsAssembly("SeatSave.EF"));
+            e => e.MigrationsAssembly("SeatSave.Api"));
     });
 }
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";

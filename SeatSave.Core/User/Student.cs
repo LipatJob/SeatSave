@@ -9,7 +9,7 @@
         {
         }
 
-        public string Program { get; set; }
-        public int Year { get; set; }
+        public string ProgramStrand { get; set; }
+        public string YearGrade { get; set; }
     }
 }

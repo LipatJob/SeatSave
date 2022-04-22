@@ -8,6 +8,6 @@
         {
         }
 
-        public string Office { get; set; }
+        public string StaffOffice { get; set; }
     }
 }

@@ -196,3 +196,5 @@ export default function BookASeat() {
     </div>
   );
 }
+
+BookASeat.page = 'BookASeat';

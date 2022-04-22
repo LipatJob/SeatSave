@@ -81,3 +81,5 @@ export default function LibrarianLogin() {
     </div>
   );
 }
+
+LibrarianLogin.page = 'LibrarianLogin';

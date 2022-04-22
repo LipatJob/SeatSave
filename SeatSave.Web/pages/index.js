@@ -3,3 +3,5 @@ export default function ViewBookingDetails() {
     <h1>View Booking Details</h1>
   )
 }
+
+ViewBookingDetails.page = 'ViewBookingDetails'

@@ -3,3 +3,5 @@ export default function ManageDateTime() {
         <h1>Manage Date and Time</h1>
     )
 }
+
+ManageDateTime.page = 'ManageDateTime';

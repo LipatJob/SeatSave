@@ -162,3 +162,5 @@ export default function ManageSeats() {
     </div>
   );
 }
+
+ManageSeats.page = 'ManageSeats';

@@ -5,7 +5,7 @@ import Table from '../../components/common/manage-seat/Table';
 export default function ManageSeats() {
     return (
     <div className='page-container '>
-      <div className='h-fit pb-4 '><h1>ManageSeats</h1></div>
+      <div className='pb-4 h-fit '><h1>ManageSeats</h1></div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div id="leftPanel" className=' md:col-span-1'>
         <Table header='Available Seats'></Table>
@@ -22,3 +22,5 @@ export default function ManageSeats() {
     </div>
     )
 }
+
+ManageSeats.page = 'ManageSeats';

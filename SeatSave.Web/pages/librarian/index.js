@@ -3,3 +3,5 @@ export default function CheckInOut() {
         <h1>Check In / Out</h1>
     )
 }
+
+CheckInOut.page = 'CheckInOut';

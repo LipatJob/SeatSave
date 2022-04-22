@@ -25,7 +25,7 @@ const librarianLinks = [
 
 export default function LibrarianNavbar() {
   return (
-    <div className='flex flex-col justify-center h-20 bg-dusk-blue'>
+    <div className='fixed flex flex-col justify-center w-full h-20 bg-dusk-blue'>
       <div className='flex flex-row items-center justify-between w-full text-white page-container'>
         <div className='flex flex-row items-center'>
           <NavbarLogo />
@@ -37,7 +37,7 @@ export default function LibrarianNavbar() {
           <AccountButton />
         </div>
         <div className='lg:hidden'>
-          <MobileMenu />
+          <MobileMenu links={librarianLinks} />
         </div>
       </div>
     </div>

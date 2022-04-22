@@ -81,3 +81,5 @@ export default function VisitorLogin() {
     </div>
   );
 }
+
+VisitorLogin.page = 'VisitorLogin';

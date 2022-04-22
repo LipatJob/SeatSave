@@ -10,10 +10,19 @@ namespace SeatSave.Api.DTO
         public string LastName { get; set; }
         public string UserType { get; set; }
         public string Password { get; set; }
-        public string? Program { get; set; }
-        public int? Year { get; set; }
+        public string? ProgramStrand { get; set; }
+        public string? YearGrade { get; set; }
         public string? Office { get; set; }
-        public string? Department { get; set; }
+
+        public UserDto(int id, string email, string firstName, string lastName, string userType, string password)
+        {
+            Id = id;
+            Email = email;
+            FirstName = firstName;
+            LastName = lastName;
+            UserType = userType;
+            Password = password;
+        }
 
         public Librarian ToLibrarian() => new Librarian()
         {
@@ -31,8 +40,8 @@ namespace SeatSave.Api.DTO
             Id = Id,
             LastName = LastName,
             Password = Password,
-            Program = Program,
-            Year = (int)Year
+            ProgramStrand = ProgramStrand,
+            YearGrade = YearGrade
         };
 
         public Staff ToStaff() => new Staff()
@@ -42,7 +51,7 @@ namespace SeatSave.Api.DTO
             Id = Id,
             LastName = LastName,
             Password = Password,
-            Office = Office
+            StaffOffice = Office
         };
 
         public Faculty ToFaculty() => new Faculty()
@@ -52,7 +61,7 @@ namespace SeatSave.Api.DTO
             Id = Id,
             LastName = LastName,
             Password = Password,
-            Department = Department
+            FacultyOffice = Office
         };
     }
 }

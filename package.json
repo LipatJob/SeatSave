@@ -4,12 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev-api": "dotnet watch run --project .\\SeatSave.Api\\",
-    "dev-client": "cd SeatSave.Web && npm run dev",
-    "dev": "start npm run dev-api && start npm run dev-client",
-    "db-update": "dotnet ef database update",
-    "db-migrate": "dotnet ef migrations add"
-  },
-  "dependencies": {
-    "react-modal": "^3.14.4"
+    "dev-web": "cd SeatSave.Web && npm run dev",
+    "dev": "start npm run dev-api && start npm run dev-web",
+    "db-update": "dotnet ef database update --project .\\SeatSave.Api\\",
+    "db-migrate": "dotnet ef migrations add --project .\\SeatSave.Api\\"
   }
 }

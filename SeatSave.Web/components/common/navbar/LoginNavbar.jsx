@@ -1,3 +1,4 @@
+import React from 'react';
 import NavbarLogo from './NavbarLogo';
 
 export default function LoginNavbar() {

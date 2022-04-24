@@ -38,6 +38,30 @@ namespace SeatSave.Api.Controllers
             return NotFound("User not found");
         }
 
+        [HttpGet("User")]
+        public IActionResult GetUser([FromBody] UserLogin userLogin)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                var userClaims = identity.Claims;
+
+                return Ok(new UserModel()
+                {
+                    Email = userClaims.FirstOrDefault(e => e.Type == "Email")?.Value,
+                    FirstName = userClaims.FirstOrDefault(e => e.Type == "FirstName")?.Value,
+                    LastName = userClaims.FirstOrDefault(e => e.Type == "LastName")?.Value,
+                    UserGroup = userClaims.FirstOrDefault(e => e.Type == "UserGroup")?.Value,
+                    UserType = userClaims.FirstOrDefault(e => e.Type == "UserType")?.Value
+                });
+            }
+
+            return NotFound();
+        }
+
+
+
         private string Generate(UserModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
@@ -45,8 +69,11 @@ namespace SeatSave.Api.Controllers
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.UserType)
+                new Claim("Email", user.Email),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
+                new Claim("UserGroup", user.UserGroup),
+                new Claim("UserType", user.UserType)
             };
 
             var token = new JwtSecurityToken(config["Jwt:Issuer"],
@@ -62,7 +89,7 @@ namespace SeatSave.Api.Controllers
         {
             using (dbContext)
             {
-                var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == userLogin.Email.ToLower() && e.Password == e.Password && e.UserGroup == userLogin.UserGroup);
+                var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == userLogin.Email.ToLower() && e.Password == userLogin.Password && e.UserGroup == userLogin.UserGroup);
                 if (currentUser != null)
                 {
                     return currentUser;

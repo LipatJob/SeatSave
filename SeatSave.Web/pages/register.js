@@ -92,4 +92,4 @@ export default function Register() {
   );
 }
 
-Register.page = 'Register'
+Register.page = 'Register';

@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SeatSave.Api.DTO;
 using SeatSave.Core.User;
 using SeatSave.EF;
-using System.Runtime.Serialization;
 
 namespace SeatSave.Api.Controllers
 {
@@ -22,22 +19,28 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = context.Users.ToList().Select(object (e) => e.UserType switch
+            var users = context.Users.ToList().Select(object (e) =>
             {
-                Librarian.UserType => (Librarian) e,
-                Student.UserType => (Student) e,
-                Staff.UserType => (Staff) e,
-                Faculty.UserType => (Faculty)e,
-                _ => e,
+                e.Password = "";
+                var userModel = e.UserType switch
+                {
+                    Librarian.UserType => (Librarian)e,
+                    Student.UserType => (Student)e,
+                    Staff.UserType => (Staff)e,
+                    Faculty.UserType => (Faculty)e,
+                    _ => e,
+                };
+                return userModel;
             });
 
             return Ok(users);
         }
         [HttpGet("{id}")]
-        public IActionResult GetSpecific([FromRoute] int id )
+        public IActionResult GetSpecific([FromRoute] int id)
         {
             var user = context.Users.Find(id);
-            if(user == null) { return NotFound(); }
+            if (user == null) { return NotFound(); }
+            user.Password = "";
 
             var userType = user.UserType switch
             {
@@ -61,6 +64,15 @@ namespace SeatSave.Api.Controllers
 
             return Ok(user);
         }
+
+        [HttpHead]
+        public IActionResult DoesEmailExist([FromQuery] string email)
+        {
+            var user = context.Users.FirstOrDefault(e => e.Email == email);
+            if (user == null) { return NotFound(); }
+            return NoContent();
+        }
+
         private static UserModel? DtoToUserType(UserDto userDto)
         {
             return userDto.UserType switch
@@ -75,7 +87,7 @@ namespace SeatSave.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult Update([FromBody] UserDto userDto, int id)
         {
-            if(userDto.Id != id) { return BadRequest(); }
+            if (userDto.Id != id) { return BadRequest(); }
 
             var user = DtoToUserType(userDto);
 

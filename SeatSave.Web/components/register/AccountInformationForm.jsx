@@ -4,6 +4,17 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 export default function AccountInformationForm({ onSubmit }) {
+  const emailAddressNotTaken = async (emailAddress) => {
+    const encodedEmailAddress = encodeURIComponent(emailAddress);
+    const response = await fetch(
+      `${process.env.API_URL}/Api/User?email=${encodedEmailAddress}`,
+      {
+        method: 'HEAD',
+      },
+    );
+
+    return response.status === 404;
+  };
   const SignupSchema = Yup.object().shape({
     firstname: Yup.string().required('This field is required'),
     lastname: Yup.string().required('This field is required'),
@@ -26,13 +37,17 @@ export default function AccountInformationForm({ onSubmit }) {
           password: '',
         }}
         validationSchema={SignupSchema}
-        onSubmit={(values) => {
-          // same shape as initial values
-          console.log(values);
-          onSubmit(values);
+        onSubmit={(values, { setFieldError }) => {
+          emailAddressNotTaken(values.email).then((isNotTaken) => {
+            if (!isNotTaken) {
+              setFieldError('email', 'Email is already taken');
+              return;
+            }
+            onSubmit(values);
+          });
         }}
       >
-        {({ errors, touched }) => (
+        {() => (
           <Form>
             <div className='sm:max-w-md'>
               <div className='flex flex-col items-center mb-12 gap-y-7'>

@@ -55,7 +55,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<SeatSaveContext>(options =>
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
+        var folder = Environment.SpecialFolder.Personal;
         var path = Environment.GetFolderPath(folder);
         var DbPath = System.IO.Path.Join(path, "SeatSave.db");
         options.UseSqlite(

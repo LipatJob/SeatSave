@@ -27,7 +27,7 @@ namespace SeatSave.EF
                     Email = "librarian@gmail.com",
                     FirstName = "Text",
                     LastName = "Account",
-                    Password = "1234"
+                    Password = "1234567"
                 });
             modelBuilder.Entity<Student>().HasData(
                new Student
@@ -36,7 +36,7 @@ namespace SeatSave.EF
                    Email = "student@gmail.com",
                    FirstName = "Text",
                    LastName = "Account",
-                   Password = "1234",
+                   Password = "1234567",
                    ProgramStrand = "CS",
                    YearGrade = "First Year",
                },

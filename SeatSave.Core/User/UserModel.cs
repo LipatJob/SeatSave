@@ -5,6 +5,11 @@ namespace SeatSave.Core.User
 
     public class UserModel
     {
+        public UserModel()
+        {
+
+        }
+
         public UserModel(string userType, string userGroup)
         {
             this.UserType = userType;

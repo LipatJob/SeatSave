@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'formik';
+import { ErrorMessage, Field } from 'formik';
 
 export default function StaffInformationForm({ offices }) {
   return (
@@ -15,6 +15,7 @@ export default function StaffInformationForm({ offices }) {
           </option>
         ))}
       </Field>
+      <ErrorMessage name='office' component='span' className='text-error' />
     </div>
   );
 }

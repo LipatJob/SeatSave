@@ -4,8 +4,6 @@ import Image from 'next/image';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
 import Seat from '../../components/librarian/manage-seat/Seat';
-import Button from '../../components/common/buttons/Button';
-import GreyButton from '../../components/common/buttons/GreyButton';
 
 export default function ManageSeats() {
   const [formPart, setFormPart] = useState(0);
@@ -16,53 +14,91 @@ export default function ManageSeats() {
     setFormPart((oldFormPart) => oldFormPart - 1);
   };
   const [showModal, setShowModal] = React.useState(false);
+  const [showModalAddedSeat, setShowModalAddedSeat] = React.useState(false);
+
   return (
     <div className='page-container '>
       {showModal ? (
         <>
           <div className='fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none'>
-            <div className='relative w-auto max-w-3xl mx-auto my-6'>
+            <div className='relative max-w-lg mx-auto my-6'>
               {/* content */}
-              <div className='relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none'>
+              <div className='relative flex flex-col w-full bg-white border-0 shadow-lg outline-none focus:outline-none'>
                 {/* header */}
-                <div className='flex items-start justify-between p-5 border-b border-solid rounded-t border-slate-200'>
-                  <h3 className='text-3xl font-semibold'>Modal Title</h3>
+                <div className='flow-root p-4'>
                   <button
                     type='button'
-                    className='float-right p-1 ml-auto text-3xl font-semibold leading-none text-black bg-transparent border-0 outline-none opacity-5 focus:outline-none'
+                    className='float-right text-3xl text-dawn'
                     onClick={() => setShowModal(false)}
                   >
-                    <span className='block w-6 h-6 text-2xl text-black bg-transparent outline-none opacity-5 focus:outline-none'>
-                      ×
-                    </span>
+                    ×
                   </button>
                 </div>
                 {/* body */}
-                <div className='relative flex-auto p-6'>
-                  <p className='my-4 text-lg leading-relaxed text-slate-500'>
-                    I always felt like I could do anything. That’s the main
-                    thing people are controlled by! Thoughts- their perception
-                    of themselves! They're slowed down by their perception of
-                    themselves. If you're taught you can’t do anything, you
-                    won’t do anything. I was taught I could do everything.
-                  </p>
+                <div className='relative flex-auto w-[500px] h-[300px]'>
+                  <div className='w-full h-full p-4 text-4xl text-center'>
+                    Are you sure you want to delete this seat?
+                    <div className='w-full py-4 pt-4 text-4xl text-center'>
+                      <button
+                        type='button'
+                        className='w-2/5 red-button'
+                        onClick={() => setShowModal(false)}
+                      >
+                        YES
+                      </button>
+                    </div>
+                    <div className='w-full text-4xl text-center'>
+                      <button
+                        type='button'
+                        className='w-2/5 gray-button'
+                        onClick={() => setShowModal(false)}
+                      >
+                        NO
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                {/* footer */}
-                <div className='flex items-center justify-end p-6 border-t border-solid rounded-b border-slate-200'>
+              </div>
+            </div>
+          </div>
+          <div className='fixed inset-0 z-40 bg-black opacity-25' />
+        </>
+      ) : null}
+      {showModalAddedSeat ? (
+        <>
+          <div className='fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none'>
+            <div className='relative max-w-lg mx-auto my-6'>
+              {/* content */}
+              <div className='relative flex flex-col w-full bg-white border-0 shadow-lg outline-none focus:outline-none'>
+                {/* header */}
+                <div className='flow-root p-4'>
                   <button
-                    className='px-6 py-2 mb-1 mr-1 text-sm font-bold text-red-500 uppercase transition-all duration-150 ease-linear outline-none background-transparent focus:outline-none'
                     type='button'
-                    onClick={() => setShowModal(false)}
+                    className='float-right text-3xl text-dawn'
+                    onClick={() => setShowModalAddedSeat(false)}
                   >
-                    Close
+                    ×
                   </button>
-                  <button
-                    className='px-6 py-3 mb-1 mr-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none bg-emerald-500 active:bg-emerald-600 hover:shadow-lg focus:outline-none'
-                    type='button'
-                    onClick={() => setShowModal(false)}
-                  >
-                    Save Changes
-                  </button>
+                </div>
+                {/* body */}
+                <div className='relative flex-auto w-[500px] h-[300px]'>
+                  <div className='w-full h-full p-4 text-4xl text-center'>
+                    Seat Added!
+                    <div className='py-4 pt-4 text-lg '>
+                      You have successfully added a new seat:
+                      <br /> [NAME]
+                    </div>
+                    <div className='w-full py-4 pt-8 text-4xl text-center'>
+                      <button
+                        type='button'
+                        className='w-2/5 button'
+                        onClick={() => setShowModalAddedSeat(false)}
+                        s
+                      >
+                        OK
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -87,7 +123,7 @@ export default function ManageSeats() {
             buttons={
               <div className='pb-4 text-right lg:pb-0'>
                 <button
-                  onClick={() => setShowModal(true)}
+                  onClick={showInfo}
                   type='button'
                   className='w-16 h-16 p-0 transition duration-200 ease-in rounded-full shadow bg-bluish hover:bg-blue-700 active:shadow-lg mouse focus:outline-none'
                 >
@@ -140,18 +176,22 @@ export default function ManageSeats() {
                     Activate Seat
                   </div>
                   <div className=' md:col-span-1'>
-                    <GreyButton
-                      text='CANCEL'
-                      className='w-full lg:w-min'
+                    <button
+                      type='button'
+                      className='w-full lg:w-min gray-button'
                       onClick={closeInfo}
-                    />
+                    >
+                      CANCEL
+                    </button>
                   </div>
                   <div className='md:col-span-1'>
-                    <Button
-                      text='SAVE'
-                      className='w-full'
-                      onClick={closeInfo}
-                    />
+                    <button
+                      type='button'
+                      className='w-full button'
+                      onClick={() => setShowModalAddedSeat(true)}
+                    >
+                      SAVE
+                    </button>
                   </div>
                 </div>
               }

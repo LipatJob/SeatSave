@@ -63,7 +63,7 @@ export default function Register({ visitorSelection }) {
         {formPartIndex === 0 && (
           <Image
             src='/RegisterPart1.svg'
-            className='w-full h-auto'
+            className='z-[-5] w-full h-auto'
             layout='responsive'
             width={500}
             height={500}
@@ -72,7 +72,7 @@ export default function Register({ visitorSelection }) {
         {formPartIndex === 1 && (
           <Image
             src='/RegisterPart2.svg'
-            className='w-full h-auto'
+            className='z-[-5] w-full h-auto'
             layout='responsive'
             width={500}
             height={500}

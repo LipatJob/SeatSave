@@ -6,7 +6,7 @@ import Image from 'next/image';
 import AccountInformationForm from '../components/register/AccountInformationForm';
 import VisitorInformationForm from '../components/register/VisitorInformationForm';
 
-export default function Register() {
+export default function Register({ visitorSelection }) {
   const [formPartData, setFormPartData] = useState([]);
   const [formPartIndex, setFormPartIndex] = useState(0);
   const router = useRouter();
@@ -84,12 +84,46 @@ export default function Register() {
       )}
       {formPartIndex === 1 && (
         <VisitorInformationForm
+          selection={visitorSelection}
           onSubmit={submitLastFormPart}
           onBack={goToPreviousFormPart}
         />
       )}
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const departmentsData = await fetch(
+    `${process.env.API_URL}/Api/User/Enum/Student/Department`,
+  );
+  const departments = await departmentsData.json();
+
+  const programsData = await fetch(
+    `${process.env.API_URL}/Api/User/Enum/Student/Program`,
+  );
+  const programs = await programsData.json();
+
+  const staffOfficesData = await fetch(
+    `${process.env.API_URL}/Api/User/Enum/Staff/Office`,
+  );
+  const staffOffices = await staffOfficesData.json();
+
+  const facultyOfficesData = await fetch(
+    `${process.env.API_URL}/Api/User/Enum/Faculty/Office`,
+  );
+  const facultyOffices = await facultyOfficesData.json();
+
+  return {
+    props: {
+      visitorSelection: {
+        departments,
+        programs,
+        staffOffices,
+        facultyOffices,
+      },
+    }, // will be passed to the page component as props
+  };
 }
 
 Register.page = 'Register';

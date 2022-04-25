@@ -3,6 +3,7 @@ import NavbarLogo from './NavbarLogo';
 import DesktopMenu from './DesktopMenu';
 import AccountButton from './AccountButton';
 import MobileMenu from './MobileMenu';
+import librarianAuthService from '../../../lib/librarianAuthService';
 
 const librarianLinks = [
   {
@@ -34,7 +35,7 @@ export default function LibrarianNavbar() {
           </div>
         </div>
         <div className='hidden lg:block'>
-          <AccountButton />
+          <AccountButton authService={librarianAuthService} />
         </div>
         <div className='lg:hidden'>
           <MobileMenu links={librarianLinks} />

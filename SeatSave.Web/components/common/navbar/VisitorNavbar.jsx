@@ -3,6 +3,7 @@ import NavbarLogo from './NavbarLogo';
 import DesktopMenu from './DesktopMenu';
 import AccountButton from './AccountButton';
 import MobileMenu from './MobileMenu';
+import visitorAuthService from '../../../lib/visitorAuthService';
 
 const visitorLinks = [
   {
@@ -28,7 +29,7 @@ export default function VisitorNavbar() {
           </div>
         </div>
         <div className='hidden lg:block'>
-          <AccountButton />
+          <AccountButton authService={visitorAuthService} />
         </div>
         <div className='lg:hidden'>
           <MobileMenu links={visitorLinks} />

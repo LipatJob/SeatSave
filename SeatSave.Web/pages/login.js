@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Router from 'next/router';
-import { visitorAuthService } from '../lib/visitorAuthService';
-import Button from '../components/common/buttons/Button';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import visitorAuthService from '../lib/visitorAuthService';
 
 export default function VisitorLogin() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  async function onSubmit() {
-    const user = await visitorAuthService.login(email, password);
-    if (user == null) {
-      return;
-    }
-
-    Router.push('/');
-  }
-
   useEffect(() => {
     // redirect to home if already logged in
-    if (visitorAuthService.getUser() != null) {
+    if (visitorAuthService.isLoggedIn()) {
       Router.push('/');
     }
   }, []);
+
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email')
+      .required('This field is required'),
+    password: Yup.string()
+      .min(5, 'Password must be at least 5 characters')
+      .required('This field is required'),
+  });
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
@@ -36,48 +34,76 @@ export default function VisitorLogin() {
           height={500}
         />
       </div>
-      <form className='flex flex-col items-center'>
-        <h1 className='mb-16 text-center text-dusk-blue'>Welcome Back!</h1>
-        <div className='w-full sm:max-w-md'>
-          <div className='flex flex-col items-center mb-12 gap-y-7'>
-            <div className='w-full'>
-              <p className='font-light body-small'>Email</p>
-              <input
-                id='email'
-                type='email'
-                name='email'
-                placeholder='student@live.mcl.edu.ph'
-                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-                onChange={(event) => setEmail(event.target.value)}
-              />
+      <Formik
+        initialValues={{
+          email: '',
+          password: '',
+        }}
+        validationSchema={LoginSchema}
+        onSubmit={(values, { setFieldError }) => {
+          visitorAuthService
+            .login(values.email, values.password)
+            .then((user) => {
+              if (user == null) {
+                setFieldError('email', 'Email or password not found');
+                return;
+              }
+              Router.push('/');
+            });
+        }}
+      >
+        {() => (
+          <Form>
+            <div className='sm:max-w-md'>
+              <div className='flex flex-col items-center mb-12 gap-y-7'>
+                <div className='w-full'>
+                  <p className='font-light body-small'>Email</p>
+                  <Field
+                    id='email'
+                    type='email'
+                    name='email'
+                    placeholder='student@live.mcl.edu.ph'
+                    className='w-full'
+                  />
+                  <ErrorMessage
+                    name='email'
+                    component='span'
+                    className='text-error'
+                  />
+                </div>
+                <div className='w-full'>
+                  <p className='font-light body-small'>Password</p>
+                  <Field
+                    id='password'
+                    type='password'
+                    name='password'
+                    placeholder='*******'
+                    className='w-full'
+                  />
+                  <ErrorMessage
+                    name='password'
+                    component='span'
+                    className='text-error'
+                  />
+                </div>
+              </div>
+              <div className='flex flex-col items-center text-center'>
+                <button type='submit' className='button w-full py-3.5 mb-6'>
+                  LOG IN
+                </button>
+                <p className='body-small'>
+                  Don't have an account?{' '}
+                  <Link href='/register'>
+                    <span className='font-bold text-bluish body-small'>
+                      Create
+                    </span>
+                  </Link>
+                </p>
+              </div>
             </div>
-            <div className='w-full'>
-              <p className='font-light body-small'>Password</p>
-              <input
-                id='password'
-                type='password'
-                name='password'
-                placeholder='*******'
-                className='w-full p-2 py-2.5 border border-solid border-dawn body-normal'
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </div>
-          </div>
-          <div className='flex flex-col items-center text-center'>
-            <Button
-              text='LOG IN'
-              className='w-full py-3.5 mb-6'
-              onClick={(e) => onSubmit(e)}
-            />
-            <p className='body-small'>
-              Don't have an account?{' '}
-              <Link href='/register'>
-                <span className='font-bold text-bluish body-small'>Create</span>
-              </Link>
-            </p>
-          </div>
-        </div>
-      </form>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }

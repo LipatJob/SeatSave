@@ -18,7 +18,9 @@
             "Grade 12",
         };
 
-        public static Dictionary<string, HashSet<string>> StudentValues = new Dictionary<string, HashSet<string>>{
+        public static IEnumerable<string> Departments => ProgramStrands.Keys;
+
+        public static Dictionary<string, HashSet<string>> ProgramStrands = new Dictionary<string, HashSet<string>>{
             {"MITL", new HashSet<string>{
                 "B.S. ARCHITECTURE",
                 "B.S. CHEMICAL ENGINEERING",

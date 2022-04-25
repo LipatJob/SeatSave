@@ -6,11 +6,20 @@ import StaffInformationForm from './StaffInformationForm';
 import FacultyInformationForm from './FacultyInformationForm';
 import StudentInformationForm from './StudentInformationForm';
 
-export default function VisitorInformationForm({ onSubmit, onBack }) {
+export default function VisitorInformationForm({
+  selection,
+  onSubmit,
+  onBack,
+}) {
   const visitorForms = {
-    Student: <StudentInformationForm />,
-    Faculty: <FacultyInformationForm />,
-    Staff: <StaffInformationForm />,
+    Student: (
+      <StudentInformationForm
+        departments={selection.departments}
+        programs={selection.programs}
+      />
+    ),
+    Faculty: <FacultyInformationForm offices={selection.facultyOffices} />,
+    Staff: <StaffInformationForm offices={selection.staffOffices} />,
   };
 
   const VisitorInformationSchema = Yup.object().shape({

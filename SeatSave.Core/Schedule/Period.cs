@@ -2,6 +2,7 @@
 {
     public class Period
     {
-        /* TODO: Properties */
+        public TimeOnly TimeStart { get; set; }
+        public TimeOnly TimeEnd { get; set;}
     }
 }

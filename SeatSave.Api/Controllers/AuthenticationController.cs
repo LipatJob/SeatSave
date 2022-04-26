@@ -32,9 +32,7 @@ namespace SeatSave.Api.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] UserLogin userLogin)
         {
-            var user = authService.Authenticate(userLogin.Email, userLogin.Password, userLogin.UserGroup);
-
-            if (user != null)
+            if (authService.TryAuthenticate(userLogin.Email, userLogin.Password, userLogin.UserGroup, out var user))
             {
                 var token = authService.GenerateToken(user);
                 return Ok(token);

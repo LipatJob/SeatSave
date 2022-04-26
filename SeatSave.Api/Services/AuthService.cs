@@ -42,17 +42,17 @@ namespace SeatSave.Api.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public UserModel? Authenticate(string email, string password, string userGroup)
+        public bool TryAuthenticate(string email, string password, string userGroup, out UserModel model)
         {
-            using (dbContext)
+            model = null;
+            var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == email.ToLower() && e.Password == password && e.UserGroup == userGroup);
+            if (currentUser != null)
             {
-                var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == email.ToLower() && e.Password == password && e.UserGroup == userGroup);
-                if (currentUser != null)
-                {
-                    return currentUser;
-                }
+                return true;
             }
-            return null;
+
+            model = currentUser;
+            return false;
         }
 
         public UserModel CreateUserModelFromClaims(IEnumerable<Claim> userClaims)

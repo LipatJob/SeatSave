@@ -111,8 +111,42 @@ namespace SeatSave.Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("/current")]
+        [HttpGet("Enum/Current")]
         public IActionResult GetCurrent() { throw new NotImplementedException("TODO"); }
+
+        [HttpGet("Enum/Student/Department")]
+        public IActionResult GetDepartments()
+        {
+            return Ok(Student.Departments);
+        }
+
+        [HttpGet("Enum/Student/Program/{department}")]
+        public IActionResult GetPrograms(string department)
+        {
+            if (!Student.ProgramStrands.ContainsKey(department))
+            {
+                return NotFound();
+            }
+            return Ok(Student.ProgramStrands[department]);
+        }
+
+        [HttpGet("Enum/Student/Program")]
+        public IActionResult GetPrograms()
+        {
+            return Ok(Student.ProgramStrands);
+        }
+
+        [HttpGet("Enum/Staff/Office")]
+        public IActionResult GetStaffOffices()
+        {
+            return Ok(Staff.StaffOffices);
+        }
+
+        [HttpGet("Enum/Faculty/Office")]
+        public IActionResult GetFacultyOffices()
+        {
+            return Ok(Faculty.FacultyOffices);
+        }
     }
 
 }

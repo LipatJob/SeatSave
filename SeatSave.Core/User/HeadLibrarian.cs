@@ -2,7 +2,7 @@
 {
     public class HeadLibrarian : Librarian
     {
-        public const string UserType = "HeadLibrarian";
+        public new const string UserType = "HeadLibrarian";
 
         public HeadLibrarian() : base(UserType)
         {

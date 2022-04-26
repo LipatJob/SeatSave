@@ -6,13 +6,11 @@ import StaffInformationForm from './StaffInformationForm';
 import FacultyInformationForm from './FacultyInformationForm';
 import StudentInformationForm from './StudentInformationForm';
 
-export default function VisitorInformationForm({ onSubmit, onBack }) {
-  const visitorForms = {
-    Student: <StudentInformationForm />,
-    Faculty: <FacultyInformationForm />,
-    Staff: <StaffInformationForm />,
-  };
-
+export default function VisitorInformationForm({
+  selection,
+  onSubmit,
+  onBack,
+}) {
   const VisitorInformationSchema = Yup.object().shape({
     userType: Yup.string().required('This field is required'),
     programStrand: Yup.string().when('userType', {
@@ -85,10 +83,27 @@ export default function VisitorInformationForm({ onSubmit, onBack }) {
                   className='text-error'
                 />
               </div>
-              {visitorForms[values.userType]}
+              {values.userType &&
+                {
+                  Student: (
+                    <StudentInformationForm
+                      departments={selection.departments}
+                      programs={selection.programs}
+                      values={values}
+                    />
+                  ),
+                  Faculty: (
+                    <FacultyInformationForm
+                      offices={selection.facultyOffices}
+                    />
+                  ),
+                  Staff: (
+                    <StaffInformationForm offices={selection.staffOffices} />
+                  ),
+                }[values.userType]}
             </div>
             <div className='flex flex-col items-center text-center'>
-              {values.userType in visitorForms && (
+              {values.userType && (
                 <button type='submit' className='button w-full py-3.5 mb-6'>
                   CREATE ACCOUNT
                 </button>

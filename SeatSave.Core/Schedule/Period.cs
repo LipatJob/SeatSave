@@ -1,8 +1,4 @@
 ﻿namespace SeatSave.Core.Schedule
 {
-    public class Period
-    {
-        public TimeOnly TimeStart { get; set; }
-        public TimeOnly TimeEnd { get; set;}
-    }
+    public record Period(TimeSpan TimeStart, TimeSpan TimeEnd);
 }

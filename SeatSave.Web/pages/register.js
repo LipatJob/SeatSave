@@ -23,16 +23,17 @@ export default function Register({ visitorSelection }) {
       body: JSON.stringify(formData),
     };
 
-    fetch(`${process.env.API_URL}/Api/User`, requestData)
-      .then((res) => {
-        const json = res.json();
-        console.log(json);
-        router.push('/login?RegisterSuccessful=True');
-      })
-      .catch((error) => {
-        console.log('there was an error');
-        console.log(error);
-      });
+    const response = await fetch(
+      `${process.env.API_URL}/Api/User`,
+      requestData,
+    );
+    if (response.status === 200) {
+      const json = await response.json();
+      console.log(json);
+      router.push('/login?RegisterSuccessful=True');
+    } else {
+      console.log('there was an error');
+    }
   };
 
   const setFormIndexData = (index, data) => {
@@ -44,7 +45,7 @@ export default function Register({ visitorSelection }) {
   };
 
   const goToNextFormPart = (submittedFormData) => {
-    setFormIndexData(formPartIndex, submittedFormData);
+    setFormIndexData(0, submittedFormData);
     setFormPartIndex((oldFormPartIndex) => oldFormPartIndex + 1);
   };
 
@@ -53,7 +54,7 @@ export default function Register({ visitorSelection }) {
   };
 
   const submitLastFormPart = (submittedFormData) => {
-    setFormIndexData(formPartIndex, submittedFormData);
+    setFormIndexData(1, submittedFormData);
     submitData();
   };
 

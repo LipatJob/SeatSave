@@ -1,7 +1,7 @@
 import React from 'react';
-import { Field } from 'formik';
+import { ErrorMessage, Field } from 'formik';
 
-export default function StaffInformationForm() {
+export default function StaffInformationForm({ offices }) {
   return (
     <div className='w-full'>
       <p className='font-light body-small'>Office</p>
@@ -9,15 +9,13 @@ export default function StaffInformationForm() {
         <option value='' disabled>
           Select Office
         </option>
-        <option value='Office of the President'>Office of the President</option>
-        <option value='Office of the Executive Vice President'>
-          Office of the Executive Vice President
-        </option>
-        <option value='OSVPAL'>OSVPAL</option>
-        <option value='OVPAA'>OVPAA</option>
-        <option value='OVPF'>OVPF</option>
-        <option value='OAVPAS'>I-OAVPAS</option>
+        {offices.map((office) => (
+          <option key={office} value={office}>
+            {office}
+          </option>
+        ))}
       </Field>
+      <ErrorMessage name='office' component='span' className='text-error' />
     </div>
   );
 }

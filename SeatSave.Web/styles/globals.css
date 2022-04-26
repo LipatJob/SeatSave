@@ -30,7 +30,7 @@
   input,
   textarea,
   select {
-    @apply p-3 border border-dawn focus:border-dusk-blue focus:border-2 focus:outline-none;
+    @apply p-3 text-lg border border-dawn focus:border-dusk-blue focus:border-2 focus:outline-none lg:text-xl h-14;
   }
 
   label {
@@ -82,14 +82,14 @@
   }
 
   .button {
-    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-bluish hover:bg-dusk-blue
+    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-bluish hover:bg-dusk-blue h-14
   }
 
   .red-button {
-    @apply bg-valentine-red  hover:bg-[#DA291C] text-white text-xl font-bold uppercase py-2 px-4
+    @apply bg-valentine-red  hover:bg-[#DA291C] text-white text-xl font-bold uppercase py-2 px-4 h-14
   }
 
   .gray-button {
-    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-dawn hover:bg-zinc-500
+    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-dawn hover:bg-zinc-500 h-14
   }
 }

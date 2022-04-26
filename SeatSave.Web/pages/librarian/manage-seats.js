@@ -4,6 +4,9 @@ import Image from 'next/image';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
 import Seat from '../../components/librarian/manage-seat/Seat';
+import DeleteConfirmationModal from '../../components/librarian/manage-seat/DeleteConfirmationModal';
+import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
+import CircularButton from '../../components/librarian/manage-seat/CircularButton';
 
 export default function ManageSeats() {
   const [formPart, setFormPart] = useState(0);
@@ -18,94 +21,9 @@ export default function ManageSeats() {
 
   return (
     <div className='page-container '>
-      {showModal ? (
-        <>
-          <div className='fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none'>
-            <div className='relative max-w-lg mx-auto my-6'>
-              {/* content */}
-              <div className='relative flex flex-col w-full bg-white border-0 shadow-lg outline-none focus:outline-none'>
-                {/* header */}
-                <div className='flow-root p-4'>
-                  <button
-                    type='button'
-                    className='float-right text-3xl text-dawn'
-                    onClick={() => setShowModal(false)}
-                  >
-                    ×
-                  </button>
-                </div>
-                {/* body */}
-                <div className='relative flex-auto w-[500px] h-[300px]'>
-                  <div className='w-full h-full p-4 text-4xl text-center'>
-                    Are you sure you want to delete this seat?
-                    <div className='w-full py-4 pt-4 text-4xl text-center'>
-                      <button
-                        type='button'
-                        className='w-2/5 red-button'
-                        onClick={() => setShowModal(false)}
-                      >
-                        YES
-                      </button>
-                    </div>
-                    <div className='w-full text-4xl text-center'>
-                      <button
-                        type='button'
-                        className='w-2/5 gray-button'
-                        onClick={() => setShowModal(false)}
-                      >
-                        NO
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='fixed inset-0 z-40 bg-black opacity-25' />
-        </>
-      ) : null}
-      {showModalAddedSeat ? (
-        <>
-          <div className='fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none'>
-            <div className='relative max-w-lg mx-auto my-6'>
-              {/* content */}
-              <div className='relative flex flex-col w-full bg-white border-0 shadow-lg outline-none focus:outline-none'>
-                {/* header */}
-                <div className='flow-root p-4'>
-                  <button
-                    type='button'
-                    className='float-right text-3xl text-dawn'
-                    onClick={() => setShowModalAddedSeat(false)}
-                  >
-                    ×
-                  </button>
-                </div>
-                {/* body */}
-                <div className='relative flex-auto w-[500px] h-[300px]'>
-                  <div className='w-full h-full p-4 text-4xl text-center'>
-                    Seat Added!
-                    <div className='py-4 pt-4 text-lg '>
-                      You have successfully added a new seat:
-                      <br /> [NAME]
-                    </div>
-                    <div className='w-full py-4 pt-8 text-4xl text-center'>
-                      <button
-                        type='button'
-                        className='w-2/5 button'
-                        onClick={() => setShowModalAddedSeat(false)}
-                        s
-                      >
-                        OK
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='fixed inset-0 z-40 bg-black opacity-25' />
-        </>
-      ) : null}
+      {showModal && <DeleteConfirmationModal onClick={setShowModal} />}
+      {showModalAddedSeat && <AddedSeatModal onClick={setShowModalAddedSeat} />}
+
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>
@@ -115,33 +33,10 @@ export default function ManageSeats() {
             header='Available Seats'
             body={
               <div>
-                <Seat Name='abc' Code='Q34' selectSeat={showInfo}>
-                  {' '}
-                </Seat>
+                <Seat Name='abc' Code='Q34' selectSeat={showInfo} />
               </div>
             }
-            buttons={
-              <div className='pb-4 text-right lg:pb-0'>
-                <button
-                  onClick={showInfo}
-                  type='button'
-                  className='w-16 h-16 p-0 transition duration-200 ease-in rounded-full shadow bg-bluish hover:bg-blue-700 active:shadow-lg mouse focus:outline-none'
-                >
-                  <svg
-                    viewBox='0 0 20 20'
-                    enableBackground='new 0 0 20 20'
-                    className='inline-block w-6 h-6'
-                  >
-                    <path
-                      fill='#FFFFFF'
-                      d='M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
-                C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
-                C15.952,9,16,9.447,16,10z'
-                    />
-                  </svg>
-                </button>
-              </div>
-            }
+            buttons={<CircularButton onClick={showInfo} />}
           />
         </div>
         <div id='rightPanel' className=' lg:col-span-2'>
@@ -162,7 +57,7 @@ export default function ManageSeats() {
                 <div className='grid content-center grid-cols-1 gap-4 pb-4 text-center lg:gap-0 lg:grid-cols-4 lg:pt-4'>
                   <button
                     type='button'
-                    className='pt-2 md:col-span-1 text-valentine-red'
+                    className='red-button'
                     onClick={() => setShowModal(true)}
                   >
                     DELETE
@@ -175,7 +70,7 @@ export default function ManageSeats() {
                     />
                     Activate Seat
                   </div>
-                  <div className=' md:col-span-1'>
+                  <div className='md:col-span-1'>
                     <button
                       type='button'
                       className='w-full lg:w-min gray-button'

@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SeatSave.Api.DTO;
+using SeatSave.Api.Services;
 using SeatSave.Core.User;
 using SeatSave.EF;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace SeatSave.Api.Controllers
 {
@@ -16,22 +15,26 @@ namespace SeatSave.Api.Controllers
     {
         private readonly IConfiguration config;
         private readonly SeatSaveContext dbContext;
+        private readonly AuthService authService;
 
         public AuthenticationController(IConfiguration config, SeatSaveContext dbContext)
         {
             this.config = config;
             this.dbContext = dbContext;
+            authService = new AuthService(dbContext, new JwtInfo { 
+                Key = config["Jwt:Key"],
+                Issuer =  config["Jwt:Issuer"],
+                Audience = config["Jwt:Audience"],
+            });
         }
 
         [AllowAnonymous]
         [HttpPost]
         public IActionResult Login([FromBody] UserLogin userLogin)
         {
-            var user = Authenticate(userLogin);
-
-            if (user != null)
+            if (authService.TryAuthenticate(userLogin.Email, userLogin.Password, userLogin.UserGroup, out var user))
             {
-                var token = Generate(user);
+                var token = authService.GenerateToken(user);
                 return Ok(token);
             }
 
@@ -46,56 +49,18 @@ namespace SeatSave.Api.Controllers
             if (identity != null)
             {
                 var userClaims = identity.Claims;
-
-                return Ok(new UserModel()
-                {
-                    Email = userClaims.FirstOrDefault(e => e.Type == "Email")?.Value,
-                    FirstName = userClaims.FirstOrDefault(e => e.Type == "FirstName")?.Value,
-                    LastName = userClaims.FirstOrDefault(e => e.Type == "LastName")?.Value,
-                    UserGroup = userClaims.FirstOrDefault(e => e.Type == "UserGroup")?.Value,
-                    UserType = userClaims.FirstOrDefault(e => e.Type == "UserType")?.Value
-                });
+                
+                return Ok(authService.CreateUserModelFromClaims(userClaims));
             }
 
             return NotFound();
         }
 
+     
 
 
-        private string Generate(UserModel user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
-            {
-                new Claim("Email", user.Email),
-                new Claim("FirstName", user.FirstName),
-                new Claim("LastName", user.LastName),
-                new Claim("UserGroup", user.UserGroup),
-                new Claim("UserType", user.UserType)
-            };
 
-            var token = new JwtSecurityToken(config["Jwt:Issuer"],
-                                             config["Jwt:Audience"],
-                                             claims,
-                                             expires: DateTime.Now.AddMinutes(30),
-                                             signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private UserModel? Authenticate(UserLogin userLogin)
-        {
-            using (dbContext)
-            {
-                var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == userLogin.Email.ToLower() && e.Password == userLogin.Password && e.UserGroup == userLogin.UserGroup);
-                if (currentUser != null)
-                {
-                    return currentUser;
-                }
-            }
-            return null;
-        }
     }
 }

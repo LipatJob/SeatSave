@@ -21,4 +21,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SeatSave.Api\SeatSave.Api.csproj" />
+    <ProjectReference Include="..\SeatSave.EF\SeatSave.EF.csproj" />
+  </ItemGroup>
+
 </Project>

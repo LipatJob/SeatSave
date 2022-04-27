@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeatSave.Core.Schedule;
 using SeatSave.Core.User;
 using SeatSave.Core.Seat;
 
@@ -19,9 +20,39 @@ namespace SeatSave.EF
 
         public DbSet<SeatModel> Seat { get; set; }
 
+        /*
+        public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
+        public DbSet<SpecificDateAvailability> SpecificDayAvailability { get; set; }
+        */
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
+
+                modelBuilder.Entity<RegularDayOfWeekAvailability>().OwnsMany(
+                    p => p.Periods,
+                    a =>
+                    {
+                        a.WithOwner().HasForeignKey("OwnerId");
+                        a.Property<int>("Id");
+                        a.HasKey("Id");
+                    }
+                );
+
+                modelBuilder.Entity<SpecificDateAvailability>().OwnsMany(
+                    p => p.Periods,
+                    a =>
+                    {
+                        a.WithOwner().HasForeignKey("OwnerId");
+                        a.Property<int>("Id");
+                        a.HasKey("Id");
+                    }
+                );
+            */
+
+
+
             modelBuilder.Entity<Librarian>().HasData(
                 new Librarian
                 {
@@ -30,7 +61,8 @@ namespace SeatSave.EF
                     FirstName = "Text",
                     LastName = "Account",
                     Password = "1234567"
-                });
+                }
+            );
             modelBuilder.Entity<Student>().HasData(
                new Student
                {
@@ -53,22 +85,24 @@ namespace SeatSave.EF
                    YearGrade = "First Year",
                });
             modelBuilder.Entity<SeatModel>().HasData(
-               new SeatModel
-               {
-                   Id = 1,
-                   Name = "ABC",
-                   Type = "1",
-                   Active = "true",
-                   Description = "description description",
-               },
-               new SeatModel
-               {
-                   Id = 2,
-                   Name = "DEF",
-                   Type = "1",
-                   Active = "true",
-                   Description = "description2 description2",
-               });
+                new SeatModel
+                {
+                    Id = 1,
+                    Name = "ABC",
+                    Type = "1",
+                    Active = "true",
+                    Description = "description description",
+                },
+                new SeatModel
+                {
+                    Id = 2,
+                    Name = "DEF",
+                    Type = "1",
+                    Active = "true",
+                    Description = "description2 description2",
+                });
+
+
         }
     }
 }

@@ -68,7 +68,7 @@
     padding-left: 35px;
     padding-right: 35px;
   }
-  
+
   .body-normal {
     @apply text-lg lg:text-xl;
   }
@@ -78,18 +78,63 @@
   }
 
   .text-error {
-    @apply body-small text-valentine-red
+    @apply body-small text-valentine-red;
   }
 
   .button {
-    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-bluish hover:bg-dusk-blue h-14
+    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-bluish hover:bg-dusk-blue h-14;
   }
 
   .red-button {
-    @apply bg-valentine-red  hover:bg-[#DA291C] text-white text-xl font-bold uppercase py-2 px-4 h-14
+    @apply bg-valentine-red  hover:bg-[#DA291C] text-white text-xl font-bold uppercase py-2 px-4 h-14;
   }
 
   .gray-button {
-    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-dawn hover:bg-zinc-500 h-14
+    @apply px-4 py-2 text-xl font-bold text-white uppercase bg-dawn hover:bg-zinc-500 h-14;
+  }
+
+  body.active-modal {
+    overflow-y: hidden;
+  }
+
+  .btn-modal {
+    padding: 10px 20px;
+    display: block;
+    margin: 100px auto 0;
+    font-size: 18px;
+  }
+
+  .modal,
+  .overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+  }
+
+  .overlay {
+    background: rgba(49, 49, 49, 0.8);
+  }
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.4;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 3px;
+    max-width: 600px;
+    min-width: 300px;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 7px;
   }
 }

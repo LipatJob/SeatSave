@@ -1,7 +1,12 @@
-﻿namespace SeatSave.Core.Schedule
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SeatSave.Core.Schedule
 {
-    public class RegularWeeklyAvailability
+    public class RegularDayOfWeekAvailability
     {
-        /* TODO: Properties */
+        [Key]
+        public DayOfWeek DayOfWeek { get; set; }
+
+        public IEnumerable<Period> Periods { get; set; }
     }
 }

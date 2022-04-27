@@ -18,8 +18,8 @@
 
         public bool CanBook()
         {
-            BookablePolicy obj = new BookablePolicy();
-            return obj.IsSatisfied(); // (date, period, seat)
+            // BookablePolicy obj = new BookablePolicy();
+            // return obj.IsSatisfied(); // (date, period, seat)
             // User can book if:
             // 1. No pending booking
             // 2. if the date, period and seat is bookable

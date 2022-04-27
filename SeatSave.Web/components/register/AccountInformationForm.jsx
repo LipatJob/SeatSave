@@ -16,11 +16,20 @@ export default function AccountInformationForm({ onSubmit }) {
     return response.status === 404;
   };
   const SignupSchema = Yup.object().shape({
-    firstname: Yup.string().required('This field is required'),
-    lastname: Yup.string().required('This field is required'),
+    firstname: Yup.string().trim().required('This field is required'),
+    lastname: Yup.string().trim().required('This field is required'),
     email: Yup.string()
+      .lowercase()
+      .trim()
       .email('Invalid email')
-      .required('This field is required'),
+      .required('This field is required')
+      .test(
+        'email',
+        'Please use your MCL live email account',
+        (email) =>
+          (email && email.toLowerCase().endsWith('@live.mcl.edu.ph')) ||
+          (email && email.toLowerCase().endsWith('@mcl.edu.ph')),
+      ),
     password: Yup.string()
       .min(5, 'Password must be at least 5 characters')
       .required('This field is required'),

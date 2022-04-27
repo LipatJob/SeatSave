@@ -30,10 +30,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var date = new DateTime(2024, 1, 2);
+            var selectedDate = new DateTime(2024, 1, 2);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(date, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
 
             Assert.True(isAvailable);
         }
@@ -44,10 +44,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var date = new DateTime(2024, 1, 5);
+            var selectedDate = new DateTime(2024, 1, 5);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(date, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
 
             Assert.False(isAvailable);
         }
@@ -58,10 +58,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var date = new DateTime(2024, 1, 5);
+            var selectedDate = new DateTime(2024, 1, 5);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(date, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
 
             Assert.False(isAvailable);
         }
@@ -72,10 +72,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var date = new DateTime(2024, 1, 5);
+            var selectedDate = new DateTime(2024, 1, 5);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(date, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
 
             Assert.False(isAvailable);
         }
@@ -102,6 +102,30 @@ namespace SeatSave.Test
 
         [Fact]
         public void UnavailableSpecificDateIsUnavailable()
+        {
+        }
+
+        [Fact]
+        public void GetAvailableDaysGeneratesCorrectly()
+        {
+            var targetAvailableDays = new[] {
+                new DateTime(2024, 1, 1),
+                new DateTime(2024, 1, 2)
+            };
+
+            var schedule = GetSchedule();
+            var availableDays = schedule.GetAvailableDays(new DateTime(2024, 1, 1), 5);
+         
+            Assert.Equal(availableDays, targetAvailableDays);
+        }
+
+        [Fact]
+        public void GetAvailablePeriodsOnRegularDayGeneratesCorrectly()
+        {
+        }
+
+        [Fact]
+        public void GetAvailablePeriodsOnSpecificDayGeneratesCorrectly()
         {
         }
     }

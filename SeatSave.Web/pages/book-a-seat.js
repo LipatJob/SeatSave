@@ -8,6 +8,12 @@ export default function BookASeat({ availableDays }) {
   }
 
   const day = availableDays.map((availableDay) => new Date(availableDay));
+
+  const [modal, setModal] = useState(false);
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
   return (
     <div className='flex items-center justify-center min-h-screen min-w-screen'>
       <div className='w-3/4 min-h-screen m-20 rounded-md'>
@@ -114,44 +120,65 @@ export default function BookASeat({ availableDays }) {
           <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
             <div className='grid grid-cols-1 sm:grid-cols-2'>
               <button
-                className='m-5 rounded-md bg-dusk-blue'
-                onClick={() => setShowModal(true)}
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
               >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
 
-              <button className='m-5 rounded-md bg-dusk-blue'>
+              <button
+                className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                onClick={toggleModal}
+              >
                 <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
                 <h5 className='pb-3 text-white'>E1</h5>
               </button>
@@ -172,6 +199,45 @@ export default function BookASeat({ availableDays }) {
           </button>
         </div>
       </div>
+
+      {modal && (
+        <div className='modal'>
+          <div onClick={toggleModal} className='overlay'>
+            <div className='modal-content'>
+              <h2 className='m-6 text-center'>Seat Details</h2>
+              <p className='mx-6 mb-6'>
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum."
+              </p>
+              <div className='flex inline justify-center'>
+                <div>
+                  <button
+                    type='button'
+                    className='px-4 py-2 m-5 mb-6 text-xl font-bold text-white uppercase rounded-lg bg-bluish hover:bg-dusk-blue'
+                  >
+                    <h6 className='font-medium text-white'>Select</h6>
+                  </button>
+                </div>
+
+                <div>
+                  <button
+                    type='button'
+                    onClick={toggleModal}
+                    className='close-modal text-xl font-bold text-white uppercase rounded-lg bg-valentine-red hover:bg-dawn'
+                  >
+                    <h6 className='font-medium text-white'>X</h6>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

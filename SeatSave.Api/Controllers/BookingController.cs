@@ -11,14 +11,18 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id) { return Ok("To be implemented"); }
         [HttpPost]
-        public IActionResult Add() { 
-            
+        public IActionResult Add()
+        {
+
             // ESSENTIAL: convert user into visitor object
+
+            /*
             if (user.UserGroup == Visitor.UserGroup)
             {
                 var visitor = (Visitor)user;
                 visitor.Book(); // (date, period, seat)
             }
+            */
 
             // STEPS:
             // 1. Get user credentials
@@ -27,7 +31,8 @@ namespace SeatSave.Api.Controllers
             //    IF: visitor -> convert user to visitor object
             // 4. Pass booking details into Book() method 
 
-            return Ok("To be implemented"); }
+            return Ok("To be implemented");
+        }
         [HttpPut]
         public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]

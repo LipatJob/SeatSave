@@ -138,6 +138,7 @@ public class ScheduleSeedFixture : IDisposable
                     periods[1]
                 }
             });
+
             context.SaveChanges();
         }
 

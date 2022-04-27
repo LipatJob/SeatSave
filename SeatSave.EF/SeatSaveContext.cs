@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeatSave.Core.Schedule;
 using SeatSave.Core.User;
 
 namespace SeatSave.EF
@@ -17,9 +18,39 @@ namespace SeatSave.EF
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
 
 
+        /*
+        public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
+        public DbSet<SpecificDateAvailability> SpecificDayAvailability { get; set; }
+        */
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            /*
+
+                modelBuilder.Entity<RegularDayOfWeekAvailability>().OwnsMany(
+                    p => p.Periods,
+                    a =>
+                    {
+                        a.WithOwner().HasForeignKey("OwnerId");
+                        a.Property<int>("Id");
+                        a.HasKey("Id");
+                    }
+                );
+
+                modelBuilder.Entity<SpecificDateAvailability>().OwnsMany(
+                    p => p.Periods,
+                    a =>
+                    {
+                        a.WithOwner().HasForeignKey("OwnerId");
+                        a.Property<int>("Id");
+                        a.HasKey("Id");
+                    }
+                );
+            */
+
+
+
             modelBuilder.Entity<Librarian>().HasData(
                 new Librarian
                 {
@@ -28,7 +59,8 @@ namespace SeatSave.EF
                     FirstName = "Text",
                     LastName = "Account",
                     Password = "1234567"
-                });
+                }
+            );
             modelBuilder.Entity<Student>().HasData(
                new Student
                {
@@ -49,7 +81,8 @@ namespace SeatSave.EF
                    Password = "password",
                    ProgramStrand = "IT",
                    YearGrade = "First Year",
-               });
+               }
+            );
         }
     }
 }

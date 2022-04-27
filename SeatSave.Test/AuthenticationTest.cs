@@ -160,6 +160,7 @@ public class UserLoginSeedFixture : IDisposable
     public UserLoginSeedFixture()
     {
         var options = new DbContextOptionsBuilder<SeatSaveContext>()
+          .UseLazyLoadingProxies()
           .UseInMemoryDatabase(databaseName: "SeatSaveDb")
           .Options;
 

@@ -6,7 +6,7 @@ export default function FacultyInformationForm({ offices }) {
     <div className='w-full'>
       <p className='font-light body-small'>Office</p>
       <Field as='select' name='office' id='office' className='w-full'>
-        <option value='' disabled>
+        <option value='' disabled hidden>
           Select Office
         </option>
         {offices.map((office) => (

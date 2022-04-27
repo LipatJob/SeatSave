@@ -62,7 +62,7 @@ export default function LibrarianLogin() {
                     id='email'
                     type='email'
                     name='email'
-                    placeholder='student@live.mcl.edu.ph'
+                    placeholder='librarian@mcl.edu.ph'
                     className='w-full'
                   />
                   <ErrorMessage

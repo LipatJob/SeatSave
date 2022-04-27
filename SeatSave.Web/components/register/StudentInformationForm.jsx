@@ -12,7 +12,7 @@ export default function StudentInformationForm({
       <div className='w-full'>
         <p className='font-light body-small'>Department</p>
         <Field as='select' name='department' id='department' className='w-full'>
-          <option value='' disabled>
+          <option value='' disabled hidden>
             Select Department
           </option>
           {departments.map((department) => (
@@ -35,7 +35,7 @@ export default function StudentInformationForm({
           id='programStrand'
           className='w-full'
         >
-          <option value='' disabled>
+          <option value='' disabled hidden>
             Select Program/Strand
           </option>
           {selectedDepartment in programs &&
@@ -54,7 +54,7 @@ export default function StudentInformationForm({
       <div className='w-full'>
         <p className='font-light body-small'>Year/Grade Level</p>
         <Field as='select' name='yearGrade' id='yearGrade' className='w-full'>
-          <option value='' disabled>
+          <option value='' disabled hidden>
             Year/Grade Level
           </option>
           {values.department && values.department === 'SHS' ? (

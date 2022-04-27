@@ -70,7 +70,7 @@ export default function VisitorInformationForm({
                   id='userType'
                   className='w-full'
                 >
-                  <option value='' disabled>
+                  <option value='' disabled hidden>
                     Select Type
                   </option>
                   <option value='Student'>Student</option>

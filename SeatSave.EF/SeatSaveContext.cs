@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Schedule;
 using SeatSave.Core.User;
+using SeatSave.Core.Seat;
 
 namespace SeatSave.EF
 {
@@ -17,6 +18,7 @@ namespace SeatSave.EF
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
 
+        public DbSet<SeatModel> Seat { get; set; }
 
         /*
         public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
@@ -81,8 +83,26 @@ namespace SeatSave.EF
                    Password = "password",
                    ProgramStrand = "IT",
                    YearGrade = "First Year",
-               }
-            );
+               });
+            modelBuilder.Entity<SeatModel>().HasData(
+                new SeatModel
+                {
+                    Id = 1,
+                    Name = "ABC",
+                    Type = "1",
+                    Active = "true",
+                    Description = "description description",
+                },
+                new SeatModel
+                {
+                    Id = 2,
+                    Name = "DEF",
+                    Type = "1",
+                    Active = "true",
+                    Description = "description2 description2",
+                });
+
+
         }
     }
 }

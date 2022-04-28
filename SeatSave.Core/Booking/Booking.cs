@@ -8,10 +8,10 @@ namespace SeatSave.Core.Booking
         public int Id { get; set; }
         public string BookingCode { get; set; }
         public DateOnly BookingDate { get; set; }
-        public Period Period { get; set; }
-        public SeatModel Seat { get; set; }
+        public virtual Period Period { get; set; }
+        public virtual SeatModel Seat { get; set; }
         public string Status { get; set; }
-        public StatusHistory StatusHistory { get; set; }
+        public virtual StatusHistory StatusHistory { get; set; }
 
         public void Cancel() { throw new NotImplementedException("TODO"); }
         public void CheckIn() { throw new NotImplementedException("TODO"); }

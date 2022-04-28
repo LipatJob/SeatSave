@@ -15,9 +15,15 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() { return Ok("To be implemented"); }
+        public IActionResult GetAll() 
+        { 
+            return Ok(dbContext.Bookings); 
+        }
         [HttpGet("{id}")]
-        public IActionResult GetSpecific(int id) { return Ok("To be implemented"); }
+        public IActionResult GetSpecific(int id) 
+        { 
+            return Ok(dbContext.Bookings.Find(id)); 
+        }
         [HttpPost]
         public IActionResult Add()
         {

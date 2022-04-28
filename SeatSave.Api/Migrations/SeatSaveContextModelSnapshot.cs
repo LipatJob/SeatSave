@@ -17,6 +17,66 @@ namespace SeatSave.Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
 
+            modelBuilder.Entity("SeatSave.Core.Booking.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BookingCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("BookingDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Periodid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StatusHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Periodid");
+
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("StatusHistoryId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.Booking.StatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DateTimeCanceled")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateTimeCheckedIn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateTimeCheckedOut")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusHistory");
+                });
+
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>
                 {
                     b.Property<int>("id")
@@ -322,6 +382,33 @@ namespace SeatSave.Api.Migrations
                     b.HasBaseType("SeatSave.Core.User.Librarian");
 
                     b.HasDiscriminator().HasValue("HeadLibrarian");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.Booking.Booking", b =>
+                {
+                    b.HasOne("SeatSave.Core.Schedule.Period", "Period")
+                        .WithMany()
+                        .HasForeignKey("Periodid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeatSave.Core.Seat.SeatModel", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeatSave.Core.Booking.StatusHistory", "StatusHistory")
+                        .WithMany()
+                        .HasForeignKey("StatusHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Period");
+
+                    b.Navigation("Seat");
+
+                    b.Navigation("StatusHistory");
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>

@@ -11,13 +11,73 @@ using SeatSave.EF;
 namespace SeatSave.Api.Migrations
 {
     [DbContext(typeof(SeatSaveContext))]
-    [Migration("20220427140113_UpdatedPeriodUnique")]
-    partial class UpdatedPeriodUnique
+    [Migration("20220428053146_ResetMigrations")]
+    partial class ResetMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
+
+            modelBuilder.Entity("SeatSave.Core.Booking.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BookingCode")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("BookingDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Periodid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StatusHistoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Periodid");
+
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("StatusHistoryId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.Booking.StatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("DateTimeCanceled")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateTimeCheckedIn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateTimeCheckedOut")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusHistory");
+                });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>
                 {
@@ -28,7 +88,7 @@ namespace SeatSave.Api.Migrations
                     b.Property<int?>("RegularDayOfWeekAvailabilityDayOfWeek")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("SpecificDateAvailabilityDate")
+                    b.Property<DateOnly?>("SpecificDateAvailabilityDate")
                         .HasColumnType("Date");
 
                     b.Property<TimeSpan>("TimeEnd")
@@ -46,7 +106,57 @@ namespace SeatSave.Api.Migrations
                     b.HasIndex("TimeStart", "TimeEnd")
                         .IsUnique();
 
-                    b.ToTable("Period");
+                    b.ToTable("Periods");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            TimeEnd = new TimeSpan(0, 6, 30, 0, 0),
+                            TimeStart = new TimeSpan(0, 5, 0, 0, 0)
+                        },
+                        new
+                        {
+                            id = 2,
+                            TimeEnd = new TimeSpan(0, 8, 0, 0, 0),
+                            TimeStart = new TimeSpan(0, 6, 30, 0, 0)
+                        },
+                        new
+                        {
+                            id = 3,
+                            TimeEnd = new TimeSpan(0, 9, 30, 0, 0),
+                            TimeStart = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            id = 4,
+                            TimeEnd = new TimeSpan(0, 11, 0, 0, 0),
+                            TimeStart = new TimeSpan(0, 9, 30, 0, 0)
+                        },
+                        new
+                        {
+                            id = 5,
+                            TimeEnd = new TimeSpan(0, 12, 30, 0, 0),
+                            TimeStart = new TimeSpan(0, 11, 0, 0, 0)
+                        },
+                        new
+                        {
+                            id = 6,
+                            TimeEnd = new TimeSpan(0, 14, 0, 0, 0),
+                            TimeStart = new TimeSpan(0, 12, 30, 0, 0)
+                        },
+                        new
+                        {
+                            id = 7,
+                            TimeEnd = new TimeSpan(0, 15, 30, 0, 0),
+                            TimeStart = new TimeSpan(0, 14, 0, 0, 0)
+                        },
+                        new
+                        {
+                            id = 8,
+                            TimeEnd = new TimeSpan(0, 17, 0, 0, 0),
+                            TimeStart = new TimeSpan(0, 15, 30, 0, 0)
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.RegularDayOfWeekAvailability", b =>
@@ -57,16 +167,52 @@ namespace SeatSave.Api.Migrations
                     b.HasKey("DayOfWeek");
 
                     b.ToTable("RegularDayOfWeekAvailability");
+
+                    b.HasData(
+                        new
+                        {
+                            DayOfWeek = 1
+                        },
+                        new
+                        {
+                            DayOfWeek = 2
+                        },
+                        new
+                        {
+                            DayOfWeek = 3
+                        },
+                        new
+                        {
+                            DayOfWeek = 4
+                        },
+                        new
+                        {
+                            DayOfWeek = 5
+                        },
+                        new
+                        {
+                            DayOfWeek = 6
+                        },
+                        new
+                        {
+                            DayOfWeek = 0
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.SpecificDateAvailability", b =>
                 {
-                    b.Property<DateTime>("Date")
+                    b.Property<DateOnly>("Date")
                         .HasColumnType("Date");
 
                     b.HasKey("Date");
 
                     b.ToTable("SpecificDayAvailability");
+
+                    b.HasData(
+                        new
+                        {
+                            Date = new DateOnly(2024, 4, 4)
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Seat.SeatModel", b =>
@@ -238,6 +384,33 @@ namespace SeatSave.Api.Migrations
                     b.HasBaseType("SeatSave.Core.User.Librarian");
 
                     b.HasDiscriminator().HasValue("HeadLibrarian");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.Booking.Booking", b =>
+                {
+                    b.HasOne("SeatSave.Core.Schedule.Period", "Period")
+                        .WithMany()
+                        .HasForeignKey("Periodid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeatSave.Core.Seat.SeatModel", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeatSave.Core.Booking.StatusHistory", "StatusHistory")
+                        .WithMany()
+                        .HasForeignKey("StatusHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Period");
+
+                    b.Navigation("Seat");
+
+                    b.Navigation("StatusHistory");
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>

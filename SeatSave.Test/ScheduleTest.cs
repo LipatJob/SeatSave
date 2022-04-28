@@ -3,7 +3,6 @@ using SeatSave.Core.Schedule;
 using SeatSave.EF;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace SeatSave.Test
@@ -30,10 +29,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var selectedDate = new DateTime(2024, 1, 2);
+            var selectedDate = new DateOnly(2024, 1, 2);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateOnly(2024, 1, 1));
 
             Assert.True(isAvailable);
         }
@@ -44,10 +43,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var selectedDate = new DateTime(2024, 1, 5);
+            var selectedDate = new DateOnly(2024, 1, 5);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateOnly(2024, 1, 1));
 
             Assert.False(isAvailable);
         }
@@ -58,10 +57,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var selectedDate = new DateTime(2024, 1, 5);
+            var selectedDate = new DateOnly(2024, 1, 5);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateOnly(2024, 1, 1));
 
             Assert.False(isAvailable);
         }
@@ -72,10 +71,10 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var selectedDate = new DateTime(2024, 1, 5);
+            var selectedDate = new DateOnly(2024, 1, 5);
 
             var schedule = GetSchedule();
-            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateTime(2024, 1, 1));
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateOnly(2024, 1, 1));
 
             Assert.False(isAvailable);
         }
@@ -109,13 +108,13 @@ namespace SeatSave.Test
         public void GetAvailableDaysGeneratesCorrectly()
         {
             var targetAvailableDays = new[] {
-                new DateTime(2024, 1, 1),
-                new DateTime(2024, 1, 2)
+                new DateOnly(2024, 1, 1),
+                new DateOnly(2024, 1, 2)
             };
 
             var schedule = GetSchedule();
-            var availableDays = schedule.GetAvailableDays(new DateTime(2024, 1, 1), 5);
-         
+            var availableDays = schedule.GetAvailableDays(new DateOnly(2024, 1, 1), 5);
+
             Assert.Equal(availableDays, targetAvailableDays);
         }
 
@@ -149,7 +148,7 @@ public class ScheduleSeedFixture : IDisposable
             context.Periods.AddRange(periods);
             context.SpecificDayAvailability.AddRange(new SpecificDateAvailability
             {
-                Date = new DateTime(2024, 1, 2),
+                Date = new DateOnly(2024, 1, 2),
                 Periods = new List<Period>{
                     periods[1]
                 }
@@ -168,18 +167,6 @@ public class ScheduleSeedFixture : IDisposable
 
 
         Context = new SeatSaveContext(options);
-    }
-
-
-    private SpecificDateAvailability CreateSpecificDateAvailability(DateTime date, IList<Period> Periods)
-    {
-        var dateAvailability = new SpecificDateAvailability();
-        dateAvailability.Date = date;
-        foreach (var period in Periods)
-        {
-            dateAvailability.Periods.Add(period);
-        }
-        return dateAvailability;
     }
 
     public void Dispose()

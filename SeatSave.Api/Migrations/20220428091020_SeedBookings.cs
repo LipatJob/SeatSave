@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SeatSave.Api.Migrations
 {
-    public partial class ResetMigrations : Migration
+    public partial class SeedBookings : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -118,19 +118,19 @@ namespace SeatSave.Api.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BookingCode = table.Column<string>(type: "TEXT", nullable: false),
+                    BookingCode = table.Column<string>(type: "TEXT", nullable: true),
                     BookingDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    Periodid = table.Column<int>(type: "INTEGER", nullable: false),
+                    PeriodId = table.Column<int>(type: "INTEGER", nullable: false),
                     SeatId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
                     StatusHistoryId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bookings_Periods_Periodid",
-                        column: x => x.Periodid,
+                        name: "FK_Bookings_Periods_PeriodId",
+                        column: x => x.PeriodId,
                         principalTable: "Periods",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -253,10 +253,15 @@ namespace SeatSave.Api.Migrations
                 columns: new[] { "Id", "Discriminator", "Email", "FirstName", "LastName", "Password", "ProgramStrand", "UserGroup", "UserType", "YearGrade" },
                 values: new object[] { 3, "Student", "another_student@gmail.com", "Text", "Account", "password", "IT", "Visitor", "Student", "First Year" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookings_Periodid",
+            migrationBuilder.InsertData(
                 table: "Bookings",
-                column: "Periodid");
+                columns: new[] { "Id", "BookingCode", "BookingDate", "PeriodId", "SeatId", "Status", "StatusHistoryId" },
+                values: new object[] { 1, "1234", new DateOnly(2022, 4, 28), 1, 1, "Pending", 1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_PeriodId",
+                table: "Bookings",
+                column: "PeriodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_SeatId",

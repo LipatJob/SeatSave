@@ -6,12 +6,15 @@ namespace SeatSave.Core.Booking
     public class Booking
     {
         public int Id { get; set; }
-        public string BookingCode { get; set; }
+        public string? BookingCode { get; set; }
         public DateOnly BookingDate { get; set; }
-        public virtual Period Period { get; set; }
-        public virtual SeatModel Seat { get; set; }
-        public string Status { get; set; }
-        public virtual StatusHistory StatusHistory { get; set; }
+        public int PeriodId { get; set; }
+        public virtual Period? Period { get; set; }
+        public int SeatId { get; set; }
+        public virtual SeatModel? Seat { get; set; }
+        public string? Status { get; set; }
+        public int StatusHistoryId { get; set; }
+        public virtual StatusHistory? StatusHistory { get; set; }
 
         public void Cancel() { throw new NotImplementedException("TODO"); }
         public void CheckIn() { throw new NotImplementedException("TODO"); }

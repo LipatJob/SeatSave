@@ -8,7 +8,7 @@ import DeleteConfirmationModal from '../../components/librarian/manage-seat/Dele
 import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
 import CircularButton from '../../components/librarian/manage-seat/CircularButton';
 
-export default function ManageSeats() {
+export default function ManageSeats({ seats }) {
   const [formPart, setFormPart] = useState(0);
   const showInfo = () => {
     setFormPart((oldFormPart) => oldFormPart + 1);
@@ -31,11 +31,11 @@ export default function ManageSeats() {
         <div id='leftPanel' className=' lg:col-span-1'>
           <PanelWithHeader
             header='Available Seats'
-            body={
+            body={seats.map((seat) => (
               <div>
-                <Seat Name='abc' Code='Q34' selectSeat={showInfo} />
+                <Seat Name={seat.name} Code={seat.id} selectSeat={showInfo} />
               </div>
-            }
+            ))}
             buttons={<CircularButton onClick={showInfo} />}
           />
         </div>
@@ -97,5 +97,14 @@ export default function ManageSeats() {
     </div>
   );
 }
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.API_URL}/Api/Seats`);
+  const seats = await res.json();
 
+  return {
+    props: {
+      seats,
+    },
+  };
+}
 ManageSeats.page = 'ManageSeats';

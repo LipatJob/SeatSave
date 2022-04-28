@@ -6,7 +6,7 @@ import SeatInformation from '../../components/librarian/manage-seat/SeatInformat
 import Seat from '../../components/librarian/manage-seat/Seat';
 import DeleteConfirmationModal from '../../components/librarian/manage-seat/DeleteConfirmationModal';
 import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
-import CircularButton from '../../components/librarian/manage-seat/CircularButton';
+import CircularButton from '../../components/common/CircularButton';
 
 export default function ManageSeats({ seats }) {
   const [formPart, setFormPart] = useState(0);

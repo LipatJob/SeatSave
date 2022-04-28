@@ -21,11 +21,11 @@ export default function PeriodSelectionPanel({ className }) {
       <div className='h-16 p-4 bg-pearl-bush'>
         <h4>Time</h4>
       </div>
-      <div className='flex flex-col items-center px-10 pb-6'>
-        <div className='grid w-full grid-cols-2'>
+      <div className='flex flex-col items-center p-10'>
+        <div className='grid w-full grid-cols-2 mb-4 gap-y-4'>
           {periods.map(({ timeStart, timeEnd }) => (
             <div className='flex flex-row items-center justify-center gap-4'>
-              <input type='checkbox' className='shrink checkbox' />
+              <input type='checkbox' className='w-5 h-5 shrink checkbox' />
               {`${timeStart} to ${timeEnd}`}
             </div>
           ))}

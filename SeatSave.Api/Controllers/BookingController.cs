@@ -15,11 +15,14 @@ namespace SeatSave.Api.Controllers
         {
 
             // ESSENTIAL: convert user into visitor object
-            /*if (user.UserGroup == Visitor.UserGroup)
+
+            /*
+            if (user.UserGroup == Visitor.UserGroup)
             {
                 var visitor = (Visitor)user;
                 visitor.Book(); // (date, period, seat)
-            }*/
+            }
+            */
 
             // STEPS:
             // 1. Get user credentials

@@ -13,14 +13,10 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IConfiguration config;
-        private readonly SeatSaveContext dbContext;
         private readonly AuthService authService;
 
         public AuthenticationController(IConfiguration config, SeatSaveContext dbContext)
         {
-            this.config = config;
-            this.dbContext = dbContext;
             authService = new AuthService(dbContext, new JwtInfo { 
                 Key = config["Jwt:Key"],
                 Issuer =  config["Jwt:Issuer"],

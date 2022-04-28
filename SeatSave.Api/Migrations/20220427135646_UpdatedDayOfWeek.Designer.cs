@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatSave.EF;
 
@@ -10,9 +11,10 @@ using SeatSave.EF;
 namespace SeatSave.Api.Migrations
 {
     [DbContext(typeof(SeatSaveContext))]
-    partial class SeatSaveContextModelSnapshot : ModelSnapshot
+    [Migration("20220427135646_UpdatedDayOfWeek")]
+    partial class UpdatedDayOfWeek
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -26,7 +28,7 @@ namespace SeatSave.Api.Migrations
                     b.Property<int?>("RegularDayOfWeekAvailabilityDayOfWeek")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly?>("SpecificDateAvailabilityDate")
+                    b.Property<DateTime?>("SpecificDateAvailabilityDate")
                         .HasColumnType("Date");
 
                     b.Property<TimeSpan>("TimeEnd")
@@ -41,60 +43,7 @@ namespace SeatSave.Api.Migrations
 
                     b.HasIndex("SpecificDateAvailabilityDate");
 
-                    b.HasIndex("TimeStart", "TimeEnd")
-                        .IsUnique();
-
-                    b.ToTable("Periods");
-
-                    b.HasData(
-                        new
-                        {
-                            id = 1,
-                            TimeEnd = new TimeSpan(0, 6, 30, 0, 0),
-                            TimeStart = new TimeSpan(0, 5, 0, 0, 0)
-                        },
-                        new
-                        {
-                            id = 2,
-                            TimeEnd = new TimeSpan(0, 8, 0, 0, 0),
-                            TimeStart = new TimeSpan(0, 6, 30, 0, 0)
-                        },
-                        new
-                        {
-                            id = 3,
-                            TimeEnd = new TimeSpan(0, 9, 30, 0, 0),
-                            TimeStart = new TimeSpan(0, 8, 0, 0, 0)
-                        },
-                        new
-                        {
-                            id = 4,
-                            TimeEnd = new TimeSpan(0, 11, 0, 0, 0),
-                            TimeStart = new TimeSpan(0, 9, 30, 0, 0)
-                        },
-                        new
-                        {
-                            id = 5,
-                            TimeEnd = new TimeSpan(0, 12, 30, 0, 0),
-                            TimeStart = new TimeSpan(0, 11, 0, 0, 0)
-                        },
-                        new
-                        {
-                            id = 6,
-                            TimeEnd = new TimeSpan(0, 14, 0, 0, 0),
-                            TimeStart = new TimeSpan(0, 12, 30, 0, 0)
-                        },
-                        new
-                        {
-                            id = 7,
-                            TimeEnd = new TimeSpan(0, 15, 30, 0, 0),
-                            TimeStart = new TimeSpan(0, 14, 0, 0, 0)
-                        },
-                        new
-                        {
-                            id = 8,
-                            TimeEnd = new TimeSpan(0, 17, 0, 0, 0),
-                            TimeStart = new TimeSpan(0, 15, 30, 0, 0)
-                        });
+                    b.ToTable("Period");
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.RegularDayOfWeekAvailability", b =>
@@ -105,52 +54,16 @@ namespace SeatSave.Api.Migrations
                     b.HasKey("DayOfWeek");
 
                     b.ToTable("RegularDayOfWeekAvailability");
-
-                    b.HasData(
-                        new
-                        {
-                            DayOfWeek = 1
-                        },
-                        new
-                        {
-                            DayOfWeek = 2
-                        },
-                        new
-                        {
-                            DayOfWeek = 3
-                        },
-                        new
-                        {
-                            DayOfWeek = 4
-                        },
-                        new
-                        {
-                            DayOfWeek = 5
-                        },
-                        new
-                        {
-                            DayOfWeek = 6
-                        },
-                        new
-                        {
-                            DayOfWeek = 0
-                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.SpecificDateAvailability", b =>
                 {
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
                     b.HasKey("Date");
 
                     b.ToTable("SpecificDayAvailability");
-
-                    b.HasData(
-                        new
-                        {
-                            Date = new DateOnly(2024, 4, 4)
-                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Seat.SeatModel", b =>

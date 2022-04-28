@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 
-export default function BookASeat({ availableDays }) {
+export default function BookASeat({ availableDays }, { availableSeats }) {
   function submitBooking(e) {
     e.preventDefault();
     console.log('Submitted!');
   }
-
+  console.log(availableSeats);
   const day = availableDays.map((availableDay) => new Date(availableDay));
 
   const [modal, setModal] = useState(false);
   const toggleModal = () => {
     setModal(!modal);
   };
+
+  if (typeof window !== 'undefined') {
+    if (modal) {
+      document.body.classList.add('active-modal')
+    }
+    else {
+      document.body.classList.remove('active-modal')
+    }
+  }
 
   return (
     <div className='flex items-center justify-center min-h-screen min-w-screen'>
@@ -119,14 +128,15 @@ export default function BookASeat({ availableDays }) {
         <div className='flex justify-center'>
           <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
             <div className='grid grid-cols-1 sm:grid-cols-2'>
-              <button
+              {availableSeats?.map((aSeat) => (
+                <button
                 className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
                 onClick={toggleModal}
-              >
-                <h5 className='px-3 pt-3 text-white'>Einstein - 1</h5>
-                <h5 className='pb-3 text-white'>E1</h5>
-              </button>
-
+                >
+                  <h5 className='px-3 pt-3 text-white'>{aSeat.id}</h5>
+                  <h5 className='pb-3 text-white'>{aSeat.name}</h5>
+                </button>
+              ))}
               <button
                 className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
                 onClick={toggleModal}
@@ -193,16 +203,16 @@ export default function BookASeat({ availableDays }) {
           <button
             onClick={submitBooking}
             type='button'
-            className='px-4 py-2 text-xl font-bold text-white uppercase rounded-lg bg-bluish hover:bg-dusk-blue'
+            className='rounded-lg button'
           >
-            <h5 className='p-4 font-bold text-white'>Book your seat!</h5>
+            <h5 className='font-bold text-white'>Book your seat!</h5>
           </button>
         </div>
       </div>
 
       {modal && (
         <div className='modal'>
-          <div onClick={toggleModal} className='overlay'>
+          <div className='overlay'>
             <div className='modal-content'>
               <h2 className='m-6 text-center'>Seat Details</h2>
               <p className='mx-6 mb-6'>
@@ -214,11 +224,11 @@ export default function BookASeat({ availableDays }) {
                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                 sunt in culpa qui officia deserunt mollit anim id est laborum."
               </p>
-              <div className='flex inline justify-center'>
+              <div className='flex justify-center inline'>
                 <div>
                   <button
                     type='button'
-                    className='px-4 py-2 m-5 mb-6 text-xl font-bold text-white uppercase rounded-lg bg-bluish hover:bg-dusk-blue'
+                    className='mb-6 rounded-lg button'
                   >
                     <h6 className='font-medium text-white'>Select</h6>
                   </button>
@@ -228,7 +238,7 @@ export default function BookASeat({ availableDays }) {
                   <button
                     type='button'
                     onClick={toggleModal}
-                    className='close-modal text-xl font-bold text-white uppercase rounded-lg bg-valentine-red hover:bg-dawn'
+                    className='px-4 ml-10 rounded-lg red-button'
                   >
                     <h6 className='font-medium text-white'>X</h6>
                   </button>
@@ -243,12 +253,18 @@ export default function BookASeat({ availableDays }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.API_URL}/Api/Schedule`);
-  const availableDays = await res.json();
+  const availableDaysData = await fetch(`${process.env.API_URL}/Api/Schedule`);
+  const availableDays = await availableDaysData.json();
 
+  const availableSeatsData = await fetch(`${process.env.API_URL}/Api/Seats`);
+  const availableSeats = await availableSeatsData.json();
+
+  console.log(availableSeats);
+  
   return {
     props: {
       availableDays,
+      availableSeats
     },
   };
 }

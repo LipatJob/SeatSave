@@ -1,6 +1,8 @@
 import React from 'react';
 
-export default function SeatInformation() {
+export default function SeatInformation(selectedSeatID) {
+  // eslint-disable-next-line react/destructuring-assignment
+  const currentSeatID = selectedSeatID.selectedSeatID;
   return (
     <form>
       <div className='w-full'>
@@ -12,6 +14,7 @@ export default function SeatInformation() {
             placeholder='Text'
             className='flex bg-iron'
             disabled='true'
+            value={currentSeatID}
           />
         </label>
         <label htmlFor='name'>
@@ -44,7 +47,7 @@ export default function SeatInformation() {
           Description
           <textarea
             rows='4'
-            className='flex w-full'
+            className='flex w-full h-32'
             style={{ resize: 'none' }}
             placeholder='Enter Seat Description'
           >

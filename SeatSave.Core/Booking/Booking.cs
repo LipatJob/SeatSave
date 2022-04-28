@@ -3,7 +3,7 @@ using SeatSave.Core.Seat;
 
 namespace SeatSave.Core.Booking
 {
-    public class Booking
+    public class BookingModel
     {
         public int Id { get; set; }
         public string BookingCode { get; set; }

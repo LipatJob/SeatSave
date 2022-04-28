@@ -19,7 +19,7 @@ namespace SeatSave.EF
         public DbSet<Student> Students { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<StatusHistory> StatusHistory { get; set; }
 
         public DbSet<SeatModel> Seat { get; set; }
@@ -129,8 +129,8 @@ namespace SeatSave.EF
                     Active = "true",
                     Description = "description2 description2",
                 });
-            modelBuilder.Entity<Booking>().HasData(
-                new Booking
+            modelBuilder.Entity<BookingModel>().HasData(
+                new BookingModel
                 {
                     Id = 1,
                     BookingCode = "1234",

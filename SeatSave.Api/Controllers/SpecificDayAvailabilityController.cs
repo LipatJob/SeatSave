@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Schedule;
 using SeatSave.EF;
 
@@ -21,23 +22,22 @@ namespace SeatSave.Api.Controllers
             return Ok(dbContext.SpecificDayAvailability);
         }
 
-        [HttpGet("{date}")]
-        public IActionResult GetSpecific(string date)
+        [HttpGet("{isoDate}")]
+        public IActionResult GetSpecific(string isoDate)
         {
-            var parsedDate = DateOnly.Parse(date);
-            dbContext.SpecificDayAvailability.Find(parsedDate);
-            return Ok(date);
+            DateOnly parsedDate = DateOnly.ParseExact(isoDate, "yyyy-MM-dd");
+            return Ok(dbContext.SpecificDayAvailability.Include(e => e.Periods).First(e => e.Date == parsedDate));
         }
 
         /// <summary>
         /// Short, descriptive title of the operation
         /// </summary>
         /// <param name="date" example="2022-07-04">YYYY-MM-DD</param>
-        [HttpPut("{date}")]
-        public IActionResult Update(string date, SpecificDateAvailability availability)
+        [HttpPut("{isoDate}")]
+        public IActionResult Update(string isoDate, SpecificDateAvailability availability)
         {
-            DateOnly dateValue = DateOnly.Parse(date);
-            if (dateValue != availability.Date) { return BadRequest(); }
+            DateOnly parsedDate = DateOnly.ParseExact(isoDate, "yyyy-MM-dd");
+            if (parsedDate != availability.Date) { return BadRequest(); }
 
             dbContext.Entry(availability).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             dbContext.SaveChanges();

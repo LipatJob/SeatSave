@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Schedule;
 using SeatSave.Core.User;
+using SeatSave.Core.Booking;
 
 namespace SeatSave.EF
 {
@@ -16,6 +17,8 @@ namespace SeatSave.EF
         public DbSet<Student> Students { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<StatusHistory> StatusHistory { get; set; }
 
 
         /*

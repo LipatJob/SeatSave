@@ -11,31 +11,31 @@
             this.specifcDaySchedule = specifcDaySchedule;
         }
 
-        public bool IsAvailable(DateTime dateToCheck, Period period, DateTime currentDate)
+        public bool IsAvailable(DateOnly dateToCheck, Period period, DateOnly currentDate)
         {
-            if(currentDate.Date > dateToCheck.Date) { return false; }
+            if (currentDate > dateToCheck) { return false; }
 
-            bool isAvailableOnRegularDay = regularDaySchedule.Any(e=>e.DayOfWeek == dateToCheck.DayOfWeek && e.Periods.Contains(period));
-            bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck.Date && e.Periods.Contains(period));
+            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek && e.Periods.Contains(period));
+            bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck && e.Periods.Contains(period));
 
             return isAvailableOnRegularDay || isAvailableOnSpecificDay;
         }
 
-        public IList<DateTime> GetAvailableDays(DateTime currentDate, int numberOfDaysToCheck)
+        public IList<DateOnly> GetAvailableDays(DateOnly currentDate, int numberOfDaysToCheck)
         {
             var availabilityOnSpecificDays = GetAvailabilityOnSpecificDays(currentDate, numberOfDaysToCheck);
             var availabilityOnRegularDays = GetAvailabilityOnRegularDays(numberOfDaysToCheck, currentDate);
             return availabilityOnSpecificDays.Union(availabilityOnRegularDays).OrderBy(e => e.DayOfWeek).ToList();
         }
 
-        private IEnumerable<DateTime> GetAvailabilityOnSpecificDays(DateTime currentDate, int numberOfDaysToCheck)
+        private IEnumerable<DateOnly> GetAvailabilityOnSpecificDays(DateOnly currentDate, int numberOfDaysToCheck)
         {
-            var endDate = currentDate.AddDays(numberOfDaysToCheck).Date;
+            var endDate = currentDate.AddDays(numberOfDaysToCheck);
             var availableSpecificDays = specifcDaySchedule.Where(e => currentDate <= e.Date && e.Date <= endDate).Select(e => e.Date);
             return availableSpecificDays;
         }
 
-        private IEnumerable<DateTime> GetAvailabilityOnRegularDays(int numberOfDaysToCheck, DateTime startDate)
+        private IEnumerable<DateOnly> GetAvailabilityOnRegularDays(int numberOfDaysToCheck, DateOnly startDate)
         {
             var datesToCheck = Enumerable.Range(0, numberOfDaysToCheck).Select(d => startDate.AddDays(d));
             var availableDayOfWeeks = regularDaySchedule.Where(e => e.Periods.Count > 0).Select(e => e.DayOfWeek);
@@ -43,9 +43,10 @@
             return availableDatesOnRegularAvailability;
         }
 
-        public IList<Period> GetAvailablePeriods(DateTime dateToCheck, DateTime currentDay) {
+        public IList<Period> GetAvailablePeriods(DateOnly dateToCheck, DateOnly currentDay)
+        {
             var periodsOnRegularDay = regularDaySchedule.First(e => e.DayOfWeek == dateToCheck.DayOfWeek).Periods;
-            var periodsOnSpecificDay = specifcDaySchedule.First(e => e.Date == dateToCheck.Date).Periods;
+            var periodsOnSpecificDay = specifcDaySchedule.First(e => e.Date == dateToCheck).Periods;
             return periodsOnRegularDay.Union(periodsOnSpecificDay).OrderBy(e => e.TimeStart).ToList();
         }
 

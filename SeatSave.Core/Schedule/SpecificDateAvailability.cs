@@ -7,7 +7,7 @@ namespace SeatSave.Core.Schedule
     {
         [Key]
         [Column(TypeName = "Date")]
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
         public virtual ICollection<Period> Periods { get; set; } = new List<Period>();
     }

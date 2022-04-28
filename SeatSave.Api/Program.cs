@@ -52,6 +52,7 @@ builder.Services.AddSwaggerGen(options =>
             Type=ReferenceType.SecurityScheme
         }}, new List<string> ()}
     });
+
 });
 
 if (builder.Environment.IsDevelopment())

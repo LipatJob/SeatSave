@@ -68,6 +68,13 @@ namespace SeatSave.EF
                     Periods = new List<Period>()
                 }
             );
+            modelBuilder.Entity<SpecificDateAvailability>().HasData(
+                new SpecificDateAvailability()
+                {
+                    Date = new DateOnly(2024, 04, 04),
+                    Periods = new List<Period>()
+                }
+            );
 
             modelBuilder.Entity<Librarian>().HasData(
                 new Librarian

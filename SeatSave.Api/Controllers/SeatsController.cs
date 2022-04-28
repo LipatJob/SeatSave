@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.EF;
-using SeatSave.Core.Seat;
 namespace SeatSave.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -8,50 +7,65 @@ namespace SeatSave.Api.Controllers
     public class SeatsController : ControllerBase
     {
         private SeatSaveContext context;
-        private SeatModel seat = new SeatModel();
-        private SeatModel seat2 = new SeatModel();
 
         public SeatsController(SeatSaveContext context)
         {
             this.context = context;
-
-
-            seat.Id = 1;
-            seat.Name = "ABC";
-            seat.Type = "type1";
-            seat.Active = "active";
-            seat.Description = "desc";
-
-
-            seat2.Id = 2;
-            seat2.Name = "DEF";
-            seat2.Type = "type1";
-            seat2.Active = "active";
-            seat2.Description = "desc2";
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-
-            /*
             var seat = context.Seat.ToList();
             return Ok(seat);
-            */
-            List<SeatModel> seats = new List<SeatModel>();
+        }
 
-            seats.Add(seat);
-            seats.Add(seat2);
-            return Ok(seats);
+        [HttpGet("{id}")]
+        public IActionResult GetSpecific(int id)
+        {
+
+            var seat = context.Seat.Find(id);
+            return Ok(seat);
 
         }
-        [HttpGet("{id}")]
-        public IActionResult GetSpecific(int id) { return Ok("To be implemented"); }
         [HttpPost]
-        public IActionResult Add() { return Ok("To be implemented"); }
+        public IActionResult Add()
+        {
+            // [FromBody] SeatModel seat
+            /*
+            context.Seat.Add(seat);
+            context.SaveChanges();
+            return Ok(seat);
+            */
+            return Ok("To be implemented");
+        }
         [HttpPut]
-        public IActionResult Update() { return Ok("To be implemented"); }
+        public IActionResult Update()
+        {
+            // [FromBody] SeatModel seat
+            /*
+            context.Seat.Update(seat);
+            context.SaveChanges();
+            return Ok(seat);
+            */
+            /*
+            var seat = context.Seat.FirstOrDefault(e => e.Id == ID);
+            seat.Name = newName;
+            context.SaveChanges();
+            */
+
+            return Ok("To be implemented");
+        }
         [HttpDelete]
-        public IActionResult Delete() { return Ok("To be implemented"); }
+        public IActionResult Delete()
+        {
+            // [FromBody] SeatModel seat
+            /*
+            context.Seat.Remove(seat);
+            context.SaveChanges();
+            return Ok(seat);
+            */
+            return Ok("To be implemented");
+        }
     }
 }

@@ -10,18 +10,10 @@ import CircularButton from '../../components/librarian/manage-seat/CircularButto
 
 export default function ManageSeats({ seats }) {
   const [formPart, setFormPart] = useState(0);
+  const [currId, setCurrentID] = useState(0);
 
-  const currId = 1; // change when showInfo is clicked
-
-  const showInfo = () => {
-    setFormPart(1);
-  };
-  const closeInfo = () => {
-    setFormPart(0);
-  };
-
-  const [showModal, setShowModal] = React.useState(false);
-  const [showModalAddedSeat, setShowModalAddedSeat] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
 
   return (
     <div className='page-container '>
@@ -37,10 +29,24 @@ export default function ManageSeats({ seats }) {
             header='Available Seats'
             body={seats.map((seat) => (
               <div>
-                <Seat Name={seat.name} Code={seat.id} selectSeat={showInfo} />
+                <Seat
+                  Name={seat.name}
+                  Code={seat.id}
+                  onClick={() => {
+                    setCurrentID(seat.id);
+                    setFormPart(1);
+                  }}
+                />
               </div>
             ))}
-            buttons={<CircularButton onClick={showInfo} />}
+            buttons={
+              <CircularButton
+                onClick={() => {
+                  setCurrentID(0);
+                  setFormPart(1);
+                }}
+              />
+            }
           />
         </div>
         <div id='rightPanel' className=' lg:col-span-2'>
@@ -80,7 +86,9 @@ export default function ManageSeats({ seats }) {
                     <button
                       type='button'
                       className='w-full lg:w-min gray-button'
-                      onClick={closeInfo}
+                      onClick={() => {
+                        setFormPart(0);
+                      }}
                     >
                       CANCEL
                     </button>

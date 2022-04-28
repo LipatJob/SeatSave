@@ -19,6 +19,7 @@ namespace SeatSave.EF
         public DbSet<Student> Students { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
+        public DbSet<Visitor> Visitors { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<StatusHistory> StatusHistory { get; set; }
 
@@ -146,7 +147,8 @@ namespace SeatSave.EF
                     PeriodId = 1,
                     SeatId = 1,
                     Status = "Pending",
-                    StatusHistoryId = 1
+                    StatusHistoryId = 1,
+                    UserModelId = 2
                 }
             );
 

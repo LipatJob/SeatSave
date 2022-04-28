@@ -24,20 +24,18 @@ namespace SeatSave.Api.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("BookingCode")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("BookingDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Periodid")
+                    b.Property<int>("PeriodId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SeatId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("StatusHistoryId")
@@ -45,13 +43,25 @@ namespace SeatSave.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Periodid");
+                    b.HasIndex("PeriodId");
 
                     b.HasIndex("SeatId");
 
                     b.HasIndex("StatusHistoryId");
 
                     b.ToTable("Bookings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BookingCode = "1234",
+                            BookingDate = new DateOnly(2022, 4, 28),
+                            PeriodId = 1,
+                            SeatId = 1,
+                            Status = "Pending",
+                            StatusHistoryId = 1
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Booking.StatusHistory", b =>
@@ -388,7 +398,7 @@ namespace SeatSave.Api.Migrations
                 {
                     b.HasOne("SeatSave.Core.Schedule.Period", "Period")
                         .WithMany()
-                        .HasForeignKey("Periodid")
+                        .HasForeignKey("PeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

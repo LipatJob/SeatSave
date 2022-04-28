@@ -128,7 +128,8 @@ namespace SeatSave.EF
                     Type = "1",
                     Active = "true",
                     Description = "description2 description2",
-                });
+                }
+            );
             modelBuilder.Entity<StatusHistory>().HasData(
                 new StatusHistory
                 {

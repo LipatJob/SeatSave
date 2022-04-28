@@ -10,12 +10,16 @@ import CircularButton from '../../components/librarian/manage-seat/CircularButto
 
 export default function ManageSeats({ seats }) {
   const [formPart, setFormPart] = useState(0);
+
+  const currId = 1; // change when showInfo is clicked
+
   const showInfo = () => {
-    setFormPart((oldFormPart) => oldFormPart + 1);
+    setFormPart(1);
   };
   const closeInfo = () => {
-    setFormPart((oldFormPart) => oldFormPart - 1);
+    setFormPart(0);
   };
+
   const [showModal, setShowModal] = React.useState(false);
   const [showModalAddedSeat, setShowModalAddedSeat] = React.useState(false);
 
@@ -52,7 +56,9 @@ export default function ManageSeats({ seats }) {
           {formPart === 1 && (
             <PanelWithHeader
               header='Seat Information'
-              body={<SeatInformation> </SeatInformation>}
+              body={
+                <SeatInformation selectedSeatID={currId}> </SeatInformation>
+              }
               buttons={
                 <div className='grid content-center grid-cols-1 gap-4 pb-4 text-center lg:gap-0 lg:grid-cols-4 lg:pt-4'>
                   <button

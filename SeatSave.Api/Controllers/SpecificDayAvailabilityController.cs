@@ -29,10 +29,17 @@ namespace SeatSave.Api.Controllers
             return Ok(dbContext.SpecificDayAvailability.Include(e => e.Periods).First(e => e.Date == parsedDate));
         }
 
-        /// <summary>
-        /// Short, descriptive title of the operation
-        /// </summary>
-        /// <param name="date" example="2022-07-04">YYYY-MM-DD</param>
+        [HttpPost]
+        public IActionResult Add([FromBody] SpecificDateAvailability availability)
+        {
+            if (availability == null) { return BadRequest(); }
+
+            dbContext.SpecificDayAvailability.Add(availability);
+            dbContext.SaveChanges();
+
+            return Ok(availability);
+        }
+
         [HttpPut("{isoDate}")]
         public IActionResult Update(string isoDate, SpecificDateAvailability availability)
         {

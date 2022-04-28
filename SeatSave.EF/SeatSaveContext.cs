@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Schedule;
-using SeatSave.Core.User;
 using SeatSave.Core.Seat;
+using SeatSave.Core.User;
 
 namespace SeatSave.EF
 {
@@ -30,6 +30,45 @@ namespace SeatSave.EF
         {
             modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
             modelBuilder.Entity<Period>().HasData(new PeriodFactory().GetPeriodsInDay());
+
+            modelBuilder.Entity<RegularDayOfWeekAvailability>().HasData(
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Monday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Thursday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Friday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Saturday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Sunday,
+                    Periods = new List<Period>()
+                }
+            );
+
             modelBuilder.Entity<Librarian>().HasData(
                 new Librarian
                 {

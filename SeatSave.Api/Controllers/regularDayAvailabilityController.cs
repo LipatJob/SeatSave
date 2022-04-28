@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SeatSave.Core.Schedule;
+using SeatSave.EF;
 
 namespace SeatSave.Api.Controllers
 {
@@ -6,15 +8,34 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class RegularDayAvailabilityController : ControllerBase
     {
+        private SeatSaveContext dbContext;
+
+        public RegularDayAvailabilityController(SeatSaveContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
-        public IActionResult GetAll() { return Ok("To be implemented"); }
-        [HttpGet("{id}")]
-        public IActionResult GetSpecific(int id) { return Ok("To be implemented"); }
-        [HttpPost]
-        public IActionResult Add() { return Ok("To be implemented"); }
-        [HttpPut]
-        public IActionResult Update() { return Ok("To be implemented"); }
-        [HttpDelete]
-        public IActionResult Delete() { return Ok("To be implemented"); }
+        public IActionResult GetAll()
+        {
+            return Ok(dbContext.RegularDayOfWeekAvailability);
+        }
+
+        [HttpGet("{dayOfWeek}")]
+        public IActionResult GetSpecific(DayOfWeek dayOfWeek)
+        {
+            return Ok(dbContext.RegularDayOfWeekAvailability.Find(dayOfWeek));
+        }
+
+        [HttpPut("{dayOfWeek}")]
+        public IActionResult Update(DayOfWeek dayOfWeek, RegularDayOfWeekAvailability availability)
+        {
+            if (availability.DayOfWeek != dayOfWeek) { return BadRequest(); }
+
+            dbContext.Entry(availability).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            dbContext.SaveChanges();
+
+            return Ok(availability);
+        }
     }
 }

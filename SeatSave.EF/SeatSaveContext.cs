@@ -129,6 +129,13 @@ namespace SeatSave.EF
                     Active = "true",
                     Description = "description2 description2",
                 });
+            modelBuilder.Entity<StatusHistory>().HasData(
+                new StatusHistory
+                {
+                    Id = 1,
+                    DateTimeCreated = DateTime.Now
+                }
+            );
             modelBuilder.Entity<BookingModel>().HasData(
                 new BookingModel
                 {

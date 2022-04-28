@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SeatSave.EF;
 
 namespace SeatSave.Api.Controllers
 {
@@ -6,6 +7,13 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
+        private SeatSaveContext dbContext;
+
+        public BookingController(SeatSaveContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
         public IActionResult GetAll() { return Ok("To be implemented"); }
         [HttpGet("{id}")]

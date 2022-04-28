@@ -32,8 +32,9 @@ namespace SeatSave.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var period = new PeriodFactory().GetPeriodsInDay();
             modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
-            modelBuilder.Entity<Period>().HasData(new PeriodFactory().GetPeriodsInDay());
+            modelBuilder.Entity<Period>().HasData(period);
 
             modelBuilder.Entity<RegularDayOfWeekAvailability>().HasData(
                 new RegularDayOfWeekAvailability()
@@ -128,7 +129,22 @@ namespace SeatSave.EF
                     Active = "true",
                     Description = "description2 description2",
                 });
-
+            modelBuilder.Entity<Booking>().HasData(
+                new Booking
+                {
+                    Id = 1,
+                    BookingCode = "1234",
+                    BookingDate = new DateOnly(2022, 04, 28),
+                    Period = new Period { id = 1 },
+                    Seat = new SeatModel { Id = 1 },
+                    Status = "Pending",
+                    StatusHistory = new StatusHistory
+                    {
+                        Id = 1,
+                        DateTimeCreated = DateTime.Now,
+                    }
+                }
+            );
 
         }
     }

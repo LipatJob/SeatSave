@@ -1,27 +1,10 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState, useEffect } from 'react';
 
-export default function SeatInformation(selectedSeatID) {
-  // eslint-disable-next-line react/destructuring-assignment
-  const currentSeatID = selectedSeatID.selectedSeatID;
-  const [userData, setUserData] = useState({});
-
-  const getData = async () => {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Seats/${currentSeatID}`,
-    );
-    const jsonData = await response.json();
-    setUserData(jsonData);
-
-    console.log(jsonData);
-  };
-  useEffect(() => {
-    if (currentSeatID !== 0) getData();
-  }, []);
-
+export default function SeatInformation({ seatData }) {
   return (
     <form>
-      <Formik initialValues={userData} enableReinitialize>
+      <Formik initialValues={seatData} enableReinitialize>
         {() => (
           <Form>
             <div className='sm:max-w-md'>

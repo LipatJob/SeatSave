@@ -11,14 +11,14 @@ export default function AvailabilityTabs({ activeTabIndex, onTabSelected }) {
     <div className='grid grid-cols-2'>
       <button
         type='button'
-        className={`p-3 ${tab1Bg}`}
+        className={`p-3 h-16  ${tab1Bg}`}
         onClick={() => onTabSelected(0)}
       >
         Regular Hours
       </button>
       <button
         type='button'
-        className={`p-3 ${tab2Bg}`}
+        className={`p-3 h-16  ${tab2Bg}`}
         onClick={() => onTabSelected(1)}
       >
         Override Days

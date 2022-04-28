@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
@@ -14,6 +14,20 @@ export default function ManageSeats({ seats }) {
 
   const [showModal, setShowModal] = useState(false);
   const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
+  const [seatData, seatSeatData] = useState();
+
+  const updateSeatData = async () => {
+    if (currId === 0) return;
+    const response = await fetch(`${process.env.API_URL}/Api/Seats/${currId}`);
+    const jsonData = await response.json();
+    seatSeatData(jsonData);
+
+    console.log(jsonData);
+  };
+
+  useEffect(() => {
+    updateSeatData();
+  }, [currId]);
 
   return (
     <div className='page-container '>
@@ -62,9 +76,7 @@ export default function ManageSeats({ seats }) {
           {formPart === 1 && (
             <PanelWithHeader
               header='Seat Information'
-              body={
-                <SeatInformation selectedSeatID={currId}> </SeatInformation>
-              }
+              body={<SeatInformation seatData={seatData}> </SeatInformation>}
               buttons={
                 <div className='grid content-center grid-cols-1 gap-4 pb-4 text-center lg:gap-0 lg:grid-cols-4 lg:pt-4'>
                   <button

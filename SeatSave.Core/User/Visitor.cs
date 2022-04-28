@@ -9,7 +9,7 @@ namespace SeatSave.Core.User
         {
         }
 
-        public IEnumerable<BookingModel> ListOfBookings { get; set; }
+        public virtual IEnumerable<BookingModel> ListOfBookings { get; set; }
 
         public void Book() // (date, period, seat)
         {

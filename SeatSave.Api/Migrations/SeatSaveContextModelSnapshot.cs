@@ -85,6 +85,13 @@ namespace SeatSave.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StatusHistory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateTimeCreated = new DateTime(2022, 4, 28, 17, 55, 48, 534, DateTimeKind.Local).AddTicks(1181)
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>

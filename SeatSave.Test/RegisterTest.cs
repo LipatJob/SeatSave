@@ -6,7 +6,7 @@ using Xunit;
 
 namespace SeatSave.Test
 {
-    public class RegisterTest : IClassFixture<UserLoginSeedFixture>
+    public class RegisterTest : IClassFixture<UserRegisterSeedFixture>
     {
         UserRegisterSeedFixture _fixture;
 

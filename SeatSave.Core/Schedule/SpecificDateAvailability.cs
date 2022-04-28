@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeatSave.Core.Schedule
 {
     public class SpecificDateAvailability
     {
         [Key]
-        public DateTime Date { get; set; }
+        [Column(TypeName = "Date")]
+        public DateOnly Date { get; set; }
 
-        public List<Period> Periods { get; set; }
+        public virtual ICollection<Period> Periods { get; set; } = new List<Period>();
     }
 }

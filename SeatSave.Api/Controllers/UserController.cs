@@ -9,17 +9,17 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private SeatSaveContext context;
+        private SeatSaveContext dbContext;
 
         public UserController(SeatSaveContext context)
         {
-            this.context = context;
+            this.dbContext = context;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = context.Users.ToList().Select(object (e) =>
+            var users = dbContext.Users.ToList().Select(object (e) =>
             {
                 e.Password = "";
                 var userModel = e.UserType switch
@@ -38,7 +38,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetSpecific([FromRoute] int id)
         {
-            var user = context.Users.Find(id);
+            var user = dbContext.Users.Find(id);
             if (user == null) { return NotFound(); }
             user.Password = "";
 
@@ -59,8 +59,8 @@ namespace SeatSave.Api.Controllers
             var user = DtoToUserType(userDto);
             if (user == null) { return BadRequest(); }
 
-            context.Users.Add(user);
-            context.SaveChanges();
+            dbContext.Users.Add(user);
+            dbContext.SaveChanges();
 
             return Ok(user);
         }
@@ -68,7 +68,7 @@ namespace SeatSave.Api.Controllers
         [HttpHead]
         public IActionResult DoesEmailExist([FromQuery] string email)
         {
-            var user = context.Users.FirstOrDefault(e => e.Email == email);
+            var user = dbContext.Users.FirstOrDefault(e => e.Email == email);
             if (user == null) { return NotFound(); }
             return NoContent();
         }
@@ -94,19 +94,19 @@ namespace SeatSave.Api.Controllers
             if (user == null) { return BadRequest(); }
 
 
-            context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.SaveChanges();
+            dbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            dbContext.SaveChanges();
 
             return Ok(user);
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = context.Users.Find(id);
+            var user = dbContext.Users.Find(id);
             if (user == null) { NotFound(); }
 
-            context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-            context.SaveChanges();
+            dbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            dbContext.SaveChanges();
 
             return NoContent();
         }

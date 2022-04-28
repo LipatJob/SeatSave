@@ -14,8 +14,6 @@ namespace SeatSave.Api.Controllers
         public IActionResult Add()
         {
 
-            // ESSENTIAL: convert user into visitor object
-
             /*
             if (user.UserGroup == Visitor.UserGroup)
             {
@@ -23,7 +21,7 @@ namespace SeatSave.Api.Controllers
                 visitor.Book(); // (date, period, seat)
             }
             */
-
+            
             // STEPS:
             // 1. Get user credentials
             // 2. Get reservation details (date, period, seat)

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Schedule;
-using SeatSave.Core.User;
+
 using SeatSave.Core.Booking;
 using SeatSave.Core.Seat;
+using SeatSave.Core.User;
 
 namespace SeatSave.EF
 {
@@ -23,38 +24,61 @@ namespace SeatSave.EF
 
         public DbSet<SeatModel> Seat { get; set; }
 
-        /*
         public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
         public DbSet<SpecificDateAvailability> SpecificDayAvailability { get; set; }
-        */
+        public DbSet<Period> Periods { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
+            modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
+            modelBuilder.Entity<Period>().HasData(new PeriodFactory().GetPeriodsInDay());
 
-                modelBuilder.Entity<RegularDayOfWeekAvailability>().OwnsMany(
-                    p => p.Periods,
-                    a =>
-                    {
-                        a.WithOwner().HasForeignKey("OwnerId");
-                        a.Property<int>("Id");
-                        a.HasKey("Id");
-                    }
-                );
-
-                modelBuilder.Entity<SpecificDateAvailability>().OwnsMany(
-                    p => p.Periods,
-                    a =>
-                    {
-                        a.WithOwner().HasForeignKey("OwnerId");
-                        a.Property<int>("Id");
-                        a.HasKey("Id");
-                    }
-                );
-            */
-
-
+            modelBuilder.Entity<RegularDayOfWeekAvailability>().HasData(
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Monday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Tuesday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Thursday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Friday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Saturday,
+                    Periods = new List<Period>()
+                },
+                new RegularDayOfWeekAvailability()
+                {
+                    DayOfWeek = DayOfWeek.Sunday,
+                    Periods = new List<Period>()
+                }
+            );
+            modelBuilder.Entity<SpecificDateAvailability>().HasData(
+                new SpecificDateAvailability()
+                {
+                    Date = new DateOnly(2024, 04, 04),
+                    Periods = new List<Period>()
+                }
+            );
 
             modelBuilder.Entity<Librarian>().HasData(
                 new Librarian

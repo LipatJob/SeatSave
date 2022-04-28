@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatSave.EF;
 
@@ -10,9 +11,10 @@ using SeatSave.EF;
 namespace SeatSave.Api.Migrations
 {
     [DbContext(typeof(SeatSaveContext))]
-    partial class SeatSaveContextModelSnapshot : ModelSnapshot
+    [Migration("20220428001139_AddRegularDayOfWeekValues")]
+    partial class AddRegularDayOfWeekValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -26,7 +28,7 @@ namespace SeatSave.Api.Migrations
                     b.Property<int?>("RegularDayOfWeekAvailabilityDayOfWeek")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly?>("SpecificDateAvailabilityDate")
+                    b.Property<DateTime?>("SpecificDateAvailabilityDate")
                         .HasColumnType("Date");
 
                     b.Property<TimeSpan>("TimeEnd")
@@ -139,18 +141,12 @@ namespace SeatSave.Api.Migrations
 
             modelBuilder.Entity("SeatSave.Core.Schedule.SpecificDateAvailability", b =>
                 {
-                    b.Property<DateOnly>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
                     b.HasKey("Date");
 
                     b.ToTable("SpecificDayAvailability");
-
-                    b.HasData(
-                        new
-                        {
-                            Date = new DateOnly(2024, 4, 4)
-                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Seat.SeatModel", b =>

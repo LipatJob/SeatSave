@@ -12,8 +12,8 @@ export default function SeatInformation({ seatData }) {
                 <p>Seat ID</p>
                 <Field
                   type='text'
-                  id='inputSeatID'
-                  name='inputSeatID'
+                  id='id'
+                  name='id'
                   placeholder='Text'
                   className='bg-iron'
                   disabled

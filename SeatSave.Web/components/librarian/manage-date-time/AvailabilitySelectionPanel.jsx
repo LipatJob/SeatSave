@@ -6,14 +6,14 @@ import RegularHoursSelectionPanel from './RegularHoursSelectionPanel';
 export default function AvailabilitySelectionPanel() {
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
   return (
-    <div className='h-screen border border-iron'>
+    <div className='flex flex-col border border-iron'>
       <div>
         <AvailabilityTabs
           activeTabIndex={currentTabIndex}
           onTabSelected={setCurrentTabIndex}
         />
       </div>
-      <div>
+      <div className='flex-grow'>
         {currentTabIndex === 0 && <RegularHoursSelectionPanel />}
         {currentTabIndex === 1 && <OverrideDaysSelectionPanel />}
       </div>

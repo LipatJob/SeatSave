@@ -129,20 +129,17 @@ namespace SeatSave.EF
                     Active = "true",
                     Description = "description2 description2",
                 });
+
             modelBuilder.Entity<Booking>().HasData(
                 new Booking
                 {
                     Id = 1,
                     BookingCode = "1234",
                     BookingDate = new DateOnly(2022, 04, 28),
-                    Period = new Period { id = 1 },
-                    Seat = new SeatModel { Id = 1 },
+                    PeriodId = 1,
+                    SeatId = 1,
                     Status = "Pending",
-                    StatusHistory = new StatusHistory
-                    {
-                        Id = 1,
-                        DateTimeCreated = DateTime.Now,
-                    }
+                    StatusHistoryId = 1
                 }
             );
 

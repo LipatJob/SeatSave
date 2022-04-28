@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SeatSave.Api.Migrations
 {
-    public partial class SeedBookings : Migration
+    public partial class SeedBookingsAgain : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -237,6 +237,11 @@ namespace SeatSave.Api.Migrations
                 table: "SpecificDayAvailability",
                 column: "Date",
                 value: new DateOnly(2024, 4, 4));
+
+            migrationBuilder.InsertData(
+                table: "StatusHistory",
+                columns: new[] { "Id", "DateTimeCanceled", "DateTimeCheckedIn", "DateTimeCheckedOut", "DateTimeCreated" },
+                values: new object[] { 1, null, null, null, new DateTime(2022, 4, 28, 17, 55, 48, 534, DateTimeKind.Local).AddTicks(1181) });
 
             migrationBuilder.InsertData(
                 table: "Users",

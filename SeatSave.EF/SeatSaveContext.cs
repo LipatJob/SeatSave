@@ -135,7 +135,14 @@ namespace SeatSave.EF
                 new StatusHistory
                 {
                     Id = 1,
-                    DateTimeCreated = DateTime.Now
+                    DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
+                    DateTimeCheckedIn = new DateTime(2022, 4, 28, 8, 2, 0),
+                    DateTimeCheckedOut = new DateTime(2022, 4, 28, 9, 26, 0),
+                },
+                new StatusHistory
+                {
+                    Id = 2,
+                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10)
                 }
             );
             modelBuilder.Entity<BookingModel>().HasData(
@@ -144,10 +151,21 @@ namespace SeatSave.EF
                     Id = 1,
                     BookingCode = "1234",
                     BookingDate = new DateOnly(2022, 04, 28),
-                    PeriodId = 1,
+                    PeriodId = 3,
                     SeatId = 1,
-                    Status = "Pending",
+                    Status = "Completed",
                     StatusHistoryId = 1,
+                    UserModelId = 2
+                },
+                new BookingModel
+                {
+                    Id = 2,
+                    BookingCode = "5678",
+                    BookingDate = new DateOnly(2022, 04, 29),
+                    PeriodId = 5,
+                    SeatId = 2,
+                    Status = "Pending",
+                    StatusHistoryId = 2,
                     UserModelId = 2
                 }
             );

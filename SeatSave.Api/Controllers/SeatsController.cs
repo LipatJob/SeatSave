@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.EF;
+using SeatSave.Core.Seat;
+
 namespace SeatSave.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -23,49 +25,30 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id)
         {
-
             var seat = context.Seat.Find(id);
             return Ok(seat);
-
         }
         [HttpPost]
-        public IActionResult Add()
+        public IActionResult Add([FromBody] SeatModel seat)
         {
-            // [FromBody] SeatModel seat
-            /*
             context.Seat.Add(seat);
             context.SaveChanges();
             return Ok(seat);
-            */
-            return Ok("To be implemented");
         }
         [HttpPut]
-        public IActionResult Update()
+        public IActionResult Update([FromBody] SeatModel seat)
         {
-            // [FromBody] SeatModel seat
-            /*
-            context.Seat.Update(seat);
+            context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             context.SaveChanges();
             return Ok(seat);
-            */
-            /*
-            var seat = context.Seat.FirstOrDefault(e => e.Id == ID);
-            seat.Name = newName;
-            context.SaveChanges();
-            */
-
-            return Ok("To be implemented");
         }
+
         [HttpDelete]
-        public IActionResult Delete()
+        public IActionResult Delete([FromBody] SeatModel seat)
         {
-            // [FromBody] SeatModel seat
-            /*
             context.Seat.Remove(seat);
             context.SaveChanges();
             return Ok(seat);
-            */
-            return Ok("To be implemented");
         }
     }
 }

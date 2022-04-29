@@ -21,9 +21,7 @@ namespace SeatSave.EF
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<StatusHistory> StatusHistory { get; set; }
-
         public DbSet<SeatModel> Seat { get; set; }
-
         public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
         public DbSet<SpecificDateAvailability> SpecificDayAvailability { get; set; }
         public DbSet<Period> Periods { get; set; }
@@ -117,7 +115,7 @@ namespace SeatSave.EF
                     Id = 1,
                     Name = "ABC",
                     Type = "1",
-                    Active = "true",
+                    Active = true,
                     Description = "description description",
                 },
                 new SeatModel
@@ -125,7 +123,7 @@ namespace SeatSave.EF
                     Id = 2,
                     Name = "DEF",
                     Type = "2",
-                    Active = "true",
+                    Active = false,
                     Description = "description2 description2",
                 });
 

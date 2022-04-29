@@ -1,25 +1,25 @@
 import React from 'react';
 
-export default function AvailabilityTabs({ activeTabIndex, onTabSelected }) {
+export default function AvailabilityTabs({ activeTab, onTabSelected }) {
   const notSelectedBg = 'bg-pearl-bush';
   const selectedBg = 'bg-rodeo-dust';
 
-  const tab1Bg = activeTabIndex === 0 ? selectedBg : notSelectedBg;
-  const tab2Bg = activeTabIndex === 1 ? selectedBg : notSelectedBg;
+  const tab1Bg = activeTab === 'RegularHours' ? selectedBg : notSelectedBg;
+  const tab2Bg = activeTab === 'OverrideDays' ? selectedBg : notSelectedBg;
 
   return (
     <div className='grid grid-cols-2'>
       <button
         type='button'
         className={`p-3 h-16  ${tab1Bg}`}
-        onClick={() => onTabSelected(0)}
+        onClick={() => onTabSelected('RegularHours')}
       >
         Regular Hours
       </button>
       <button
         type='button'
         className={`p-3 h-16  ${tab2Bg}`}
-        onClick={() => onTabSelected(1)}
+        onClick={() => onTabSelected('OverrideDays')}
       >
         Override Days
       </button>

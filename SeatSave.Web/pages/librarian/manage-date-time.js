@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AvailabilitySelectionPanel from '../../components/librarian/manage-date-time/AvailabilitySelectionPanel';
 import PeriodSelectionPanel from '../../components/librarian/manage-date-time/PeriodSelectionPanel';
 
@@ -10,7 +10,7 @@ export default function ManageDateTime() {
         method: 'GET',
       },
     );
-    const data = response.json();
+    const data = await response.json();
     return data;
   }
 
@@ -21,7 +21,8 @@ export default function ManageDateTime() {
         method: 'GET',
       },
     );
-    const data = response.json();
+    const data = await response.json();
+    console.log(data);
     return data;
   }
 
@@ -32,7 +33,7 @@ export default function ManageDateTime() {
         method: 'GET',
       },
     );
-    const data = response.json();
+    const data = await response.json();
     return data;
   }
 
@@ -69,12 +70,45 @@ export default function ManageDateTime() {
     return response.ok;
   }
 
+  const [pageState, setPageState] = useState({
+    availabilityType: 'RegularHours',
+    selectedId: '',
+    availability: [],
+    overrideDayItems: [
+      {
+        id: '2022-01-02',
+        name: 'January 01, 2022',
+      },
+    ],
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (pageState.selectedId === '') return;
+
+      let availability = null;
+      if (pageState.availabilityType === 'RegularHours') {
+        availability = await getRegularDayAvailability(pageState.selectedId);
+      } else if (pageState.availabilityType === 'OverrideDays') {
+        availability = await getSpecificDayAvailability(pageState.selectedId);
+      }
+
+      setPageState((oldState) => ({ ...oldState, availability }));
+    };
+    fetchData().catch(console.error);
+  }, [pageState.selectedId]);
+
   return (
     <div className='page-container-small'>
       <h1 className='mb-6'>Manage Date and Time</h1>
       <div className='grid grid-cols-3 gap-x-7'>
-        <AvailabilitySelectionPanel />
-        <PeriodSelectionPanel className='col-span-2' />
+        <AvailabilitySelectionPanel
+          pageState={pageState}
+          setPageState={setPageState}
+        />
+        {pageState.selectedId && (
+          <PeriodSelectionPanel className='col-span-2' />
+        )}
       </div>
     </div>
   );

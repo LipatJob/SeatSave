@@ -8,5 +8,4 @@
         public string? Active { get; set; }
         public string? Description { get; set; }
     }
-
 }

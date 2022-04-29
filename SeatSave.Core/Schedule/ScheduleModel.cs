@@ -45,8 +45,13 @@
 
         public IList<Period> GetAvailablePeriods(DateOnly dateToCheck, DateOnly currentDay)
         {
-            var periodsOnRegularDay = regularDaySchedule.First(e => e.DayOfWeek == dateToCheck.DayOfWeek).Periods;
-            var periodsOnSpecificDay = specifcDaySchedule.First(e => e.Date == dateToCheck).Periods;
+            var periodsOnRegularDay = regularDaySchedule.FirstOrDefault(e => e.DayOfWeek == dateToCheck.DayOfWeek)?.Periods;
+            var periodsOnSpecificDay = specifcDaySchedule.FirstOrDefault(e => e.Date == dateToCheck)?.Periods;
+            if (periodsOnRegularDay == null || periodsOnSpecificDay == null)
+            {
+                return new List<Period>();
+            }
+
             return periodsOnRegularDay.Union(periodsOnSpecificDay).OrderBy(e => e.TimeStart).ToList();
         }
 

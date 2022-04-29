@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
 import ViewBookingsForm from '../../components/librarian/view-bookings/ViewBookingsForm';
 import ViewBookingsTable from '../../components/librarian/view-bookings/ViewBookingsTable';
@@ -20,11 +21,8 @@ export default function ViewBookings({ allBookings }) {
     setDisplayBookings(searchResults);
   }
 
-  async function handleViewAll() {
-    const res = await fetch(`${process.env.API_URL}/Api/Booking`);
-    const searchResults = await res.json();
-
-    setDisplayBookings(searchResults);
+  function handleViewAll() {
+    setDisplayBookings(allBookings);
   }
 
   return (

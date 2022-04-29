@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function PanelWithHeader({ header, body, buttons }) {
+export default function PanelWithHeader({ header, body }) {
   return (
     <div>
       <div className='w-full shadow-lg'>
@@ -10,8 +10,7 @@ export default function PanelWithHeader({ header, body, buttons }) {
           </div>
         </div>
         <div>
-          <div className='px-4 py-4 h-[470px] '>{body}</div>
-          <div className='px-4 h-content lg:h-[80px]'>{buttons}</div>
+          <div className='px-4 py-4 h-content lg:h-[550px]'>{body}</div>
         </div>
       </div>
     </div>

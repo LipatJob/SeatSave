@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using SeatSave.Api.Converters;
 using SeatSave.EF;
 using System.Text;
 
@@ -14,8 +15,10 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
+        options.SerializerSettings.Converters.Add(new DateOnlyJsonConverter());
     });
 
+builder.Services.AddTransient<SeatSaveDbSeeder>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -84,6 +87,19 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+if (args.Length == 1 && args[0].ToLower() == "seed") { SeedData(app); }
+void SeedData(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<SeatSaveDbSeeder>();
+        service.Seed();
+    }
+}
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -21,19 +21,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAvailableDays()
         {
-            List<DateTime> availableDays = new List<DateTime>();
-            for (int x = 0; x < 21; x++)
-            {
-                var currentDay = DateTime.Today.AddDays(x);
-                if (IsUnavailable(currentDay))
-                {
-                    continue;
-                }
-
-                availableDays.Add(currentDay);
-            }
-
-            return Ok(availableDays);
+            return Ok(schedule.GetAvailableDays(DateOnly.FromDateTime(DateTime.Today), 21));
         }
 
         private bool IsUnavailable(DateTime currentDay)

@@ -19,7 +19,8 @@ namespace SeatSave.EF
         public DbSet<Student> Students { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<HeadLibrarian> HeadLibrarians { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Visitor> Visitors { get; set; }
+        public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<StatusHistory> StatusHistory { get; set; }
         public DbSet<SeatModel> Seat { get; set; }
         public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
@@ -30,8 +31,9 @@ namespace SeatSave.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var period = new PeriodFactory().GetPeriodsInDay();
             modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
-            modelBuilder.Entity<Period>().HasData(new PeriodFactory().GetPeriodsInDay());
+            modelBuilder.Entity<Period>().HasData(period);
 
             modelBuilder.Entity<RegularDayOfWeekAvailability>().HasData(
                 new RegularDayOfWeekAvailability()
@@ -125,8 +127,46 @@ namespace SeatSave.EF
                     Type = "2",
                     Active = false,
                     Description = "description2 description2",
-                });
-
+                }
+            );
+            modelBuilder.Entity<StatusHistory>().HasData(
+                new StatusHistory
+                {
+                    Id = 1,
+                    DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
+                    DateTimeCheckedIn = new DateTime(2022, 4, 28, 8, 2, 0),
+                    DateTimeCheckedOut = new DateTime(2022, 4, 28, 9, 26, 0),
+                },
+                new StatusHistory
+                {
+                    Id = 2,
+                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10)
+                }
+            );
+            modelBuilder.Entity<BookingModel>().HasData(
+                new BookingModel
+                {
+                    Id = 1,
+                    BookingCode = "1234",
+                    BookingDate = new DateOnly(2022, 04, 28),
+                    PeriodId = 3,
+                    SeatId = 1,
+                    Status = "Completed",
+                    StatusHistoryId = 1,
+                    UserModelId = 2
+                },
+                new BookingModel
+                {
+                    Id = 2,
+                    BookingCode = "5678",
+                    BookingDate = new DateOnly(2022, 04, 29),
+                    PeriodId = 5,
+                    SeatId = 2,
+                    Status = "Pending",
+                    StatusHistoryId = 2,
+                    UserModelId = 2
+                }
+            );
 
         }
     }

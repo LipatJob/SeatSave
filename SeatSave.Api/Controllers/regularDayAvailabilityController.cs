@@ -4,7 +4,7 @@ using SeatSave.EF;
 
 namespace SeatSave.Api.Controllers
 {
-    [Route("api/availability/[controller]")]
+    [Route("api/Availability/RegularDay")]
     [ApiController]
     public class RegularDayAvailabilityController : ControllerBase
     {

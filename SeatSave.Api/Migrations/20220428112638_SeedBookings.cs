@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SeatSave.Api.Migrations
 {
-    public partial class ResetMigrations : Migration
+    public partial class SeedBookings : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -118,19 +118,20 @@ namespace SeatSave.Api.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BookingCode = table.Column<string>(type: "TEXT", nullable: false),
+                    BookingCode = table.Column<string>(type: "TEXT", nullable: true),
                     BookingDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
-                    Periodid = table.Column<int>(type: "INTEGER", nullable: false),
+                    PeriodId = table.Column<int>(type: "INTEGER", nullable: false),
                     SeatId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    StatusHistoryId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Status = table.Column<string>(type: "TEXT", nullable: true),
+                    StatusHistoryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    VisitorId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bookings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bookings_Periods_Periodid",
-                        column: x => x.Periodid,
+                        name: "FK_Bookings_Periods_PeriodId",
+                        column: x => x.PeriodId,
                         principalTable: "Periods",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -146,6 +147,11 @@ namespace SeatSave.Api.Migrations
                         principalTable: "StatusHistory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Users_VisitorId",
+                        column: x => x.VisitorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -239,6 +245,11 @@ namespace SeatSave.Api.Migrations
                 value: new DateOnly(2024, 4, 4));
 
             migrationBuilder.InsertData(
+                table: "StatusHistory",
+                columns: new[] { "Id", "DateTimeCanceled", "DateTimeCheckedIn", "DateTimeCheckedOut", "DateTimeCreated" },
+                values: new object[] { 1, null, null, null, new DateTime(2022, 4, 28, 19, 26, 37, 903, DateTimeKind.Local).AddTicks(4310) });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Discriminator", "Email", "FirstName", "LastName", "Password", "UserGroup", "UserType" },
                 values: new object[] { 1, "Librarian", "librarian@gmail.com", "Text", "Account", "1234567", "Librarian", "Librarian" });
@@ -253,10 +264,15 @@ namespace SeatSave.Api.Migrations
                 columns: new[] { "Id", "Discriminator", "Email", "FirstName", "LastName", "Password", "ProgramStrand", "UserGroup", "UserType", "YearGrade" },
                 values: new object[] { 3, "Student", "another_student@gmail.com", "Text", "Account", "password", "IT", "Visitor", "Student", "First Year" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookings_Periodid",
+            migrationBuilder.InsertData(
                 table: "Bookings",
-                column: "Periodid");
+                columns: new[] { "Id", "BookingCode", "BookingDate", "PeriodId", "SeatId", "Status", "StatusHistoryId", "VisitorId" },
+                values: new object[] { 1, "1234", new DateOnly(2022, 4, 28), 1, 1, "Pending", 1, null });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_PeriodId",
+                table: "Bookings",
+                column: "PeriodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_SeatId",
@@ -267,6 +283,11 @@ namespace SeatSave.Api.Migrations
                 name: "IX_Bookings_StatusHistoryId",
                 table: "Bookings",
                 column: "StatusHistoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_VisitorId",
+                table: "Bookings",
+                column: "VisitorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Periods_RegularDayOfWeekAvailabilityDayOfWeek",
@@ -291,9 +312,6 @@ namespace SeatSave.Api.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Periods");
 
             migrationBuilder.DropTable(
@@ -301,6 +319,9 @@ namespace SeatSave.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "StatusHistory");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "RegularDayOfWeekAvailability");

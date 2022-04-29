@@ -1,18 +1,29 @@
 import React from 'react';
 
-export default function ViewBookingsForm() {
+export default function ViewBookingsForm({ onSubmit }) {
   return (
-    <form className='relative flex flex-row items-end w-full gap-5 overflow-x-auto mt-14'>
+    <form
+      onSubmit={onSubmit}
+      className='relative flex flex-row items-end w-full gap-5 overflow-x-auto mt-14'
+    >
       <div className='basis-1/4'>
         <label htmlFor='bookingId' className='flex flex-col'>
           Booking ID
-          <input id='bookingId' type='text' placeholder='Enter Booking ID' />
+          <input
+            id='bookingId'
+            name='bookingId'
+            type='text'
+            placeholder='Enter Booking ID'
+          />
         </label>
       </div>
       <div className='basis-2/12'>
         <label htmlFor='status' className='flex flex-col'>
           Status
-          <select id='status' placeholder='Select Status'>
+          <select id='status' name='status'>
+            <option value='' defaultChecked>
+              Any Status
+            </option>
             <option>Pending</option>
             <option>Checked In</option>
             <option>Completed</option>
@@ -23,7 +34,7 @@ export default function ViewBookingsForm() {
       <div className='basis-2/12'>
         <label htmlFor='bookingDate' className='flex flex-col'>
           Booking Date
-          <input id='bookingDate' type='date' placeholder='Enter Date' />
+          <input id='bookingDate' name='bookingDate' type='date' />
         </label>
       </div>
       <div className='basis-1/4'>
@@ -31,6 +42,7 @@ export default function ViewBookingsForm() {
           Visitor Email
           <input
             id='visitorEmail'
+            name='visitorEmail'
             type='email'
             placeholder='Enter Visitor Email'
           />

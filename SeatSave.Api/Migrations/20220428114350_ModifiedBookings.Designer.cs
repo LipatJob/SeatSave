@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatSave.EF;
 
@@ -10,48 +11,70 @@ using SeatSave.EF;
 namespace SeatSave.Api.Migrations
 {
     [DbContext(typeof(SeatSaveContext))]
-    partial class SeatSaveContextModelSnapshot : ModelSnapshot
+    [Migration("20220428114350_ModifiedBookings")]
+    partial class ModifiedBookings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
 
-            modelBuilder.Entity("SeatSave.Core.Booking.Booking", b =>
+            modelBuilder.Entity("SeatSave.Core.Booking.BookingModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("BookingCode")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("BookingDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Periodid")
+                    b.Property<int>("PeriodId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SeatId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("StatusHistoryId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UserModelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("VisitorId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Periodid");
+                    b.HasIndex("PeriodId");
 
                     b.HasIndex("SeatId");
 
                     b.HasIndex("StatusHistoryId");
 
+                    b.HasIndex("UserModelId");
+
+                    b.HasIndex("VisitorId");
+
                     b.ToTable("Bookings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BookingCode = "1234",
+                            BookingDate = new DateOnly(2022, 4, 28),
+                            PeriodId = 1,
+                            SeatId = 1,
+                            Status = "Pending",
+                            StatusHistoryId = 1,
+                            UserModelId = 2
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Booking.StatusHistory", b =>
@@ -75,6 +98,13 @@ namespace SeatSave.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StatusHistory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateTimeCreated = new DateTime(2022, 4, 28, 19, 43, 49, 351, DateTimeKind.Local).AddTicks(5543)
+                        });
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>
@@ -295,17 +325,6 @@ namespace SeatSave.Api.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("UserModel");
                 });
 
-            modelBuilder.Entity("SeatSave.Core.User.Faculty", b =>
-                {
-                    b.HasBaseType("SeatSave.Core.User.UserModel");
-
-                    b.Property<string>("FacultyOffice")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasDiscriminator().HasValue("Faculty");
-                });
-
             modelBuilder.Entity("SeatSave.Core.User.Librarian", b =>
                 {
                     b.HasBaseType("SeatSave.Core.User.UserModel");
@@ -325,9 +344,34 @@ namespace SeatSave.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SeatSave.Core.User.Staff", b =>
+            modelBuilder.Entity("SeatSave.Core.User.Visitor", b =>
                 {
                     b.HasBaseType("SeatSave.Core.User.UserModel");
+
+                    b.HasDiscriminator().HasValue("Visitor");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.User.Faculty", b =>
+                {
+                    b.HasBaseType("SeatSave.Core.User.Visitor");
+
+                    b.Property<string>("FacultyOffice")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasDiscriminator().HasValue("Faculty");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.User.HeadLibrarian", b =>
+                {
+                    b.HasBaseType("SeatSave.Core.User.Librarian");
+
+                    b.HasDiscriminator().HasValue("HeadLibrarian");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.User.Staff", b =>
+                {
+                    b.HasBaseType("SeatSave.Core.User.Visitor");
 
                     b.Property<string>("StaffOffice")
                         .IsRequired()
@@ -338,7 +382,7 @@ namespace SeatSave.Api.Migrations
 
             modelBuilder.Entity("SeatSave.Core.User.Student", b =>
                 {
-                    b.HasBaseType("SeatSave.Core.User.UserModel");
+                    b.HasBaseType("SeatSave.Core.User.Visitor");
 
                     b.Property<string>("ProgramStrand")
                         .IsRequired()
@@ -377,18 +421,11 @@ namespace SeatSave.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SeatSave.Core.User.HeadLibrarian", b =>
-                {
-                    b.HasBaseType("SeatSave.Core.User.Librarian");
-
-                    b.HasDiscriminator().HasValue("HeadLibrarian");
-                });
-
-            modelBuilder.Entity("SeatSave.Core.Booking.Booking", b =>
+            modelBuilder.Entity("SeatSave.Core.Booking.BookingModel", b =>
                 {
                     b.HasOne("SeatSave.Core.Schedule.Period", "Period")
                         .WithMany()
-                        .HasForeignKey("Periodid")
+                        .HasForeignKey("PeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -404,11 +441,23 @@ namespace SeatSave.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SeatSave.Core.User.UserModel", "UserModel")
+                        .WithMany()
+                        .HasForeignKey("UserModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeatSave.Core.User.Visitor", null)
+                        .WithMany("ListOfBookings")
+                        .HasForeignKey("VisitorId");
+
                     b.Navigation("Period");
 
                     b.Navigation("Seat");
 
                     b.Navigation("StatusHistory");
+
+                    b.Navigation("UserModel");
                 });
 
             modelBuilder.Entity("SeatSave.Core.Schedule.Period", b =>
@@ -430,6 +479,11 @@ namespace SeatSave.Api.Migrations
             modelBuilder.Entity("SeatSave.Core.Schedule.SpecificDateAvailability", b =>
                 {
                     b.Navigation("Periods");
+                });
+
+            modelBuilder.Entity("SeatSave.Core.User.Visitor", b =>
+                {
+                    b.Navigation("ListOfBookings");
                 });
 #pragma warning restore 612, 618
         }

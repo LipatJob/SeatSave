@@ -39,6 +39,12 @@ namespace SeatSave.EF
         {
             var period = new PeriodFactory().GetPeriodsInDay();
             modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
+            modelBuilder.Entity<RegularDayOfWeekAvailability>()
+                .HasMany(g => g.Periods)
+                .WithMany("RegularDayOfWeekAvailabilities");
+            modelBuilder.Entity<SpecificDateAvailability>()
+                .HasMany(g => g.Periods)
+                .WithMany("SpecificDateAvailabilities");
         }
     }
 }

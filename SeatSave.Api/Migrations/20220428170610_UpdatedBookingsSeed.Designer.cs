@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatSave.EF;
 
@@ -10,9 +11,10 @@ using SeatSave.EF;
 namespace SeatSave.Api.Migrations
 {
     [DbContext(typeof(SeatSaveContext))]
-    partial class SeatSaveContextModelSnapshot : ModelSnapshot
+    [Migration("20220428170610_UpdatedBookingsSeed")]
+    partial class UpdatedBookingsSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -77,7 +79,7 @@ namespace SeatSave.Api.Migrations
                             SeatId = 2,
                             Status = "Pending",
                             StatusHistoryId = 2,
-                            UserModelId = 2
+                            UserModelId = 3
                         });
                 });
 

@@ -9,6 +9,10 @@ namespace SeatSave.EF
 {
     public class SeatSaveContext : DbContext
     {
+        public SeatSaveContext(object value)
+        {
+        }
+
         public SeatSaveContext(DbContextOptions options) : base(options)
         {
         }
@@ -33,103 +37,6 @@ namespace SeatSave.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
-            modelBuilder.Entity<Period>().HasData(new PeriodFactory().GetPeriodsInDay());
-
-            modelBuilder.Entity<RegularDayOfWeekAvailability>().HasData(
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Monday,
-                    Periods = new List<Period>()
-                },
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Tuesday,
-                    Periods = new List<Period>()
-                },
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Wednesday,
-                    Periods = new List<Period>()
-                },
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Thursday,
-                    Periods = new List<Period>()
-                },
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Friday,
-                    Periods = new List<Period>()
-                },
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Saturday,
-                    Periods = new List<Period>()
-                },
-                new RegularDayOfWeekAvailability()
-                {
-                    DayOfWeek = DayOfWeek.Sunday,
-                    Periods = new List<Period>()
-                }
-            );
-            modelBuilder.Entity<SpecificDateAvailability>().HasData(
-                new SpecificDateAvailability()
-                {
-                    Date = new DateOnly(2024, 04, 04),
-                    Periods = new List<Period>()
-                }
-            );
-
-            modelBuilder.Entity<Librarian>().HasData(
-                new Librarian
-                {
-                    Id = 1,
-                    Email = "librarian@gmail.com",
-                    FirstName = "Text",
-                    LastName = "Account",
-                    Password = "1234567"
-                }
-            );
-            modelBuilder.Entity<Student>().HasData(
-               new Student
-               {
-                   Id = 2,
-                   Email = "student@gmail.com",
-                   FirstName = "Text",
-                   LastName = "Account",
-                   Password = "1234567",
-                   ProgramStrand = "CS",
-                   YearGrade = "First Year",
-               },
-               new Student
-               {
-                   Id = 3,
-                   Email = "another_student@gmail.com",
-                   FirstName = "Text",
-                   LastName = "Account",
-                   Password = "password",
-                   ProgramStrand = "IT",
-                   YearGrade = "First Year",
-               });
-            modelBuilder.Entity<SeatModel>().HasData(
-                new SeatModel
-                {
-                    Id = 1,
-                    Name = "ABC",
-                    Type = "1",
-                    Active = "true",
-                    Description = "description description",
-                },
-                new SeatModel
-                {
-                    Id = 2,
-                    Name = "DEF",
-                    Type = "1",
-                    Active = "true",
-                    Description = "description2 description2",
-                });
-
-
         }
     }
 }

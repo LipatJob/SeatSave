@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SeatSave.EF;
+using System.Linq;
 
 namespace SeatSave.Api.Controllers
 {
@@ -6,10 +8,38 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
+        private SeatSaveContext dbContext;
+
+        public BookingController(SeatSaveContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
-        public IActionResult GetAll() { return Ok("To be implemented"); }
+        public IActionResult GetAll() 
+        { 
+            return Ok(dbContext.Bookings.OrderByDescending(b => b.Id)); 
+        }
+        [HttpGet("Search")]
+        public IActionResult Search([FromQuery] int id, string status, string date, string email) 
+        { 
+            int year = int.Parse(date.Substring(0,4));
+            int month = int.Parse(date.Substring(5,2));
+            int day = int.Parse(date.Substring(8,2));
+            DateOnly bookingDate = new DateOnly(year, month, day);
+
+            // To do: do not require all fields
+            var results = dbContext.Bookings
+                            .Where(b => b.Id == id && b.Status == status && b.BookingDate == bookingDate && b.UserModel.Email == email)
+                            .OrderByDescending(b => b.Id);
+            
+            return Ok(results);
+        }
         [HttpGet("{id}")]
-        public IActionResult GetSpecific(int id) { return Ok("To be implemented"); }
+        public IActionResult GetSpecific(int id) 
+        { 
+            return Ok(dbContext.Bookings.Find(id)); 
+        }
         [HttpPost]
         public IActionResult Add()
         {

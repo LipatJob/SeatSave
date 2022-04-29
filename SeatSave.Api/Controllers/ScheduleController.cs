@@ -46,7 +46,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{isoDate}/{periodId}/Seat")]
         public IActionResult GetBookableSeats(string isoDate, int periodId)
         {
-            return Ok("");
+            return Ok(dbContext.Seat);
         }
     }
 }

@@ -19,7 +19,6 @@ namespace SeatSave.Api.Controllers
         {
             return Ok(dbContext.Bookings.OrderByDescending(b => b.Id));
         }
-
         [HttpGet("Search")]
         public IActionResult Search([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
         {
@@ -38,7 +37,7 @@ namespace SeatSave.Api.Controllers
                                 (id == null || b.Id == id) &&
                                 (status == null || b.Status == status) &&
                                 (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.UserModel.Email == email)
+                                (email == null || b.UserModel.Email.ToLower() == email.ToLower())
                                 )
                             .OrderByDescending(b => b.Id);
 

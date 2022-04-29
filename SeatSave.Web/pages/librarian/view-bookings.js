@@ -8,16 +8,21 @@ export default function ViewBookings({ allBookings }) {
 
   async function handleSearchBookings(e) {
     e.preventDefault();
-    const id = e.target.bookingId.value;
+    const id = e.target.bookingId.value === '' ? 0 : e.target.bookingId.value;
     const status = e.target.status.value;
     const date = e.target.bookingDate.value;
     const email = e.target.visitorEmail.value;
+    console.log(`id: ${id}`);
+    console.log(`status: ${status}`);
+    console.log(`date: ${date}`);
+    console.log(`email: ${email}`);
 
     const res = await fetch(
       `${process.env.API_URL}/Api/Booking/Search?id=${id}&status=${status}&date=${date}&email=${email}`,
     );
     const searchResults = await res.json();
 
+    console.log(searchResults);
     setDisplayBookings(searchResults);
   }
 

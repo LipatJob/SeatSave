@@ -25,9 +25,10 @@ namespace SeatSave.EF
 
             context.SpecificDayAvailability.AddRange(new SpecificDateAvailability
             {
-                Date = new DateOnly(2022, 01, 01),
+                Date = new DateOnly(2022, 05, 04),
                 Periods = {
-                    periods[0]
+                    periods[0],
+                    periods[1]
                 }
             });
 

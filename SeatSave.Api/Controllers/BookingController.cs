@@ -21,16 +21,20 @@ namespace SeatSave.Api.Controllers
             return Ok(dbContext.Bookings.OrderByDescending(b => b.Id)); 
         }
         [HttpGet("Search")]
-        public IActionResult Search([FromQuery] int id, string status, string date, string email) 
+        public IActionResult Search([FromQuery] int id = 0, [FromQuery] string status = "", [FromQuery] string date = "", [FromQuery] string email = "") 
         { 
             int year = int.Parse(date.Substring(0,4));
             int month = int.Parse(date.Substring(5,2));
             int day = int.Parse(date.Substring(8,2));
             DateOnly bookingDate = new DateOnly(year, month, day);
 
-            // To do: do not require all fields
             var results = dbContext.Bookings
-                            .Where(b => b.Id == id && b.Status == status && b.BookingDate == bookingDate && b.UserModel.Email == email)
+                            .Where( b => 
+                                (id == 0 || b.Id == id) &&
+                                (status == "" || b.Status == status) && 
+                                (date == "" || b.BookingDate == bookingDate) &&
+                                (email == "" || b.UserModel.Email == email)
+                                )
                             .OrderByDescending(b => b.Id);
             
             return Ok(results);

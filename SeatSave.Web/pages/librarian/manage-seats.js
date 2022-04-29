@@ -17,7 +17,16 @@ export default function ManageSeats({ seats }) {
   const [seatData, seatSeatData] = useState();
 
   const updateSeatData = async () => {
-    if (currId === 0) return;
+    if (currId === 0) {
+      seatSeatData({
+        id: 0,
+        name: '',
+        type: 'default',
+        active: 'true',
+        description: '',
+      });
+      return;
+    }
     const response = await fetch(`${process.env.API_URL}/Api/Seats/${currId}`);
     const jsonData = await response.json();
     seatSeatData(jsonData);

@@ -1,4 +1,6 @@
-﻿namespace SeatSave.Core.User
+﻿using SeatSave.Core.Booking;
+
+namespace SeatSave.Core.User
 {
     public class Visitor : UserModel
     {

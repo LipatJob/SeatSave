@@ -24,12 +24,16 @@ export default function AvailabilitySelectionPanel({
       </div>
       <div className='flex-grow'>
         {pageState.availabilityType === 'RegularHours' && (
-          <RegularHoursSelectionPanel onItemSelected={selectItem} />
+          <RegularHoursSelectionPanel
+            onItemSelected={selectItem}
+            selectedId={pageState.selectedId}
+          />
         )}
         {pageState.availabilityType === 'OverrideDays' && (
           <OverrideDaysSelectionPanel
             items={pageState.overrideDayItems}
             onItemSelected={selectItem}
+            selectedId={pageState.selectedId}
           />
         )}
       </div>

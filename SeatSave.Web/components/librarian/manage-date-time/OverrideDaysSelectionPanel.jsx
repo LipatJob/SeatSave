@@ -3,13 +3,21 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import CircularButton from '../../common/CircularButton';
 import PanelListItem from './PanelListItem';
 
-export default function OverrideDaysSelectionPanel({ items, onItemSelected }) {
+export default function OverrideDaysSelectionPanel({
+  items,
+  onItemSelected,
+  selectedId,
+}) {
   return (
     <div className='relative h-full'>
       <div className='flex flex-col gap-2 p-3 pt-5'>
         {items.map((e) => (
           <PanelListItem onClick={() => onItemSelected(e.id)} key={e.id}>
-            <div className='flex items-center'>
+            <div
+              className={
+                `flex items-center ${selectedId}` === e.id ? 'bg-iron' : ''
+              }
+            >
               <p>{e.name}</p>
               <button
                 type='button'

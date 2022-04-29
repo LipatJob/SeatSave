@@ -18,8 +18,8 @@
         public TimeSpan TimeEnd { get; set; }
 
 
-        public virtual ICollection<RegularDayOfWeekAvailability>? RegularDayOfWeekAvailabilities { get; set; }
-        public virtual ICollection<SpecificDateAvailability>? SpecificDateAvailabilities { get; set; }
+        protected virtual ICollection<RegularDayOfWeekAvailability>? RegularDayOfWeekAvailabilities { get; set; }
+        protected virtual ICollection<SpecificDateAvailability>? SpecificDateAvailabilities { get; set; }
 
         public override bool Equals(object? obj)
         {
@@ -31,7 +31,7 @@
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return id;
         }
     }
 }

@@ -1,4 +1,5 @@
 
+using SeatSave.Core.Booking;
 using SeatSave.Core.Schedule;
 using SeatSave.Core.Seat;
 using SeatSave.Core.User;
@@ -19,11 +20,14 @@ namespace SeatSave.EF
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             var periods = new PeriodFactory().GetPeriodsInDay();
+            context.Periods.AddRange(periods);
+            context.Periods.Add(new Period(100, new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0)));
+
             context.SpecificDayAvailability.AddRange(new SpecificDateAvailability
             {
                 Date = new DateOnly(2022, 01, 01),
                 Periods = {
-                    periods[1]
+                    periods[0]
                 }
             });
 
@@ -117,6 +121,39 @@ namespace SeatSave.EF
                     Type = "1",
                     Active = "true",
                     Description = "description2 description2",
+                }
+            );
+
+            context.Bookings.AddRange(
+                new BookingModel
+                {
+                    Id = 1,
+                    BookingCode = "1234",
+                    BookingDate = new DateOnly(2022, 04, 28),
+                    PeriodId = 3,
+                    SeatId = 1,
+                    Status = "Completed",
+                    StatusHistory = new StatusHistory
+                    {
+                        DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
+                        DateTimeCheckedIn = new DateTime(2022, 4, 28, 8, 2, 0),
+                        DateTimeCheckedOut = new DateTime(2022, 4, 28, 9, 26, 0),
+                    },
+                    UserModelId = 2
+                },
+                new BookingModel
+                {
+                    Id = 2,
+                    BookingCode = "5678",
+                    BookingDate = new DateOnly(2022, 04, 29),
+                    PeriodId = 5,
+                    SeatId = 2,
+                    Status = "Pending",
+                    StatusHistory = new StatusHistory
+                    {
+                        DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10)
+                    },
+                    UserModelId = 2
                 }
             );
 

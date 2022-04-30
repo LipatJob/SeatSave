@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { formatDate } from '../../../lib/DateHelper';
 import CircularButton from '../../common/CircularButton';
 import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
 import AddSpecifcDayModal from './AddSpecificDayModal';
@@ -93,7 +94,7 @@ export default function OverrideDaysSelectionPanel({
             selected={selectedId === e}
           >
             <div className='flex items-center'>
-              <p>{e}</p>
+              <p>{formatDate(e)}</p>
               <button
                 type='button'
                 className='ml-auto text-valentine-red active:bg-black'

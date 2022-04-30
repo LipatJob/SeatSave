@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment';
+import { formatDate, formatTime } from '../../../lib/DateHelper';
 
 export default function PeriodSelectionPanel({
   className,
@@ -8,10 +8,6 @@ export default function PeriodSelectionPanel({
 }) {
   const [periods, setPeriods] = useState([]);
   const [periodStates, setPeriodStates] = useState({});
-
-  function formatTime(time) {
-    return moment(`1111-11-11T${time}`).format('h:mm a');
-  }
 
   async function getAllPeriods() {
     const response = await fetch(
@@ -86,25 +82,31 @@ export default function PeriodSelectionPanel({
   return (
     <div className={`flex flex-col w-full shadow ${className}`}>
       <div className='h-16 p-4 bg-pearl-bush'>
-        <h4>Time</h4>
+        <h4>
+          Select Periods for{' '}
+          {availabilityType === 'RegularHours'
+            ? selectedId
+            : formatDate(selectedId)}
+        </h4>
       </div>
       <div className='flex flex-col items-center p-10'>
         <div className='grid w-full grid-cols-2 mb-4 gap-y-4'>
           {periods.map(({ id, timeStart, timeEnd }) => (
-            <div className='flex flex-row items-center gap-4' key={id}>
-              <label htmlFor={id}>
-                <input
-                  id={id}
-                  name={id}
-                  type='checkbox'
-                  className='w-5 h-5 shrink checkbox'
-                  onChange={(e) => updatePeriodState(id, e.target.checked)}
-                  checked={periodStates[id]}
-                />
-              </label>
-
+            <label
+              htmlFor={id}
+              className='flex flex-row items-center gap-4'
+              key={id}
+            >
+              <input
+                id={id}
+                name={id}
+                type='checkbox'
+                className='w-5 h-5 checkbox'
+                onChange={(e) => updatePeriodState(id, e.target.checked)}
+                checked={periodStates[id]}
+              />
               {`${formatTime(timeStart)} to ${formatTime(timeEnd)}`}
-            </div>
+            </label>
           ))}
         </div>
         <button className='px-8 mt-4 button' type='button' onClick={onSave}>

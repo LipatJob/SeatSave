@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import DayTypeSelectionTabs from './DayTypeSelectionTabs';
 import OverrideDaysSelectionPanel from './OverrideDaysSelectionPanel';
 import RegularHoursSelectionPanel from './RegularHoursSelectionPanel';
@@ -14,7 +15,10 @@ export default function DaySelectionPanel({
       <div>
         <DayTypeSelectionTabs
           activeTab={dayType}
-          onTabSelected={onTabSelected}
+          onTabSelected={(e) => {
+            onTabSelected(e);
+            onItemSelected(null);
+          }}
         />
       </div>
       <div className='flex-grow'>

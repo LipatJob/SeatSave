@@ -1,6 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function PeriodSelectionPanel({ className }) {
+export default function PeriodSelectionPanel({ className, selectedPeriods }) {
+  useEffect(() => {
+    // setPeriods(getAllPeriods())
+  }, []);
+
+  async function getAllPeriods() {
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Schedule/Periods`,
+      {
+        method: 'GET',
+      },
+    );
+    const data = await response.json();
+    return data;
+  }
+
   function generatePeriods() {
     const count = 16;
     const periods = [];
@@ -14,7 +29,7 @@ export default function PeriodSelectionPanel({ className }) {
     return periods;
   }
 
-  const periods = generatePeriods();
+  const [periods, setPeriods] = useState(generatePeriods());
 
   return (
     <div className={`flex flex-col w-full shadow ${className}`}>

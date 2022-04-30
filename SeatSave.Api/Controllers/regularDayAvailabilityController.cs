@@ -18,24 +18,32 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(dbContext.RegularDayOfWeekAvailability);
+            return Ok(dbContext.RegularDayOfWeekAvailability.Select(e => e.DayOfWeek));
         }
 
-        [HttpGet("{dayOfWeek}")]
-        public IActionResult GetSpecific(DayOfWeek dayOfWeek)
+        [HttpGet("{dayOfWeek}/Periods")]
+        public IActionResult GetDayOfWeekPeriods([FromRoute] DayOfWeek dayOfWeek)
         {
-            return Ok(dbContext.RegularDayOfWeekAvailability.Find(dayOfWeek));
+            var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeek);
+            if (availability == null) { return BadRequest("Day of week not found"); }
+
+            return Ok(availability.Periods);
         }
 
-        [HttpPut("{dayOfWeek}")]
-        public IActionResult Update(DayOfWeek dayOfWeek, RegularDayOfWeekAvailability availability)
+        [HttpPut("{dayOfWeek}/Periods")]
+        public IActionResult UpdatePeriods([FromRoute] DayOfWeek dayOfWeek, IList<Period> periods)
         {
-            if (availability.DayOfWeek != dayOfWeek) { return BadRequest(); }
+            // Validate date exists
+            var availability = dbContext.SpecificDayAvailability.Find(dayOfWeek);
+            if (availability == null) { return BadRequest("Day of week not found"); }
 
-            dbContext.Entry(availability).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            // Add periods to entity
+            foreach (var period in periods) { dbContext.Attach<Period>(period); }
+            availability.Periods.Clear();
+            foreach (var period in periods) { availability.Periods.Add(period); }
+
             dbContext.SaveChanges();
-
-            return Ok(availability);
+            return Ok(availability.Periods);
         }
     }
 }

@@ -146,13 +146,7 @@ public class ScheduleSeedFixture : IDisposable
         using (var context = new SeatSaveContext(options))
         {
             context.Periods.AddRange(periods);
-            context.SpecificDayAvailability.AddRange(new SpecificDateAvailability
-            {
-                Date = new DateOnly(2024, 1, 2),
-                Periods = new List<Period>{
-                    periods[1]
-                }
-            });
+            context.SpecificDayAvailability.AddRange();
 
             context.RegularDayOfWeekAvailability.AddRange(new RegularDayOfWeekAvailability
             {

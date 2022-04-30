@@ -74,12 +74,7 @@ export default function ManageDateTime() {
     availabilityType: 'RegularHours',
     selectedId: '',
     availability: [],
-    overrideDayItems: [
-      {
-        id: '2022-01-02',
-        name: 'January 01, 2022',
-      },
-    ],
+    overrideDayItems: [],
   });
 
   useEffect(() => {

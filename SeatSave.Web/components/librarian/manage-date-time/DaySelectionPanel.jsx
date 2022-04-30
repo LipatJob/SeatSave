@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import DayTypeSelectionTabs from './DayTypeSelectionTabs';
 import OverrideDaysSelectionPanel from './OverrideDaysSelectionPanel';
 import RegularHoursSelectionPanel from './RegularHoursSelectionPanel';

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment';
+import visitorAuthService from '../lib/visitorAuthService';
 
 export default function BookASeat({ availableDays }) {
   const day = availableDays.map((availableDay) => new Date(availableDay));
@@ -73,26 +74,42 @@ export default function BookASeat({ availableDays }) {
 
   async function submitBooking(e) {
     e.preventDefault();
-    const requestData = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: {
-        dateSelected,
-        periodSelected,
-        seatSelected,
-      },
-    };
 
-    console.log(requestData);
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Booking`,
-      requestData,
-    );
+    if (
+      dateSelected != null &&
+      periodSelected != null &&
+      seatSelected != null
+    ) {
+      const userToken = visitorAuthService.getUser();
+      const requestData = {
+        method: 'POST',
+        headers: {
+          Authorization: userToken,
+          'Content-Type': 'application/json',
+        },
+        body: {
+          dateSelected,
+          periodSelected,
+          seatSelected,
+        },
+      };
+      console.log(requestData);
 
-    if (response.status === 200) {
-      console.log('Submitted!');
+      const response = await fetch(
+        `${process.env.API_URL}/Api/Booking`,
+        requestData,
+      );
+
+      const data = await response.json();
+      console.log(data);
+      /* 
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+      }
+      */
+    } else {
+      console.log('There are missing data!');
     }
   }
 
@@ -167,7 +184,7 @@ export default function BookASeat({ availableDays }) {
         )}
 
         {availableSeats && (
-          <div id='seatElement'>
+          <div>
             <div className='flex justify-center'>
               <h5 className='pt-20 font-bold'>Pick your seat</h5>
             </div>
@@ -177,7 +194,7 @@ export default function BookASeat({ availableDays }) {
                 <div className='grid grid-cols-1 sm:grid-cols-2'>
                   {availableSeats?.map(
                     (aSeat) =>
-                      aSeat.active == 'true' && (
+                      aSeat.active == false && (
                         <button
                           key={aSeat.id}
                           className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
@@ -191,10 +208,14 @@ export default function BookASeat({ availableDays }) {
                 </div>
               </div>
             </div>
+          </div>
+        )}
 
-            <br />
-            <br />
+        <br />
+        <br />
 
+        {seatSelected && (
+          <div>
             <div className='flex justify-center'>
               <button
                 onClick={submitBooking}
@@ -207,7 +228,6 @@ export default function BookASeat({ availableDays }) {
           </div>
         )}
       </div>
-
       {modal && (
         <div className='modal'>
           <div className='overlay'>

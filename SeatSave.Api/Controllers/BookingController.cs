@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.EF;
+using SeatSave.Core.Booking;
 
 namespace SeatSave.Api.Controllers
 {
@@ -46,11 +47,10 @@ namespace SeatSave.Api.Controllers
             return Ok(dbContext.Bookings.Find(id));
         }
         [HttpPost]
-        public IActionResult Add()
+        public IActionResult Add([FromBody] BookingModel bookingInformation)
         {
-
             /*
-            if (user.UserGroup == Visitor.UserGroup)
+            if (user.UserGroup == Visitor.UserGroyup)
             {
                 var visitor = (Visitor)user;
                 visitor.Book(); // (date, period, seat)
@@ -64,7 +64,7 @@ namespace SeatSave.Api.Controllers
             //    IF: visitor -> convert user to visitor object
             // 4. Pass booking details into Book() method 
 
-            return Ok("To be implemented");
+            return Ok(bookingInformation);
         }
         [HttpPut]
         public IActionResult Update() { return Ok("To be implemented"); }

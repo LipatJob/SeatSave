@@ -112,15 +112,15 @@ namespace SeatSave.EF
                     Id = 1,
                     Name = "ABC",
                     Type = "1",
-                    Active = "true",
+                    Active = true,
                     Description = "description description",
                 },
                 new SeatModel
                 {
                     Id = 2,
                     Name = "DEF",
-                    Type = "1",
-                    Active = "true",
+                    Type = "2",
+                    Active = false,
                     Description = "description2 description2",
                 }
             );

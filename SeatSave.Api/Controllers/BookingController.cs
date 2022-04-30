@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.EF;
-using System.Linq;
 
 namespace SeatSave.Api.Controllers
 {
@@ -16,29 +15,35 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() 
-        { 
-            return Ok(dbContext.Bookings.OrderByDescending(b => b.Id)); 
+        public IActionResult GetAll()
+        {
+            return Ok(dbContext.Bookings.OrderByDescending(b => b.Id));
         }
         [HttpGet("Search")]
-        public IActionResult Search([FromQuery] int id, string status, string date, string email) 
-        { 
-            int year = int.Parse(date.Substring(0,4));
-            int month = int.Parse(date.Substring(5,2));
-            int day = int.Parse(date.Substring(8,2));
-            DateOnly bookingDate = new DateOnly(year, month, day);
+        public IActionResult Search([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
+        {
 
-            // To do: do not require all fields
+            DateOnly bookingDate = new DateOnly(1, 1, 1);
+            if (date != null)
+            {
+                bookingDate = DateOnly.Parse(date);
+            }
+
             var results = dbContext.Bookings
-                            .Where(b => b.Id == id && b.Status == status && b.BookingDate == bookingDate && b.UserModel.Email == email)
+                            .Where(b =>
+                                (id == null || b.Id == id) &&
+                                (status == null || b.Status == status) &&
+                                (date == null || b.BookingDate == bookingDate) &&
+                                (email == null || b.UserModel.Email.ToLower() == email.ToLower())
+                                )
                             .OrderByDescending(b => b.Id);
-            
+
             return Ok(results);
         }
         [HttpGet("{id}")]
-        public IActionResult GetSpecific(int id) 
-        { 
-            return Ok(dbContext.Bookings.Find(id)); 
+        public IActionResult GetSpecific(int id)
+        {
+            return Ok(dbContext.Bookings.Find(id));
         }
         [HttpPost]
         public IActionResult Add()
@@ -51,7 +56,7 @@ namespace SeatSave.Api.Controllers
                 visitor.Book(); // (date, period, seat)
             }
             */
-            
+
             // STEPS:
             // 1. Get user credentials
             // 2. Get reservation details (date, period, seat)

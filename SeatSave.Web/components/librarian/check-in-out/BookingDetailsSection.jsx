@@ -1,42 +1,9 @@
 import React from 'react';
 import { HiOutlineX } from 'react-icons/hi';
+import datetimeFormatter from '../../../lib/datetimeFormatter';
 
 export default function BookingDetailsSection({ booking, close }) {
   const status = 'Pending';
-
-  const monthsList = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  function convertTimeFormat(timeString) {
-    const hour = parseInt(timeString.slice(0, 2), 10);
-    const minute = parseInt(timeString.slice(3, 5), 10);
-    let time = `${hour > 12 ? hour - 12 : hour}`;
-    if (hour === 0) time = '12';
-    time += (minute < 10 ? ':0' : ':') + minute;
-    time += hour >= 12 ? ' pm' : ' am';
-    return time;
-  }
-
-  function convertDateFormat(dateString) {
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(5, 7);
-    const day = dateString.slice(8, 10);
-    const monthIndex = parseInt(month, 10) - 1;
-    const date = `${monthsList[monthIndex]} ${day}, ${year}`;
-    return date;
-  }
 
   return (
     <div className='relative z-10 px-6 py-12 ml-0 shadow-lg lg:ml-4 bg-pearl-bush'>
@@ -66,13 +33,13 @@ export default function BookingDetailsSection({ booking, close }) {
         </div>
         <div>
           <p className='font-bold body-small'>Date</p>
-          <p>{convertDateFormat(booking.bookingDate)}</p>
+          <p>{datetimeFormatter.convertDateFormat(booking.bookingDate)}</p>
         </div>
         <div>
           <p className='font-bold body-small'>Period</p>
           <p>
-            {convertTimeFormat(booking.period.timeStart)} to{' '}
-            {convertTimeFormat(booking.period.timeEnd)}
+            {datetimeFormatter.convertTimeFormat(booking.period.timeStart)} to{' '}
+            {datetimeFormatter.convertTimeFormat(booking.period.timeEnd)}
           </p>
         </div>
       </div>

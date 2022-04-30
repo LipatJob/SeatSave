@@ -7,13 +7,15 @@ export default function AccountInformationForm({ onSubmit }) {
   const emailAddressNotTaken = async (emailAddress) => {
     const encodedEmailAddress = encodeURIComponent(emailAddress);
     const response = await fetch(
-      `${process.env.API_URL}/Api/User?email=${encodedEmailAddress}`,
+      `${process.env.API_URL}/Api/User/Existing?email=${encodedEmailAddress}`,
       {
-        method: 'HEAD',
+        method: 'GET',
       },
     );
 
-    return response.status === 404;
+    const data = await response.json();
+    console.log(data);
+    return data === false;
   };
   const SignupSchema = Yup.object().shape({
     firstname: Yup.string().trim().required('This field is required'),

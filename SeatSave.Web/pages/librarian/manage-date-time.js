@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import AvailabilitySelectionPanel from '../../components/librarian/manage-date-time/AvailabilitySelectionPanel';
+import DaySelectionPanel from '../../components/librarian/manage-date-time/DaySelectionPanel';
 import PeriodSelectionPanel from '../../components/librarian/manage-date-time/PeriodSelectionPanel';
 
 export default function ManageDateTime() {
@@ -70,36 +70,16 @@ export default function ManageDateTime() {
     return response.ok;
   }
 
-  async function getAllPeriods() {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Schedule/Periods`,
-      {
-        method: 'GET',
-      },
-    );
-    const data = await response.json();
-    return data;
-  }
-
-  const [pageState, setPageState] = useState({
-    availabilityType: 'RegularHours',
-    selectedId: '',
-    selectedPeriods: [],
-    overrideDayItems: [
-      {
-        id: '2022-01-02',
-        name: 'January 01, 2022',
-      },
-    ],
-    allPeriods: [],
-  });
+  const [availabilityType, setAvailabilityType] = useState('RegularHours');
+  const [selectedId, setSelectedId] = useState();
+  const [selectedPeriods, setSelectedPeriods] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       // setPageState((oldState) => ({
       //   ...oldState,
       //   overrideDayItems: getSpecificDays(),
-      //   allPeriods: getAllPeriods()
+      //   periods: getAllPeriods().reduce((object, period)=>{...object, [period]: false})
       // }));
     };
     fetchData().catch(console.error);
@@ -107,32 +87,34 @@ export default function ManageDateTime() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (pageState.selectedId === '') return;
+      if (selectedId === '') return;
 
-      let selectedPeriods = null;
-      if (pageState.availabilityType === 'RegularHours') {
-        selectedPeriods = await getRegularDayAvailability(pageState.selectedId);
-      } else if (pageState.availabilityType === 'OverrideDays') {
-        selectedPeriods = await getSpecificDayAvailability(
-          pageState.selectedId,
-        );
+      let periods = null;
+      if (availabilityType === 'RegularHours') {
+        periods = await getRegularDayAvailability(selectedId);
+      } else if (availabilityType === 'OverrideDays') {
+        periods = await getSpecificDayAvailability(selectedId);
       }
-
-      setPageState((oldState) => ({ ...oldState, selectedPeriods }));
+      setSelectedPeriods(periods);
     };
     fetchData().catch(console.error);
-  }, [pageState.selectedId]);
+  }, [selectedId]);
 
   return (
     <div className='page-container-small'>
       <h1 className='mb-6'>Manage Date & Time</h1>
       <div className='grid grid-cols-3 gap-x-7 min-h-[500px]'>
-        <AvailabilitySelectionPanel
-          pageState={pageState}
-          setPageState={setPageState}
+        <DaySelectionPanel
+          dayType={availabilityType}
+          selectedId={selectedId}
+          onTabSelected={setAvailabilityType}
+          onItemSelected={setSelectedId}
         />
-        {pageState.selectedId && (
-          <PeriodSelectionPanel className='col-span-2' />
+        {selectedId && (
+          <PeriodSelectionPanel
+            className='col-span-2'
+            selectedPeriods={selectedPeriods}
+          />
         )}
       </div>
     </div>

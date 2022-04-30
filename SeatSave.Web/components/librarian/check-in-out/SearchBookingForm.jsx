@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function SearchBookingForm({ onSubmit }) {
   return (
-    <form className='flex flex-row gap-5' onSubmit={onSubmit}>
+    <form className='flex flex-col gap-5 lg:flex-row' onSubmit={onSubmit}>
       <div className='basis-2/3'>
         <input
           id='bookingCode'

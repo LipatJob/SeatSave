@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 
-export default function PreviewBookingsTable({ bookings }) {
+export default function PreviewBookingsTable({ bookings, previewDetails }) {
   const [page, setPage] = useState(1);
 
-  const ROWS_PER_PAGE = 10;
+  const ROWS_PER_PAGE = 5;
 
   const monthsList = [
     'January',
@@ -31,38 +31,29 @@ export default function PreviewBookingsTable({ bookings }) {
     let time = `${hour > 12 ? hour - 12 : hour}`;
     if (hour === 0) time = '12';
     time += (minute < 10 ? ':0' : ':') + minute;
-    time += hour >= 12 ? ' PM' : ' AM';
+    time += hour >= 12 ? ' pm' : ' am';
     return time;
   }
 
-  function convertDateFormat(yearString, monthString, dayString) {
-    const monthIndex = parseInt(monthString, 10) - 1;
-    const date = `${monthsList[monthIndex]} ${dayString}, ${yearString}`;
+  function convertDateFormat(dateString) {
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(5, 7);
+    const day = dateString.slice(8, 10);
+    const monthIndex = parseInt(month, 10) - 1;
+    const date = `${monthsList[monthIndex]} ${day}, ${year}`;
     return date;
   }
 
-  function convertDateTimeFormat(dateTimeString) {
-    const time = convertTimeFormat(dateTimeString.slice(11, 16));
-    const year = dateTimeString.slice(0, 4);
-    const month = dateTimeString.slice(5, 7);
-    const day = dateTimeString.slice(8, 10);
-    const date = convertDateFormat(year, month, day);
-    const dateTime = `${time} - ${date}`;
-    return dateTime;
-  }
-
   return (
-    <div className='mt-12'>
+    <div className='mt-4'>
       <div className='relative overflow-x-auto'>
-        <table className='w-full mt-4 text-center'>
+        <table className='w-full text-center'>
           <thead className='font-bold bg-pearl-bush'>
             <tr className='h-16 whitespace-nowrap'>
-              <th className='px-2'>Booking ID</th>
+              <th className='px-2'>Code</th>
               <th className='px-2'>Seat</th>
               <th className='px-2'>Visitor</th>
-              <th className='px-2'>Booking Period</th>
-              <th className='px-2'>Status</th>
-              <th className='px-2'>Check In / Out</th>
+              <th className='px-2'>Date & Time</th>
             </tr>
           </thead>
           <tbody>
@@ -73,53 +64,19 @@ export default function PreviewBookingsTable({ bookings }) {
                   (page - 1) * ROWS_PER_PAGE + ROWS_PER_PAGE,
                 )
                 .map((booking) => (
-                  <tr className='h-20 bg-white border-b hover:bg-iron whitespace-nowrap'>
-                    <td className='px-2'>{booking.id}</td>
+                  <tr
+                    className='h-12 bg-white border-b hover:bg-iron whitespace-nowrap'
+                    onClick={() => previewDetails(booking)}
+                    key={booking.id}
+                  >
+                    <td className='px-2'>{booking.bookingCode}</td>
                     <td className='px-2'>{booking.seat.name}</td>
                     <td className='px-2'>
-                      <div>
-                        {booking.userModel.firstName}{' '}
-                        {booking.userModel.lastName}
-                      </div>
-                      <div>
-                        <u>{booking.userModel.email}</u>
-                      </div>
+                      {booking.userModel.firstName} {booking.userModel.lastName}
                     </td>
                     <td className='px-2'>
-                      <div>
-                        {convertTimeFormat(booking.period.timeStart)} -{' '}
-                        {convertDateFormat(
-                          booking.bookingDate.year,
-                          booking.bookingDate.month,
-                          booking.bookingDate.day,
-                        )}
-                      </div>
-                      <div>
-                        {convertTimeFormat(booking.period.timeEnd)} -{' '}
-                        {convertDateFormat(
-                          booking.bookingDate.year,
-                          booking.bookingDate.month,
-                          booking.bookingDate.day,
-                        )}
-                      </div>
-                    </td>
-                    <td className='px-2'>{booking.status}</td>
-                    <td className='px-2'>
-                      {(booking.status === 'Completed' ||
-                        booking.status === 'Checked In') && (
-                        <div className='flex flex-row items-center justify-center gap-1'>
-                          {convertDateTimeFormat(
-                            booking.statusHistory.dateTimeCheckedIn,
-                          )}
-                        </div>
-                      )}
-                      {booking.status === 'Completed' && (
-                        <div className='flex flex-row items-center justify-center gap-1'>
-                          {convertDateTimeFormat(
-                            booking.statusHistory.dateTimeCheckedOut,
-                          )}
-                        </div>
-                      )}
+                      {convertDateFormat(booking.bookingDate)} -{' '}
+                      {convertTimeFormat(booking.period.timeStart)}
                     </td>
                   </tr>
                 ))

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
@@ -10,24 +10,45 @@ import CircularButton from '../../components/common/CircularButton';
 
 export default function ManageSeats({ seats }) {
   const [formPart, setFormPart] = useState(0);
+  const [currId, setCurrentID] = useState(0);
+  const [seatData, seatSeatData] = useState();
 
-  const currId = 1; // change when showInfo is clicked
+  const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
+  const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
 
-  const showInfo = () => {
-    setFormPart(1);
+  const [deletionConfirmation, setDeletionConfirmation] = useState(false);
+
+  const updateSeatData = async () => {
+    if (currId === 0) {
+      seatSeatData({
+        id: 0,
+        name: '',
+        type: 'default',
+        active: 'true',
+        description: '',
+      });
+      return;
+    }
+    const response = await fetch(`${process.env.API_URL}/Api/Seats/${currId}`);
+    const jsonData = await response.json();
+    seatSeatData(jsonData);
   };
-  const closeInfo = () => {
-    setFormPart(0);
-  };
+  useEffect(() => {
+    updateSeatData();
+  }, [currId]);
 
-  const [showModal, setShowModal] = React.useState(false);
-  const [showModalAddedSeat, setShowModalAddedSeat] = React.useState(false);
-
+  const [seatName, setSeatName] = useState();
   return (
     <div className='page-container '>
-      {showModal && <DeleteConfirmationModal onClick={setShowModal} />}
-      {showModalAddedSeat && <AddedSeatModal onClick={setShowModalAddedSeat} />}
-
+      {showModalDeleteSeat && (
+        <DeleteConfirmationModal
+          onClick={setShowModalDeleteSeat}
+          setDeletionConfirmation={setDeletionConfirmation}
+        />
+      )}
+      {showModalAddedSeat && (
+        <AddedSeatModal onClick={setShowModalAddedSeat} name={seatName} />
+      )}
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>
@@ -35,12 +56,32 @@ export default function ManageSeats({ seats }) {
         <div id='leftPanel' className=' lg:col-span-1'>
           <PanelWithHeader
             header='Available Seats'
-            body={seats.map((seat) => (
+            body={
               <div>
-                <Seat Name={seat.name} Code={seat.id} selectSeat={showInfo} />
+                <div className=' h-[450px]'>
+                  {seats.map((seat) => (
+                    <div>
+                      <Seat
+                        Name={seat.name}
+                        Code={seat.id}
+                        onClick={() => {
+                          setCurrentID(seat.id);
+                          setFormPart(1);
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className='h-[70px]'>
+                  <CircularButton
+                    onClick={() => {
+                      setCurrentID(0);
+                      setFormPart(1);
+                    }}
+                  />
+                </div>
               </div>
-            ))}
-            buttons={<CircularButton onClick={showInfo} />}
+            }
           />
         </div>
         <div id='rightPanel' className=' lg:col-span-2'>
@@ -57,44 +98,17 @@ export default function ManageSeats({ seats }) {
             <PanelWithHeader
               header='Seat Information'
               body={
-                <SeatInformation selectedSeatID={currId}> </SeatInformation>
-              }
-              buttons={
-                <div className='grid content-center grid-cols-1 gap-4 pb-4 text-center lg:gap-0 lg:grid-cols-4 lg:pt-4'>
-                  <button
-                    type='button'
-                    className='red-button'
-                    onClick={() => setShowModal(true)}
-                  >
-                    DELETE
-                  </button>
-                  <div className='pt-2 text-right md:col-span-1'>
-                    <input
-                      type='checkbox'
-                      className='w-4 h-4 mr-2 form-checkbox text-dusk-blue'
-                      defaultChecked
-                    />
-                    Activate Seat
-                  </div>
-                  <div className='md:col-span-1'>
-                    <button
-                      type='button'
-                      className='w-full lg:w-min gray-button'
-                      onClick={closeInfo}
-                    >
-                      CANCEL
-                    </button>
-                  </div>
-                  <div className='md:col-span-1'>
-                    <button
-                      type='button'
-                      className='w-full button'
-                      onClick={() => setShowModalAddedSeat(true)}
-                    >
-                      SAVE
-                    </button>
-                  </div>
-                </div>
+                <SeatInformation
+                  seatData={seatData}
+                  setShowModalDeleteSeat={setShowModalDeleteSeat}
+                  setFormPart={setFormPart}
+                  setShowModalAddedSeat={setShowModalAddedSeat}
+                  setSeatName={setSeatName}
+                  deletionConfirmation={deletionConfirmation}
+                  setDeletionConfirmation={setDeletionConfirmation}
+                >
+                  {' '}
+                </SeatInformation>
               }
             />
           )}

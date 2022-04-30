@@ -54,7 +54,7 @@ export default function BookASeat({ availableDays }) {
       setPeriodSelected(selectedPeriod);
       setSeatSelected(null);
       setAvailableSeats(json);
-      console.log(availableSeats);
+      console.log(json);
     } else {
       console.log('Error!');
     }
@@ -81,10 +81,11 @@ export default function BookASeat({ availableDays }) {
       seatSelected != null
     ) {
       const userToken = visitorAuthService.getToken();
+      console.log(userToken);
       const requestData = {
         method: 'POST',
         headers: {
-          Authorization: userToken,
+          Authorization: 'Bearer ' + userToken,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -192,19 +193,16 @@ export default function BookASeat({ availableDays }) {
             <div className='flex justify-center'>
               <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
                 <div className='grid grid-cols-1 sm:grid-cols-2'>
-                  {availableSeats?.map(
-                    (aSeat) =>
-                      aSeat.active == false && (
-                        <button
-                          key={aSeat.id}
-                          className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
-                          onClick={() => viewSeatDetails(aSeat)}
-                        >
-                          <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
-                          <h5 className='pb-3 text-white'>{aSeat.id}</h5>
-                        </button>
-                      ),
-                  )}
+                  {availableSeats.map((aSeat) => (
+                    <button
+                      key={aSeat.id}
+                      className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                      onClick={() => viewSeatDetails(aSeat)}
+                    >
+                      <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
+                      <h5 className='pb-3 text-white'>{aSeat.id}</h5>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

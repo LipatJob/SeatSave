@@ -80,18 +80,18 @@ export default function BookASeat({ availableDays }) {
       periodSelected != null &&
       seatSelected != null
     ) {
-      const userToken = visitorAuthService.getUser();
+      const userToken = visitorAuthService.getToken();
       const requestData = {
         method: 'POST',
         headers: {
           Authorization: userToken,
           'Content-Type': 'application/json',
         },
-        body: {
-          dateSelected,
-          periodSelected,
-          seatSelected,
-        },
+        body: JSON.stringify({
+          isoDate: moment(dateSelected).format('YYYY-MM-DD'),
+          periodId: periodSelected,
+          seatId: seatSelected,
+        }),
       };
       console.log(requestData);
 

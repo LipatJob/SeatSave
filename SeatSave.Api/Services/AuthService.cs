@@ -20,7 +20,7 @@ namespace SeatSave.Api.Services
 
         public string GenerateToken(UserModel user)
         {
-            
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtInfo.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -42,7 +42,7 @@ namespace SeatSave.Api.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool TryAuthenticate(string email, string password, string userGroup, out UserModel model)
+        public bool TryAuthenticate(string email, string password, string userGroup, out UserModel? model)
         {
             model = null;
             var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == email.ToLower() && e.Password == password && e.UserGroup == userGroup);
@@ -54,7 +54,7 @@ namespace SeatSave.Api.Services
             return false;
         }
 
-        public UserModel CreateUserModelFromClaims(IEnumerable<Claim> userClaims)
+        public static UserModel CreateUserModelFromClaims(IEnumerable<Claim> userClaims)
         {
             return new UserModel()
             {
@@ -67,7 +67,8 @@ namespace SeatSave.Api.Services
         }
     }
 
-    public struct JwtInfo {
+    public struct JwtInfo
+    {
         public string Issuer;
         public string Audience;
         public string Key;

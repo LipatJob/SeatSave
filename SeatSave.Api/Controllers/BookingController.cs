@@ -52,6 +52,7 @@ namespace SeatSave.Api.Controllers
         public IActionResult Add([FromBody] BookingDTO bookingDTO)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
+
             if (identity != null)
             {
                 var userClaims = identity.Claims;

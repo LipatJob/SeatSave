@@ -37,7 +37,7 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet("User")]
-        public IActionResult GetUser([FromBody] UserLogin userLogin)
+        public IActionResult GetUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
@@ -50,6 +50,9 @@ namespace SeatSave.Api.Controllers
 
             return NotFound();
         }
+
+
+
 
 
 

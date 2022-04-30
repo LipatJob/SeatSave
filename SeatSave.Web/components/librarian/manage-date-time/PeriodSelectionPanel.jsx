@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { formatDate, formatTime } from '../../../lib/DateHelper';
+import SuccessModal from './SuccessModal';
 
 export default function PeriodSelectionPanel({
   className,
   selectedId,
   availabilityType,
 }) {
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [periods, setPeriods] = useState([]);
   const [periodStates, setPeriodStates] = useState({});
 
@@ -69,7 +71,7 @@ export default function PeriodSelectionPanel({
     );
 
     if (response.ok) {
-      console.log('Success!');
+      setSuccessModalVisible(true);
     }
   };
 
@@ -113,6 +115,14 @@ export default function PeriodSelectionPanel({
           SAVE
         </button>
       </div>
+
+      {successModalVisible && (
+        <SuccessModal
+          message={`Periods for ${selectedId} successfully updated`}
+          onClose={() => setSuccessModalVisible(false)}
+          onOk={() => setSuccessModalVisible(false)}
+        />
+      )}
     </div>
   );
 }

@@ -48,20 +48,51 @@ namespace SeatSave.Api.Controllers
         {
             return Ok(dbContext.Bookings.Find(id));
         }
+
+        [HttpGet("Current")]
+        public IActionResult GetCurrentBooking()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity == null)
+            {
+                return BadRequest();
+            }
+
+            var userClaims = identity.Claims;
+            var user = AuthService.CreateUserModelFromClaims(userClaims);
+            var visitor = dbContext.Visitors.Find(user.Id);
+
+            if (visitor == null)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(visitor.GetActiveBooking());
+        }
+
         [HttpPost]
         public IActionResult Add([FromBody] BookingDTO bookingDTO)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
+            if (identity == null)
             {
-                var userClaims = identity.Claims;
-
-                return Ok(AuthService.CreateUserModelFromClaims(userClaims));
+                return BadRequest();
             }
 
-            return Ok(bookingDTO);
+            var userClaims = identity.Claims;
+            var user = AuthService.CreateUserModelFromClaims(userClaims);
+            var visitor = dbContext.Visitors.Find(user.Id);
+
+            if (visitor == null)
+            {
+                return BadRequest();
+            }
+
+            var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), bookingDTO.periodId, bookingDTO.seatId);
+            dbContext.SaveChanges();
+            return Ok(booking);
         }
+
         [HttpPut]
         public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]

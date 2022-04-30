@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import visitorAuthService from '../lib/visitorAuthService';
+import Router from 'next/router';
+import { useEffect } from 'react';
 
 export default function BookASeat({ availableDays }) {
+  useEffect(() => {
+    if (!visitorAuthService.isLoggedIn()) {
+      Router.push('/login');
+    }
+  }, []);
+
   const day = availableDays.map((availableDay) => new Date(availableDay));
   const [seatID, setSeatID] = useState();
 
@@ -96,19 +104,26 @@ export default function BookASeat({ availableDays }) {
       };
       console.log(requestData);
 
+      const checkCurrentBooking = await fetch(
+        `${process.env.API_URL}/Api/Booking/Current`,
+      );
+      const currentBook = await checkCurrentBooking.json();
+
+      if (currentBook.status === 400) {
+        console.log('Cannot create a book right now!');
+        // Make a modal for this
+      }
+
       const response = await fetch(
         `${process.env.API_URL}/Api/Booking`,
         requestData,
       );
 
-      const data = await response.json();
-      console.log(data);
-      /* 
       if (response.status === 200) {
         const data = await response.json();
         console.log(data);
+        Router.push('/');
       }
-      */
     } else {
       console.log('There are missing data!');
     }

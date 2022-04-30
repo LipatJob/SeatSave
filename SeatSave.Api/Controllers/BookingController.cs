@@ -26,10 +26,7 @@ namespace SeatSave.Api.Controllers
             DateOnly bookingDate = new DateOnly(1, 1, 1);
             if (date != null)
             {
-                int year = int.Parse(date.Substring(0, 4));
-                int month = int.Parse(date.Substring(5, 2));
-                int day = int.Parse(date.Substring(8, 2));
-                bookingDate = new DateOnly(year, month, day);
+                bookingDate = DateOnly.Parse(date);
             }
 
             var results = dbContext.Bookings

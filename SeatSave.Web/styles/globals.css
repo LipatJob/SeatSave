@@ -86,17 +86,24 @@
   }
 
   .red-button {
-    @apply bg-valentine-red  hover:bg-[#DA291C] text-white text-xl font-bold uppercase py-2 px-4 h-14;
+    @apply bg-valentine-red hover:bg-[#DA291C] text-white text-xl font-bold uppercase py-2 px-4 h-14;
   }
 
   .gray-button {
     @apply px-4 py-2 text-xl font-bold text-white uppercase bg-dawn hover:bg-zinc-500 h-14;
   }
 
+  .hide-element {
+    @apply hidden;
+  }
+
+  .show-element {
+    @apply visible;
+  }
 
   /* CSS Classes for book-a-seat.js Modals */
   /* ===================================== */
-  
+
   body.active-modal {
     overflow-y: hidden;
   }

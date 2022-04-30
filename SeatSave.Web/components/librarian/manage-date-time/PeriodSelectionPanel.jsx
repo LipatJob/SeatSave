@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 
-export default function PeriodSelectionPanel({ className, selectedPeriods }) {
-  useEffect(() => {
-    // setPeriods(getAllPeriods())
-  }, []);
+export default function PeriodSelectionPanel({
+  className,
+  selectedId,
+  availabilityType,
+}) {
+  const [periods, setPeriods] = useState([]);
+  const [periodStates, setPeriodStates] = useState({});
+
+  function formatTime(time) {
+    return moment(`1111-11-11T${time}`).format('h:mm a');
+  }
 
   async function getAllPeriods() {
     const response = await fetch(
@@ -16,20 +24,64 @@ export default function PeriodSelectionPanel({ className, selectedPeriods }) {
     return data;
   }
 
-  function generatePeriods() {
-    const count = 16;
-    const periods = [];
-    for (let i = 0; i < count; i += 1) {
-      periods.push({
-        timeStart: '7:00am',
-        timeEnd: '8:00am',
-      });
-    }
-
-    return periods;
+  async function getSelectedPeriods() {
+    const type =
+      availabilityType === 'RegularHours' ? 'RegularDay' : 'SpecificDay';
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Availability/${type}/${selectedId}/Periods`,
+    );
+    const data = await response.json();
+    return data;
   }
 
-  const [periods, setPeriods] = useState(generatePeriods());
+  const updatePeriodState = (key, value) => {
+    setPeriodStates({ ...periodStates, [key]: value });
+  };
+
+  async function initializePeriods() {
+    const allPeriods = await getAllPeriods();
+    setPeriods(allPeriods);
+
+    const selectedPeriods = await getSelectedPeriods();
+    const period = allPeriods
+      .map((e) => e.id)
+      .reduce((o, key) => ({ ...o, [key]: false }));
+    selectedPeriods.forEach((item) => {
+      period[item.id] = true;
+    });
+    console.log(period);
+    setPeriodStates(period);
+  }
+
+  const onSave = async () => {
+    const body = Object.entries(periodStates)
+      .filter(([, value]) => value)
+      .map(([key]) => ({ id: key }));
+    console.log('Submitting');
+    console.log(body);
+    const type =
+      availabilityType === 'RegularHours' ? 'RegularDay' : 'SpecificDay';
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Availability/${type}/${selectedId}/Periods`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
+      },
+    );
+
+    if (response.ok) {
+      console.log('Success!');
+    }
+  };
+
+  useEffect(() => {
+    if (selectedId !== null) {
+      initializePeriods();
+    }
+  }, [selectedId]);
 
   return (
     <div className={`flex flex-col w-full shadow ${className}`}>
@@ -38,14 +90,24 @@ export default function PeriodSelectionPanel({ className, selectedPeriods }) {
       </div>
       <div className='flex flex-col items-center p-10'>
         <div className='grid w-full grid-cols-2 mb-4 gap-y-4'>
-          {periods.map(({ timeStart, timeEnd }) => (
-            <div className='flex flex-row items-center justify-center gap-4'>
-              <input type='checkbox' className='w-5 h-5 shrink checkbox' />
-              {`${timeStart} to ${timeEnd}`}
+          {periods.map(({ id, timeStart, timeEnd }) => (
+            <div className='flex flex-row items-center gap-4' key={id}>
+              <label htmlFor={id}>
+                <input
+                  id={id}
+                  name={id}
+                  type='checkbox'
+                  className='w-5 h-5 shrink checkbox'
+                  onChange={(e) => updatePeriodState(id, e.target.checked)}
+                  checked={periodStates[id]}
+                />
+              </label>
+
+              {`${formatTime(timeStart)} to ${formatTime(timeEnd)}`}
             </div>
           ))}
         </div>
-        <button className='px-8 mt-4 button' type='button'>
+        <button className='px-8 mt-4 button' type='button' onClick={onSave}>
           SAVE
         </button>
       </div>

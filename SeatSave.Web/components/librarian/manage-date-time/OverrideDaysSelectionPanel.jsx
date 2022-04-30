@@ -10,6 +10,9 @@ export default function OverrideDaysSelectionPanel({
   selectedId,
 }) {
   const [overrideDayItems, setOverrideDayItems] = useState(['2022-01-01']);
+  const [confirmDeleteModalVisible, setConfirmationModalVisible] =
+    useState(false);
+  const [addDateModalVisible, setAddDateModalVisible] = useState(false);
 
   async function getSpecificDays() {
     const response = await fetch(
@@ -58,10 +61,6 @@ export default function OverrideDaysSelectionPanel({
   useEffect(() => {
     updateOverrideDays();
   }, []);
-
-  const [confirmDeleteModalVisible, setConfirmationModalVisible] =
-    useState(false);
-  const [addDateModalVisible, setAddDateModalVisible] = useState(false);
 
   const [toDelete, setToDelete] = useState(-1);
   const onDeleteClicked = (id) => {

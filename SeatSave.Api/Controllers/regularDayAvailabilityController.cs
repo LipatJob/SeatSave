@@ -22,19 +22,25 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet("{dayOfWeek}/Periods")]
-        public IActionResult GetDayOfWeekPeriods([FromRoute] DayOfWeek dayOfWeek)
+        public IActionResult GetDayOfWeekPeriods([FromRoute] string dayOfWeek)
         {
-            var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeek);
+            var isDayOfWeekValid = Enum.TryParse<DayOfWeek>(dayOfWeek, out var dayOfWeekValue);
+            if (!isDayOfWeekValid) { return BadRequest("Invalid day of week"); }
+
+            var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeekValue);
             if (availability == null) { return BadRequest("Day of week not found"); }
 
             return Ok(availability.Periods);
         }
 
         [HttpPut("{dayOfWeek}/Periods")]
-        public IActionResult UpdatePeriods([FromRoute] DayOfWeek dayOfWeek, IList<Period> periods)
+        public IActionResult UpdatePeriods([FromRoute] string dayOfWeek, IList<Period> periods)
         {
+            var isDayOfWeekValid = Enum.TryParse<DayOfWeek>(dayOfWeek, out var dayOfWeekValue);
+            if (!isDayOfWeekValid) { return BadRequest("Invalid day of week"); }
+
             // Validate date exists
-            var availability = dbContext.SpecificDayAvailability.Find(dayOfWeek);
+            var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeekValue);
             if (availability == null) { return BadRequest("Day of week not found"); }
 
             // Add periods to entity

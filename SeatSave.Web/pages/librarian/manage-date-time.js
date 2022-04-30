@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 import DaySelectionPanel from '../../components/librarian/manage-date-time/DaySelectionPanel';
 import PeriodSelectionPanel from '../../components/librarian/manage-date-time/PeriodSelectionPanel';
@@ -16,6 +17,16 @@ export default function ManageDateTime() {
           onTabSelected={setAvailabilityType}
           onItemSelected={setSelectedId}
         />
+        {!selectedId && (
+          <div className='col-span-2 mx-auto justify-center-center'>
+            <Image
+              src='/ManageSeatsDecoration.png'
+              width={500}
+              height={500}
+              className='w-full col-span-2'
+            />
+          </div>
+        )}
         {selectedId && (
           <PeriodSelectionPanel
             selectedId={selectedId}

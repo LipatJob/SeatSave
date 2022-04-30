@@ -119,6 +119,7 @@ namespace SeatSave.EF
                 {
                     Id = 2,
                     Name = "DEF",
+
                     Type = "1",
                     Active = true,
                     Description = "description2 description2",
@@ -137,8 +138,8 @@ namespace SeatSave.EF
                     StatusHistory = new StatusHistory
                     {
                         DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
-                        DateTimeCheckedIn = new DateTime(2022, 4, 28, 8, 2, 0),
-                        DateTimeCheckedOut = new DateTime(2022, 4, 28, 9, 26, 0),
+                        DateTimeCheckedIn = new DateTime(2022, 4, 28, 10, 2, 0),
+                        DateTimeCheckedOut = new DateTime(2022, 4, 28, 11, 26, 0),
                     },
                     UserModelId = 2
                 },

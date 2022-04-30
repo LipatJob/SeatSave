@@ -36,18 +36,18 @@ export default function ViewBookingsTable({ bookings, onClick }) {
     return time;
   }
 
-  function convertDateFormat(yearString, monthString, dayString) {
-    const monthIndex = parseInt(monthString, 10) - 1;
-    const date = `${monthsList[monthIndex]} ${dayString}, ${yearString}`;
+  function convertDateFormat(dateString) {
+    const year = dateString.slice(0, 4);
+    const month = dateString.slice(5, 7);
+    const day = dateString.slice(8, 10);
+    const monthIndex = parseInt(month, 10) - 1;
+    const date = `${monthsList[monthIndex]} ${day}, ${year}`;
     return date;
   }
 
   function convertDateTimeFormat(dateTimeString) {
     const time = convertTimeFormat(dateTimeString.slice(11, 16));
-    const year = dateTimeString.slice(0, 4);
-    const month = dateTimeString.slice(5, 7);
-    const day = dateTimeString.slice(8, 10);
-    const date = convertDateFormat(year, month, day);
+    const date = convertDateFormat(dateTimeString.slice(0, 10));
     const dateTime = `${time} - ${date}`;
     return dateTime;
   }
@@ -94,19 +94,11 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                     <td className='px-2'>
                       <div>
                         {convertTimeFormat(booking.period.timeStart)} -{' '}
-                        {convertDateFormat(
-                          booking.bookingDate.year,
-                          booking.bookingDate.month,
-                          booking.bookingDate.day,
-                        )}
+                        {convertDateFormat(booking.bookingDate)}
                       </div>
                       <div>
                         {convertTimeFormat(booking.period.timeEnd)} -{' '}
-                        {convertDateFormat(
-                          booking.bookingDate.year,
-                          booking.bookingDate.month,
-                          booking.bookingDate.day,
-                        )}
+                        {convertDateFormat(booking.bookingDate)}
                       </div>
                     </td>
                     <td className='px-2'>{booking.status}</td>

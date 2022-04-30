@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import CircularButton from '../../common/CircularButton';
 import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
@@ -11,6 +11,54 @@ export default function OverrideDaysSelectionPanel({
 }) {
   const [overrideDayItems, setOverrideDayItems] = useState(['2022-01-01']);
 
+  async function getSpecificDays() {
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Availability/SpecificDay`,
+      {
+        method: 'GET',
+      },
+    );
+    const data = await response.json();
+    return data;
+  }
+
+  async function updateOverrideDays() {
+    const days = await getSpecificDays();
+    setOverrideDayItems(days);
+  }
+
+  async function deleteDayOverride(date) {
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Availability/SpecificDay/${date}`,
+      {
+        method: 'DELETE',
+      },
+    );
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+
+  async function addDayOverride(date) {
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Availability/SpecificDay`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: `"${date}"`,
+      },
+    );
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+
+  useEffect(() => {
+    updateOverrideDays();
+  }, []);
+
   const [confirmDeleteModalVisible, setConfirmationModalVisible] =
     useState(false);
   const [addDateModalVisible, setAddDateModalVisible] = useState(false);
@@ -20,12 +68,21 @@ export default function OverrideDaysSelectionPanel({
     setConfirmationModalVisible(true);
     setToDelete(id);
   };
-  const onDeleteConfirmed = (id) => {
-    console.log(`Deleting ${id}`);
+
+  const onDeleteConfirmed = async (id) => {
+    await deleteDayOverride(id);
     setConfirmationModalVisible(false);
+    updateOverrideDays();
+    onItemSelected(null);
   };
 
-  const onAddDate = (date) => {};
+  const onAddDate = async (date) => {
+    await addDayOverride(date);
+    updateOverrideDays();
+    setAddDateModalVisible(false);
+  };
+
+  const isDayUnique = (date) => !overrideDayItems.includes(date);
 
   return (
     <div className='relative h-full'>
@@ -64,9 +121,9 @@ export default function OverrideDaysSelectionPanel({
       {addDateModalVisible && (
         <AddSpecifcDayModal
           text='Are you sure you want to delete this day?'
-          onYes={onAddDate}
-          onNo={() => setAddDateModalVisible(false)}
+          onAdd={onAddDate}
           onClose={() => setAddDateModalVisible(false)}
+          isDayUnique={isDayUnique}
         />
       )}
     </div>

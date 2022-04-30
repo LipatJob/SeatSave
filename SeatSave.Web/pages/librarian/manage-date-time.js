@@ -3,17 +3,6 @@ import DaySelectionPanel from '../../components/librarian/manage-date-time/DaySe
 import PeriodSelectionPanel from '../../components/librarian/manage-date-time/PeriodSelectionPanel';
 
 export default function ManageDateTime() {
-  async function getSpecificDays() {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/SpecificDay`,
-      {
-        method: 'GET',
-      },
-    );
-    const data = await response.json();
-    return data;
-  }
-
   async function getRegularDayAvailability(dayOfWeek) {
     const response = await fetch(
       `${process.env.API_URL}/Api/Availability/RegularDay/${dayOfWeek}`,

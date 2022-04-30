@@ -1,47 +1,14 @@
 import React, { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
+import datetimeFormatter from '../../../lib/datetimeFormatter';
 
 export default function PreviewBookingsTable({ bookings, previewDetails }) {
   const [page, setPage] = useState(1);
 
   const ROWS_PER_PAGE = 5;
 
-  const monthsList = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
   function handlePaginationChange(e, value) {
     setPage(value);
-  }
-
-  function convertTimeFormat(timeString) {
-    const hour = parseInt(timeString.slice(0, 2), 10);
-    const minute = parseInt(timeString.slice(3, 5), 10);
-    let time = `${hour > 12 ? hour - 12 : hour}`;
-    if (hour === 0) time = '12';
-    time += (minute < 10 ? ':0' : ':') + minute;
-    time += hour >= 12 ? ' pm' : ' am';
-    return time;
-  }
-
-  function convertDateFormat(dateString) {
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(5, 7);
-    const day = dateString.slice(8, 10);
-    const monthIndex = parseInt(month, 10) - 1;
-    const date = `${monthsList[monthIndex]} ${day}, ${year}`;
-    return date;
   }
 
   return (
@@ -75,8 +42,11 @@ export default function PreviewBookingsTable({ bookings, previewDetails }) {
                       {booking.userModel.firstName} {booking.userModel.lastName}
                     </td>
                     <td className='px-2'>
-                      {convertDateFormat(booking.bookingDate)} -{' '}
-                      {convertTimeFormat(booking.period.timeStart)}
+                      {datetimeFormatter.convertDateFormat(booking.bookingDate)}{' '}
+                      -{' '}
+                      {datetimeFormatter.convertTimeFormat(
+                        booking.period.timeStart,
+                      )}
                     </td>
                   </tr>
                 ))

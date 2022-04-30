@@ -26,6 +26,7 @@ namespace SeatSave.Api.Services
 
             var claims = new[]
             {
+                new Claim("Id", user.Id.ToString()),
                 new Claim("Email", user.Email),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
@@ -58,6 +59,7 @@ namespace SeatSave.Api.Services
         {
             return new UserModel()
             {
+                Id = int.Parse(userClaims.FirstOrDefault(e => e.Type == "Id")?.Value),
                 Email = userClaims.FirstOrDefault(e => e.Type == "Email")?.Value,
                 FirstName = userClaims.FirstOrDefault(e => e.Type == "FirstName")?.Value,
                 LastName = userClaims.FirstOrDefault(e => e.Type == "LastName")?.Value,

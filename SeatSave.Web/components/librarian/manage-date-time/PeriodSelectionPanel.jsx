@@ -50,11 +50,11 @@ export default function PeriodSelectionPanel({
   }
 
   const onSave = async () => {
-    const body = Object.entries(periodStates)
+    const content = Object.entries(periodStates)
       .filter(([, value]) => value)
       .map(([key]) => ({ id: key }));
     console.log('Submitting');
-    console.log(body);
+    console.log(content);
     const type =
       availabilityType === 'RegularHours' ? 'RegularDay' : 'SpecificDay';
     const response = await fetch(
@@ -64,7 +64,7 @@ export default function PeriodSelectionPanel({
         headers: {
           'Content-Type': 'application/json',
         },
-        body,
+        body: JSON.stringify(content),
       },
     );
 

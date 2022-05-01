@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.Core.Schedule;
 using SeatSave.EF;
+using SeatSave.Api.DTO;
+using System.Security.Claims;
+using SeatSave.Api.Services;
 
 namespace SeatSave.Api.Controllers
 {
@@ -25,27 +28,51 @@ namespace SeatSave.Api.Controllers
         {
             return Ok(dbContext.Bookings.Find(id));
         }
-        [HttpPost]
-        public IActionResult Add()
+
+        [HttpGet("Current")]
+        public IActionResult GetCurrentBooking()
         {
-
-            /*
-            if (user.UserGroup == Visitor.UserGroup)
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity == null)
             {
-                var visitor = (Visitor)user;
-                visitor.Book(); // (date, period, seat)
+                return BadRequest();
             }
-            */
 
-            // STEPS:
-            // 1. Get user credentials
-            // 2. Get reservation details (date, period, seat)
-            // 3. Check which user is the user (visitor or librarian)
-            //    IF: visitor -> convert user to visitor object
-            // 4. Pass booking details into Book() method 
+            var userClaims = identity.Claims;
+            var user = AuthService.CreateUserModelFromClaims(userClaims);
+            var visitor = dbContext.Visitors.Find(user.Id);
 
-            return Ok("To be implemented");
+            if (visitor == null)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(visitor.GetActiveBooking());
         }
+
+        [HttpPost]
+        public IActionResult Add([FromBody] BookingDTO bookingDTO)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity == null)
+            {
+                return BadRequest();
+            }
+
+            var userClaims = identity.Claims;
+            var user = AuthService.CreateUserModelFromClaims(userClaims);
+            var visitor = dbContext.Visitors.Find(user.Id);
+
+            if (visitor == null)
+            {
+                return BadRequest();
+            }
+
+            var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), bookingDTO.periodId, bookingDTO.seatId);
+            dbContext.SaveChanges();
+            return Ok(booking);
+        }
+
         [HttpPut]
         public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]
@@ -82,3 +109,18 @@ namespace SeatSave.Api.Controllers
 
     }
 }
+
+/*
+            if (user.UserGroup == Visitor.UserGroyup)
+            {
+                var visitor = (Visitor)user;
+                visitor.Book(); // (date, period, seat)
+            }
+            */
+
+// STEPS:
+// 1. Get user credentials
+// 2. Get reservation details (date, period, seat)
+// 3. Check which user is the user (visitor or librarian)
+//    IF: visitor -> convert user to visitor object
+// 4. Pass booking details into Book() method 

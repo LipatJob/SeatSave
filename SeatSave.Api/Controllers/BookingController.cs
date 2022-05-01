@@ -131,7 +131,7 @@ namespace SeatSave.Api.Controllers
             return Ok();
         }
 
-        private bool CanCurrentUserPatchBooking(BookingModel booking)
+        private bool CanCurrentUserPatchBooking(BookingModel booking, string newStatus)
         {
             // get current user
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -148,6 +148,7 @@ namespace SeatSave.Api.Controllers
             if (userGroup == Librarian.UserGroup) { return true; }
             if (userGroup == Visitor.UserGroup)
             {
+                if (newStatus == BookingModel.CheckedInStatus) { return false; }
                 return booking.VisitorId == user.Id;
             }
 

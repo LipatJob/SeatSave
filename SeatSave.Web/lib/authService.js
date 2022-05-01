@@ -43,6 +43,7 @@ function getUser(userGroup) {
 }
 
 export default {
+  getToken,
   getUser,
   login,
   logout,

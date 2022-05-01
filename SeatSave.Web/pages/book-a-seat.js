@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import moment from 'moment';
-import { formatDate, formatTime } from '../lib/DateHelper';
+import visitorAuthService from '../lib/visitorAuthService';
+import Router from 'next/router';
+import { useEffect } from 'react';
 
 export default function BookASeat({ availableDays }) {
+  useEffect(() => {
+    if (!visitorAuthService.isLoggedIn()) {
+      Router.push('/login');
+    }
+  }, []);
+
   const day = availableDays.map((availableDay) => new Date(availableDay));
   const [seatID, setSeatID] = useState();
 
@@ -54,7 +62,7 @@ export default function BookASeat({ availableDays }) {
       setPeriodSelected(selectedPeriod);
       setSeatSelected(null);
       setAvailableSeats(json);
-      console.log(availableSeats);
+      console.log(json);
     } else {
       console.log('Error!');
     }
@@ -74,26 +82,50 @@ export default function BookASeat({ availableDays }) {
 
   async function submitBooking(e) {
     e.preventDefault();
-    const requestData = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: {
-        dateSelected,
-        periodSelected,
-        seatSelected,
-      },
-    };
 
-    console.log(requestData);
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Booking`,
-      requestData,
-    );
+    if (
+      dateSelected != null &&
+      periodSelected != null &&
+      seatSelected != null
+    ) {
+      const userToken = visitorAuthService.getToken();
+      console.log(userToken);
+      const requestData = {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + userToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          isoDate: moment(dateSelected).format('YYYY-MM-DD'),
+          periodId: periodSelected,
+          seatId: seatSelected,
+        }),
+      };
+      console.log(requestData);
 
-    if (response.status === 200) {
-      console.log('Submitted!');
+      const checkCurrentBooking = await fetch(
+        `${process.env.API_URL}/Api/Booking/Current`,
+      );
+      const currentBook = await checkCurrentBooking.json();
+
+      if (currentBook.status === 400) {
+        console.log('Cannot create a book right now!');
+        // Make a modal for this
+      }
+
+      const response = await fetch(
+        `${process.env.API_URL}/Api/Booking`,
+        requestData,
+      );
+
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+        Router.push('/');
+      }
+    } else {
+      console.log('There are missing data!');
     }
   }
 
@@ -162,7 +194,7 @@ export default function BookASeat({ availableDays }) {
         )}
 
         {availableSeats && (
-          <div id='seatElement'>
+          <div>
             <div className='flex justify-center'>
               <h5 className='pt-20 font-bold'>Pick your seat</h5>
             </div>
@@ -170,26 +202,27 @@ export default function BookASeat({ availableDays }) {
             <div className='flex justify-center'>
               <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
                 <div className='grid grid-cols-1 sm:grid-cols-2'>
-                  {availableSeats?.map(
-                    (aSeat) =>
-                      aSeat.active == 'true' && (
-                        <button
-                          key={aSeat.id}
-                          className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
-                          onClick={() => viewSeatDetails(aSeat)}
-                        >
-                          <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
-                          <h5 className='pb-3 text-white'>{aSeat.id}</h5>
-                        </button>
-                      ),
-                  )}
+                  {availableSeats.map((aSeat) => (
+                    <button
+                      key={aSeat.id}
+                      className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                      onClick={() => viewSeatDetails(aSeat)}
+                    >
+                      <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
+                      <h5 className='pb-3 text-white'>{aSeat.id}</h5>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
+          </div>
+        )}
 
-            <br />
-            <br />
+        <br />
+        <br />
 
+        {seatSelected && (
+          <div>
             <div className='flex justify-center'>
               <button
                 onClick={submitBooking}
@@ -202,7 +235,6 @@ export default function BookASeat({ availableDays }) {
           </div>
         )}
       </div>
-
       {modal && (
         <div className='modal'>
           <div className='overlay'>

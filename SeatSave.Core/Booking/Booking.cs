@@ -21,8 +21,8 @@ namespace SeatSave.Core.Booking
         public string? Status { get; set; }
         public int StatusHistoryId { get; set; }
         public virtual StatusHistory? StatusHistory { get; set; }
-        public int UserModelId { get; set; }
-        public virtual UserModel? UserModel { get; set; }
+        public int VisitorId { get; set; }
+        public virtual Visitor? UserModel { get; set; }
 
         public void Cancel() { throw new NotImplementedException("TODO"); }
         public void CheckIn() { throw new NotImplementedException("TODO"); }

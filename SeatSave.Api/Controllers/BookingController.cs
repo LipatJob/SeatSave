@@ -61,13 +61,19 @@ namespace SeatSave.Api.Controllers
             var userClaims = identity.Claims;
             var user = AuthService.CreateUserModelFromClaims(userClaims);
             var visitor = dbContext.Visitors.Find(user.Id);
-
             if (visitor == null)
             {
                 return BadRequest();
             }
-            
-            return Ok(visitor.GetActiveBooking());
+
+            var activeBooking = visitor.GetActiveBooking();
+            if (activeBooking == null)
+            {
+                return NoContent();
+            }
+
+            activeBooking.UserModel = null;
+            return Ok(activeBooking);
         }
 
         [HttpPost]

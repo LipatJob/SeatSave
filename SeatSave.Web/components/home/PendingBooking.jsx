@@ -4,7 +4,7 @@ import BookingCode from './BookingCode';
 import BookingDetails from './BookingDetails';
 import WarningConfirmationModal from '../common/WarningConfirmationModal';
 
-export default function PendingBooking() {
+export default function PendingBooking({ bookingDetails }) {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
   const onCancelBookingClicked = () => {
     setCancelModalVisible(true);
@@ -25,8 +25,8 @@ export default function PendingBooking() {
       )}
       <div className='flex flex-col items-start gap-8'>
         <h1 className='pr-2 text-dusk-blue'>Your booking is at 10:00am</h1>
-        <BookingCode code='5155717' />
-        <BookingDetails />
+        <BookingCode code={bookingDetails.bookingCode} />
+        <BookingDetails details={bookingDetails} />
         <button
           className='px-16 red-button'
           type='button'

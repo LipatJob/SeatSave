@@ -9,6 +9,7 @@ export default function SeatInformation({
   setSeatName,
   deletionConfirmation,
   setDeletionConfirmation,
+  onAvailableSeatsUpdated,
 }) {
   const ref = useRef(null);
   const [formPartData, setFormPartData] = useState();
@@ -32,6 +33,7 @@ export default function SeatInformation({
       console.log(json);
       setSeatName(data.name);
       setFormPart(0);
+      onAvailableSeatsUpdated();
     } else {
       console.log('there was an error');
     }

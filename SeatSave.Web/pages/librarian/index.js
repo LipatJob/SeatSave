@@ -49,7 +49,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
             />
           )}
           <PresentBookingsSection
-            period={presentPeriod}
+            period={presentPeriod[0]}
             bookings={presentBookings}
             previewDetails={handlePreviewDetails}
           />
@@ -76,10 +76,14 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 }
 
 export async function getServerSideProps() {
-  const presentPeriodData = await fetch(`${process.env.API_URL}/Api/Booking/Present`);
+  const presentPeriodData = await fetch(
+    `${process.env.API_URL}/Api/Schedule/Periods/Present`,
+  );
   const presentPeriod = await presentPeriodData.json();
 
-  const presentBookingsData = await fetch(`${process.env.API_URL}/Api/Booking/Present`);
+  const presentBookingsData = await fetch(
+    `${process.env.API_URL}/Api/Booking/Present`,
+  );
   const presentBookings = await presentBookingsData.json();
 
   return {

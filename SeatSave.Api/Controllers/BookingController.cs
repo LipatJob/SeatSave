@@ -99,7 +99,8 @@ namespace SeatSave.Api.Controllers
         [HttpGet("Present")]
         public IActionResult PresentBookings()
         {
-            var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0);
+            var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0); // FOR TESTING
+            //var currentDateTime = DateTime.Now;
             var currentDate = DateOnly.FromDateTime(currentDateTime);
             var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
 

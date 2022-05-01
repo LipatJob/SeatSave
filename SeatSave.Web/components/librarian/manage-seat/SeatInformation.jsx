@@ -170,15 +170,14 @@ export default function SeatInformation({
                     </button>
                   )}
                 </div>
-                <div className='text-right md:col-span-1'>
+                <div className='flex flex-row items-center justify-center md:col-span-1'>
                   <Field
-                    className='inline-block align-middle'
+                    className='inline-block w-5 h-5 mr-3 align-middle'
                     type='checkbox'
                     name='active'
                     id='active'
                   />
                   <span className='inline-block align-middle'>
-                    {' '}
                     Activate Seat
                   </span>
                 </div>

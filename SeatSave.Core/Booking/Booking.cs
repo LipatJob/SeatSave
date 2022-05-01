@@ -22,7 +22,7 @@ namespace SeatSave.Core.Booking
         public int StatusHistoryId { get; set; }
         public virtual StatusHistory? StatusHistory { get; set; }
         public int VisitorId { get; set; }
-        public virtual Visitor? UserModel { get; set; }
+        public virtual Visitor? VisitorModel { get; set; }
 
         public void Cancel(DateTime currentDateTime)
         {

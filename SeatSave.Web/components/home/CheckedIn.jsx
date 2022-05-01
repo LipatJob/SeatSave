@@ -3,11 +3,28 @@ import Image from 'next/image';
 import BookingDetails from './BookingDetails';
 import OkModal from '../common/OkModal';
 import { formatDate, formatTime } from '../../lib/DateHelper';
+import visitorAuthService from '../../lib/visitorAuthService';
 
-export default function CheckedIn({ bookingDetails }) {
+export default function CheckedIn({ bookingDetails, onCheckOut }) {
   const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
-  const onCheckOutClicked = () => {
-    setCheckoutMessageVisible(true);
+  const onCheckOutClicked = async () => {
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Booking/${bookingDetails.id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: visitorAuthService.getAuthToken(),
+        },
+        body: 'Checked In',
+      },
+    );
+    if (response.ok) {
+      setCheckoutMessageVisible(true);
+      onCheckOut();
+    } else {
+      console.log('There was an error');
+    }
   };
   const onCheckoutMessageSeen = () => {
     setCheckoutMessageVisible(false);

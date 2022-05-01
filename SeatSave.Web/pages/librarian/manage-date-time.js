@@ -8,9 +8,9 @@ export default function ManageDateTime() {
   const [selectedId, setSelectedId] = useState();
 
   return (
-    <div className='page-container-small'>
+    <div className='page-container'>
       <h1 className='mb-6'>Manage Date & Time</h1>
-      <div className='grid grid-cols-3 gap-x-7 min-h-[500px]'>
+      <div className='grid grid-cols-3 gap-x-7 h-[500px] max-h-[500px]'>
         <DaySelectionPanel
           dayType={availabilityType}
           selectedId={selectedId}
@@ -18,12 +18,11 @@ export default function ManageDateTime() {
           onItemSelected={setSelectedId}
         />
         {!selectedId && (
-          <div className='col-span-2 mx-auto justify-center-center'>
+          <div className='relative w-full col-span-2 mx-auto justify-center-center'>
             <Image
               src='/ManageSeatsDecoration.png'
-              width={500}
-              height={500}
-              className='w-full col-span-2'
+              layout='fill'
+              objectFit='contain'
             />
           </div>
         )}

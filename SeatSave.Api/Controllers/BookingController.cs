@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SeatSave.Core.Schedule;
 using SeatSave.EF;
 using SeatSave.Api.DTO;
 using System.Security.Claims;
@@ -46,7 +45,7 @@ namespace SeatSave.Api.Controllers
             {
                 return BadRequest();
             }
-            
+
             return Ok(visitor.GetActiveBooking());
         }
 
@@ -102,8 +101,8 @@ namespace SeatSave.Api.Controllers
         {
             var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0);
             var currentDate = DateOnly.FromDateTime(currentDateTime);
-            var currentTime = new TimeSpan(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
-            
+            var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
+
             return Ok(dbContext.Bookings.Where(b => b.Period.TimeStart <= currentTime));
             //return Ok(dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime));
         }

@@ -21,7 +21,7 @@ namespace SeatSave.EF
             context.Database.EnsureCreated();
             var periods = new PeriodFactory().GetPeriodsInDay();
             context.Periods.AddRange(periods);
-            context.Periods.Add(new Period(100, new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0)));
+            context.Periods.Add(new Period(100, new TimeOnly(0, 0, 0), new TimeOnly(0, 0, 0)));
 
             context.SpecificDayAvailability.AddRange(new SpecificDateAvailability
             {

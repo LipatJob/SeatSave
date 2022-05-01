@@ -54,7 +54,7 @@ export default function ManageSeats() {
 
   useEffect(() => {
     updateSeats();
-  });
+  }, []);
 
   useEffect(() => {
     updateSeatData();

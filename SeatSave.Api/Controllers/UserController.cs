@@ -65,12 +65,12 @@ namespace SeatSave.Api.Controllers
             return Ok(user);
         }
 
-        [HttpHead]
+        [HttpGet("Existing")]
         public IActionResult DoesEmailExist([FromQuery] string email)
         {
             var user = dbContext.Users.FirstOrDefault(e => e.Email == email);
-            if (user == null) { return NotFound(); }
-            return NoContent();
+            if (user == null) { return Ok(false); }
+            return Ok(true);
         }
 
         private static UserModel? DtoToUserType(UserDto userDto)

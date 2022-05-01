@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import Image from 'next/image';
@@ -7,13 +7,11 @@ import AccountInformationForm from '../components/register/AccountInformationFor
 import VisitorInformationForm from '../components/register/VisitorInformationForm';
 
 export default function Register({ visitorSelection }) {
-  const [formPartData, setFormPartData] = useState([]);
+  const [formPartData, setFormPartData] = useState([{}, {}]);
   const [formPartIndex, setFormPartIndex] = useState(0);
   const router = useRouter();
 
-  const submitData = async () => {
-    const formData = { ...formPartData[0], ...formPartData[1] };
-
+  const submitData = async (formData) => {
     console.log(formData);
     const requestData = {
       method: 'POST',
@@ -55,7 +53,7 @@ export default function Register({ visitorSelection }) {
 
   const submitLastFormPart = (submittedFormData) => {
     setFormIndexData(1, submittedFormData);
-    submitData();
+    submitData({ ...submittedFormData, ...formPartData[0] });
   };
 
   return (

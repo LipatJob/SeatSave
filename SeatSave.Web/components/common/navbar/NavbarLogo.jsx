@@ -11,7 +11,6 @@ export default function NavbarLogo() {
             <Image src='/logo-icon.png' width={54} height={54} />
           </a>
         </Link>
-        <Image src='/logo-icon.png' width={54} height={54} />
       </div>
       <div className='hidden mt-2 lg:block'>
         <Link href='/'>

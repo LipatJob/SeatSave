@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import BookingDetails from './BookingDetails';
 import OkModal from '../common/OkModal';
+import { formatDate, formatTime } from '../../lib/DateHelper';
 
-export default function CheckedIn() {
+export default function CheckedIn({ bookingDetails }) {
   const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
   const onCheckOutClicked = () => {
     setCheckoutMessageVisible(true);
@@ -33,9 +34,9 @@ export default function CheckedIn() {
       <div className='grid grid-cols-2 page-container-small'>
         <div className='flex flex-col items-start gap-8'>
           <h1 className='pr-2 text-dusk-blue'>
-            Your booking is until 11:00 am
+            Your booking is until {formatTime(bookingDetails.period.timeEnd)}
           </h1>
-          <BookingDetails />
+          <BookingDetails details={bookingDetails} />
           <div className='flex flex-col items-center gap-4 mt-6'>
             <h4 className='text-center'>Are you leaving CLIR?</h4>
             <button

@@ -1,7 +1,7 @@
 import React from 'react';
 import ModalBase from './ModalBase';
 
-export default function DeleteConfirmationModal({
+export default function WarningConfirmationModal({
   onYes,
   onNo,
   onClose,
@@ -11,7 +11,7 @@ export default function DeleteConfirmationModal({
     <ModalBase onClose={onClose}>
       <div className='relative flex-auto w-[500px] h-[300px]'>
         <div className='w-full h-full p-4 text-4xl text-center'>
-          {text}
+          <p className='mb-4'>{text}</p>
           <div className='w-full py-4 pt-4 text-4xl text-center'>
             <button type='button' className='w-2/5 red-button' onClick={onYes}>
               YES

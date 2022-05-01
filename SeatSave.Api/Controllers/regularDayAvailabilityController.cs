@@ -18,24 +18,38 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(dbContext.RegularDayOfWeekAvailability);
+            return Ok(dbContext.RegularDayOfWeekAvailability.Select(e => e.DayOfWeek));
         }
 
-        [HttpGet("{dayOfWeek}")]
-        public IActionResult GetSpecific(DayOfWeek dayOfWeek)
+        [HttpGet("{dayOfWeek}/Periods")]
+        public IActionResult GetDayOfWeekPeriods([FromRoute] string dayOfWeek)
         {
-            return Ok(dbContext.RegularDayOfWeekAvailability.Find(dayOfWeek));
+            var isDayOfWeekValid = Enum.TryParse<DayOfWeek>(dayOfWeek, out var dayOfWeekValue);
+            if (!isDayOfWeekValid) { return BadRequest("Invalid day of week"); }
+
+            var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeekValue);
+            if (availability == null) { return BadRequest("Day of week not found"); }
+
+            return Ok(availability.Periods);
         }
 
-        [HttpPut("{dayOfWeek}")]
-        public IActionResult Update(DayOfWeek dayOfWeek, RegularDayOfWeekAvailability availability)
+        [HttpPut("{dayOfWeek}/Periods")]
+        public IActionResult UpdatePeriods([FromRoute] string dayOfWeek, IList<Period> periods)
         {
-            if (availability.DayOfWeek != dayOfWeek) { return BadRequest(); }
+            var isDayOfWeekValid = Enum.TryParse<DayOfWeek>(dayOfWeek, out var dayOfWeekValue);
+            if (!isDayOfWeekValid) { return BadRequest("Invalid day of week"); }
 
-            dbContext.Entry(availability).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            // Validate date exists
+            var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeekValue);
+            if (availability == null) { return BadRequest("Day of week not found"); }
+
+            // Add periods to entity
+            foreach (var period in periods) { dbContext.Attach<Period>(period); }
+            availability.Periods.Clear();
+            foreach (var period in periods) { availability.Periods.Add(period); }
+
             dbContext.SaveChanges();
-
-            return Ok(availability);
+            return Ok(availability.Periods);
         }
     }
 }

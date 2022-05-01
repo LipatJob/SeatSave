@@ -3,27 +3,36 @@ import Image from 'next/image';
 
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
-import Seat from '../../components/librarian/manage-seat/Seat';
-import DeleteConfirmationModal from '../../components/librarian/manage-seat/DeleteConfirmationModal';
-import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
-import CircularButton from '../../components/common/CircularButton';
 
-export default function ManageSeats({ seats }) {
+import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
+
+import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
+
+export default function ManageSeats() {
   const [formPart, setFormPart] = useState(0);
   const [currId, setCurrentID] = useState(0);
   const [seatData, seatSeatData] = useState();
+  const [seats, setSeats] = useState([]);
 
-  const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
   const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
 
-  const [deletionConfirmation, setDeletionConfirmation] = useState(false);
+  const updateSeats = async () => {
+    const res = await fetch(`${process.env.API_URL}/Api/Seats`);
+
+    if (!res.ok) {
+      console.log('There was an error');
+    }
+
+    const data = await res.json();
+    setSeats(data);
+  };
 
   const updateSeatData = async () => {
     if (currId === 0) {
       seatSeatData({
         id: 0,
         name: '',
-        type: 'default',
+        type: '',
         active: 'true',
         description: '',
       });
@@ -33,6 +42,16 @@ export default function ManageSeats({ seats }) {
     const jsonData = await response.json();
     seatSeatData(jsonData);
   };
+
+  const updateAvailableSeats = () => {
+    console.log('Updating seats');
+    updateSeats();
+  };
+
+  useEffect(() => {
+    updateSeats();
+  }, []);
+
   useEffect(() => {
     updateSeatData();
   }, [currId]);
@@ -40,12 +59,6 @@ export default function ManageSeats({ seats }) {
   const [seatName, setSeatName] = useState();
   return (
     <div className='page-container '>
-      {showModalDeleteSeat && (
-        <DeleteConfirmationModal
-          onClick={setShowModalDeleteSeat}
-          setDeletionConfirmation={setDeletionConfirmation}
-        />
-      )}
       {showModalAddedSeat && (
         <AddedSeatModal onClick={setShowModalAddedSeat} name={seatName} />
       )}
@@ -54,34 +67,16 @@ export default function ManageSeats({ seats }) {
       </div>
       <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
         <div id='leftPanel' className=' lg:col-span-1'>
-          <PanelWithHeader
-            header='Available Seats'
-            body={
-              <div>
-                <div className=' h-[450px]'>
-                  {seats.map((seat) => (
-                    <div>
-                      <Seat
-                        Name={seat.name}
-                        Code={seat.id}
-                        onClick={() => {
-                          setCurrentID(seat.id);
-                          setFormPart(1);
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className='h-[70px]'>
-                  <CircularButton
-                    onClick={() => {
-                      setCurrentID(0);
-                      setFormPart(1);
-                    }}
-                  />
-                </div>
-              </div>
-            }
+          <SeatSelectionPanel
+            seats={seats}
+            onAddClicked={() => {
+              setCurrentID(0);
+              setFormPart(1);
+            }}
+            onSeatSelected={(id) => {
+              setCurrentID(id);
+              setFormPart(1);
+            }}
           />
         </div>
         <div id='rightPanel' className=' lg:col-span-2'>
@@ -100,15 +95,11 @@ export default function ManageSeats({ seats }) {
               body={
                 <SeatInformation
                   seatData={seatData}
-                  setShowModalDeleteSeat={setShowModalDeleteSeat}
                   setFormPart={setFormPart}
                   setShowModalAddedSeat={setShowModalAddedSeat}
                   setSeatName={setSeatName}
-                  deletionConfirmation={deletionConfirmation}
-                  setDeletionConfirmation={setDeletionConfirmation}
-                >
-                  {' '}
-                </SeatInformation>
+                  onAvailableSeatsUpdated={updateAvailableSeats}
+                />
               }
             />
           )}
@@ -117,14 +108,5 @@ export default function ManageSeats({ seats }) {
     </div>
   );
 }
-export async function getServerSideProps() {
-  const res = await fetch(`${process.env.API_URL}/Api/Seats`);
-  const seats = await res.json();
 
-  return {
-    props: {
-      seats,
-    },
-  };
-}
 ManageSeats.page = 'ManageSeats';

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeatSave.Api.DTO;
 using SeatSave.Api.Services;
-using SeatSave.Core.User;
 using SeatSave.EF;
 using System.Security.Claims;
 
@@ -17,9 +15,10 @@ namespace SeatSave.Api.Controllers
 
         public AuthenticationController(IConfiguration config, SeatSaveContext dbContext)
         {
-            authService = new AuthService(dbContext, new JwtInfo { 
+            authService = new AuthService(dbContext, new JwtInfo
+            {
                 Key = config["Jwt:Key"],
-                Issuer =  config["Jwt:Issuer"],
+                Issuer = config["Jwt:Issuer"],
                 Audience = config["Jwt:Audience"],
             });
         }
@@ -38,21 +37,24 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet("User")]
-        public IActionResult GetUser([FromBody] UserLogin userLogin)
+        public IActionResult GetUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
             if (identity != null)
             {
                 var userClaims = identity.Claims;
-                
-                return Ok(authService.CreateUserModelFromClaims(userClaims));
+
+                return Ok(AuthService.CreateUserModelFromClaims(userClaims));
             }
 
             return NotFound();
         }
 
-     
+
+
+
+
 
 
 

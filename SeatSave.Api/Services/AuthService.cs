@@ -20,12 +20,13 @@ namespace SeatSave.Api.Services
 
         public string GenerateToken(UserModel user)
         {
-            
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtInfo.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
+                new Claim("Id", user.Id.ToString()),
                 new Claim("Email", user.Email),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
@@ -42,7 +43,7 @@ namespace SeatSave.Api.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool TryAuthenticate(string email, string password, string userGroup, out UserModel model)
+        public bool TryAuthenticate(string email, string password, string userGroup, out UserModel? model)
         {
             model = null;
             var currentUser = dbContext.Users.FirstOrDefault(e => e.Email.ToLower() == email.ToLower() && e.Password == password && e.UserGroup == userGroup);
@@ -54,10 +55,11 @@ namespace SeatSave.Api.Services
             return false;
         }
 
-        public UserModel CreateUserModelFromClaims(IEnumerable<Claim> userClaims)
+        public static UserModel CreateUserModelFromClaims(IEnumerable<Claim> userClaims)
         {
             return new UserModel()
             {
+                Id = int.Parse(userClaims.FirstOrDefault(e => e.Type == "Id")?.Value),
                 Email = userClaims.FirstOrDefault(e => e.Type == "Email")?.Value,
                 FirstName = userClaims.FirstOrDefault(e => e.Type == "FirstName")?.Value,
                 LastName = userClaims.FirstOrDefault(e => e.Type == "LastName")?.Value,
@@ -67,7 +69,8 @@ namespace SeatSave.Api.Services
         }
     }
 
-    public struct JwtInfo {
+    public struct JwtInfo
+    {
         public string Issuer;
         public string Audience;
         public string Key;

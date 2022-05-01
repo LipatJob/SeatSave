@@ -3,6 +3,7 @@ import moment from 'moment';
 import visitorAuthService from '../lib/visitorAuthService';
 import Router from 'next/router';
 import { useEffect } from 'react';
+import { formatTime, formatDate } from '../lib/DateHelper';
 
 export default function BookASeat({ availableDays }) {
   useEffect(() => {

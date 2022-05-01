@@ -1,6 +1,6 @@
-import { Field, Form, Formik } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useState } from 'react';
-
+import * as Yup from 'yup';
 import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
 
 export default function SeatInformation({
@@ -72,10 +72,16 @@ export default function SeatInformation({
       onAvailableSeatsUpdated();
     }
   };
+  const seatInformationSchema = Yup.object().shape({
+    name: Yup.string().trim().required('This field is required'),
+    type: Yup.string().trim().required('This field is required'),
+    description: Yup.string().trim().required('This field is required'),
+  });
 
   return (
     <Formik
       initialValues={seatData}
+      validationSchema={seatInformationSchema}
       enableReinitialize
       onSubmit={(values) => {
         console.log(values);
@@ -119,6 +125,11 @@ export default function SeatInformation({
                   placeholder='Enter Seat Name'
                   className='flex w-full'
                 />
+                <ErrorMessage
+                  name=' name'
+                  component='span'
+                  className='text-error'
+                />
               </div>
               <div>
                 Type
@@ -135,6 +146,11 @@ export default function SeatInformation({
                   <option value='1'>Carrel Desk</option>
                   <option value='2'>Carrel Desk with Outlet</option>
                 </Field>
+                <ErrorMessage
+                  name='type'
+                  component='span'
+                  className='text-error'
+                />
               </div>
               <div>
                 Description
@@ -146,6 +162,11 @@ export default function SeatInformation({
                   className='flex w-full h-32'
                   style={{ resize: 'none' }}
                   placeholder='Enter Seat Description'
+                />
+                <ErrorMessage
+                  name='description'
+                  component='span'
+                  className='text-error'
                 />
               </div>
             </div>

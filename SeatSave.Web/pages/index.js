@@ -55,3 +55,5 @@ export default function ViewBookingDetails() {
     </div>
   );
 }
+
+ViewBookingDetails.page = 'ViewBookingDetails';

@@ -16,18 +16,18 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
           'Content-Type': 'application/json',
           Authorization: visitorAuthService.getAuthToken(),
         },
-        body: 'Checked In',
+        body: '"Checked Out"',
       },
     );
     if (response.ok) {
       setCheckoutMessageVisible(true);
-      onCheckOut();
     } else {
       console.log('There was an error');
     }
   };
   const onCheckoutMessageSeen = () => {
     setCheckoutMessageVisible(false);
+    onCheckOut();
   };
 
   return (

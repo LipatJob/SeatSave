@@ -15,14 +15,14 @@ export default function NoBooking() {
           </button>
         </Link>
       </div>
-      <div>
+      <div className='relative'>
         <Image
           src='/NoBookingDecoration.svg'
           className='relative w-full h-auto'
           layout='responsive'
           objectFit='contain'
-          width={500}
-          height={500}
+          width={800}
+          height={800}
         />
       </div>
     </div>

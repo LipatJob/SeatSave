@@ -50,7 +50,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
 
       <div className='grid grid-cols-2 page-container-small'>
         <div className='flex flex-col items-start gap-8'>
-          <h1 className='pr-2 text-dusk-blue'>
+          <h1 className='pr-2 leading-tight text-dusk-blue'>
             Your booking is until {formatTime(bookingDetails.period.timeEnd)}
           </h1>
           <BookingDetails details={bookingDetails} />

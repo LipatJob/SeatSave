@@ -1,19 +1,26 @@
 import React from 'react';
+import { formatDate, formatTime } from '../../lib/DateHelper';
 
-export default function BookingDetails() {
+export default function BookingDetails({ details }) {
   return (
     <div className='flex flex-col gap-3 body-small'>
       <h4>Booking Details</h4>
       <div>
         <p className='font-bold'>Date</p>
-        <p>April 12, 2022</p>
+        <p>{formatDate(details.bookingDate)}</p>
       </div>
       <div>
         <p className='font-bold'>Time</p>
-        <p>10:00 am to 11:00 am</p>
+        <p>
+          {formatTime(details.period.timeStart)} to{' '}
+          {formatTime(details.period.timeEnd)}
+        </p>
       </div>
       <div>
-        <p className='font-bold'>Seat</p> <p>R01 - carrel desk (with outlet)</p>
+        <p className='font-bold'>Seat</p>
+        <p>
+          {details.seat.id} - {details.seat.name}
+        </p>
       </div>
     </div>
   );

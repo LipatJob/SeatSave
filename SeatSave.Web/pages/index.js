@@ -1,29 +1,51 @@
+import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import CheckedIn from '../components/home/CheckedIn';
 import NoBooking from '../components/home/NoBooking';
 import PendingBooking from '../components/home/PendingBooking';
+import visitorAuthService from '../lib/visitorAuthService';
 
 export default function ViewBookingDetails() {
-  const [currentBooking, setCurrentBooking] = useState({});
+  const [currentBooking, setCurrentBooking] = useState(null);
   const fetchCurrentBooking = async () => {
-    const response = await fetch(`${process.env.API_URL}/Api/Booking/Current`);
+    const response = await fetch(`${process.env.API_URL}/Api/Booking/Current`, {
+      headers: {
+        Authorization: visitorAuthService.getAuthToken(),
+      },
+    });
 
-    if (response.status !== 200) {
+    if (response.status === 200) {
+      const data = await response.json();
+      setCurrentBooking(data);
+      console.log(data);
+    } else if (response.status === 204) {
+      console.log('No booking');
+      setCurrentBooking(null);
+    } else {
       console.log('An error occured trying to fetch your booking details');
     }
-    const data = response.json();
-
-    console.log(data);
-    return data;
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!visitorAuthService.isLoggedIn()) {
+      Router.push('/login');
+      return;
+    }
+    const fetchData = async () => {
+      await fetchCurrentBooking();
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
-      {/* <NoBooking /> */}
-      {/* <PendingBooking /> */}
-      <CheckedIn />
+      {currentBooking && currentBooking.status === 'Pending' && (
+        <PendingBooking bookingDetails={currentBooking} />
+      )}
+      {currentBooking && currentBooking.status === 'Checked In' && (
+        <CheckedIn bookingDetails={currentBooking} />
+      )}
+      {!currentBooking && <NoBooking />}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode';
 
 async function login(email, password, userGroup) {
@@ -33,6 +34,10 @@ function getToken(userGroup) {
   return localStorage.getItem(`user${userGroup}`);
 }
 
+function getAuthToken(userGroup) {
+  return `Bearer ${localStorage.getItem(`user${userGroup}`)}`;
+}
+
 function isLoggedIn(userGroup) {
   return getToken(userGroup) != null;
 }
@@ -48,4 +53,5 @@ export default {
   login,
   logout,
   isLoggedIn,
+  getAuthToken,
 };

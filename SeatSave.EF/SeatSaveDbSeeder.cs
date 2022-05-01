@@ -133,14 +133,14 @@ namespace SeatSave.EF
                     BookingDate = new DateOnly(2022, 04, 28),
                     PeriodId = 3,
                     SeatId = 1,
-                    Status = "Completed",
+                    Status = BookingModel.CheckedOutStatus,
                     StatusHistory = new StatusHistory
                     {
                         DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
                         DateTimeCheckedIn = new DateTime(2022, 4, 28, 10, 2, 0),
                         DateTimeCheckedOut = new DateTime(2022, 4, 28, 11, 26, 0),
                     },
-                    UserModelId = 2
+                    VisitorId = 2
                 },
                 new BookingModel
                 {
@@ -149,12 +149,12 @@ namespace SeatSave.EF
                     BookingDate = new DateOnly(2022, 04, 29),
                     PeriodId = 5,
                     SeatId = 2,
-                    Status = "Pending",
+                    Status = BookingModel.PendingStatus,
                     StatusHistory = new StatusHistory
                     {
                         DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10)
                     },
-                    UserModelId = 2
+                    VisitorId = 2
                 }
             );
 

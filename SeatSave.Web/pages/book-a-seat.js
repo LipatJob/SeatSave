@@ -3,6 +3,7 @@ import moment from 'moment';
 import visitorAuthService from '../lib/visitorAuthService';
 import Router from 'next/router';
 import { useEffect } from 'react';
+import { formatDate, formatTime } from '../lib/DateHelper';
 
 export default function BookASeat({ availableDays }) {
   useEffect(() => {
@@ -88,12 +89,12 @@ export default function BookASeat({ availableDays }) {
       periodSelected != null &&
       seatSelected != null
     ) {
-      const userToken = visitorAuthService.getToken();
-      console.log(userToken);
+      const authToken = visitorAuthService.getAuthToken();
+      console.log(authToken);
       const requestData = {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer ' + userToken,
+          Authorization: authToken,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -102,17 +103,6 @@ export default function BookASeat({ availableDays }) {
           seatId: seatSelected,
         }),
       };
-      console.log(requestData);
-
-      const checkCurrentBooking = await fetch(
-        `${process.env.API_URL}/Api/Booking/Current`,
-      );
-      const currentBook = await checkCurrentBooking.json();
-
-      if (currentBook.status === 400) {
-        console.log('Cannot create a book right now!');
-        // Make a modal for this
-      }
 
       const response = await fetch(
         `${process.env.API_URL}/Api/Booking`,

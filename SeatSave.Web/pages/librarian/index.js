@@ -6,7 +6,7 @@ import SearchResultsSection from '../../components/librarian/check-in-out/Search
 import PresentBookingsSection from '../../components/librarian/check-in-out/PresentBookingsSection';
 import BookingDetailsSection from '../../components/librarian/check-in-out/BookingDetailsSection';
 
-export default function CheckInOut({ presentBookings }) {
+export default function CheckInOut({ presentPeriod, presentBookings }) {
   const [searchResults, setSearchResults] = useState(presentBookings);
 
   const [showResults, setShowResults] = useState(false);
@@ -49,6 +49,7 @@ export default function CheckInOut({ presentBookings }) {
             />
           )}
           <PresentBookingsSection
+            period={presentPeriod}
             bookings={presentBookings}
             previewDetails={handlePreviewDetails}
           />
@@ -75,11 +76,15 @@ export default function CheckInOut({ presentBookings }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.API_URL}/Api/Booking`);
-  const presentBookings = await res.json();
+  const presentPeriodData = await fetch(`${process.env.API_URL}/Api/Booking/Present`);
+  const presentPeriod = await presentPeriodData.json();
+
+  const presentBookingsData = await fetch(`${process.env.API_URL}/Api/Booking/Present`);
+  const presentBookings = await presentBookingsData.json();
 
   return {
     props: {
+      presentPeriod,
       presentBookings,
     },
   };

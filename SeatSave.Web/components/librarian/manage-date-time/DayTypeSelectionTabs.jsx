@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function AvailabilityTabs({ activeTab, onTabSelected }) {
+export default function DayTypeSelectionTabs({ activeTab, onTabSelected }) {
   const notSelectedBg = 'bg-pearl-bush';
   const selectedBg = 'bg-rodeo-dust';
 

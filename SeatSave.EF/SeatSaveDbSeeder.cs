@@ -119,10 +119,8 @@ namespace SeatSave.EF
                 {
                     Id = 2,
                     Name = "DEF",
-
-                    Type = "1",
-                    Active = true,
-
+                    Type = "2",
+                    Active = false,
                     Description = "description2 description2",
                 }
             );

@@ -6,7 +6,7 @@ export default function Seat({ Name, Code, onClick }) {
       <button
         onClick={onClick}
         type='button'
-        className='float-left w-full px-4 text-left text-black bg-transparent border-2 border-iron hover:bg-pearl-bush hover:text-black focus:bg-iron '
+        className='float-left w-full px-4 py-2 text-left text-black bg-transparent border-2 border-iron hover:bg-pearl-bush hover:text-black focus:bg-iron '
       >
         {Name}
         <span className='float-right text-dawn'>{Code}</span>

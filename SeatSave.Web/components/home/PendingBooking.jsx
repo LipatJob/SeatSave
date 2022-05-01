@@ -15,7 +15,7 @@ export default function PendingBooking() {
             CANCEL BOOKING
           </button>
         </div>
-        <div className='relative'>
+        <div className='relative mt-20'>
           <Image
             src='/PendingDecoration.svg'
             className='relative w-full h-auto'

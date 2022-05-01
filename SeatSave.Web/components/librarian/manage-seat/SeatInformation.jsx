@@ -93,7 +93,7 @@ export default function SeatInformation({
       initialValues={seatData}
       enableReinitialize
       innerRef={ref}
-      onSubmit={(values, { setFieldError }) => {
+      onSubmit={(values) => {
         console.log(values);
         if (seatData.id === 0) {
           setShowModalAddedSeat(true);

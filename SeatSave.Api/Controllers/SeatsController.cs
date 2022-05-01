@@ -43,12 +43,13 @@ namespace SeatSave.Api.Controllers
             return Ok(seat);
         }
 
-        [HttpDelete]
-        public IActionResult Delete([FromBody] SeatModel seat)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            context.Seat.Remove(seat);
+            var seat = context.Seat.Find(id);
+            context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             context.SaveChanges();
-            return Ok(seat);
+            return NoContent();
         }
     }
 }

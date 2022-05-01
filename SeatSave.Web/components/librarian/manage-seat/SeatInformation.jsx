@@ -1,18 +1,17 @@
 import { Field, Form, Formik } from 'formik';
 import React, { useRef, useState } from 'react';
 
+import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
+
 export default function SeatInformation({
   seatData,
-  setShowModalDeleteSeat,
   setFormPart,
   setShowModalAddedSeat,
   setSeatName,
-  deletionConfirmation,
-  setDeletionConfirmation,
   onAvailableSeatsUpdated,
 }) {
   const ref = useRef(null);
-  const [formPartData, setFormPartData] = useState();
+  const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
 
   const submitData = async (data) => {
     const requestData = {
@@ -60,31 +59,18 @@ export default function SeatInformation({
     }
   };
 
-  const deleteModal = async () => {
-    const jsonData = ref.current.values;
-    setFormPartData(jsonData);
-    console.log(formPartData);
-    const requestData = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formPartData),
-    };
-    console.log(requestData);
-
+  const deleteSeat = async () => {
+    console.log(seatData.id);
     const response = await fetch(
-      `${process.env.API_URL}/Api/Seats`,
-      requestData,
+      `${process.env.API_URL}/Api/Seats/${seatData.id}`,
+      {
+        method: 'DELETE',
+      },
     );
-    if (response.status === 200) {
-      const json = await response.json();
-      console.log(json);
+    if (response.status === 204) {
       setFormPart(0);
-      setDeletionConfirmation(false);
       setShowModalDeleteSeat(false);
-    } else {
-      console.log('there was an error');
+      onAvailableSeatsUpdated();
     }
   };
 
@@ -105,6 +91,14 @@ export default function SeatInformation({
     >
       {() => (
         <Form className='flex flex-col items-center w-full gap-y-7'>
+          {showModalDeleteSeat && (
+            <DeleteConfirmationModal
+              text='Are you sure you want to delete this seat?'
+              onYes={() => deleteSeat()}
+              onNo={() => setShowModalDeleteSeat(false)}
+              onClose={() => setShowModalDeleteSeat(false)}
+            />
+          )}
           <div className='w-full h-full'>
             <div className='w-full h-content lg:h-[450px]  '>
               <div className=''>
@@ -165,9 +159,6 @@ export default function SeatInformation({
                     className='w-full h-full align-middle text-valentine-red'
                     onClick={() => {
                       setShowModalDeleteSeat(true);
-                      if (deletionConfirmation === true) {
-                        deleteModal(); // delete data if yes /// wrong code
-                      }
                     }}
                   >
                     DELETE

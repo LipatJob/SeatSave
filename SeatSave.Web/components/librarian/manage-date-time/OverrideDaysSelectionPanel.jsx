@@ -85,8 +85,8 @@ export default function OverrideDaysSelectionPanel({
   const isDayUnique = (date) => !overrideDayItems.includes(date);
 
   return (
-    <div className='relative h-full'>
-      <div className='flex flex-col gap-2 p-3 pt-5'>
+    <div className='relative '>
+      <div className='flex flex-col object-contain gap-2 p-3 pt-5 overflow-y-scroll max-h-[inherit]'>
         {overrideDayItems.map((e) => (
           <PanelListItem
             onClick={() => onItemSelected(e)}
@@ -97,7 +97,7 @@ export default function OverrideDaysSelectionPanel({
               <p>{formatDate(e)}</p>
               <button
                 type='button'
-                className='ml-auto text-valentine-red active:bg-black'
+                className='ml-auto rounded-full text-valentine-red active:bg-valentine-red'
                 onClick={() => onDeleteClicked(e)}
               >
                 <AiOutlineCloseCircle className='w-8 h-8 ' />

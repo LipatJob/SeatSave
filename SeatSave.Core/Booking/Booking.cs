@@ -26,18 +26,21 @@ namespace SeatSave.Core.Booking
 
         public void Cancel(DateTime currentDateTime)
         {
+            if (this.Status != PendingStatus) { throw new InvalidOperationException(); }
             StatusHistory.DateTimeCanceled = currentDateTime;
             this.Status = CancelledStatus;
         }
 
         public void CheckIn(DateTime currentDateTime)
         {
+            if (this.Status != PendingStatus) { throw new InvalidOperationException(); }
             StatusHistory.DateTimeCheckedIn = currentDateTime;
             this.Status = CheckedInStatus;
         }
 
         public void CheckOut(DateTime currentDateTime)
         {
+            if (this.Status != CheckedInStatus) { throw new InvalidOperationException(); }
             StatusHistory.DateTimeCheckedOut = currentDateTime;
             this.Status = CheckedOutStatus;
         }

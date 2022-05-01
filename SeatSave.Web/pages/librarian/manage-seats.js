@@ -4,7 +4,7 @@ import Image from 'next/image';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
 import Seat from '../../components/librarian/manage-seat/Seat';
-import DeleteConfirmationModal from '../../components/librarian/manage-seat/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../../components/common/DeleteConfirmationModal';
 import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
 import CircularButton from '../../components/common/CircularButton';
 
@@ -42,8 +42,10 @@ export default function ManageSeats({ seats }) {
     <div className='page-container '>
       {showModalDeleteSeat && (
         <DeleteConfirmationModal
-          onClick={setShowModalDeleteSeat}
-          setDeletionConfirmation={setDeletionConfirmation}
+          text='Are you sure you want to delete this seat?'
+          onYes={() => setDeletionConfirmation(true)}
+          onNo={() => setShowModalDeleteSeat(false)}
+          onClose={() => setShowModalDeleteSeat(false)}
         />
       )}
       {showModalAddedSeat && (

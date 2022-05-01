@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Schedule;
 using SeatSave.EF;
 
@@ -19,37 +18,70 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(dbContext.SpecificDayAvailability);
+            return Ok(dbContext.SpecificDayAvailability.Select(e => e.Date));
         }
 
-        [HttpGet("{isoDate}")]
-        public IActionResult GetSpecific(string isoDate)
+
+        [HttpDelete("{isoDate}")]
+        public IActionResult DeleteDate([FromRoute] string isoDate)
         {
-            DateOnly parsedDate = DateOnly.ParseExact(isoDate, "yyyy-MM-dd");
-            return Ok(dbContext.SpecificDayAvailability.Include(e => e.Periods).First(e => e.Date == parsedDate));
+            bool isDateValid = DateOnly.TryParseExact(isoDate, "yyyy-MM-dd", out var date);
+            if (!isDateValid) { return BadRequest(); }
+
+            var availability = dbContext.SpecificDayAvailability.Find(date);
+            if (availability == null) { return NotFound(); }
+
+            dbContext.SpecificDayAvailability.Remove(availability);
+            dbContext.SaveChanges();
+
+            return Ok(date);
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] SpecificDateAvailability availability)
+        public IActionResult Add([FromBody] string isoDate = "2022-01-01")
         {
-            if (availability == null) { return BadRequest(); }
+            bool isDateValid = DateOnly.TryParseExact(isoDate, "yyyy-MM-dd", out var date);
+            if (!isDateValid) { return BadRequest("Invalid date format"); }
 
-            dbContext.SpecificDayAvailability.Add(availability);
+            if (dbContext.SpecificDayAvailability.Find(date) != null) { return BadRequest("Duplicate date value"); }
+
+            dbContext.SpecificDayAvailability.Add(new SpecificDateAvailability { Date = date, Periods = new List<Period>() });
             dbContext.SaveChanges();
 
-            return Ok(availability);
+            return Ok(date);
         }
 
-        [HttpPut("{isoDate}")]
-        public IActionResult Update(string isoDate, SpecificDateAvailability availability)
+        [HttpGet("{isoDate}/periods")]
+        public IActionResult GetPeriods(string isoDate)
         {
-            DateOnly parsedDate = DateOnly.ParseExact(isoDate, "yyyy-MM-dd");
-            if (parsedDate != availability.Date) { return BadRequest(); }
+            bool isDateValid = DateOnly.TryParseExact(isoDate, "yyyy-MM-dd", out var date);
+            if (!isDateValid) { return BadRequest(); }
 
-            dbContext.Entry(availability).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            var availability = dbContext.SpecificDayAvailability.Find(date);
+            if (availability == null) { return BadRequest("Date not found"); }
+
+            return Ok(availability.Periods);
+        }
+
+
+        [HttpPut("{isoDate}/periods")]
+        public IActionResult UpdatePeriods([FromRoute] string isoDate, IList<Period> periods)
+        {
+            // Validate and Parse ISO Date
+            bool isDateValid = DateOnly.TryParseExact(isoDate, "yyyy-MM-dd", out var date);
+            if (!isDateValid) { return BadRequest("Invalid date format"); }
+
+            // Validate date exists
+            var availability = dbContext.SpecificDayAvailability.Find(date);
+            if (availability == null) { return BadRequest("Date not found"); }
+
+            // Add periods to entity
+            foreach (var period in periods) { dbContext.Attach<Period>(period); }
+            availability.Periods.Clear();
+            foreach (var period in periods) { availability.Periods.Add(period); }
+
             dbContext.SaveChanges();
-
-            return Ok(availability);
+            return Ok(availability.Periods);
         }
     }
 }

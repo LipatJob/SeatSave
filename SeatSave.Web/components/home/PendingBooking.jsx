@@ -4,6 +4,7 @@ import BookingCode from './BookingCode';
 import BookingDetails from './BookingDetails';
 import WarningConfirmationModal from '../common/WarningConfirmationModal';
 import visitorAuthService from '../../lib/visitorAuthService';
+import { formatDate, formatTime } from '../../lib/DateHelper';
 
 export default function PendingBooking({ bookingDetails, onCancel }) {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -41,7 +42,10 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
         />
       )}
       <div className='flex flex-col items-start gap-8'>
-        <h1 className='pr-2 text-dusk-blue'>Your booking is at 10:00am</h1>
+        <h1 className='pr-2 leading-tight text-dusk-blue'>
+          Your booking is at {formatDate(bookingDetails.bookingDate)}{' '}
+          ({formatTime(bookingDetails.period.timeStart)})
+        </h1>
         <BookingCode code={bookingDetails.bookingCode} />
         <BookingDetails details={bookingDetails} />
         <button

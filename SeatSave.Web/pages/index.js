@@ -1,9 +1,10 @@
+import React from 'react';
 import NoBooking from '../components/home/NoBooking';
 
 export default function ViewBookingDetails() {
   return (
-    <h1>
+    <div>
       <NoBooking />
-    </h1>
+    </div>
   );
 }

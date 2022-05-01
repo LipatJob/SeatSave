@@ -18,8 +18,8 @@
         public TimeSpan TimeEnd { get; set; }
 
 
-        protected virtual ICollection<RegularDayOfWeekAvailability>? RegularDayOfWeekAvailabilities { get; set; }
-        protected virtual ICollection<SpecificDateAvailability>? SpecificDateAvailabilities { get; set; }
+        protected virtual ICollection<RegularDayOfWeekAvailability> RegularDayOfWeekAvailabilities { get; set; }
+        protected virtual ICollection<SpecificDateAvailability> SpecificDateAvailabilities { get; set; }
 
         public override bool Equals(object? obj)
         {

@@ -3,14 +3,31 @@ import Image from 'next/image';
 import BookingCode from './BookingCode';
 import BookingDetails from './BookingDetails';
 import WarningConfirmationModal from '../common/WarningConfirmationModal';
+import visitorAuthService from '../../lib/visitorAuthService';
 
-export default function PendingBooking({ bookingDetails }) {
+export default function PendingBooking({ bookingDetails, onCancel }) {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
   const onCancelBookingClicked = () => {
     setCancelModalVisible(true);
   };
-  const onCancelBookingConfirmed = () => {
-    setCancelModalVisible(false);
+  const onCancelBookingConfirmed = async () => {
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Booking/${bookingDetails.id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: visitorAuthService.getAuthToken(),
+        },
+        body: '"Cancelled"',
+      },
+    );
+    if (response.ok) {
+      setCancelModalVisible(false);
+      onCancel();
+    } else {
+      console.log('There was an error');
+    }
   };
 
   return (

@@ -9,11 +9,11 @@ namespace SeatSave.Core.User
         {
         }
 
-        public virtual ICollection<BookingModel> BookingHistory { get; set; }
+        public virtual IEnumerable<BookingModel> Bookings { get; set; }
 
         public BookingModel? GetActiveBooking()
         {
-            return BookingHistory
+            return Bookings
             .OrderByDescending(e => e.StatusHistory.DateTimeCreated)
             .Where(e => e.Status == BookingModel.PendingStatus || e.Status == BookingModel.CheckedInStatus)
             .FirstOrDefault();
@@ -37,9 +37,10 @@ namespace SeatSave.Core.User
                 {
                     DateTimeCreated = currTimeStamp,
                 },
+                VisitorId = Id
             };
 
-            BookingHistory.Append(bookingInformation);
+            Bookings.Append(bookingInformation);
             return bookingInformation;
 
             // BEFORE CREATING OBJECT:

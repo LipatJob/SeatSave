@@ -39,7 +39,7 @@ namespace SeatSave.Api.Controllers
                                 (id == null || b.Id == id) &&
                                 (status == null || b.Status == status) &&
                                 (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.UserModel.Email.ToLower() == email.ToLower())
+                                (email == null || b.VisitorModel.Email.ToLower() == email.ToLower())
                                 )
                             .OrderByDescending(b => b.Id);
 
@@ -74,7 +74,7 @@ namespace SeatSave.Api.Controllers
                 return NoContent();
             }
 
-            activeBooking.UserModel = null;
+            activeBooking.VisitorModel = null;
             return Ok(activeBooking);
         }
 
@@ -97,6 +97,7 @@ namespace SeatSave.Api.Controllers
             }
 
             var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), bookingDTO.periodId, bookingDTO.seatId);
+            dbContext.Bookings.Add(booking); // BUG: booking is not adding in Book() method
             dbContext.SaveChanges();
             return Ok(booking);
         }
@@ -122,7 +123,7 @@ namespace SeatSave.Api.Controllers
                     booking.CheckOut(currentDateTime);
                     break;
                 default:
-                    return BadRequest();
+                    return BadRequest("Invalid status");
             }
 
             dbContext.SaveChanges();
@@ -147,7 +148,7 @@ namespace SeatSave.Api.Controllers
             if (userGroup == Librarian.UserGroup) { return true; }
             if (userGroup == Visitor.UserGroup)
             {
-                return booking.UserModel.Id == user.Id;
+                return booking.VisitorId == user.Id;
             }
 
             return false;

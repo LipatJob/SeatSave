@@ -40,10 +40,16 @@ export default function ViewBookingDetails() {
   return (
     <div>
       {currentBooking && currentBooking.status === 'Pending' && (
-        <PendingBooking bookingDetails={currentBooking} />
+        <PendingBooking
+          bookingDetails={currentBooking}
+          onCancel={fetchCurrentBooking}
+        />
       )}
       {currentBooking && currentBooking.status === 'Checked In' && (
-        <CheckedIn bookingDetails={currentBooking} />
+        <CheckedIn
+          bookingDetails={currentBooking}
+          onCheckOut={fetchCurrentBooking}
+        />
       )}
       {!currentBooking && <NoBooking />}
     </div>

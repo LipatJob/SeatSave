@@ -1,108 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import AvailabilitySelectionPanel from '../../components/librarian/manage-date-time/AvailabilitySelectionPanel';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import DaySelectionPanel from '../../components/librarian/manage-date-time/DaySelectionPanel';
 import PeriodSelectionPanel from '../../components/librarian/manage-date-time/PeriodSelectionPanel';
 
 export default function ManageDateTime() {
-  async function getSpecificDays() {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/SpecificDay`,
-      {
-        method: 'GET',
-      },
-    );
-    const data = await response.json();
-    return data;
-  }
-
-  async function getRegularDayAvailability(dayOfWeek) {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/RegularDay/${dayOfWeek}`,
-      {
-        method: 'GET',
-      },
-    );
-    const data = await response.json();
-    console.log(data);
-    return data;
-  }
-
-  async function getSpecificDayAvailability(isoDate) {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/RegularDay/${isoDate}`,
-      {
-        method: 'GET',
-      },
-    );
-    const data = await response.json();
-    return data;
-  }
-
-  async function deleteSpecificDay(isoDate) {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/SpecificDay/${isoDate}`,
-      {
-        method: 'DELETE',
-      },
-    );
-    return response.ok;
-  }
-
-  async function updateRegularDayAvailability(dayOfWeek, availability) {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/RegularDay/${dayOfWeek}`,
-      {
-        method: 'PUT',
-        body: availability,
-      },
-    );
-
-    return response.ok;
-  }
-
-  async function updateSpecificDayAvailability(isoDate, availability) {
-    const response = await fetch(
-      `${process.env.API_URL}/Api/Availability/SpecificDay/${isoDate}`,
-      {
-        method: 'PUT',
-        body: availability,
-      },
-    );
-    return response.ok;
-  }
-
-  const [pageState, setPageState] = useState({
-    availabilityType: 'RegularHours',
-    selectedId: '',
-    availability: [],
-    overrideDayItems: [],
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (pageState.selectedId === '') return;
-
-      let availability = null;
-      if (pageState.availabilityType === 'RegularHours') {
-        availability = await getRegularDayAvailability(pageState.selectedId);
-      } else if (pageState.availabilityType === 'OverrideDays') {
-        availability = await getSpecificDayAvailability(pageState.selectedId);
-      }
-
-      setPageState((oldState) => ({ ...oldState, availability }));
-    };
-    fetchData().catch(console.error);
-  }, [pageState.selectedId]);
+  const [availabilityType, setAvailabilityType] = useState('RegularHours');
+  const [selectedId, setSelectedId] = useState();
 
   return (
     <div className='page-container-small'>
-      <h1 className='mb-6'>Manage Date and Time</h1>
-      <div className='grid grid-cols-3 gap-x-7'>
-        <AvailabilitySelectionPanel
-          pageState={pageState}
-          setPageState={setPageState}
+      <h1 className='mb-6'>Manage Date & Time</h1>
+      <div className='grid grid-cols-3 gap-x-7 min-h-[500px]'>
+        <DaySelectionPanel
+          dayType={availabilityType}
+          selectedId={selectedId}
+          onTabSelected={setAvailabilityType}
+          onItemSelected={setSelectedId}
         />
-        {pageState.selectedId && (
-          <PeriodSelectionPanel className='col-span-2' />
+        {!selectedId && (
+          <div className='col-span-2 mx-auto justify-center-center'>
+            <Image
+              src='/ManageSeatsDecoration.png'
+              width={500}
+              height={500}
+              className='w-full col-span-2'
+            />
+          </div>
+        )}
+        {selectedId && (
+          <PeriodSelectionPanel
+            selectedId={selectedId}
+            className='col-span-2'
+            availabilityType={availabilityType}
+          />
         )}
       </div>
     </div>

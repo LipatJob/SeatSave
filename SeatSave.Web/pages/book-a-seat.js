@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment';
+import { formatDate, formatTime } from '../lib/DateHelper';
 
 export default function BookASeat({ availableDays }) {
   const day = availableDays.map((availableDay) => new Date(availableDay));
@@ -128,9 +129,7 @@ export default function BookASeat({ availableDays }) {
                 className='w-56 mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust'
                 onClick={() => getSelectedDate(availableDay)}
               >
-                <h5 className='px-16 py-4'>
-                  {moment(availableDay).format('MMMM D, YYYY')}
-                </h5>
+                <h5 className='px-16 py-4'>{formatDate(availableDay)}</h5>
               </button>
             ))}
           </div>
@@ -151,13 +150,9 @@ export default function BookASeat({ availableDays }) {
                     onClick={() => getSelectedPeriod(aPeriods.id)}
                   >
                     <h5 className='px-12 py-4'>
-                      {moment('1111-11-11T' + aPeriods.timeStart).format(
-                        'h:mm a',
-                      )}
+                      {formatTime(aPeriods.timeStart)}
                       <br />
-                      {moment('1111-11-11T' + aPeriods.timeEnd).format(
-                        'h:mm a',
-                      )}
+                      {formatTime(aPeriods.timeEnd)}
                     </h5>
                   </button>
                 ))}

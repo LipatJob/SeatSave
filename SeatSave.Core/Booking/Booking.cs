@@ -24,9 +24,23 @@ namespace SeatSave.Core.Booking
         public int VisitorId { get; set; }
         public virtual Visitor? UserModel { get; set; }
 
-        public void Cancel() { throw new NotImplementedException("TODO"); }
-        public void CheckIn() { throw new NotImplementedException("TODO"); }
-        public void CheckOut() { throw new NotImplementedException("TODO"); }
+        public void Cancel(DateTime currentDateTime)
+        {
+            StatusHistory.DateTimeCanceled = currentDateTime;
+            this.Status = CancelledStatus;
+        }
+
+        public void CheckIn(DateTime currentDateTime)
+        {
+            StatusHistory.DateTimeCheckedIn = currentDateTime;
+            this.Status = CheckedInStatus;
+        }
+
+        public void CheckOut(DateTime currentDateTime)
+        {
+            StatusHistory.DateTimeCheckedOut = currentDateTime;
+            this.Status = CheckedOutStatus;
+        }
 
     }
 }

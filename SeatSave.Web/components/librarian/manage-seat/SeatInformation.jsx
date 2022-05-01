@@ -118,6 +118,11 @@ export default function SeatInformation({
               </div>
               <div>
                 Name
+                <ErrorMessage
+                  name='name'
+                  component='span'
+                  className='inline pl-4 text-error'
+                />
                 <Field
                   type='text'
                   id='name'
@@ -125,14 +130,14 @@ export default function SeatInformation({
                   placeholder='Enter Seat Name'
                   className='flex w-full'
                 />
-                <ErrorMessage
-                  name=' name'
-                  component='span'
-                  className='text-error'
-                />
               </div>
               <div>
                 Type
+                <ErrorMessage
+                  name='type'
+                  component='span'
+                  className='inline pl-4 text-error'
+                />
                 <Field
                   as='select'
                   id='type'
@@ -140,20 +145,20 @@ export default function SeatInformation({
                   className='flex w-full'
                   placeholder='Select Seat Type'
                 >
-                  <option value='default' disabled hidden>
+                  <option value='' disabled hidden>
                     Select Seat Type
                   </option>
                   <option value='1'>Carrel Desk</option>
                   <option value='2'>Carrel Desk with Outlet</option>
                 </Field>
-                <ErrorMessage
-                  name='type'
-                  component='span'
-                  className='text-error'
-                />
               </div>
               <div>
                 Description
+                <ErrorMessage
+                  name='description'
+                  component='span'
+                  className='inline pl-4 text-error'
+                />
                 <Field
                   as='textarea'
                   type='textarea'
@@ -162,11 +167,6 @@ export default function SeatInformation({
                   className='flex w-full h-32'
                   style={{ resize: 'none' }}
                   placeholder='Enter Seat Description'
-                />
-                <ErrorMessage
-                  name='description'
-                  component='span'
-                  className='text-error'
                 />
               </div>
             </div>

@@ -32,7 +32,7 @@ export default function ManageSeats() {
       seatSeatData({
         id: 0,
         name: '',
-        type: 'default',
+        type: '',
         active: 'true',
         description: '',
       });

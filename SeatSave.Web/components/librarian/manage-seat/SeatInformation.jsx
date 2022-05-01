@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
 
@@ -10,7 +10,6 @@ export default function SeatInformation({
   setSeatName,
   onAvailableSeatsUpdated,
 }) {
-  const ref = useRef(null);
   const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
 
   const submitData = async (data) => {
@@ -78,7 +77,6 @@ export default function SeatInformation({
     <Formik
       initialValues={seatData}
       enableReinitialize
-      innerRef={ref}
       onSubmit={(values) => {
         console.log(values);
         if (seatData.id === 0) {

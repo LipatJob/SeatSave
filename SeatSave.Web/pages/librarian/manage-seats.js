@@ -108,9 +108,7 @@ export default function ManageSeats({ seats }) {
                   setSeatName={setSeatName}
                   deletionConfirmation={deletionConfirmation}
                   setDeletionConfirmation={setDeletionConfirmation}
-                >
-                  {' '}
-                </SeatInformation>
+                />
               }
             />
           )}

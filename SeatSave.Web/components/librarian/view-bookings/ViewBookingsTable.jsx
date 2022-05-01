@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { HiOutlineLogin, HiOutlineLogout } from 'react-icons/hi';
 import Pagination from '@mui/material/Pagination';
-import datetimeFormatter from '../../../lib/datetimeFormatter';
+import { formatTime, formatDate } from '../../../lib/DateHelper';
 
 export default function ViewBookingsTable({ bookings, onClick }) {
   const [page, setPage] = useState(1);
@@ -53,22 +53,12 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                     </td>
                     <td className='px-2'>
                       <div>
-                        {datetimeFormatter.convertTimeFormat(
-                          booking.period.timeStart,
-                        )}{' '}
-                        -{' '}
-                        {datetimeFormatter.convertDateFormat(
-                          booking.bookingDate,
-                        )}
+                        {formatTime(booking.period.timeStart)} -{' '}
+                        {formatDate(booking.bookingDate)}
                       </div>
                       <div>
-                        {datetimeFormatter.convertTimeFormat(
-                          booking.period.timeEnd,
-                        )}{' '}
-                        -{' '}
-                        {datetimeFormatter.convertDateFormat(
-                          booking.bookingDate,
-                        )}
+                        {formatTime(booking.period.timeEnd)} -{' '}
+                        {formatDate(booking.bookingDate)}
                       </div>
                     </td>
                     <td className='px-2'>{booking.status}</td>
@@ -79,8 +69,18 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                           <span className='text-soft-blue'>
                             <HiOutlineLogin />
                           </span>
-                          {datetimeFormatter.convertDateTimeFormat(
-                            booking.statusHistory.dateTimeCheckedIn,
+                          {formatTime(
+                            booking.statusHistory.dateTimeCheckedIn.slice(
+                              11,
+                              16,
+                            ),
+                          )}{' '}
+                          -{' '}
+                          {formatDate(
+                            booking.statusHistory.dateTimeCheckedIn.slice(
+                              0,
+                              10,
+                            ),
                           )}
                         </div>
                       )}
@@ -89,8 +89,18 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                           <span className='text-valentine-red'>
                             <HiOutlineLogout />
                           </span>
-                          {datetimeFormatter.convertDateTimeFormat(
-                            booking.statusHistory.dateTimeCheckedOut,
+                          {formatTime(
+                            booking.statusHistory.dateTimeCheckedOut.slice(
+                              11,
+                              16,
+                            ),
+                          )}{' '}
+                          -{' '}
+                          {formatDate(
+                            booking.statusHistory.dateTimeCheckedOut.slice(
+                              0,
+                              10,
+                            ),
                           )}
                         </div>
                       )}

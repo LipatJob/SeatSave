@@ -1,6 +1,6 @@
 import React from 'react';
 import { HiOutlineX } from 'react-icons/hi';
-import datetimeFormatter from '../../../lib/datetimeFormatter';
+import { formatTime, formatDate } from '../../../lib/DateHelper';
 
 export default function BookingDetailsSection({ booking, close }) {
   const status = 'Pending';
@@ -33,13 +33,13 @@ export default function BookingDetailsSection({ booking, close }) {
         </div>
         <div>
           <p className='font-bold body-small'>Date</p>
-          <p>{datetimeFormatter.convertDateFormat(booking.bookingDate)}</p>
+          <p>{formatDate(booking.bookingDate)}</p>
         </div>
         <div>
           <p className='font-bold body-small'>Period</p>
           <p>
-            {datetimeFormatter.convertTimeFormat(booking.period.timeStart)} to{' '}
-            {datetimeFormatter.convertTimeFormat(booking.period.timeEnd)}
+            {formatTime(booking.period.timeStart)} to{' '}
+            {formatTime(booking.period.timeEnd)}
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
-import datetimeFormatter from '../../../lib/datetimeFormatter';
+import { formatTime, formatDate } from '../../../lib/DateHelper';
 
 export default function PreviewBookingsTable({ bookings, previewDetails }) {
   const [page, setPage] = useState(1);
@@ -42,11 +42,8 @@ export default function PreviewBookingsTable({ bookings, previewDetails }) {
                       {booking.userModel.firstName} {booking.userModel.lastName}
                     </td>
                     <td className='px-2'>
-                      {datetimeFormatter.convertDateFormat(booking.bookingDate)}{' '}
-                      -{' '}
-                      {datetimeFormatter.convertTimeFormat(
-                        booking.period.timeStart,
-                      )}
+                      {formatDate(booking.bookingDate)} -{' '}
+                      {formatTime(booking.period.timeStart)}
                     </td>
                   </tr>
                 ))

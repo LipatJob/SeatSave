@@ -48,5 +48,14 @@ namespace SeatSave.Api.Controllers
         {
             return Ok(dbContext.Seat);
         }
+
+        [HttpGet("Periods/Present")]
+        public IActionResult GetPresentPeriod()
+        {
+            var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0); // FOR TESTING
+            //var currentDateTime = DateTime.Now;
+            var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
+            return Ok(new PeriodFactory().GetPeriodsInDay().Where(p => p.TimeStart <= currentTime && p.TimeEnd >= currentTime));
+        }
     }
 }

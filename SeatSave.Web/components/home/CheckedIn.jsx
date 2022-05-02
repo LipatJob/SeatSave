@@ -48,16 +48,16 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
         />
       )}
 
-      <div className='grid grid-cols-2 page-container-small'>
-        <div className='flex flex-col items-start gap-8'>
-          <h1 className='pr-2 leading-tight text-dusk-blue'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 page-container-small'>
+        <div className='flex flex-col gap-8'>
+          <h1 className='mb-0 leading-tight sm:mb-4 text-dusk-blue'>
             Your booking is until {formatTime(bookingDetails.period.timeEnd)}
           </h1>
           <BookingDetails details={bookingDetails} />
-          <div className='flex flex-col items-center gap-4 mt-6'>
+          <div className='flex flex-col max-w-xs gap-4 mt-6 sm:items-center'>
             <h4 className='text-center'>Are you leaving CLIR?</h4>
             <button
-              className='w-full px-16 button'
+              className='w-full button'
               type='button'
               onClick={onCheckOutClicked}
             >
@@ -65,7 +65,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
             </button>
           </div>
         </div>
-        <div className='relative'>
+        <div className='hidden mt-20 sm:block sm:relative'>
           <Image
             src='/CheckedInDecoration.svg'
             className='relative w-full h-auto'

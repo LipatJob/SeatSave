@@ -77,20 +77,19 @@ namespace SeatSave.Api.Controllers
         [HttpDelete]
         public IActionResult Delete() { return Ok("To be implemented"); }
         [HttpGet("Search")]
-        public IActionResult Search([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
+        public IActionResult Search([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null, [FromQuery] string? code = null)
         {
             DateOnly bookingDate = new DateOnly(1, 1, 1);
             if (date != null)
-            {
                 bookingDate = DateOnly.Parse(date);
-            }
 
             var results = dbContext.Bookings
                             .Where(b =>
                                 (id == null || b.Id == id) &&
                                 (status == null || b.Status == status) &&
                                 (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.UserModel.Email.ToLower() == email.ToLower())
+                                (email == null || b.UserModel.Email.ToLower() == email.ToLower()) &&
+                                (code == null || b.BookingCode == code)
                                 )
                             .OrderByDescending(b => b.Id);
 

@@ -10,100 +10,17 @@ using Xunit;
 
 namespace SeatSave.Test
 {
-    public class BookingTest : IClassFixture<BookingSeedFixture>
+    public class BookingTest
     {
-        UserRegisterSeedFixture _fixture;
 
-        public BookingTest(UserRegisterSeedFixture fixture)
+        public BookingTest()
         {
-            _fixture = fixture;
         }
 
         [Fact]
         public void CanCheckInBooking()
         {
-            var booking = new BookingModel()
-            {
-                StatusHistory = new StatusHistory
-                {
-                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
-                },
-                Status = BookingModel.CancelledStatus,
-                BookingDate = new DateOnly(2022, 04, 29),
-
-                Period = new Period
-                {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
-                }
-            };
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                booking.CheckIn(new DateTime());
-            });
-        }
-
-        [Fact]
-        public void CanCancelBooking()
-        {
-            var booking = new BookingModel()
-            {
-                StatusHistory = new StatusHistory
-                {
-                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
-                },
-                Status = BookingModel.CancelledStatus,
-                BookingDate = new DateOnly(2022, 04, 29),
-
-                Period = new Period
-                {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
-                }
-            };
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                booking.CheckIn(new DateTime());
-            });
-        }
-
-        [Fact]
-        public void CanCheckoutBooking()
-        {
-            var booking = new BookingModel()
-            {
-                StatusHistory = new StatusHistory
-                {
-                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
-                },
-                Status = BookingModel.CancelledStatus,
-                BookingDate = new DateOnly(2022, 04, 29),
-
-                Period = new Period
-                {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
-                }
-            };
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                booking.CheckIn(new DateTime());
-            });
-        }
-
-
-        [Fact]
-        public void CannotCheckInBookingEarly()
-        {
+            var currentDateTime = new DateTime(2022, 04, 29, 10, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
@@ -112,178 +29,272 @@ namespace SeatSave.Test
                 },
                 Status = BookingModel.PendingStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
+            booking.CheckIn(currentDateTime);
+
+            Assert.Equal(booking.Status, BookingModel.CheckedInStatus);
+        }
+
+        [Fact]
+        public void CanCancelBooking()
+        {
+            var currentDateTime = new DateTime(2022, 04, 28, 11, 10, 10);
+            var booking = new BookingModel()
+            {
+                StatusHistory = new StatusHistory
+                {
+                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
+                },
+                Status = BookingModel.PendingStatus,
+                BookingDate = new DateOnly(2022, 04, 29),
+                Period = new Period
+                {
+                    TimeStart = new TimeSpan(10, 0, 0),
+                    TimeEnd = new TimeSpan(11, 30, 0),
+                }
+            };
+
+            booking.Cancel(currentDateTime);
+
+            Assert.Equal(booking.Status, BookingModel.CancelledStatus);
+        }
+
+        [Fact]
+        public void CanCheckoutBooking()
+        {
+            var currentDateTime = new DateTime(2022, 04, 29, 11, 24, 10);
+            var booking = new BookingModel()
+            {
+                StatusHistory = new StatusHistory
+                {
+                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
+                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
+                },
+                Status = BookingModel.CheckedInStatus,
+                BookingDate = new DateOnly(2022, 04, 29),
+                Period = new Period
+                {
+                    TimeStart = new TimeSpan(10, 0, 0),
+                    TimeEnd = new TimeSpan(11, 30, 0),
+                }
+            };
+            booking.CheckOut(currentDateTime);
+
+            Assert.Equal(booking.Status, BookingModel.CheckedOutStatus);
+        }
+
+
+        [Fact]
+        public void CannotCheckInBookingEarly()
+        {
+            var currentDateTime = new DateTime(2022, 04, 28, 11, 10, 10);
+            var booking = new BookingModel()
+            {
+                StatusHistory = new StatusHistory
+                {
+                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
+                },
+                Status = BookingModel.PendingStatus,
+                BookingDate = new DateOnly(2022, 04, 29),
+                Period = new Period
+                {
+                    TimeStart = new TimeSpan(10, 0, 0),
+                    TimeEnd = new TimeSpan(11, 30, 0),
+                }
+            };
+
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.CheckIn(currentDateTime);
+            });
+        }
+
+        [Fact]
+        public void CannotCheckOutBookingEarly()
+        {
+            var currentDateTime = new DateTime(2022, 04, 28, 11, 10, 10);
+            var booking = new BookingModel()
+            {
+                StatusHistory = new StatusHistory
+                {
+                    DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
+                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
+                },
+                Status = BookingModel.PendingStatus,
+                BookingDate = new DateOnly(2022, 04, 29),
+                Period = new Period
+                {
+                    TimeStart = new TimeSpan(10, 0, 0),
+                    TimeEnd = new TimeSpan(11, 30, 0),
+                }
+            };
+
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                booking.CheckOut(currentDateTime);
             });
         }
 
         [Fact]
         public void CannotCancelCanceledBooking()
         {
+            var currentDateTime = new DateTime(2022, 04, 29, 10, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
                 {
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
+                    DateTimeCanceled = new DateTime(2022, 04, 28, 11, 10, 10),
                 },
                 Status = BookingModel.CancelledStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.Cancel(currentDateTime);
             });
         }
 
         [Fact]
         public void CannotCancelCheckedInBooking()
         {
+            var currentDateTime = new DateTime(2022, 04, 29, 11, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
                 {
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
                     DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
                 },
-                Status = BookingModel.CancelledStatus,
+                Status = BookingModel.CheckedInStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.Cancel(currentDateTime);
             });
         }
 
         [Fact]
         public void CannotCheckInCanceledBooking()
         {
+            var currentDateTime = new DateTime(2022, 04, 29, 10, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
                 {
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
+                    DateTimeCanceled = new DateTime(2022, 04, 28, 11, 10, 10),
                 },
                 Status = BookingModel.CancelledStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.CheckIn(currentDateTime);
             });
         }
 
         [Fact]
         public void CannotCheckInCheckedInBooking()
         {
+            var currentDateTime = new DateTime(2022, 04, 29, 11, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
                 {
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
                     DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
                 },
-                Status = BookingModel.CancelledStatus,
+                Status = BookingModel.CheckedInStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.CheckIn(currentDateTime);
             });
         }
 
         [Fact]
         public void CannotCheckoutCanceledBooking()
         {
+            var currentDateTime = new DateTime(2022, 04, 29, 10, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
                 {
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
+                    DateTimeCanceled = new DateTime(2022, 04, 28, 11, 10, 10),
                 },
                 Status = BookingModel.CancelledStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.CheckOut(currentDateTime);
             });
         }
 
         [Fact]
         public void CannotCheckoutPendingBooking()
         {
+            var currentDateTime = new DateTime(2022, 04, 29, 10, 10, 10);
             var booking = new BookingModel()
             {
                 StatusHistory = new StatusHistory
                 {
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
-                    DateTimeCanceled = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedIn = new DateTime(2022, 04, 29, 10, 10, 10),
-                    DateTimeCheckedOut = new DateTime(2022, 04, 29, 11, 24, 10),
                 },
-                Status = BookingModel.CancelledStatus,
+                Status = BookingModel.PendingStatus,
                 BookingDate = new DateOnly(2022, 04, 29),
-
                 Period = new Period
                 {
                     TimeStart = new TimeSpan(10, 0, 0),
                     TimeEnd = new TimeSpan(11, 30, 0),
                 }
             };
+
             Assert.Throws<InvalidOperationException>(() =>
             {
-                booking.CheckIn(new DateTime());
+                booking.CheckOut(currentDateTime);
             });
         }
 

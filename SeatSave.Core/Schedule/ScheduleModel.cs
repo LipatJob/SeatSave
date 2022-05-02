@@ -15,8 +15,8 @@
         {
             if (currentDate > dateToCheck) { return false; }
 
-            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek && e.Periods.Contains(period));
-            bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck && e.Periods.Contains(period));
+            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek && e.Periods.Any(e => e.id == period.id));
+            bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck && e.Periods.Any(e => e.id == period.id));
 
             return isAvailableOnRegularDay || isAvailableOnSpecificDay;
         }

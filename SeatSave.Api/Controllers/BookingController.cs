@@ -3,6 +3,8 @@ using SeatSave.EF;
 using SeatSave.Api.DTO;
 using System.Security.Claims;
 using SeatSave.Api.Services;
+using SeatSave.Core.Booking;
+using SeatSave.Core.User;
 
 namespace SeatSave.Api.Controllers
 {
@@ -37,7 +39,7 @@ namespace SeatSave.Api.Controllers
                                 (id == null || b.Id == id) &&
                                 (status == null || b.Status == status) &&
                                 (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.UserModel.Email.ToLower() == email.ToLower())
+                                (email == null || b.VisitorModel.Email.ToLower() == email.ToLower())
                                 )
                             .OrderByDescending(b => b.Id);
 
@@ -61,13 +63,19 @@ namespace SeatSave.Api.Controllers
             var userClaims = identity.Claims;
             var user = AuthService.CreateUserModelFromClaims(userClaims);
             var visitor = dbContext.Visitors.Find(user.Id);
-
             if (visitor == null)
             {
                 return BadRequest();
             }
-            
-            return Ok(visitor.GetActiveBooking());
+
+            var activeBooking = visitor.GetActiveBooking();
+            if (activeBooking == null)
+            {
+                return NoContent();
+            }
+
+            activeBooking.VisitorModel = null;
+            return Ok(activeBooking);
         }
 
         [HttpPost]
@@ -89,8 +97,62 @@ namespace SeatSave.Api.Controllers
             }
 
             var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), bookingDTO.periodId, bookingDTO.seatId);
+            dbContext.Bookings.Add(booking); // BUG: booking is not adding in Book() method
             dbContext.SaveChanges();
             return Ok(booking);
+        }
+
+
+        [HttpPatch("{id}")]
+        public IActionResult PatchStatus([FromRoute] int id, [FromBody] string status)
+        {
+            var booking = dbContext.Bookings.Find(id);
+            if (booking == null) { return NotFound(); }
+            // if (!CanCurrentUserPatchBooking(booking)) { return Unauthorized(); } // DISABLE FOR EASIER DEBUGGING
+
+            var currentDateTime = DateTime.Now;
+            switch (status)
+            {
+                case BookingModel.CheckedInStatus:
+                    booking.CheckIn(currentDateTime);
+                    break;
+                case BookingModel.CancelledStatus:
+                    booking.Cancel(currentDateTime);
+                    break;
+                case BookingModel.CheckedOutStatus:
+                    booking.CheckOut(currentDateTime);
+                    break;
+                default:
+                    return BadRequest("Invalid status");
+            }
+
+            dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        private bool CanCurrentUserPatchBooking(BookingModel booking, string newStatus)
+        {
+            // get current user
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity == null) { return false; }
+            var userClaims = identity.Claims;
+            var authUser = AuthService.CreateUserModelFromClaims(userClaims);
+            var user = dbContext.Users.Find(authUser.Id);
+            if (user == null) { return false; }
+
+            // get user group of user
+            string userGroup = user.UserGroup;
+
+            // verify
+            if (userGroup == Librarian.UserGroup) { return true; }
+            if (userGroup == Visitor.UserGroup)
+            {
+                if (newStatus == BookingModel.CheckedInStatus) { return false; }
+                return booking.VisitorId == user.Id;
+            }
+
+            return false;
         }
 
         [HttpPut]

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { formatDate } from '../../../lib/DateHelper';
 import CircularButton from '../../common/CircularButton';
-import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
+import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 import AddSpecifcDayModal from './AddSpecificDayModal';
 import PanelListItem from './PanelListItem';
 
@@ -110,7 +110,7 @@ export default function OverrideDaysSelectionPanel({
         <CircularButton onClick={() => setAddDateModalVisible(true)} />
       </div>
       {confirmDeleteModalVisible && (
-        <DeleteConfirmationModal
+        <WarningConfirmationModal
           text='Are you sure you want to delete this day?'
           onYes={() => onDeleteConfirmed(toDelete)}
           onNo={() => setConfirmationModalVisible(false)}

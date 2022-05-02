@@ -32,7 +32,7 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
   };
 
   return (
-    <div className='grid grid-cols-2 page-container-small'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 page-container-small'>
       {cancelModalVisible && (
         <WarningConfirmationModal
           text='Are you sure you want to cancel your reservation?'
@@ -43,20 +43,20 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
       )}
       <div className='flex flex-col items-start gap-8'>
         <h1 className='pr-2 leading-tight text-dusk-blue'>
-          Your booking is at {formatDate(bookingDetails.bookingDate)}{' '}
-          ({formatTime(bookingDetails.period.timeStart)})
+          Your booking is at {formatDate(bookingDetails.bookingDate)} (
+          {formatTime(bookingDetails.period.timeStart)})
         </h1>
         <BookingCode code={bookingDetails.bookingCode} />
         <BookingDetails details={bookingDetails} />
         <button
-          className='px-16 red-button'
+          className='w-full sm:max-w-[304px] red-button'
           type='button'
           onClick={onCancelBookingClicked}
         >
           CANCEL BOOKING
         </button>
       </div>
-      <div className='relative mt-20'>
+      <div className='hidden mt-20 sm:block sm:relative'>
         <Image
           src='/PendingDecoration.svg'
           className='relative w-full h-auto'

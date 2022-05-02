@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function NoBooking() {
   return (
     <div className='grid grid-cols-1 gap-20 sm:grid-cols-2 page-container-small'>
-      <div className='flex flex-col items-start gap-24'>
+      <div className='flex flex-col items-start gap-12 sm:gap-24'>
         <h1 className='mt-20 leading-tight text-dusk-blue'>
           You have no booking at the moment...
         </h1>

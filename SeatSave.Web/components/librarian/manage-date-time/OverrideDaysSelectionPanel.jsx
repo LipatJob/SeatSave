@@ -106,7 +106,7 @@ export default function OverrideDaysSelectionPanel({
           </PanelListItem>
         ))}
       </div>
-      <div className='sticky bottom-3 right-3'>
+      <div className='sticky mt-4 bottom-3 right-3'>
         <CircularButton onClick={() => setAddDateModalVisible(true)} />
       </div>
       {confirmDeleteModalVisible && (

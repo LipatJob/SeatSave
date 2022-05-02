@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import BookingDetails from './BookingDetails';
 import OkModal from '../common/OkModal';
-import { formatDate, formatTime } from '../../lib/DateHelper';
+import { formatTime } from '../../lib/DateHelper';
 import visitorAuthService from '../../lib/visitorAuthService';
 
 export default function CheckedIn({ bookingDetails, onCheckOut }) {

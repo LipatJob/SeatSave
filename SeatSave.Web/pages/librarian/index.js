@@ -7,7 +7,7 @@ import PresentBookingsSection from '../../components/librarian/check-in-out/Pres
 import BookingDetailsSection from '../../components/librarian/check-in-out/BookingDetailsSection';
 
 export default function CheckInOut({ presentPeriod, presentBookings }) {
-  const [searchResults, setSearchResults] = useState(presentBookings);
+  const [searchResults, setSearchResults] = useState();
 
   const [showResults, setShowResults] = useState(false);
 
@@ -15,9 +15,15 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 
   const [bookingToDisplay, setBookingToDisplay] = useState([]);
 
-  function handleSearchBooking(e) {
+  async function handleSearchBooking(e) {
     e.preventDefault();
-    setSearchResults(presentBookings);
+    const code = e.target.bookingCode.value;
+    const res = await fetch(
+      `${process.env.API_URL}/Api/Booking/Search?code=${code}`,
+    );
+    const results = await res.json();
+    
+    setSearchResults(results);
     setShowResults(true);
   }
 

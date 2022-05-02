@@ -32,7 +32,10 @@ export default function VisitorNavbar() {
           <AccountButton authService={visitorAuthService} />
         </div>
         <div className='lg:hidden'>
-          <MobileMenu links={visitorLinks} />
+          <MobileMenu
+            links={visitorLinks}
+            onLogout={visitorAuthService.logout}
+          />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function BookingCode({ code }) {
   return (
-    <div className='flex flex-col max-w-[400px] px-8 py-5 bg-pearl-bush body-small'>
+    <div className='flex flex-col max-w-full w-full sm:max-w-[400px] px-8 py-5 bg-pearl-bush body-small'>
       <p className='mb-2'>
         Code <span className='text-3xl font-bold'>{code}</span>
       </p>

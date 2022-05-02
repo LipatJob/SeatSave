@@ -6,6 +6,7 @@ export default function MobileMenuOverlay({
   navbarOpen,
   setNavbarOpen,
   links,
+  onLogout,
 }) {
   return (
     <div
@@ -43,6 +44,7 @@ export default function MobileMenuOverlay({
         onClick={(e) => {
           e.preventDefault();
           setNavbarOpen(false);
+          onLogout();
         }}
       >
         <h4>Log out</h4>

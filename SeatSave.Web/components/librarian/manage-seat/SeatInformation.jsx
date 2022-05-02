@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import DeleteConfirmationModal from '../../common/DeleteConfirmationModal';
+import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 
 export default function SeatInformation({
   seatData,
@@ -96,7 +96,7 @@ export default function SeatInformation({
       {() => (
         <Form className='flex flex-col items-center w-full gap-y-7'>
           {showModalDeleteSeat && (
-            <DeleteConfirmationModal
+            <WarningConfirmationModal
               text='Are you sure you want to delete this seat?'
               onYes={() => deleteSeat()}
               onNo={() => setShowModalDeleteSeat(false)}

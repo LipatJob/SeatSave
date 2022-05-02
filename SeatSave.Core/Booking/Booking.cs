@@ -21,12 +21,29 @@ namespace SeatSave.Core.Booking
         public string? Status { get; set; }
         public int StatusHistoryId { get; set; }
         public virtual StatusHistory? StatusHistory { get; set; }
-        public int UserModelId { get; set; }
-        public virtual UserModel? UserModel { get; set; }
+        public int VisitorId { get; set; }
+        public virtual Visitor? VisitorModel { get; set; }
 
-        public void Cancel() { throw new NotImplementedException("TODO"); }
-        public void CheckIn() { throw new NotImplementedException("TODO"); }
-        public void CheckOut() { throw new NotImplementedException("TODO"); }
+        public void Cancel(DateTime currentDateTime)
+        {
+            if (this.Status != PendingStatus) { throw new InvalidOperationException(); }
+            StatusHistory.DateTimeCanceled = currentDateTime;
+            this.Status = CancelledStatus;
+        }
+
+        public void CheckIn(DateTime currentDateTime)
+        {
+            if (this.Status != PendingStatus) { throw new InvalidOperationException(); }
+            StatusHistory.DateTimeCheckedIn = currentDateTime;
+            this.Status = CheckedInStatus;
+        }
+
+        public void CheckOut(DateTime currentDateTime)
+        {
+            if (this.Status != CheckedInStatus) { throw new InvalidOperationException(); }
+            StatusHistory.DateTimeCheckedOut = currentDateTime;
+            this.Status = CheckedOutStatus;
+        }
 
     }
 }

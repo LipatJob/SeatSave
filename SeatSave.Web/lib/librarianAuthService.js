@@ -11,4 +11,5 @@ export default {
   getUser: () => authService.getUser(userGroup),
   isLoggedIn: () => authService.isLoggedIn(userGroup),
   getToken: () => authService.getToken(userGroup),
+  getAuthToken: () => authService.getAuthToken(userGroup),
 };

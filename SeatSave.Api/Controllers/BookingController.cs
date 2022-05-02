@@ -24,27 +24,6 @@ namespace SeatSave.Api.Controllers
         {
             return Ok(dbContext.Bookings.OrderByDescending(b => b.Id));
         }
-        [HttpGet("Search")]
-        public IActionResult Search([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
-        {
-
-            DateOnly bookingDate = new DateOnly(1, 1, 1);
-            if (date != null)
-            {
-                bookingDate = DateOnly.Parse(date);
-            }
-
-            var results = dbContext.Bookings
-                            .Where(b =>
-                                (id == null || b.Id == id) &&
-                                (status == null || b.Status == status) &&
-                                (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.VisitorModel.Email.ToLower() == email.ToLower())
-                                )
-                            .OrderByDescending(b => b.Id);
-
-            return Ok(results);
-        }
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id)
         {
@@ -159,6 +138,35 @@ namespace SeatSave.Api.Controllers
         public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]
         public IActionResult Delete() { return Ok("To be implemented"); }
+        [HttpGet("Search")]
+        public IActionResult SearchBookings([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null, [FromQuery] string? code = null)
+        {
+            DateOnly bookingDate = new DateOnly(1, 1, 1);
+            if (date != null)
+                bookingDate = DateOnly.Parse(date);
+
+            var results = dbContext.Bookings
+                            .Where(b =>
+                                (id == null || b.Id == id) &&
+                                (status == null || b.Status == status) &&
+                                (date == null || b.BookingDate == bookingDate) &&
+                                (email == null || b.VisitorModel.Email.ToLower() == email.ToLower()) &&
+                                (code == null || b.BookingCode == code)
+                                )
+                            .OrderByDescending(b => b.Id);
+
+            return Ok(results);
+        }
+        [HttpGet("Present")]
+        public IActionResult GetPresentBookings()
+        {
+            var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0); // FOR TESTING
+            //var currentDateTime = DateTime.Now;
+            var currentDate = DateOnly.FromDateTime(currentDateTime);
+            var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
+
+            return Ok(dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime));
+        }
 
     }
 }

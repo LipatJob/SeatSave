@@ -6,7 +6,7 @@
         {
         }
 
-        public Period(int id, TimeSpan timeStart, TimeSpan timeEnd)
+        public Period(int id, TimeOnly timeStart, TimeOnly timeEnd)
         {
             this.id = id;
             TimeStart = timeStart;
@@ -14,8 +14,8 @@
         }
 
         public int id { get; set; }
-        public TimeSpan TimeStart { get; set; }
-        public TimeSpan TimeEnd { get; set; }
+        public TimeOnly TimeStart { get; set; }
+        public TimeOnly TimeEnd { get; set; }
 
 
         protected virtual ICollection<RegularDayOfWeekAvailability> RegularDayOfWeekAvailabilities { get; set; }

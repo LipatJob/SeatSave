@@ -18,6 +18,8 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
         options.SerializerSettings.Converters.Add(new DateOnlyJsonConverter());
+        options.SerializerSettings.Converters.Add(new TimeOnlyJsonConverter());
+
     });
 
 builder.Services.AddTransient<SeatSaveDbSeeder>();

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { GrClose } from 'react-icons/gr';
 import { formatDate, formatTime } from '../../../lib/DateHelper';
 import OkModal from '../../common/OkModal';
 
@@ -6,6 +7,7 @@ export default function PeriodSelectionPanel({
   className,
   selectedId,
   availabilityType,
+  onClose,
 }) {
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [periods, setPeriods] = useState([]);
@@ -83,16 +85,19 @@ export default function PeriodSelectionPanel({
 
   return (
     <div className={`flex flex-col w-full shadow ${className}`}>
-      <div className='h-16 p-4 bg-pearl-bush'>
+      <div className='flex flex-row items-center h-16 p-4 bg-pearl-bush'>
         <h4>
-          Select Periods for{' '}
+          Periods for{' '}
           {availabilityType === 'RegularHours'
             ? selectedId
             : formatDate(selectedId)}
         </h4>
+        <button type='button' onClick={onClose} className='ml-auto'>
+          <GrClose className='mx-auto my-auto' />
+        </button>
       </div>
       <div className='flex flex-col items-center p-10'>
-        <div className='grid w-full grid-cols-2 mb-4 gap-y-4'>
+        <div className='grid w-full grid-cols-1 mb-4 sm:grid-cols-2 gap-y-4'>
           {periods.map(({ id, timeStart, timeEnd }) => (
             <label
               htmlFor={id}

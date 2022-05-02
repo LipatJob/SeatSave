@@ -97,13 +97,23 @@ namespace SeatSave.EF
                new Student
                {
                    Id = 3,
-                   Email = "another_student@gmail.com",
+                   Email = "student2@gmail.com",
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "password",
                    ProgramStrand = "IT",
                    YearGrade = "First Year",
-               }
+               },
+                new Student
+                {
+                    Id = 4,
+                    Email = "student3@gmail.com",
+                    FirstName = "Text",
+                    LastName = "Account",
+                    Password = "1234567",
+                    ProgramStrand = "IT",
+                    YearGrade = "First Year",
+                }
             );
 
             context.AddRange(
@@ -126,22 +136,7 @@ namespace SeatSave.EF
             );
 
             context.Bookings.AddRange(
-                new BookingModel
-                {
-                    Id = 1,
-                    BookingCode = "1234",
-                    BookingDate = new DateOnly(2022, 04, 28),
-                    PeriodId = 3,
-                    SeatId = 1,
-                    Status = "Completed",
-                    StatusHistory = new StatusHistory
-                    {
-                        DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
-                        DateTimeCheckedIn = new DateTime(2022, 4, 28, 10, 2, 0),
-                        DateTimeCheckedOut = new DateTime(2022, 4, 28, 11, 26, 0),
-                    },
-                    UserModelId = 2
-                },
+
                 new BookingModel
                 {
                     Id = 2,
@@ -149,13 +144,44 @@ namespace SeatSave.EF
                     BookingDate = new DateOnly(2022, 04, 29),
                     PeriodId = 5,
                     SeatId = 2,
-                    Status = "Pending",
+                    Status = BookingModel.PendingStatus,
                     StatusHistory = new StatusHistory
                     {
                         DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10)
                     },
-                    UserModelId = 2
-                }
+                    VisitorId = 2
+                },
+                new BookingModel
+                {
+                    Id = 3,
+                    BookingCode = "1234",
+                    BookingDate = new DateOnly(2022, 04, 28),
+                    PeriodId = 3,
+                    SeatId = 1,
+                    Status = BookingModel.CheckedOutStatus,
+                    StatusHistory = new StatusHistory
+                    {
+                        DateTimeCreated = new DateTime(2022, 4, 27, 17, 11, 29),
+                        DateTimeCheckedIn = new DateTime(2022, 4, 28, 10, 2, 0),
+                        DateTimeCheckedOut = new DateTime(2022, 4, 28, 11, 26, 0),
+                    },
+                    VisitorId = 3
+                },
+                 new BookingModel
+                 {
+                     Id = 4,
+                     BookingCode = "34531",
+                     BookingDate = new DateOnly(2022, 04, 29),
+                     PeriodId = 5,
+                     SeatId = 2,
+                     Status = BookingModel.CheckedInStatus,
+                     StatusHistory = new StatusHistory
+                     {
+                         DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
+                         DateTimeCheckedIn = new DateTime(2022, 04, 28, 11, 10, 10),
+                     },
+                     VisitorId = 4
+                 }
             );
 
             context.SaveChanges();

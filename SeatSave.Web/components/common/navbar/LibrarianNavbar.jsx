@@ -38,7 +38,10 @@ export default function LibrarianNavbar() {
           <AccountButton authService={librarianAuthService} />
         </div>
         <div className='lg:hidden'>
-          <MobileMenu links={librarianLinks} />
+          <MobileMenu
+            links={librarianLinks}
+            onLogout={librarianAuthService.logout}
+          />
         </div>
       </div>
     </div>

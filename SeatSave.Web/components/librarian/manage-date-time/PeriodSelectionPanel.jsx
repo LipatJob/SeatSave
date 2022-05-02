@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { formatDate, formatTime } from '../../../lib/DateHelper';
-import SuccessModal from './SuccessModal';
+import OkModal from '../../common/OkModal';
 
 export default function PeriodSelectionPanel({
   className,
@@ -117,7 +117,7 @@ export default function PeriodSelectionPanel({
       </div>
 
       {successModalVisible && (
-        <SuccessModal
+        <OkModal
           message={`Periods for ${selectedId} successfully updated`}
           onClose={() => setSuccessModalVisible(false)}
           onOk={() => setSuccessModalVisible(false)}

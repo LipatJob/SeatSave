@@ -15,7 +15,7 @@ export default function RegularHoursSelectionPanel({
     'Saturday',
   ];
   return (
-    <div className='flex flex-col gap-2 p-3 pt-5'>
+    <div className='flex flex-col gap-2'>
       {daysOfWeek.map((dayOfWeek) => (
         <PanelListItem
           className='bg-iron'

@@ -10,7 +10,7 @@ export default function DaySelectionPanel({
   onItemSelected,
 }) {
   return (
-    <div className='flex flex-col border border-iron'>
+    <div className='flex flex-col border border-iron  h-[500px] max-h-[500px]'>
       <div>
         <DayTypeSelectionTabs
           activeTab={dayType}
@@ -20,7 +20,7 @@ export default function DaySelectionPanel({
           }}
         />
       </div>
-      <div className='flex-grow'>
+      <div className='h-full p-3 pt-5 pr-1 overflow-y-scroll'>
         {dayType === 'RegularHours' && (
           <RegularHoursSelectionPanel
             onItemSelected={onItemSelected}

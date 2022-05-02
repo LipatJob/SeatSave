@@ -39,7 +39,8 @@ export default function PreviewBookingsTable({ bookings, previewDetails }) {
                     <td className='px-2'>{booking.bookingCode}</td>
                     <td className='px-2'>{booking.seat.name}</td>
                     <td className='px-2'>
-                      {booking.userModel.firstName} {booking.userModel.lastName}
+                      {booking.visitorModel.firstName}{' '}
+                      {booking.visitorModel.lastName}
                     </td>
                     <td className='px-2'>
                       {formatDate(booking.bookingDate)} -{' '}

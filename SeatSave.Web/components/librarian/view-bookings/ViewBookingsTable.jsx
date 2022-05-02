@@ -44,11 +44,11 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                     <td className='px-2'>{booking.seat.name}</td>
                     <td className='px-2'>
                       <div>
-                        {booking.userModel.firstName}{' '}
-                        {booking.userModel.lastName}
+                        {booking.visitorModel.firstName}{' '}
+                        {booking.visitorModel.lastName}
                       </div>
                       <div>
-                        <u>{booking.userModel.email}</u>
+                        <u>{booking.visitorModel.email}</u>
                       </div>
                     </td>
                     <td className='px-2'>
@@ -63,7 +63,7 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                     </td>
                     <td className='px-2'>{booking.status}</td>
                     <td className='px-2'>
-                      {(booking.status === 'Completed' ||
+                      {(booking.status === 'Checked Out' ||
                         booking.status === 'Checked In') && (
                         <div className='flex flex-row items-center justify-center gap-1'>
                           <span className='text-soft-blue'>
@@ -84,7 +84,7 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                           )}
                         </div>
                       )}
-                      {booking.status === 'Completed' && (
+                      {booking.status === 'Checked Out' && (
                         <div className='flex flex-row items-center justify-center gap-1'>
                           <span className='text-valentine-red'>
                             <HiOutlineLogout />

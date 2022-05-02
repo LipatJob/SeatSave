@@ -139,7 +139,7 @@ namespace SeatSave.Api.Controllers
         [HttpDelete]
         public IActionResult Delete() { return Ok("To be implemented"); }
         [HttpGet("Search")]
-        public IActionResult Search([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null, [FromQuery] string? code = null)
+        public IActionResult SearchBookings([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null, [FromQuery] string? code = null)
         {
             DateOnly bookingDate = new DateOnly(1, 1, 1);
             if (date != null)
@@ -158,7 +158,7 @@ namespace SeatSave.Api.Controllers
             return Ok(results);
         }
         [HttpGet("Present")]
-        public IActionResult PresentBookings()
+        public IActionResult GetPresentBookings()
         {
             var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0); // FOR TESTING
             //var currentDateTime = DateTime.Now;

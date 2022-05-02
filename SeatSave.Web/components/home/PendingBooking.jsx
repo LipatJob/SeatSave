@@ -42,7 +42,7 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
         />
       )}
       <div className='flex flex-col items-start gap-10'>
-        <h1 className='pr-2 mb-0 leading-tight sm:mb-4 text-dusk-blue'>
+        <h1 className='mb-0 leading-tight sm:mb-4 text-dusk-blue'>
           Your booking is at {formatDate(bookingDetails.bookingDate)} (
           {formatTime(bookingDetails.period.timeStart)})
         </h1>

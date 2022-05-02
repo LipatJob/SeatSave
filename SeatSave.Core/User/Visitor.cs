@@ -1,10 +1,13 @@
 ﻿using SeatSave.Core.Booking;
+using SeatSave.Core.Schedule;
+using SeatSave.Core.Seat;
 
 namespace SeatSave.Core.User
 {
     public class Visitor : UserModel
     {
         public new const string UserGroup = "Visitor";
+
         public Visitor(string UserType) : base(UserType, UserGroup)
         {
         }
@@ -19,9 +22,9 @@ namespace SeatSave.Core.User
             .FirstOrDefault();
         }
 
-        public BookingModel Book(DateTime currTimeStamp, DateOnly date, int periodId, int seatId) // (date, period, seat)
+        public BookingModel Book(DateTime currTimeStamp, DateOnly date, Period period, SeatModel seat, BookablePolicy policy) // (date, period, seat)
         {
-            if (CanBook() == false)
+            if (CanBook() == false || policy.IsSatisfied(date, period, seat) == false)
             {
                 return null;
             }
@@ -30,8 +33,8 @@ namespace SeatSave.Core.User
             {
                 BookingCode = "12345",
                 BookingDate = date,
-                PeriodId = periodId,
-                SeatId = seatId,
+                Period = period,
+                Seat = seat,
                 Status = BookingModel.PendingStatus,
                 StatusHistory = new StatusHistory()
                 {

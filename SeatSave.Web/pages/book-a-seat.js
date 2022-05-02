@@ -241,7 +241,10 @@ export default function BookASeat({ availableDays }) {
                   <button
                     type='button'
                     className='mb-6 rounded-lg button'
-                    onClick={() => getSelectedSeat(seatCurrent.id)}
+                    onClick={() => {
+                      getSelectedSeat(seatCurrent.id);
+                      toggleModal();
+                    }}
                   >
                     <h6 className='font-medium text-white'>Select</h6>
                   </button>

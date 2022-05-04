@@ -54,6 +54,7 @@ export default function SeatInformation({
     if (response.status === 200) {
       const json = await response.json();
       console.log(json);
+      onAvailableSeatsUpdated();
       setFormPart(0);
     }
   };

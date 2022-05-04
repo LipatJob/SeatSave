@@ -31,8 +31,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -55,8 +55,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -80,8 +80,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
             booking.CheckOut(currentDateTime);
@@ -104,8 +104,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -131,8 +131,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -158,8 +158,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -184,8 +184,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -210,8 +210,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -236,8 +236,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -262,8 +262,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -287,8 +287,8 @@ namespace SeatSave.Test
                 BookingDate = new DateOnly(2022, 04, 29),
                 Period = new Period
                 {
-                    TimeStart = new TimeSpan(10, 0, 0),
-                    TimeEnd = new TimeSpan(11, 30, 0),
+                    TimeStart = new TimeOnly(10, 0, 0),
+                    TimeEnd = new TimeOnly(11, 30, 0),
                 }
             };
 
@@ -316,7 +316,7 @@ public class BookingSeedFixture : IDisposable
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             context.Periods.AddRange(periods);
-            context.Periods.Add(new Period(100, new TimeSpan(0, 0, 0), new TimeSpan(0, 0, 0)));
+            context.Periods.Add(new Period(100, new TimeOnly(0, 0, 0), new TimeOnly(0, 0, 0)));
 
             context.SpecificDayAvailability.AddRange(new SpecificDateAvailability
             {

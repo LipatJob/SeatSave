@@ -13,6 +13,9 @@ if (args.Length == 1 && args[0].ToLower() == "seed")
         e => e.MigrationsAssembly("SeatSave.Api"));
     using (var dbContext = new SeatSaveContext(options.Options))
     {
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
+
         var seeder = new SeatSaveDbSeeder(dbContext);
         seeder.Seed();
     }

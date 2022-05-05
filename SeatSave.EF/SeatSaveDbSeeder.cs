@@ -17,8 +17,7 @@ namespace SeatSave.EF
 
         public void Seed()
         {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+
             var periods = new PeriodFactory().GetPeriodsInDay();
             context.Periods.AddRange(periods);
             context.Periods.Add(new Period(100, new TimeOnly(0, 0, 0), new TimeOnly(0, 0, 0)));

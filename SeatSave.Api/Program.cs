@@ -79,6 +79,7 @@ if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<SeatSaveContext>(options =>
     {
+        options.UseLazyLoadingProxies();
         var connectionString = builder.Configuration.GetConnectionString("SeatSaveDb");
         options.UseSqlServer(connectionString);
     });

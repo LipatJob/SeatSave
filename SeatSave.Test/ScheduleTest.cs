@@ -29,7 +29,7 @@ namespace SeatSave.Test
         {
             var periods = new PeriodFactory().GetPeriodsInDay();
             var selectedPeriod = periods[1];
-            var selectedDate = new DateOnly(2024, 1, 2);
+            var selectedDate = new DateOnly(2024, 1, 1);
 
             var schedule = GetSchedule();
             var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, new DateOnly(2024, 1, 1));
@@ -80,28 +80,73 @@ namespace SeatSave.Test
         }
 
         [Fact]
-        public void PeriodOnRegularDayOfWeekIsAvailable()
+        public void AvailablePeriodOnAvailableRegularDayOfWeekIsAvailable()
         {
+            var currentDate = new DateOnly(2024, 1, 1);
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var selectedPeriod = periods[1];
+            var selectedDate = new DateOnly(2024, 1, 1);
+
+            var schedule = GetSchedule();
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, currentDate);
+
+            Assert.True(isAvailable);
         }
 
         [Fact]
-        public void PeriodOnSpecificDateIsAvailable()
+        public void AvailablePeriodOnAvailableSpecificDateIsAvailable()
         {
+            var currentDate = new DateOnly(2024, 1, 1);
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var selectedPeriod = periods[2];
+            var selectedDate = new DateOnly(2024, 1, 2);
+
+            var schedule = GetSchedule();
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, currentDate);
+
+            Assert.True(isAvailable);
         }
 
         [Fact]
-        public void UnavailablePeriodOnRegularDayOfWeekIsUnavailable()
+        public void UnavailablePeriodOnAvailableRegularDayOfWeekIsUnavailable()
         {
+            var currentDate = new DateOnly(2024, 1, 1);
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var selectedPeriod = periods[2];
+            var selectedDate = new DateOnly(2024, 1, 1);
+
+            var schedule = GetSchedule();
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, currentDate);
+
+            Assert.False(isAvailable);
         }
 
         [Fact]
-        public void UnavailablePeriodOnSpecificDateIsUnavailable()
+        public void UnavailablePeriodOnAvailableSpecificDateIsUnavailable()
         {
+            var currentDate = new DateOnly(2024, 1, 1);
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var selectedPeriod = periods[1];
+            var selectedDate = new DateOnly(2024, 1, 2);
+
+            var schedule = GetSchedule();
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, currentDate);
+
+            Assert.False(isAvailable);
         }
 
         [Fact]
         public void UnavailableSpecificDateIsUnavailable()
         {
+            var currentDate = new DateOnly(2024, 1, 1);
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var selectedPeriod = periods[1];
+            var selectedDate = new DateOnly(2024, 1, 7);
+
+            var schedule = GetSchedule();
+            var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, currentDate);
+
+            Assert.False(isAvailable);
         }
 
         [Fact]
@@ -115,17 +160,43 @@ namespace SeatSave.Test
             var schedule = GetSchedule();
             var availableDays = schedule.GetAvailableDays(new DateOnly(2024, 1, 1), 5);
 
-            Assert.Equal(availableDays, targetAvailableDays);
+            Assert.Equal(targetAvailableDays, availableDays);
         }
 
         [Fact]
         public void GetAvailablePeriodsOnRegularDayGeneratesCorrectly()
         {
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var targetAvailablePeriods = new[] {
+                periods[1],
+                periods[3],
+                 periods[5],
+            };
+
+            var currentDate = new DateOnly(2024, 1, 1);
+            var selectedDate = new DateOnly(2024, 1, 1);
+            var schedule = GetSchedule();
+            var availablePeriods = schedule.GetAvailablePeriods(selectedDate, currentDate);
+
+            Assert.Equal(targetAvailablePeriods, availablePeriods);
+
         }
 
         [Fact]
         public void GetAvailablePeriodsOnSpecificDayGeneratesCorrectly()
         {
+            var periods = new PeriodFactory().GetPeriodsInDay();
+            var targetAvailablePeriods = new[] {
+                periods[2],
+                periods[4],
+            };
+
+            var currentDate = new DateOnly(2024, 1, 1);
+            var selectedDate = new DateOnly(2024, 1, 2);
+            var schedule = GetSchedule();
+            var availablePeriods = schedule.GetAvailablePeriods(selectedDate, currentDate);
+
+            Assert.Equal(targetAvailablePeriods, availablePeriods);
         }
     }
 }
@@ -146,13 +217,23 @@ public class ScheduleSeedFixture : IDisposable
         using (var context = new SeatSaveContext(options))
         {
             context.Periods.AddRange(periods);
-            context.SpecificDayAvailability.AddRange();
+            context.SpecificDayAvailability.AddRange(new SpecificDateAvailability()
+            {
+                Date = new DateOnly(2024, 01, 02),
+                Periods = new List<Period>{
+                    periods[2],
+                    periods[4],
+                }
+            });
 
             context.RegularDayOfWeekAvailability.AddRange(new RegularDayOfWeekAvailability
             {
                 DayOfWeek = DayOfWeek.Monday,
                 Periods = new List<Period>{
-                    periods[1]
+                    periods[1],
+                    periods[3],
+                    periods[5],
+
                 }
             });
 

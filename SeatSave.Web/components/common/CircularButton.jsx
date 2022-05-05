@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function CircularButton({ onClick }) {
   return (
-    <div className='pb-4 text-right lg:pb-0'>
+    <div className='text-right'>
       <button
         onClick={() => onClick()}
         type='button'

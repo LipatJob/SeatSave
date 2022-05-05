@@ -10,7 +10,7 @@ export default function ManageDateTime() {
   return (
     <div className='page-container'>
       <h1 className='mb-6'>Manage Date & Time</h1>
-      <div className='grid grid-cols-3 gap-x-7 h-[500px] max-h-[500px]'>
+      <div className='relative sm:grid sm:grid-cols-3 sm:gap-x-7'>
         <DaySelectionPanel
           dayType={availabilityType}
           selectedId={selectedId}
@@ -29,8 +29,9 @@ export default function ManageDateTime() {
         {selectedId && (
           <PeriodSelectionPanel
             selectedId={selectedId}
-            className='col-span-2'
+            className='absolute top-0 h-full col-span-2 bg-white sm:top-auto sm:relative'
             availabilityType={availabilityType}
+            onClose={() => setSelectedId(null)}
           />
         )}
       </div>

@@ -37,12 +37,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ../dotnet-webapp /p:UseAppHost=true
-
-      - name: Run tests
-        run: |
-          cd SeatSave.Test
-          dotnet test --no-restore --verbosity normal
+        run: dotnet publish -c Release -o ./dotnet-webapp /p:UseAppHost=true
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

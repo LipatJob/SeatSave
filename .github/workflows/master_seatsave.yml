@@ -37,7 +37,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release
+        run: dotnet publish -c Release -p:UseAppHost=false -o ./dotnet-webapp
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -46,7 +46,7 @@ jobs:
           app-name: 'SeatSave'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F9AEA760216B41E6BE45DD0416BC953D }}
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/dotnet-webapp'
 
 
 

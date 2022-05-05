@@ -79,7 +79,7 @@ if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<SeatSaveContext>(options =>
     {
-        var connectionString = builder.Configuration.GetConnectionString("SparseDb");
+        var connectionString = builder.Configuration.GetConnectionString("SeatSaveDb");
         options.UseSqlServer(connectionString);
     });
 }

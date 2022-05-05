@@ -37,7 +37,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ../dotnet-webapp --self-contained true /p:UseAppHost=true
+        run: dotnet publish -c Release -o ../dotnet-webapp /p:UseAppHost=true
 
       - name: Run tests
         run: |

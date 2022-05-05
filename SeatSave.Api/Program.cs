@@ -84,17 +84,14 @@ if (builder.Environment.IsProduction())
     });
 }
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "AllowAll";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         name: MyAllowSpecificOrigins,
         builder =>
         {
-            builder.AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowAnyOrigin()
-                    .AllowCredentials();
+            builder.SetIsOriginAllowed(isOriginAllowed: _ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         });
 });
 

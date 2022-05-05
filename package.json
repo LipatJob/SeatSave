@@ -1,0 +1,15 @@
+{
+  "name": "seat-save",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev-api": "dotnet watch run --project .\\SeatSave.Api\\",
+    "dev-scratch": "dotnet run --project .\\SeatSave.Scratch\\",
+    "dev-web": "cd SeatSave.Web && npm run dev",
+    "dev": "start npm run dev-api && start npm run dev-web",
+    "db-reseed": "dotnet run --project .\\SeatSave.EF\\ seed",
+    "db-update": "dotnet ef database update --project .\\SeatSave.Api\\",
+    "db-migrate": "dotnet ef migrations add --project .\\SeatSave.Api\\",
+    "db-reset": "cd .\\SeatSave.Api\\ && del .\\Migrations\\* && cd .. && npm run db-migrate InitialMigration && npm run db-update"
+  }
+}

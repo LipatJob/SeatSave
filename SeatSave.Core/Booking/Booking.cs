@@ -49,6 +49,7 @@ namespace SeatSave.Core.Booking
 
         private DateTime GetBookingTimeStart()
         {
+            // previous - return BookingDate.ToDateTime(TimeOnly.FromTimeSpan(Period.TimeStart));
             return BookingDate.ToDateTime(Period.TimeStart);
         }
 

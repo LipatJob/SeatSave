@@ -34,27 +34,28 @@ export default function VisitorLogin() {
           height={500}
         />
       </div>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={LoginSchema}
-        onSubmit={(values, { setFieldError }) => {
-          visitorAuthService
-            .login(values.email, values.password)
-            .then((user) => {
-              if (user == null) {
-                setFieldError('email', 'Email or password not found');
-                return;
-              }
-              Router.push('/');
-            });
-        }}
-      >
-        {() => (
-          <Form>
-            <div className='sm:max-w-md'>
+      <div className='sm:max-w-md'>
+        <h1 className='mb-16 text-dusk-blue'>Welcome Back!</h1>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={LoginSchema}
+          onSubmit={(values, { setFieldError }) => {
+            visitorAuthService
+              .login(values.email, values.password)
+              .then((user) => {
+                if (user == null) {
+                  setFieldError('email', 'Email or password not found');
+                  return;
+                }
+                Router.push('/');
+              });
+          }}
+        >
+          {() => (
+            <Form>
               <div className='flex flex-col items-center mb-12 gap-y-7'>
                 <div className='w-full'>
                   <p className='font-light body-small'>Email</p>
@@ -100,10 +101,10 @@ export default function VisitorLogin() {
                   </Link>
                 </p>
               </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 }

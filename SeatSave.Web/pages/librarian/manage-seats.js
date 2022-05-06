@@ -3,9 +3,7 @@ import Image from 'next/image';
 
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
-
-import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
-
+import OkModal from '../../components/common/OkModal';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
 
 export default function ManageSeats() {
@@ -60,7 +58,19 @@ export default function ManageSeats() {
   return (
     <div className='page-container '>
       {showModalAddedSeat && (
-        <AddedSeatModal onClick={setShowModalAddedSeat} name={seatName} />
+        <OkModal
+          onOk={() => setShowModalAddedSeat(false)}
+          onClose={() => setShowModalAddedSeat(false)}
+          message={
+            <div>
+              <h4 className='mb-6'>Seat Added!</h4>
+              <p className='body-normal'>
+                You have successfully added a new seat:
+                <br /> {seatName}
+              </p>
+            </div>
+          }
+        />
       )}
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>

@@ -28,6 +28,7 @@ namespace SeatSave.Api.Controllers
             var seat = context.Seat.Find(id);
             return Ok(seat);
         }
+
         [HttpPost]
         public IActionResult Add([FromBody] SeatModel seat)
         {

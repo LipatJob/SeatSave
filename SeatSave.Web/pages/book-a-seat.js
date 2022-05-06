@@ -192,16 +192,19 @@ export default function BookASeat({ availableDays }) {
             <div className='flex justify-center'>
               <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
                 <div className='grid grid-cols-1 sm:grid-cols-2'>
-                  {availableSeats.map((aSeat) => (
-                    <button
-                      key={aSeat.id}
-                      className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
-                      onClick={() => viewSeatDetails(aSeat)}
-                    >
-                      <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
-                      <h5 className='pb-3 text-white'>{aSeat.id}</h5>
-                    </button>
-                  ))}
+                  {availableSeats.map(
+                    (aSeat) =>
+                      aSeat.active == true && (
+                        <button
+                          key={aSeat.id}
+                          className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                          onClick={() => viewSeatDetails(aSeat)}
+                        >
+                          <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
+                          <h5 className='pb-3 text-white'>{aSeat.id}</h5>
+                        </button>
+                      ),
+                  )}
                 </div>
               </div>
             </div>
@@ -241,7 +244,10 @@ export default function BookASeat({ availableDays }) {
                   <button
                     type='button'
                     className='mb-6 rounded-lg button'
-                    onClick={() => getSelectedSeat(seatCurrent.id)}
+                    onClick={() => {
+                      getSelectedSeat(seatCurrent.id);
+                      toggleModal();
+                    }}
                   >
                     <h6 className='font-medium text-white'>Select</h6>
                   </button>

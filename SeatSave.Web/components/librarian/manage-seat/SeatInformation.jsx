@@ -1,17 +1,39 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 
 export default function SeatInformation({
-  seatData,
   setFormPart,
   setShowModalAddedSeat,
   setSeatName,
   onAvailableSeatsUpdated,
-  updateSeatData,
+  currentID,
 }) {
   const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
+  const [seatData, seatSeatData] = useState();
+
+  const updateSeatData = async () => {
+    if (currentID === 0) {
+      seatSeatData({
+        id: 0,
+        name: '',
+        type: '',
+        active: 'true',
+        description: '',
+      });
+      return;
+    }
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Seats/${currentID}`,
+    );
+    const jsonData = await response.json();
+    seatSeatData(jsonData);
+  };
+
+  useEffect(() => {
+    updateSeatData();
+  }, [currentID]);
 
   const submitData = async (data) => {
     const requestData = {
@@ -179,7 +201,7 @@ export default function SeatInformation({
             </div>
             <div className='grid h-content pt-8 lg:h-[70px] lg:pt-0 content-center grid-cols-1 gap-4 text-center lg:gap-0 lg:grid-cols-4 '>
               <div className='md:col-span-1 '>
-                {seatData.id !== 0 && (
+                {currentID !== 0 && (
                   <button
                     type='button'
                     className='w-full h-full align-middle text-valentine-red'

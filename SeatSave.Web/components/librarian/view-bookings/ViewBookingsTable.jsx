@@ -24,6 +24,7 @@ export default function ViewBookingsTable({ bookings, onClick }) {
           <thead className='font-bold bg-pearl-bush'>
             <tr className='h-16 whitespace-nowrap'>
               <th className='px-2'>Booking ID</th>
+              <th className='px-2'>Code</th>
               <th className='px-2'>Seat</th>
               <th className='px-2'>Visitor</th>
               <th className='px-2'>Booking Period</th>
@@ -41,6 +42,7 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                 .map((booking) => (
                   <tr className='h-20 bg-white border-b hover:bg-iron whitespace-nowrap'>
                     <td className='px-2'>{booking.id}</td>
+                    <td className='px-2'>{booking.bookingCode}</td>
                     <td className='px-2'>{booking.seat.name}</td>
                     <td className='px-2'>
                       <div>

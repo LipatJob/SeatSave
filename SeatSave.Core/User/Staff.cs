@@ -50,4 +50,21 @@
 
         public string StaffOffice { get; set; }
     }
+
+
+    public static class StaffExtensions
+    {
+        public static bool IsValid(this Staff staff)
+        {
+            var fields = new[] {
+                staff.FirstName,
+                staff.LastName,
+                staff.Password,
+                staff.StaffOffice,
+            };
+            if (fields.Any(e => e == null || e == "")) { return false; }
+
+            return Staff.StaffOffices.Contains(staff.StaffOffice);
+        }
+    }
 }

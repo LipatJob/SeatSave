@@ -90,8 +90,9 @@ namespace SeatSave.EF
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "1234567",
-                   ProgramStrand = "CS",
-                   YearGrade = "First Year",
+                   ProgramStrand = "STEM",
+                   Department = "SHS",
+                   YearGrade = "Grade 11",
                },
                new Student
                {
@@ -100,7 +101,8 @@ namespace SeatSave.EF
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "password",
-                   ProgramStrand = "IT",
+                   ProgramStrand = "B.S. BUSINESS ADMINISTRATION",
+                   Department = "ETCYB",
                    YearGrade = "First Year",
                },
                 new Student
@@ -110,10 +112,35 @@ namespace SeatSave.EF
                     FirstName = "Text",
                     LastName = "Account",
                     Password = "1234567",
-                    ProgramStrand = "IT",
+                    ProgramStrand = "B.S. COMPUTER SCIENCE",
+                    Department = "CCIS",
                     YearGrade = "First Year",
                 }
             );
+
+            context.Staffs.AddRange(
+                new Staff
+                {
+                    Id = 4,
+                    Email = "staff@mcl.edu.ph",
+                    FirstName = "Staff",
+                    LastName = "Account",
+                    Password = "1234567",
+                    StaffOffice = "Blue and Silver Bookshop"
+                }
+            );
+
+            context.FacultyMembers.AddRange(
+              new Faculty
+              {
+                  Id = 4,
+                  Email = "faculty@mcl.edu.ph",
+                  FirstName = "Staff",
+                  LastName = "Account",
+                  Password = "1234567",
+                  FacultyOffice = "College of Computer and Information Science (CCIS)"
+              }
+          );
 
             context.AddRange(
                 new SeatModel

@@ -63,5 +63,17 @@ namespace SeatSave.Api.DTO
             Password = Password,
             FacultyOffice = Office
         };
+
+
+        public UserModel? ToUserType()
+        {
+            return UserType switch
+            {
+                Librarian.UserType => ToLibrarian(),
+                Student.UserType => ToStudent(),
+                Faculty.UserType => ToFaculty(),
+                _ => null,
+            };
+        }
     }
 }

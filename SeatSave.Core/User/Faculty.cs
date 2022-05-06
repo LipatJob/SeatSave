@@ -21,4 +21,20 @@
 
         public string FacultyOffice { get; set; }
     }
+
+    public static class FacultyExtensions
+    {
+        public static bool IsValid(this Faculty faculty)
+        {
+            var fields = new[] {
+                faculty.FirstName,
+                faculty.LastName,
+                faculty.Password,
+                faculty.FacultyOffice,
+            };
+            if (fields.Any(e => e == null || e == "")) { return false; }
+
+            return Faculty.FacultyOffices.Contains(faculty.FacultyOffice);
+        }
+    }
 }

@@ -10,7 +10,7 @@ export default function MobileMenuOverlay({
 }) {
   return (
     <div
-      className={`fixed z-20 w-full h-screen pt-28 top-20 bg-pearl-bush bg-opacity-100 transform delay-100 transition-all duration-300 ${
+    className={`fixed left-0 z-50 flex flex-col gap-10 w-full h-screen pt-28 text-black top-20 bg-pearl-bush bg-opacity-100 transform delay-100 transition-all duration-300 ${
         navbarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full'
       }`}
     >

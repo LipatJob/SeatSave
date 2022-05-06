@@ -135,7 +135,7 @@ export default function SeatInformation({
             />
           )}
           <div className='w-full h-full'>
-            <div className='w-full h-content lg:h-[450px]  '>
+            <div className='w-full h-content md:h-[450px]  '>
               <div className=''>
                 <p>Seat ID</p>
                 <Field
@@ -195,18 +195,18 @@ export default function SeatInformation({
                   type='textarea'
                   id='description'
                   name='description'
-                  className='flex w-full h-32'
+                  className='flex w-full h-24 md:h-32'
                   style={{ resize: 'none' }}
                   placeholder='Enter Seat Description'
                 />
               </div>
             </div>
-            <div className='grid h-content pt-8 lg:h-[70px] lg:pt-0 content-center grid-cols-1 gap-4 text-center lg:gap-0 lg:grid-cols-4 '>
-              <div className='md:col-span-1 '>
+            <div className='grid h-content pt-8 md:h-[70px] md:pt-0 content-center grid-cols-1 gap-2 text-center  md:grid-cols-4 '>
+              <div className='text-center md:col-span-1'>
                 {currentID !== 0 && (
                   <button
                     type='button'
-                    className='w-full h-full align-middle text-valentine-red'
+                    className='h-full text-valentine-red'
                     onClick={() => {
                       setShowModalDeleteSeat(true);
                     }}
@@ -222,12 +222,14 @@ export default function SeatInformation({
                   name='active'
                   id='active'
                 />
-                <span className='inline-block align-middle'>Activate Seat</span>
+                <span className='inline-block md:text-[12px] align-middle lg:body-normal'>
+                  Activate Seat
+                </span>
               </div>
-              <div className='md:col-span-1'>
+              <div className='hidden md:col-span-1 md:block'>
                 <button
                   type='button'
-                  className='w-full lg:w-min gray-button'
+                  className='w-full px-0 py-0 gray-button '
                   onClick={() => {
                     setFormPart(0);
                   }}
@@ -236,7 +238,7 @@ export default function SeatInformation({
                 </button>
               </div>
               <div className='md:col-span-1'>
-                <button type='submit' className='w-full button'>
+                <button type='submit' className='w-full px-0 py-0 button '>
                   SAVE
                 </button>
               </div>

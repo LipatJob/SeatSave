@@ -11,7 +11,7 @@ export default function SeatSelectionPanel({
   return (
     <div>
       <PanelWithHeader
-        header='Available Seats'
+        header={<h4>Available Seats</h4>}
         body={
           <div>
             <div className=' h-[450px] overflow-y-scroll'>

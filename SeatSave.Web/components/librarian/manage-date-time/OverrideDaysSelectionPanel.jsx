@@ -85,7 +85,7 @@ export default function OverrideDaysSelectionPanel({
   const isDayUnique = (date) => !overrideDayItems.includes(date);
 
   return (
-    <div className='relative h-full '>
+    <div className='flex flex-col min-h-full'>
       <div className='flex flex-col object-contain max-h-full min-h-full gap-2'>
         {overrideDayItems.map((e) => (
           <PanelListItem
@@ -106,7 +106,7 @@ export default function OverrideDaysSelectionPanel({
           </PanelListItem>
         ))}
       </div>
-      <div className='sticky mt-4 bottom-3 right-3'>
+      <div className='sticky mt-auto bottom-3 right-3'>
         <CircularButton onClick={() => setAddDateModalVisible(true)} />
       </div>
       {confirmDeleteModalVisible && (

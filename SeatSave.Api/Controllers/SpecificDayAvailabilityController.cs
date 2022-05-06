@@ -18,7 +18,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(dbContext.SpecificDayAvailability.Select(e => e.Date));
+            return Ok(dbContext.SpecificDayAvailability.Select(e => e.Date).OrderBy(e => e));
         }
 
 
@@ -60,7 +60,7 @@ namespace SeatSave.Api.Controllers
             var availability = dbContext.SpecificDayAvailability.Find(date);
             if (availability == null) { return BadRequest("Date not found"); }
 
-            return Ok(availability.Periods);
+            return Ok(availability.Periods.OrderBy(e => e.TimeStart));
         }
 
 
@@ -81,7 +81,7 @@ namespace SeatSave.Api.Controllers
             foreach (var period in periods) { availability.Periods.Add(period); }
 
             dbContext.SaveChanges();
-            return Ok(availability.Periods);
+            return Ok(availability.Periods.OrderBy(e => e.TimeStart));
         }
     }
 }

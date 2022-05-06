@@ -26,12 +26,14 @@ namespace SeatSave.Api.Controllers
         public IActionResult GetSpecific(int id)
         {
             var seat = context.Seat.Find(id);
+            if (seat == null) { return NotFound(); }
             return Ok(seat);
         }
 
         [HttpPost]
         public IActionResult Add([FromBody] SeatModel seat)
         {
+            if (seat == null) { return BadRequest(); }
             context.Seat.Add(seat);
             context.SaveChanges();
             return Ok(seat);
@@ -39,6 +41,7 @@ namespace SeatSave.Api.Controllers
         [HttpPut]
         public IActionResult Update([FromBody] SeatModel seat)
         {
+            if (seat == null) { return BadRequest(); }
             context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             context.SaveChanges();
             return Ok(seat);
@@ -48,6 +51,7 @@ namespace SeatSave.Api.Controllers
         public IActionResult Delete(int id)
         {
             var seat = context.Seat.Find(id);
+            if (seat == null) { NotFound(); }
             context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             context.SaveChanges();
             return NoContent();

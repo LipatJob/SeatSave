@@ -26,7 +26,7 @@ export default function ViewBookingsForm({ onSubmit }) {
             </option>
             <option>Pending</option>
             <option>Checked In</option>
-            <option>Completed</option>
+            <option>Checked Out</option>
             <option>Cancelled</option>
           </select>
         </label>

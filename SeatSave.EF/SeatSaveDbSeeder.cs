@@ -74,7 +74,6 @@ namespace SeatSave.EF
             context.Librarians.AddRange(
                 new Librarian
                 {
-                    Id = 1,
                     Email = "librarian@gmail.com",
                     FirstName = "Text",
                     LastName = "Account",
@@ -85,7 +84,6 @@ namespace SeatSave.EF
             context.Students.AddRange(
                new Student
                {
-                   Id = 2,
                    Email = "student@gmail.com",
                    FirstName = "Text",
                    LastName = "Account",
@@ -96,7 +94,6 @@ namespace SeatSave.EF
                },
                new Student
                {
-                   Id = 3,
                    Email = "student2@gmail.com",
                    FirstName = "Text",
                    LastName = "Account",
@@ -107,7 +104,6 @@ namespace SeatSave.EF
                },
                 new Student
                 {
-                    Id = 4,
                     Email = "student3@gmail.com",
                     FirstName = "Text",
                     LastName = "Account",
@@ -121,7 +117,6 @@ namespace SeatSave.EF
             context.Staffs.AddRange(
                 new Staff
                 {
-                    Id = 4,
                     Email = "staff@mcl.edu.ph",
                     FirstName = "Staff",
                     LastName = "Account",
@@ -133,7 +128,6 @@ namespace SeatSave.EF
             context.FacultyMembers.AddRange(
               new Faculty
               {
-                  Id = 4,
                   Email = "faculty@mcl.edu.ph",
                   FirstName = "Staff",
                   LastName = "Account",
@@ -145,7 +139,6 @@ namespace SeatSave.EF
             context.AddRange(
                 new SeatModel
                 {
-                    Id = 1,
                     Name = "ABC",
                     Type = "1",
                     Active = true,
@@ -153,7 +146,6 @@ namespace SeatSave.EF
                 },
                 new SeatModel
                 {
-                    Id = 2,
                     Name = "DEF",
                     Type = "2",
                     Active = false,
@@ -165,7 +157,6 @@ namespace SeatSave.EF
 
                 new BookingModel
                 {
-                    Id = 2,
                     BookingCode = "5678",
                     BookingDate = new DateOnly(2022, 04, 29),
                     PeriodId = 5,
@@ -179,7 +170,6 @@ namespace SeatSave.EF
                 },
                 new BookingModel
                 {
-                    Id = 3,
                     BookingCode = "1234",
                     BookingDate = new DateOnly(2022, 04, 28),
                     PeriodId = 3,
@@ -195,7 +185,6 @@ namespace SeatSave.EF
                 },
                  new BookingModel
                  {
-                     Id = 4,
                      BookingCode = "34531",
                      BookingDate = new DateOnly(2022, 04, 29),
                      PeriodId = 5,

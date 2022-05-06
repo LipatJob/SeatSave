@@ -69,6 +69,7 @@ namespace SeatSave.Api.DTO
         {
             return UserType switch
             {
+                Staff.UserType => ToStaff(),
                 Librarian.UserType => ToLibrarian(),
                 Student.UserType => ToStudent(),
                 Faculty.UserType => ToFaculty(),

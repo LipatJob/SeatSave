@@ -14,7 +14,7 @@
             "Office of the AVP for Treasury/Treasury Manager",
             "College of Arts and Science (CAS)",
             "College of Computer and Information Science (CCIS)",
-            "E.T. YuchengcCollege of Business (ETYCB)",
+            "E.T. Yuchengco College of Business (ETYCB)",
             "Institute for Excellence in Continuing Education and Lifelong Learning (I-ExCELL)",
             "Mapúa Institute of Technology at Laguna (MITL)",
             "Mapúa-PTC College of Maritime Education and Training (Mapúa-PTC CMET)",

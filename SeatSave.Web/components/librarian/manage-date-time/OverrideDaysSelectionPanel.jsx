@@ -86,7 +86,7 @@ export default function OverrideDaysSelectionPanel({
 
   return (
     <div className='relative h-full '>
-      <div className='flex flex-col object-contain gap-2 max-h-[inherit]'>
+      <div className='flex flex-col object-contain max-h-full min-h-full gap-2'>
         {overrideDayItems.map((e) => (
           <PanelListItem
             onClick={() => onItemSelected(e)}

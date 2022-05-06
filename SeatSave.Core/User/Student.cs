@@ -61,7 +61,36 @@
         {
         }
 
+        public string Department { get; set; }
         public string ProgramStrand { get; set; }
         public string YearGrade { get; set; }
+    }
+
+    public static class StudentExtensions
+    {
+        public static bool IsValid(this Student student)
+        {
+            var fields = new[] {
+                student.FirstName,
+                student.LastName,
+                student.Password,
+                student.Department,
+                student.ProgramStrand,
+                student.YearGrade
+            };
+            if (fields.Any(e => e == null || e == "")) { return false; }
+
+            if (student.Department == "SHS")
+            {
+                if (!Student.ProgramStrands["SHS"].Contains(student.ProgramStrand)) { return false; }
+            }
+            else
+            {
+                if (!Student.Departments.Contains(student.Department)) { return false; }
+                if (!Student.ProgramStrands[student.Department].Contains(student.ProgramStrand)) { return false; }
+            }
+
+            return true;
+        }
     }
 }

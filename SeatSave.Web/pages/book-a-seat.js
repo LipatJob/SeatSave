@@ -194,6 +194,8 @@ export default function BookASeat({ availableDays }) {
                 <div className='grid grid-cols-1 sm:grid-cols-2'>
                   {availableSeats.map(
                     (aSeat) =>
+                      // Changes here
+
                       aSeat.active == true && (
                         <button
                           key={aSeat.id}

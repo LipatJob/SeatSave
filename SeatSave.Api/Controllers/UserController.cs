@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.Api.DTO;
+using SeatSave.Api.Services;
 using SeatSave.Core.User;
 using SeatSave.EF;
 
@@ -58,6 +59,10 @@ namespace SeatSave.Api.Controllers
         {
             var user = userDto.ToUserType();
             if (user == null) { return BadRequest(); }
+
+            RegistrationService registrationService = new RegistrationService(dbContext.Users);
+            var canRegister = registrationService.CanUserRegister(user);
+            if (canRegister) { return BadRequest(); }
 
             dbContext.Users.Add(user);
             dbContext.SaveChanges();

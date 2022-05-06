@@ -12,7 +12,7 @@ namespace SeatSave.Core.User
         {
         }
 
-        public virtual IEnumerable<BookingModel> Bookings { get; set; }
+        public virtual IEnumerable<BookingModel> Bookings { get; set; } = new List<BookingModel>();
 
         public BookingModel? GetActiveBooking()
         {
@@ -22,7 +22,7 @@ namespace SeatSave.Core.User
             .FirstOrDefault();
         }
 
-        public BookingModel Book(DateTime currTimeStamp, DateOnly date, Period period, SeatModel seat, BookablePolicy policy) // (date, period, seat)
+        public BookingModel? Book(DateTime currTimeStamp, DateOnly date, Period period, SeatModel seat, BookablePolicy policy) // (date, period, seat)
         {
             if (CanBook() == false || policy.IsSatisfied(date, period, seat) == false)
             {

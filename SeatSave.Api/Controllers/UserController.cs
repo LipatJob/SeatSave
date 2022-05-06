@@ -58,11 +58,11 @@ namespace SeatSave.Api.Controllers
         public IActionResult Add([FromBody] UserDto userDto)
         {
             var user = userDto.ToUserType();
-            if (user == null) { return BadRequest(); }
+            if (user == null) { return BadRequest("Invalid user type"); }
 
             RegistrationService registrationService = new RegistrationService(dbContext.Users);
             var canRegister = registrationService.CanUserRegister(user);
-            if (canRegister) { return BadRequest(); }
+            if (!canRegister) { return BadRequest("Please check your information"); }
 
             dbContext.Users.Add(user);
             dbContext.SaveChanges();

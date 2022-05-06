@@ -5,7 +5,6 @@ import Seat from './Seat';
 
 export default function SeatSelectionPanel({
   seats,
-  selectedSeatId,
   onAddClicked,
   onSeatSelected,
 }) {
@@ -15,7 +14,7 @@ export default function SeatSelectionPanel({
         header='Available Seats'
         body={
           <div>
-            <div className=' h-[450px]'>
+            <div className=' h-[450px] overflow-y-scroll'>
               {seats.map((seat) => (
                 <div key={seat.id}>
                   <Seat

@@ -75,6 +75,15 @@ if (builder.Environment.IsDevelopment())
             e => e.MigrationsAssembly("SeatSave.Api"));
     });
 }
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<SeatSaveContext>(options =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("SeatSaveDb");
+        options.UseSqlServer(connectionString);
+    });
+}
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {

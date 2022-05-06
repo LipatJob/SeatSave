@@ -5,7 +5,6 @@ import Seat from './Seat';
 
 export default function SeatSelectionPanel({
   seats,
-  selectedSeatId,
   onAddClicked,
   onSeatSelected,
 }) {

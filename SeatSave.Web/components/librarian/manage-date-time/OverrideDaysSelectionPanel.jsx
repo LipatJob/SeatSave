@@ -3,7 +3,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { formatDate } from '../../../lib/DateHelper';
 import CircularButton from '../../common/CircularButton';
 import WarningConfirmationModal from '../../common/WarningConfirmationModal';
-import AddSpecifcDayModal from './AddSpecificDayModal';
+import AddSpecificDayModal from './AddSpecificDayModal';
 import PanelListItem from './PanelListItem';
 
 export default function OverrideDaysSelectionPanel({
@@ -119,7 +119,7 @@ export default function OverrideDaysSelectionPanel({
       )}
 
       {addDateModalVisible && (
-        <AddSpecifcDayModal
+        <AddSpecificDayModal
           text='Are you sure you want to delete this day?'
           onAdd={onAddDate}
           onClose={() => setAddDateModalVisible(false)}

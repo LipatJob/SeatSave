@@ -5,6 +5,7 @@ using System.Security.Claims;
 using SeatSave.Api.Services;
 using SeatSave.Core.Booking;
 using SeatSave.Core.User;
+using SeatSave.Core.Schedule;
 
 namespace SeatSave.Api.Controllers
 {
@@ -42,6 +43,7 @@ namespace SeatSave.Api.Controllers
             var userClaims = identity.Claims;
             var user = AuthService.CreateUserModelFromClaims(userClaims);
             var visitor = dbContext.Visitors.Find(user.Id);
+
             if (visitor == null)
             {
                 return BadRequest();
@@ -75,7 +77,12 @@ namespace SeatSave.Api.Controllers
                 return BadRequest();
             }
 
-            var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), bookingDTO.periodId, bookingDTO.seatId);
+            var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
+            var period = dbContext.Periods.Find(bookingDTO.periodId);
+            var seat = dbContext.Seat.Find(bookingDTO.seatId);
+            var policy = new BookablePolicy(schedule, dbContext.Bookings, DateOnly.FromDateTime(DateTime.Now));
+
+            var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), period, seat, policy);
             dbContext.Bookings.Add(booking); // BUG: booking is not adding in Book() method
             dbContext.SaveChanges();
             return Ok(booking);

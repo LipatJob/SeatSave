@@ -7,6 +7,8 @@ export default function ViewBookingsTable({ bookings, onClick }) {
   const [page, setPage] = useState(1);
 
   const ROWS_PER_PAGE = 10;
+  const CHECKED_IN_STATUS = 'Checked In';
+  const CHECKED_OUT_STATUS = 'Checked Out';
 
   function handlePaginationChange(e, value) {
     setPage(value);
@@ -65,8 +67,8 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                     </td>
                     <td className='px-2'>{booking.status}</td>
                     <td className='px-2'>
-                      {(booking.status === 'Checked Out' ||
-                        booking.status === 'Checked In') && (
+                      {(booking.status === CHECKED_IN_STATUS ||
+                        booking.status === CHECKED_OUT_STATUS) && (
                         <div className='flex flex-row items-center justify-center gap-1'>
                           <span className='text-soft-blue'>
                             <HiOutlineLogin />
@@ -86,7 +88,7 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                           )}
                         </div>
                       )}
-                      {booking.status === 'Checked Out' && (
+                      {booking.status === CHECKED_OUT_STATUS && (
                         <div className='flex flex-row items-center justify-center gap-1'>
                           <span className='text-valentine-red'>
                             <HiOutlineLogout />

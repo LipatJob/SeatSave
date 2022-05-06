@@ -11,14 +11,30 @@
             this.specifcDaySchedule = specifcDaySchedule;
         }
 
+        public bool IsDateAvailable(DateOnly dateToCheck, DateOnly currentDate)
+        {
+            if (currentDate > dateToCheck) { return false; }
+
+            bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck);
+            if (isAvailableOnSpecificDay) { return true; }
+
+            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek);
+            if (isAvailableOnRegularDay) { return true; }
+
+            return false;
+        }
+
         public bool IsAvailable(DateOnly dateToCheck, Period period, DateOnly currentDate)
         {
             if (currentDate > dateToCheck) { return false; }
 
-            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek && e.Periods.Any(e => e.id == period.id));
             bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck && e.Periods.Any(e => e.id == period.id));
+            if (isAvailableOnSpecificDay) { return true; }
 
-            return isAvailableOnRegularDay || isAvailableOnSpecificDay;
+            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek && e.Periods.Any(e => e.id == period.id));
+            if (isAvailableOnRegularDay) { return true; }
+
+            return false;
         }
 
         public IList<DateOnly> GetAvailableDays(DateOnly currentDate, int numberOfDaysToCheck)
@@ -31,7 +47,9 @@
         private IEnumerable<DateOnly> GetAvailabilityOnSpecificDays(DateOnly currentDate, int numberOfDaysToCheck)
         {
             var endDate = currentDate.AddDays(numberOfDaysToCheck);
-            var availableSpecificDays = specifcDaySchedule.Where(e => currentDate <= e.Date && e.Date <= endDate).Select(e => e.Date);
+            var availableSpecificDays = specifcDaySchedule
+                .Where(e => currentDate <= e.Date && e.Date <= endDate && e.Periods.Count > 0)
+                .Select(e => e.Date);
             return availableSpecificDays;
         }
 
@@ -45,14 +63,13 @@
 
         public IList<Period> GetAvailablePeriods(DateOnly dateToCheck, DateOnly currentDay)
         {
-            var scheduleOnRegularDay = regularDaySchedule.FirstOrDefault(e => e.DayOfWeek == dateToCheck.DayOfWeek);
             var scheduleOnSpecificDay = specifcDaySchedule.FirstOrDefault(e => e.Date == dateToCheck);
+            if (scheduleOnSpecificDay != null) { return scheduleOnSpecificDay.Periods.ToList(); }
 
-            var regularDayPeriods = scheduleOnRegularDay != null ? scheduleOnRegularDay.Periods : new List<Period>();
-            var specificDayPeriods = scheduleOnSpecificDay != null ? scheduleOnSpecificDay.Periods : new List<Period>();
+            var scheduleOnRegularDay = regularDaySchedule.FirstOrDefault(e => e.DayOfWeek == dateToCheck.DayOfWeek);
+            if (scheduleOnRegularDay != null) { return scheduleOnRegularDay.Periods.ToList(); }
 
-
-            return regularDayPeriods.Union(specificDayPeriods).OrderBy(e => e.TimeStart).ToList();
+            return new List<Period>();
         }
 
     }

@@ -8,13 +8,13 @@ export default function ViewBookings({ allBookings }) {
 
   async function handleSearchBookings(e) {
     e.preventDefault();
-    const id = e.target.bookingId.value;
+    const code = e.target.bookingCode.value;
     const status = e.target.status.value;
     const date = e.target.bookingDate.value;
     const email = e.target.visitorEmail.value;
 
     const res = await fetch(
-      `${process.env.API_URL}/Api/Booking/Search?id=${id}&status=${status}&date=${date}&email=${email}`,
+      `${process.env.API_URL}/Api/Booking/Search?code=${code}&status=${status}&date=${date}&email=${email}`,
     );
     const searchResults = await res.json();
 

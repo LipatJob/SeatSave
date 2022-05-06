@@ -110,7 +110,7 @@ export default function ViewBookingsTable({ bookings, onClick }) {
                   </tr>
                 ))
             ) : (
-              <td colSpan={6} className='py-8'>
+              <td colSpan={7} className='py-8'>
                 No Results Found.{' '}
                 <button type='button' onClick={onClick} className='text-bluish'>
                   View All

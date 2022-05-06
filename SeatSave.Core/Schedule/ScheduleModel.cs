@@ -11,19 +11,6 @@
             this.specifcDaySchedule = specifcDaySchedule;
         }
 
-        public bool IsDateAvailable(DateOnly dateToCheck, DateOnly currentDate)
-        {
-            if (currentDate > dateToCheck) { return false; }
-
-            bool isAvailableOnSpecificDay = specifcDaySchedule.Any(e => e.Date == dateToCheck);
-            if (isAvailableOnSpecificDay) { return true; }
-
-            bool isAvailableOnRegularDay = regularDaySchedule.Any(e => e.DayOfWeek == dateToCheck.DayOfWeek);
-            if (isAvailableOnRegularDay) { return true; }
-
-            return false;
-        }
-
         public bool IsAvailable(DateOnly dateToCheck, Period period, DateOnly currentDate)
         {
             if (currentDate > dateToCheck) { return false; }
@@ -71,6 +58,5 @@
 
             return new List<Period>();
         }
-
     }
 }

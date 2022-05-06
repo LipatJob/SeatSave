@@ -31,7 +31,7 @@ namespace SeatSave.Core.User
 
             BookingModel bookingInformation = new BookingModel()
             {
-                BookingCode = "12345",
+                BookingCode = GenerateBookingCode(),
                 BookingDate = date,
                 Period = period,
                 Seat = seat,
@@ -45,11 +45,30 @@ namespace SeatSave.Core.User
 
             Bookings.Append(bookingInformation);
             return bookingInformation;
+        }
 
-            // BEFORE CREATING OBJECT:
-            // Check if User can book (CanBook())
-            // 1. Create Booking Object out of the parameters
-            // 2. Add booking object to visitor book history (List)
+        public string GenerateBookingCode()
+        {
+            string finalBookCode;
+            while (true)
+            {
+                Random rand = new Random();
+                int[] bookCode = { 0, 0, 0, 0, 0 };
+
+                bookCode[0] = rand.Next(0, 10);
+                bookCode[1] = rand.Next(0, 10);
+                bookCode[2] = rand.Next(0, 10);
+                bookCode[3] = rand.Next(0, 10);
+                bookCode[4] = rand.Next(0, 10);
+
+                finalBookCode = string.Join("", bookCode);
+                if (GetBookingCodeFromBookings(finalBookCode) == null)
+                {
+                    break;
+                }
+            }
+
+            return finalBookCode;
         }
 
         public bool CanBook()
@@ -59,12 +78,18 @@ namespace SeatSave.Core.User
             // User can book if:
             // 1. No pending booking
             // 2. if the date, period and seat is bookable
+
             if (GetActiveBooking() != null)
             {
                 return false;
             }
 
             return true;
+        }
+
+        public BookingModel? GetBookingCodeFromBookings(string bookCodeVar)
+        {
+            return Bookings.Where(e => e.BookingCode == bookCodeVar).FirstOrDefault();
         }
     }
 }

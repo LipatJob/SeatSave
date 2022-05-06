@@ -9,6 +9,7 @@ export default function SeatInformation({
   setShowModalAddedSeat,
   setSeatName,
   onAvailableSeatsUpdated,
+  updateSeatData,
 }) {
   const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
 
@@ -56,6 +57,9 @@ export default function SeatInformation({
       console.log(json);
       onAvailableSeatsUpdated();
       setFormPart(0);
+      updateSeatData();
+    } else {
+      console.log('there was an error');
     }
   };
 
@@ -71,6 +75,8 @@ export default function SeatInformation({
       setFormPart(0);
       setShowModalDeleteSeat(false);
       onAvailableSeatsUpdated();
+    } else {
+      console.log('there was an error');
     }
   };
   const seatInformationSchema = Yup.object().shape({

@@ -99,6 +99,7 @@ export default function ManageSeats() {
                   setShowModalAddedSeat={setShowModalAddedSeat}
                   setSeatName={setSeatName}
                   onAvailableSeatsUpdated={updateAvailableSeats}
+                  updateSeatData={updateSeatData}
                 />
               }
             />

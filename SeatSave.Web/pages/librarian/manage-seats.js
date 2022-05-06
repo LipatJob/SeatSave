@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
 import OkModal from '../../components/common/OkModal';
@@ -8,37 +7,18 @@ import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelec
 
 export default function ManageSeats() {
   const [formPart, setFormPart] = useState(0);
-  const [currId, setCurrentID] = useState(0);
-  const [seatData, seatSeatData] = useState();
+  const [currentID, setCurrentID] = useState(0);
   const [seats, setSeats] = useState([]);
-
   const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
+  const [seatName, setSeatName] = useState();
 
   const updateSeats = async () => {
     const res = await fetch(`${process.env.API_URL}/Api/Seats`);
-
     if (!res.ok) {
       console.log('There was an error');
     }
-
     const data = await res.json();
     setSeats(data);
-  };
-
-  const updateSeatData = async () => {
-    if (currId === 0) {
-      seatSeatData({
-        id: 0,
-        name: '',
-        type: '',
-        active: 'true',
-        description: '',
-      });
-      return;
-    }
-    const response = await fetch(`${process.env.API_URL}/Api/Seats/${currId}`);
-    const jsonData = await response.json();
-    seatSeatData(jsonData);
   };
 
   const updateAvailableSeats = () => {
@@ -49,12 +29,6 @@ export default function ManageSeats() {
   useEffect(() => {
     updateSeats();
   }, []);
-
-  useEffect(() => {
-    updateSeatData();
-  }, [currId]);
-
-  const [seatName, setSeatName] = useState();
   return (
     <div className='page-container '>
       {showModalAddedSeat && (
@@ -76,7 +50,7 @@ export default function ManageSeats() {
         <h1>Manage Seats</h1>
       </div>
       <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
-        <div id='leftPanel' className=' lg:col-span-1'>
+        <div id='leftPanel' className='lg:col-span-1'>
           <SeatSelectionPanel
             seats={seats}
             onAddClicked={() => {
@@ -104,12 +78,11 @@ export default function ManageSeats() {
               header='Seat Information'
               body={
                 <SeatInformation
-                  seatData={seatData}
                   setFormPart={setFormPart}
                   setShowModalAddedSeat={setShowModalAddedSeat}
                   setSeatName={setSeatName}
                   onAvailableSeatsUpdated={updateAvailableSeats}
-                  updateSeatData={updateSeatData}
+                  currentID={currentID}
                 />
               }
             />

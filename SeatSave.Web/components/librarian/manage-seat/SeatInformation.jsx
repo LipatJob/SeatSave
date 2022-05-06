@@ -16,7 +16,7 @@ export default function SeatInformation({
   const updateSeatData = async () => {
     if (currentID === 0) {
       seatSeatData({
-        id: 0,
+        id: '',
         name: '',
         type: '',
         active: 'true',
@@ -36,12 +36,14 @@ export default function SeatInformation({
   }, [currentID]);
 
   const submitData = async (data) => {
+    const newSeat = data;
+    delete newSeat.id;
     const requestData = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(newSeat),
     };
     console.log(requestData);
 
@@ -114,7 +116,7 @@ export default function SeatInformation({
       enableReinitialize
       onSubmit={(values) => {
         console.log(values);
-        if (seatData.id === 0) {
+        if (seatData.id === '') {
           setShowModalAddedSeat(true);
           submitData(values);
         } else {

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
-
 import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
-
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
 
 export default function ManageSeats() {

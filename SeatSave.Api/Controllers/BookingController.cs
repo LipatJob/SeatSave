@@ -154,10 +154,10 @@ namespace SeatSave.Api.Controllers
 
             var results = dbContext.Bookings
                             .Where(b =>
-                                (code == null || b.BookingCode == code) &&
+                                (code == null || b.BookingCode.Contains(code)) &&
                                 (status == null || b.Status == status) &&
                                 (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.VisitorModel.Email.ToLower() == email.ToLower())
+                                (email == null || b.VisitorModel.Email.ToLower().Contains(email.ToLower()))
                                 )
                             .OrderByDescending(b => b.Id);
 

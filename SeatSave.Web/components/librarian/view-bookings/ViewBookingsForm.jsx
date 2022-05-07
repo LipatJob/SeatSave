@@ -43,7 +43,7 @@ export default function ViewBookingsForm({ onSubmit }) {
           <input
             id='visitorEmail'
             name='visitorEmail'
-            type='email'
+            type='text'
             placeholder='Enter Visitor Email'
           />
         </label>

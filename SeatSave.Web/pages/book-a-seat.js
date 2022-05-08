@@ -4,6 +4,7 @@ import visitorAuthService from '../lib/visitorAuthService';
 import Router from 'next/router';
 import { useEffect } from 'react';
 import { formatDate, formatTime } from '../lib/DateHelper';
+import BookingHeader from '../components/visitor/BookingHeader';
 
 export default function BookASeat({ availableDays }) {
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function BookASeat({ availableDays }) {
     );
 
     if (response.status === 200) {
-      const json = await response.json(); // change to response.json() later
+      const json = await response.json();
       setDateSelected(selectedDate);
       setAvailablePeriods(json);
       setAvailableSeats(null);
@@ -132,12 +133,7 @@ export default function BookASeat({ availableDays }) {
   return (
     <div className='flex items-center justify-center min-h-screen min-w-screen'>
       <div className='w-3/4 min-h-screen m-20 rounded-md'>
-        <h1 className='font-bold text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
-          Book a Seat
-        </h1>
-        <h4 className='pt-5 pb-10 text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
-          Center for Learning and Information Resources - Einstein Bldg.
-        </h4>
+        <BookingHeader />
 
         <div className='flex justify-center'>
           <h5 className='pt-20 font-bold'>Select your date</h5>

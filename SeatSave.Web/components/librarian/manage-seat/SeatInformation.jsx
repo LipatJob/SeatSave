@@ -142,7 +142,7 @@ export default function SeatInformation({
                   type='text'
                   id='id'
                   name='id'
-                  placeholder='Text'
+                  placeholder='Seat ID'
                   className='bg-iron'
                   disabled
                 />

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import visitorAuthService from '../lib/visitorAuthService';
 import Router from 'next/router';
-import { useEffect } from 'react';
-import { formatDate, formatTime } from '../lib/DateHelper';
+import visitorAuthService from '../lib/visitorAuthService';
+
+import BookingHeader from '../components/visitor/book-a-seat/BookingHeader';
+import BookingDate from '../components/visitor/book-a-seat/BookingDate';
+import BookingTime from '../components/visitor/book-a-seat/BookingTime';
+import BookingSeat from '../components/visitor/book-a-seat/BookingSeat';
+import BookingSeatModal from '../components/visitor/book-a-seat/BookingSeatModal';
 
 export default function BookASeat({ availableDays }) {
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function BookASeat({ availableDays }) {
     );
 
     if (response.status === 200) {
-      const json = await response.json(); // change to response.json() later
+      const json = await response.json();
       setDateSelected(selectedDate);
       setAvailablePeriods(json);
       setAvailableSeats(null);
@@ -132,80 +136,22 @@ export default function BookASeat({ availableDays }) {
   return (
     <div className='flex items-center justify-center min-h-screen min-w-screen'>
       <div className='w-3/4 min-h-screen m-20 rounded-md'>
-        <h1 className='font-bold text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
-          Book a Seat
-        </h1>
-        <h4 className='pt-5 pb-10 text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
-          Center for Learning and Information Resources - Einstein Bldg.
-        </h4>
+        <BookingHeader />
 
-        <div className='flex justify-center'>
-          <h5 className='pt-20 font-bold'>Select your date</h5>
-        </div>
-
-        <div className='flex justify-center'>
-          <div className='flex justify-center w-3/4 py-6 overflow-x-auto flex-nowrap'>
-            {day.map((availableDay) => (
-              <button
-                key={availableDay}
-                className='w-56 mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust'
-                onClick={() => getSelectedDate(availableDay)}
-              >
-                <h5 className='px-16 py-4'>{formatDate(availableDay)}</h5>
-              </button>
-            ))}
-          </div>
-        </div>
+        <BookingDate day={day} getSelectedDate={getSelectedDate} />
 
         {availablePeriods && (
-          <div id='periodElement'>
-            <div className='flex justify-center'>
-              <h5 className='pt-20 font-bold'>Select your time</h5>
-            </div>
-
-            <div className='flex justify-center'>
-              <div className='flex justify-center w-3/4 py-6 overflow-x-auto flex-nowrap'>
-                {availablePeriods?.map((aPeriods) => (
-                  <button
-                    key={aPeriods.id}
-                    className='flex mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust w-30'
-                    onClick={() => getSelectedPeriod(aPeriods.id)}
-                  >
-                    <h5 className='px-12 py-4'>
-                      {formatTime(aPeriods.timeStart)}
-                      <br />
-                      {formatTime(aPeriods.timeEnd)}
-                    </h5>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+          <BookingTime
+            availablePeriods={availablePeriods}
+            getSelectedPeriod={getSelectedPeriod}
+          />
         )}
 
         {availableSeats && (
-          <div>
-            <div className='flex justify-center'>
-              <h5 className='pt-20 font-bold'>Pick your seat</h5>
-            </div>
-
-            <div className='flex justify-center'>
-              <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
-                <div className='grid grid-cols-1 sm:grid-cols-2'>
-                  {availableSeats.map((aSeat) => (
-                    <button
-                      key={aSeat.id}
-                      className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
-                      onClick={() => viewSeatDetails(aSeat)}
-                    >
-                      <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
-                      <h5 className='pb-3 text-white'>{aSeat.id}</h5>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <BookingSeat
+            availableSeats={availableSeats}
+            viewSeatDetails={viewSeatDetails}
+          />
         )}
 
         <br />
@@ -227,44 +173,11 @@ export default function BookASeat({ availableDays }) {
       </div>
 
       {modal && (
-        <div className='modal'>
-          <div className='overlay'>
-            <div className='modal-content'>
-              <h2 className='m-6 text-center'>
-                Seat {seatCurrent.name} - {seatCurrent.id}
-              </h2>
-              <p className='mx-6 mb-6 text-center'>
-                <br />
-                <h5>{seatCurrent.description}</h5>
-              </p>
-
-              <div className='flex justify-center inline'>
-                <div>
-                  <button
-                    type='button'
-                    className='mb-6 rounded-lg button'
-                    onClick={() => {
-                      getSelectedSeat(seatCurrent.id);
-                      toggleModal();
-                    }}
-                  >
-                    <h6 className='font-medium text-white'>Select</h6>
-                  </button>
-                </div>
-
-                <div>
-                  <button
-                    type='button'
-                    onClick={toggleModal}
-                    className='px-4 ml-10 rounded-lg red-button'
-                  >
-                    <h6 className='font-medium text-white'>X</h6>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BookingSeatModal
+          seatCurrent={seatCurrent}
+          getSelectedSeat={getSelectedSeat}
+          toggleModal={toggleModal}
+        />
       )}
     </div>
   );

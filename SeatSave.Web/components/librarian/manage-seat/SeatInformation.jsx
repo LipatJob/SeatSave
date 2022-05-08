@@ -129,7 +129,7 @@ export default function SeatInformation({
       }}
     >
       {() => (
-        <Form className='flex flex-col items-center w-full gap-y-7'>
+        <Form className='flex flex-col items-center w-full h-full gap-y-7'>
           {showModalDeleteSeat && (
             <WarningConfirmationModal
               text='Are you sure you want to delete this seat?'
@@ -205,8 +205,8 @@ export default function SeatInformation({
                 />
               </div>
             </div>
-            <div className='grid h-content pt-8 md:h-[70px] md:pt-0 content-center grid-cols-1 gap-2 text-center  md:grid-cols-4 '>
-              <div className='text-center md:col-span-1'>
+            <div className='grid h-content pt-8 md:h-[70px] md:pt-0 content-center grid-cols-1 gap-2 text-center items-center md:grid-cols-4 '>
+              <div className='order-3 text-center md:order-1 md:col-span-1'>
                 {currentID !== 0 && (
                   <button
                     type='button'
@@ -219,14 +219,14 @@ export default function SeatInformation({
                   </button>
                 )}
               </div>
-              <div className='text-right md:col-span-1'>
+              <div className='order-1 md:order-2 md:text-right md:col-span-1'>
                 <Field
-                  className='inline-block align-middle'
+                  className='inline-block w-4 h-4 align-middle'
                   type='checkbox'
                   name='active'
                   id='active'
                 />
-                <span className='inline-block md:text-[12px] align-middle lg:body-normal'>
+                <span className='ml-2 inline-block md:text-[12px] align-middle lg:body-normal'>
                   Activate Seat
                 </span>
               </div>
@@ -241,7 +241,7 @@ export default function SeatInformation({
                   CANCEL
                 </button>
               </div>
-              <div className='md:col-span-1'>
+              <div className='order-2 md:order-4 md:col-span-1'>
                 <button type='submit' className='w-full px-0 py-0 button '>
                   SAVE
                 </button>

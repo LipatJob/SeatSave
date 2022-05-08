@@ -2,20 +2,10 @@ import React from 'react';
 import { Rect } from 'react-konva';
 import {
   colorDarkPastelBlue,
-  colorDuskBlue,
-  colorLightBlueGrey,
-  colorPastelRed,
   toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';
 
-export default function Seat({
-  x,
-  y,
-  isSelected,
-  isActive,
-  onPositionUpdated,
-  onClick,
-}) {
+export default function SeatDragOn({ x, y, onDragEnd }) {
   return (
     <Rect
       draggable
@@ -24,18 +14,16 @@ export default function Seat({
       x={x}
       y={y}
       onDragEnd={(e) => {
+        console.log(`${e.target.x()} ${e.target.y()}`);
         const newX = toNearestSnappingPoint(e.target.x(), 25);
         const newY = toNearestSnappingPoint(e.target.y(), 25);
-        e.target.position({
-          x: newX,
-          y: newY,
+        onDragEnd(newX, newY);
+        e.target.to({
+          x,
+          y,
         });
-        onPositionUpdated(newX, newY);
       }}
-      fill={isActive ? colorDarkPastelBlue : colorPastelRed}
-      stroke={colorDuskBlue}
-      strokeWidth={isSelected ? 2 : 0}
-      onClick={onClick}
+      fill={colorDarkPastelBlue}
     />
   );
 }

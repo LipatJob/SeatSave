@@ -1,92 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
+import { colorIron } from '../../lib/seatMapHelper';
 import ClientOnly from '../common/ClientOnly';
+import Seat from './Seat';
+import SeatDragOn from './SeatDragOn';
 import Table from './Table';
+import TableDragOn from './TableDragOn';
 
 export default function SeatMapComponent() {
   const [selectedSeat, setSelectedSeat] = useState(null);
-  const [seats, setSeats] = useState({
-    1: {
-      x: 50,
-      y: 50,
-      booked: false,
-    },
-    2: {
-      x: 100,
-      y: 50,
-      booked: false,
-    },
-    3: {
-      x: 150,
-      y: 50,
-      booked: false,
-    },
-    4: {
-      x: 200,
-      y: 50,
-      booked: true,
-    },
-    5: {
-      x: 250,
-      y: 50,
-      booked: true,
-    },
-  });
-
-  const [tables, setTables] = useState({
-    1: {
-      x: 400,
-      y: 50,
-      width: 50,
-      height: 50,
-    },
-    2: {
-      x: 450,
-      y: 50,
-      width: 50,
-      height: 50,
-    },
-    3: {
-      x: 500,
-      y: 50,
-      width: 50,
-      height: 50,
-    },
-    4: {
-      x: 550,
-      y: 50,
-      width: 50,
-      height: 50,
-    },
-    5: {
-      x: 600,
-      y: 50,
-      width: 50,
-      height: 50,
-    },
-  });
+  const [selectedTable, setSelectedTable] = useState();
+  const [seats, setSeats] = useState({});
+  const [tables, setTables] = useState({});
 
   const stage = useRef();
-
   const gridSize = 25;
-  const updateSeatKey = (e, index, seat) => {
-    const newX = Math.round(seat.x / gridSize) * gridSize;
-    const newY = Math.round(seat.y / gridSize) * gridSize;
-
-    setSeats({
-      ...seats,
-      [index]: { ...seats[index], x: newX, y: newY },
-    });
-    e.target.position({
-      x: newX,
-      y: newY,
-    });
-    stage.current.batchDraw();
-  };
-
-  const selectSeat = (id) => {
-    setSelectedSeat(seats[id]);
-  };
 
   const updateTablePosition = (index, x, y) => {
     setTables({
@@ -105,26 +33,69 @@ export default function SeatMapComponent() {
     });
   };
 
-  const [selectedTable, setSelectedTable] = useState();
+  const updateSeatPosition = (index, x, y) => {
+    setSeats({
+      ...seats,
+      [index]: { ...seats[index], x, y },
+    });
+  };
+
+  const addNewSeat = (x, y) => {
+    setSeats((oldSeats) => ({
+      ...oldSeats,
+      [Math.floor(Math.random() * 10000)]: {
+        x,
+        y,
+        width: 50,
+        height: 50,
+        active: true,
+      },
+    }));
+  };
+
+  const addNewTable = (x, y) => {
+    setTables((oldTables) => ({
+      ...oldTables,
+      [Math.floor(Math.random() * 10000)]: {
+        x,
+        y,
+        width: 50,
+        height: 50,
+      },
+    }));
+  };
 
   return (
     <div>
-      {selectedSeat && JSON.stringify(seats)}
-      {JSON.stringify(tables)}
-
-      {selectedTable}
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={700}
+        height={600}
         ref={stage}
         onClick={(e) => {
+          console.log('target');
           console.log(e.target);
-          if (e.target === stage) {
+          console.log('stage');
+          console.log(stage);
+          if (e.target === stage.current) {
             setSelectedTable(null);
+            setSelectedSeat(null);
           }
         }}
       >
         <Layer>
+          {Object.entries(seats).map(([key, seat]) => (
+            <Seat
+              key={key}
+              x={seat.x}
+              y={seat.y}
+              onPositionUpdated={(x, y) => updateSeatPosition(key, x, y)}
+              isAvailable={key === selectedSeat}
+              isActive={seat.active}
+              isSelected={key === selectedSeat}
+              onClick={() => setSelectedSeat(key)}
+            />
+          ))}
+
           {Object.entries(tables).map(([key, table]) => (
             <Table
               key={key}
@@ -142,8 +113,20 @@ export default function SeatMapComponent() {
               }
             />
           ))}
+          <Rect x={0} y={470} width={800} height={5} fill={colorIron} />
+          <SeatDragOn x={200} y={500} onDragEnd={addNewSeat} />
+          <TableDragOn x={300} y={500} onDragEnd={addNewTable} />
         </Layer>
       </Stage>
+      <div className='ml-8'>
+        <p>Seats</p>
+        <p>{JSON.stringify(seats)} </p>
+        <p>Selected: {selectedSeat}</p>
+        <br />
+        <p>Tables</p>
+        <p>{JSON.stringify(tables)} </p>
+        <p>Selected: {selectedTable}</p>
+      </div>
     </div>
   );
 }

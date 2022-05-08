@@ -1,5 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
+import {
+  colorDawn,
+  colorIron,
+  toNearestSnappingPoint,
+} from '../../lib/seatMapHelper';
 
 export default function Table({
   x,
@@ -14,9 +19,6 @@ export default function Table({
   const transformRef = useRef();
   const shapeRef = useRef();
   const gridSize = 25;
-
-  const toNearestSnappingPoint = (value, snappingValue) =>
-    Math.round(value / snappingValue) * snappingValue;
 
   useEffect(() => {
     if (isSelected) {
@@ -36,17 +38,17 @@ export default function Table({
         height={height}
         x={x}
         y={y}
-        fill={isSelected ? 'darkgray' : 'gray'}
+        fill={isSelected ? colorDawn : colorIron}
         onDragEnd={(e) => {
-          const newX = Math.round(e.target.x() / gridSize) * gridSize;
-          const newY = Math.round(e.target.y() / gridSize) * gridSize;
+          const newX = toNearestSnappingPoint(e.target.x(), gridSize);
+          const newY = toNearestSnappingPoint(e.target.y(), gridSize);
           e.target.position({
             x: newX,
             y: newY,
           });
           onPositionUpdated(newX, newY);
         }}
-        onTransformEnd={(e) => {
+        onTransformEnd={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();

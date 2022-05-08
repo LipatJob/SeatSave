@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDate, formatTime } from '../../lib/DateHelper';
+import { formatDate, formatTime } from '../../../lib/DateHelper';
 
 export default function BookingDetails({ details }) {
   return (

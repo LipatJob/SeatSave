@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import BookingCode from './BookingCode';
 import BookingDetails from './BookingDetails';
-import WarningConfirmationModal from '../common/WarningConfirmationModal';
-import visitorAuthService from '../../lib/visitorAuthService';
-import { formatDate, formatTime } from '../../lib/DateHelper';
+import WarningConfirmationModal from '../../common/WarningConfirmationModal';
+import visitorAuthService from '../../../lib/visitorAuthService';
+import { formatDate, formatTime } from '../../../lib/DateHelper';
 
 export default function PendingBooking({ bookingDetails, onCancel }) {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);

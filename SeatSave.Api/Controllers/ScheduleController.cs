@@ -46,7 +46,9 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{isoDate}/{periodId}/Seat")]
         public IActionResult GetBookableSeats(string isoDate, int periodId)
         {
-            return Ok(dbContext.Seat);
+            var unavailableSeatsForBooking = dbContext.Bookings.Where(e => e.BookingDate == DateOnly.Parse(isoDate) && e.PeriodId == periodId).Select(e => e.Seat);
+            var bookableSeats = dbContext.Seat.Where(e => !unavailableSeatsForBooking.Contains(e) && e.Active == true);
+            return Ok(bookableSeats);
         }
 
         [HttpGet("Periods/Present")]

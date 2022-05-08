@@ -7,12 +7,14 @@ import OkModal from '../../components/common/OkModal';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
 
 export default function ManageSeats() {
+  // States
   const [formPart, setFormPart] = useState(0);
+  const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
   const [currentID, setCurrentID] = useState(0);
   const [seats, setSeats] = useState([]);
-  const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
   const [seatName, setSeatName] = useState();
 
+  // Manage State and API
   const updateSeats = async () => {
     const res = await fetch(`${process.env.API_URL}/Api/Seats`);
     if (!res.ok) {
@@ -27,9 +29,11 @@ export default function ManageSeats() {
     updateSeats();
   };
 
+  // Effects
   useEffect(() => {
     updateSeats();
   }, []);
+
   return (
     <div className='page-container '>
       {showModalAddedSeat && (

@@ -132,7 +132,7 @@ export default function BookASeat({ availableDays }) {
   return (
     <div className='flex items-center justify-center min-h-screen min-w-screen'>
       <div className='w-3/4 min-h-screen m-20 rounded-md'>
-        <h1 className='pt-10 font-bold text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
+        <h1 className='font-bold text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
           Book a Seat
         </h1>
         <h4 className='pt-5 pb-10 text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
@@ -144,7 +144,7 @@ export default function BookASeat({ availableDays }) {
         </div>
 
         <div className='flex justify-center'>
-          <div className='flex w-3/4 py-6 overflow-x-auto flex-nowrap'>
+          <div className='flex justify-center w-3/4 py-6 overflow-x-auto flex-nowrap'>
             {day.map((availableDay) => (
               <button
                 key={availableDay}
@@ -164,11 +164,11 @@ export default function BookASeat({ availableDays }) {
             </div>
 
             <div className='flex justify-center'>
-              <div className='flex w-3/4 py-6 overflow-x-auto flex-nowrap'>
+              <div className='flex justify-center w-3/4 py-6 overflow-x-auto flex-nowrap'>
                 {availablePeriods?.map((aPeriods) => (
                   <button
                     key={aPeriods.id}
-                    className='mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust w-30'
+                    className='flex mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust w-30'
                     onClick={() => getSelectedPeriod(aPeriods.id)}
                   >
                     <h5 className='px-12 py-4'>
@@ -192,19 +192,16 @@ export default function BookASeat({ availableDays }) {
             <div className='flex justify-center'>
               <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
                 <div className='grid grid-cols-1 sm:grid-cols-2'>
-                  {availableSeats.map(
-                    (aSeat) =>
-                      aSeat.active == true && (
-                        <button
-                          key={aSeat.id}
-                          className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
-                          onClick={() => viewSeatDetails(aSeat)}
-                        >
-                          <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
-                          <h5 className='pb-3 text-white'>{aSeat.id}</h5>
-                        </button>
-                      ),
-                  )}
+                  {availableSeats.map((aSeat) => (
+                    <button
+                      key={aSeat.id}
+                      className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
+                      onClick={() => viewSeatDetails(aSeat)}
+                    >
+                      <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
+                      <h5 className='pb-3 text-white'>{aSeat.id}</h5>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -228,15 +225,17 @@ export default function BookASeat({ availableDays }) {
           </div>
         )}
       </div>
+
       {modal && (
         <div className='modal'>
           <div className='overlay'>
             <div className='modal-content'>
-              <h2 className='m-6 text-center'>Seat Details</h2>
-              <p className='mx-6 mb-6'>
-                name: {seatCurrent.name}
+              <h2 className='m-6 text-center'>
+                Seat {seatCurrent.name} - {seatCurrent.id}
+              </h2>
+              <p className='mx-6 mb-6 text-center'>
                 <br />
-                id: {seatCurrent.id}
+                <h5>{seatCurrent.description}</h5>
               </p>
 
               <div className='flex justify-center inline'>

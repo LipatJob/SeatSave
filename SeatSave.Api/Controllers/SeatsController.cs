@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.EF;
 using SeatSave.Core.Seat;
+using Microsoft.EntityFrameworkCore;
 
 namespace SeatSave.Api.Controllers
 {
@@ -18,8 +19,8 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var seat = context.Seat.ToList();
-            return Ok(seat);
+            var seats = context.Seat.ToList();
+            return Ok(seats);
         }
 
         [HttpGet("{id}")]
@@ -41,8 +42,8 @@ namespace SeatSave.Api.Controllers
         [HttpPut]
         public IActionResult Update([FromBody] SeatModel seat)
         {
-            if (seat == null) { return BadRequest(); }
-            context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            if (!context.Seat.Any(e => e.Id == seat.Id)) { return BadRequest(); }
+            context.Entry(seat).State = EntityState.Modified;
             context.SaveChanges();
             return Ok(seat);
         }
@@ -51,8 +52,9 @@ namespace SeatSave.Api.Controllers
         public IActionResult Delete(int id)
         {
             var seat = context.Seat.Find(id);
-            if (seat == null) { NotFound(); }
-            context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            if (seat == null) { return NotFound(); }
+
+            context.Entry(seat).State = EntityState.Deleted;
             context.SaveChanges();
             return NoContent();
         }

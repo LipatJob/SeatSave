@@ -10,9 +10,11 @@ export default function SeatInformation({
   onAvailableSeatsUpdated,
   currentID,
 }) {
+  // States
   const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
   const [seatData, seatSeatData] = useState();
 
+  // Manage State and API
   const updateSeatData = async () => {
     if (currentID === 0) {
       seatSeatData({
@@ -30,10 +32,6 @@ export default function SeatInformation({
     const jsonData = await response.json();
     seatSeatData(jsonData);
   };
-
-  useEffect(() => {
-    updateSeatData();
-  }, [currentID]);
 
   const submitData = async (data) => {
     const newSeat = data;
@@ -103,11 +101,17 @@ export default function SeatInformation({
       console.log('there was an error');
     }
   };
+
   const seatInformationSchema = Yup.object().shape({
     name: Yup.string().trim().required('This field is required'),
     type: Yup.string().trim().required('This field is required'),
     description: Yup.string().trim().required('This field is required'),
   });
+
+  // Effects
+  useEffect(() => {
+    updateSeatData();
+  }, [currentID]);
 
   return (
     <Formik

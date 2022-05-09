@@ -6,6 +6,7 @@ import Seat from './Seat';
 import SeatDragOn from './SeatDragOn';
 import Table from './Table';
 import TableDragOn from './TableDragOn';
+import TrashCan from './TrashCan';
 
 export default function SeatMapComponent() {
   const [selectedSeat, setSelectedSeat] = useState(null);
@@ -116,6 +117,7 @@ export default function SeatMapComponent() {
           <Rect x={0} y={470} width={800} height={5} fill={colorIron} />
           <SeatDragOn x={200} y={500} onDragEnd={addNewSeat} />
           <TableDragOn x={300} y={500} onDragEnd={addNewTable} />
+          <TrashCan />
         </Layer>
       </Stage>
       <div className='ml-8'>

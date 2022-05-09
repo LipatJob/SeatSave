@@ -11,8 +11,8 @@
 
     public class SeatModelTypes
     {
-        const string CarrelDeskWithOutlet = "Carrel Desk with Outlet";
-        const string CarrelDesk = "Carrel Desk";
-        public static string[] GetTypes => new[] { CarrelDesk, CarrelDeskWithOutlet };
+        public const string CarrelDeskWithOutlet = "Carrel Desk with Outlet";
+        public const string CarrelDesk = "Carrel Desk";
+        public static string[] Types => new[] { CarrelDesk, CarrelDeskWithOutlet };
     }
 }

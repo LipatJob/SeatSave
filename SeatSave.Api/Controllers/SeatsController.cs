@@ -52,5 +52,11 @@ namespace SeatSave.Api.Controllers
             context.SaveChanges();
             return NoContent();
         }
+
+        [HttpGet("Types")]
+        public IActionResult GetTypes()
+        {
+            return Ok(SeatModelTypes.Types);
+        }
     }
 }

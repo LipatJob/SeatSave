@@ -5,7 +5,7 @@ import SeatInformation from '../../components/librarian/manage-seat/SeatInformat
 import AddedSeatModal from '../../components/librarian/manage-seat/AddedSeatModal';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
 
-export default function ManageSeats() {
+export default function ManageSeats({ seatTypes }) {
   const [formPart, setFormPart] = useState(0);
   const [currId, setCurrentID] = useState(0);
   const [seatData, seatSeatData] = useState();
@@ -86,16 +86,20 @@ export default function ManageSeats() {
               />
             </div>
           )}
-          {formPart === 1 && (
+          {formPart === 1 && currId && (
             <PanelWithHeader
               header='Seat Information'
               body={
                 <SeatInformation
                   seatData={seatData}
-                  setFormPart={setFormPart}
+                  goToPreviousFormPart={() => {
+                    setFormPart(0);
+                    setCurrentID(null);
+                  }}
                   setShowModalAddedSeat={setShowModalAddedSeat}
                   setSeatName={setSeatName}
                   onAvailableSeatsUpdated={updateAvailableSeats}
+                  seatTypes={seatTypes}
                 />
               }
             />
@@ -104,6 +108,14 @@ export default function ManageSeats() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const response = await fetch(`${process.env.API_URL}/Api/Seats/Types`);
+  const seatTypes = await response.json();
+  return {
+    props: { seatTypes },
+  };
 }
 
 ManageSeats.page = 'ManageSeats';

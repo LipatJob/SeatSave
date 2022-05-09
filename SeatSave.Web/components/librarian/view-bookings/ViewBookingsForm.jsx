@@ -8,12 +8,12 @@ export default function ViewBookingsForm({ onSubmit }) {
     >
       <div className='basis-1/4'>
         <label htmlFor='bookingId' className='flex flex-col'>
-          Booking ID
+          Booking Code
           <input
-            id='bookingId'
-            name='bookingId'
+            id='bookingCode'
+            name='bookingCode'
             type='text'
-            placeholder='Enter Booking ID'
+            placeholder='Enter Booking Code'
           />
         </label>
       </div>
@@ -26,7 +26,7 @@ export default function ViewBookingsForm({ onSubmit }) {
             </option>
             <option>Pending</option>
             <option>Checked In</option>
-            <option>Completed</option>
+            <option>Checked Out</option>
             <option>Cancelled</option>
           </select>
         </label>
@@ -43,7 +43,7 @@ export default function ViewBookingsForm({ onSubmit }) {
           <input
             id='visitorEmail'
             name='visitorEmail'
-            type='email'
+            type='text'
             placeholder='Enter Visitor Email'
           />
         </label>

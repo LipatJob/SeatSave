@@ -5,10 +5,11 @@ import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 
 export default function SeatInformation({
   seatData,
-  setFormPart,
+  goToPreviousFormPart,
   setShowModalAddedSeat,
   setSeatName,
   onAvailableSeatsUpdated,
+  seatTypes,
 }) {
   const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
 
@@ -30,7 +31,7 @@ export default function SeatInformation({
       const json = await response.json();
       console.log(json);
       setSeatName(data.name);
-      setFormPart(0);
+      goToPreviousFormPart();
       onAvailableSeatsUpdated();
     } else {
       console.log('there was an error');
@@ -55,7 +56,7 @@ export default function SeatInformation({
       const json = await response.json();
       console.log(json);
       onAvailableSeatsUpdated();
-      setFormPart(0);
+      goToPreviousFormPart();
     }
   };
 
@@ -68,7 +69,7 @@ export default function SeatInformation({
       },
     );
     if (response.status === 204) {
-      setFormPart(0);
+      goToPreviousFormPart();
       setShowModalDeleteSeat(false);
       onAvailableSeatsUpdated();
     }
@@ -149,8 +150,9 @@ export default function SeatInformation({
                   <option value='' disabled hidden>
                     Select Seat Type
                   </option>
-                  <option value='1'>Carrel Desk</option>
-                  <option value='2'>Carrel Desk with Outlet</option>
+                  {seatTypes.map((seat) => (
+                    <option value={seat}>{seat}</option>
+                  ))}
                 </Field>
               </div>
               <div>
@@ -199,7 +201,7 @@ export default function SeatInformation({
                   type='button'
                   className='w-full lg:w-min gray-button'
                   onClick={() => {
-                    setFormPart(0);
+                    goToPreviousFormPart();
                   }}
                 >
                   CANCEL

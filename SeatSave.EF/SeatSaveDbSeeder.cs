@@ -140,14 +140,14 @@ namespace SeatSave.EF
                 new SeatModel
                 {
                     Name = "ABC",
-                    Type = "1",
+                    Type = SeatModelTypes.CarrelDesk,
                     Active = true,
                     Description = "description description",
                 },
                 new SeatModel
                 {
                     Name = "DEF",
-                    Type = "2",
+                    Type = SeatModelTypes.CarrelDeskWithOutlet,
                     Active = false,
                     Description = "description2 description2",
                 }

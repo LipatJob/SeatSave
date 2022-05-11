@@ -26,7 +26,7 @@ namespace SeatSave.EF
         public DbSet<Visitor> Visitors { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<StatusHistory> StatusHistory { get; set; }
-        public DbSet<SeatModel> Seat { get; set; }
+        public DbSet<SeatModel> Seats { get; set; }
         public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
         public DbSet<SpecificDateAvailability> SpecificDayAvailability { get; set; }
         public DbSet<Period> Periods { get; set; }

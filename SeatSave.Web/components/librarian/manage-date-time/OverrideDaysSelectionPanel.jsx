@@ -3,7 +3,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { formatDate } from '../../../lib/DateHelper';
 import CircularButton from '../../common/CircularButton';
 import WarningConfirmationModal from '../../common/WarningConfirmationModal';
-import AddSpecifcDayModal from './AddSpecificDayModal';
+import AddSpecificDayModal from './AddSpecificDayModal';
 import PanelListItem from './PanelListItem';
 
 export default function OverrideDaysSelectionPanel({
@@ -85,8 +85,8 @@ export default function OverrideDaysSelectionPanel({
   const isDayUnique = (date) => !overrideDayItems.includes(date);
 
   return (
-    <div className='relative h-full '>
-      <div className='flex flex-col object-contain gap-2 max-h-[inherit]'>
+    <div className='flex flex-col min-h-full'>
+      <div className='flex flex-col object-contain max-h-full min-h-full gap-2'>
         {overrideDayItems.map((e) => (
           <PanelListItem
             onClick={() => onItemSelected(e)}
@@ -106,7 +106,7 @@ export default function OverrideDaysSelectionPanel({
           </PanelListItem>
         ))}
       </div>
-      <div className='sticky mt-4 bottom-3 right-3'>
+      <div className='sticky mt-auto bottom-3 right-3'>
         <CircularButton onClick={() => setAddDateModalVisible(true)} />
       </div>
       {confirmDeleteModalVisible && (
@@ -119,7 +119,7 @@ export default function OverrideDaysSelectionPanel({
       )}
 
       {addDateModalVisible && (
-        <AddSpecifcDayModal
+        <AddSpecificDayModal
           text='Are you sure you want to delete this day?'
           onAdd={onAddDate}
           onClose={() => setAddDateModalVisible(false)}

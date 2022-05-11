@@ -13,6 +13,8 @@ namespace SeatSave.Api.DTO
         public string? ProgramStrand { get; set; }
         public string? YearGrade { get; set; }
         public string? Office { get; set; }
+        public string? Department { get; set; }
+
 
         public UserDto(int id, string email, string firstName, string lastName, string userType, string password)
         {
@@ -40,6 +42,7 @@ namespace SeatSave.Api.DTO
             Id = Id,
             LastName = LastName,
             Password = Password,
+            Department = Department,
             ProgramStrand = ProgramStrand,
             YearGrade = YearGrade
         };
@@ -63,5 +66,18 @@ namespace SeatSave.Api.DTO
             Password = Password,
             FacultyOffice = Office
         };
+
+
+        public UserModel? ToUserType()
+        {
+            return UserType switch
+            {
+                Staff.UserType => ToStaff(),
+                Librarian.UserType => ToLibrarian(),
+                Student.UserType => ToStudent(),
+                Faculty.UserType => ToFaculty(),
+                _ => null,
+            };
+        }
     }
 }

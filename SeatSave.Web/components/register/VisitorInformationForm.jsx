@@ -51,7 +51,7 @@ export default function VisitorInformationForm({
         onSubmit(values);
       }}
     >
-      {({ errors, touched, values }) => (
+      {({ values }) => (
         <Form>
           <div className='w-full sm:max-w-md'>
             <div className='flex flex-col items-center mb-12 gap-y-7'>

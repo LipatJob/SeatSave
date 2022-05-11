@@ -18,7 +18,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(dbContext.RegularDayOfWeekAvailability.Select(e => e.DayOfWeek));
+            return Ok(dbContext.RegularDayOfWeekAvailability.Select(e => e.DayOfWeek).OrderBy(e => e));
         }
 
         [HttpGet("{dayOfWeek}/Periods")]
@@ -30,7 +30,7 @@ namespace SeatSave.Api.Controllers
             var availability = dbContext.RegularDayOfWeekAvailability.Find(dayOfWeekValue);
             if (availability == null) { return BadRequest("Day of week not found"); }
 
-            return Ok(availability.Periods);
+            return Ok(availability.Periods.OrderBy(e => e.TimeStart));
         }
 
         [HttpPut("{dayOfWeek}/Periods")]

@@ -14,7 +14,7 @@
             "Office of the AVP for Treasury/Treasury Manager",
             "College of Arts and Science (CAS)",
             "College of Computer and Information Science (CCIS)",
-            "E.T. YuchengcCollege of Business (ETYCB)",
+            "E.T. Yuchengco College of Business (ETYCB)",
             "Institute for Excellence in Continuing Education and Lifelong Learning (I-ExCELL)",
             "Mapúa Institute of Technology at Laguna (MITL)",
             "Mapúa-PTC College of Maritime Education and Training (Mapúa-PTC CMET)",
@@ -49,5 +49,22 @@
         }
 
         public string StaffOffice { get; set; }
+    }
+
+
+    public static class StaffExtensions
+    {
+        public static bool IsValid(this Staff staff)
+        {
+            var fields = new[] {
+                staff.FirstName,
+                staff.LastName,
+                staff.Password,
+                staff.StaffOffice,
+            };
+            if (fields.Any(e => e == null || e == "")) { return false; }
+
+            return Staff.StaffOffices.Contains(staff.StaffOffice);
+        }
     }
 }

@@ -20,7 +20,7 @@ export default function DaySelectionPanel({
           }}
         />
       </div>
-      <div className='h-full p-3 pt-5 pr-1 overflow-y-scroll'>
+      <div className='h-full p-3 pt-5 pr-1'>
         {dayType === 'RegularHours' && (
           <RegularHoursSelectionPanel
             onItemSelected={onItemSelected}

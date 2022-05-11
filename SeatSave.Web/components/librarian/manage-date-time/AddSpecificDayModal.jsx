@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import ModalBase from '../../common/ModalBase';
 
-export default function AddSpecifcDayModal({ onAdd, onClose, isDayUnique }) {
+export default function AddSpecificDayModal({ onAdd, onClose, isDayUnique }) {
   return (
     <ModalBase onClose={onClose}>
       <div className=' w-[500px] h-[300px] '>

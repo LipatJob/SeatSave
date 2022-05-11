@@ -1,3 +1,14 @@
+async function getSeats() {
+  const response = await fetch(`${process.env.API_URL}/Api/Seats/`);
+
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  }
+
+  throw Error(response.statusText);
+}
+
 async function addSeat(seat) {
   const response = await fetch(`${process.env.API_URL}/Api/Seats`, {
     method: 'POST',
@@ -44,4 +55,4 @@ async function deleteSeat(id) {
   throw Error(response.statusText);
 }
 
-export default { addSeat, updateSeat, deleteSeat };
+export default { getSeats, addSeat, updateSeat, deleteSeat };

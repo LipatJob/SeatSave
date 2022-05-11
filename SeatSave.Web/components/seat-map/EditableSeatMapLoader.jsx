@@ -5,7 +5,7 @@ export default function EditableSeatMapLoader({
   selectedSeatId,
   setSelectedSeatId,
   onSubmit,
-  initialSeats,
+  onSeatsUpdated,
 }) {
   const EditableSeatMap = dynamic(() => import('./EditableSeatMap'), {
     ssr: false,
@@ -15,7 +15,7 @@ export default function EditableSeatMapLoader({
       selectedSeatId={selectedSeatId}
       setSelectedSeatId={setSelectedSeatId}
       onSubmit={onSubmit}
-      initialSeats={initialSeats}
+      onSeatsUpdated={onSeatsUpdated}
     />
   );
 }

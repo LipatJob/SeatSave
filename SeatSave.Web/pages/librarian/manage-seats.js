@@ -63,7 +63,7 @@ export default function ManageSeats() {
               setFormPart(1);
             }}
             onSubmit={() => {}}
-            initialSeats={seats}
+            onSeatsUpdated={() => updateAvailableSeats()}
           />
         </div>
         <div>

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
 import { areColliding, colorIron } from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
-import SeatSevice from '../../services/SeatService';
 import TableService from '../../services/TableService';
 import Seat from './Seat';
 import SeatDragOn from './SeatDragOn';
@@ -13,10 +12,10 @@ import TrashCan from './TrashCan';
 export default function EditableSeatMap({
   selectedSeatId,
   setSelectedSeatId,
-  initialSeats,
+  onSeatsUpdated,
 }) {
   const [selectedTable, setSelectedTable] = useState();
-  const [seats, setSeats] = useState(initialSeats);
+  const [seats, setSeats] = useState([]);
   const [tables, setTables] = useState([]);
   const [parentDimensions, setParentDimensions] = useState({
     width: 0,
@@ -40,8 +39,9 @@ export default function EditableSeatMap({
   }, [parentDiv]);
 
   const addNewSeat = (x, y) => {
-    SeatSevice.addSeat({
+    SeatService.addSeat({
       name: 'New Seat',
+      type: 'Carrel Desk',
       active: false,
       description: 'Edit Description',
       width: 50,
@@ -51,6 +51,7 @@ export default function EditableSeatMap({
     }).then((seat) => {
       setSeats((oldSeats) => [...oldSeats, seat]);
     });
+    onSeatsUpdated();
   };
 
   const updateSeatPosition = (id, x, y) => {
@@ -69,6 +70,7 @@ export default function EditableSeatMap({
   const deleteSeat = (id) => {
     SeatService.deleteSeat(id).then(() => {
       setSeats((oldSeats) => oldSeats.filter((e) => e.id !== id));
+      onSeatsUpdated();
     });
   };
 
@@ -131,6 +133,7 @@ export default function EditableSeatMap({
   };
 
   useEffect(() => {
+    SeatService.getSeats().then((fetchedSeats) => setSeats(fetchedSeats));
     TableService.getTables().then((fetchedTables) => setTables(fetchedTables));
   }, []);
 
@@ -155,9 +158,8 @@ export default function EditableSeatMap({
               x={seat.positionX}
               y={seat.positionY}
               isCollidingWithTrashCan={isCollidingWithTrashCan}
-              isAvailable={seat.id === selectedSeatId}
-              isActive={seat.active}
               isSelected={seat.id === selectedSeatId}
+              isActive={seat.active}
               onClick={() => setSelectedSeatId(seat.id)}
               onDelete={() => deleteSeat(seat.id)}
               onPositionUpdated={(x, y) => updateSeatPosition(seat.id, x, y)}
@@ -190,8 +192,8 @@ export default function EditableSeatMap({
             height={5}
             fill={colorIron}
           />
-          <SeatDragOn x={200} y={500} onDragEnd={addNewSeat} />
-          <TableDragOn x={300} y={500} onDragEnd={addNewTable} />
+          <SeatDragOn x={50} y={500} onDragEnd={addNewSeat} />
+          <TableDragOn x={150} y={500} onDragEnd={addNewTable} />
           <TrashCan
             x={trashCanTransform.x}
             y={trashCanTransform.y}

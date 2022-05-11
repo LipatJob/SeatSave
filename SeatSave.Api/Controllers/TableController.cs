@@ -26,9 +26,9 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id)
         {
-            var seat = context.Tables.Find(id);
-            if (seat == null) { return NotFound(); }
-            return Ok(seat);
+            var table = context.Tables.Find(id);
+            if (table == null) { return NotFound(); }
+            return Ok(table);
         }
 
         [HttpPost]

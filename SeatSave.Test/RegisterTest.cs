@@ -39,7 +39,7 @@ namespace SeatSave.Test
                 YearGrade = "First Year",
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.True(canRegister);
         }
@@ -57,7 +57,7 @@ namespace SeatSave.Test
                 FacultyOffice = "MCL Senior High School (MCL-SHS)"
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.True(canRegister);
         }
@@ -75,7 +75,7 @@ namespace SeatSave.Test
                 StaffOffice = "Purchasing Office"
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.True(canRegister);
         }
@@ -85,7 +85,7 @@ namespace SeatSave.Test
         {
             var user = new Student();
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -95,7 +95,7 @@ namespace SeatSave.Test
         {
             var user = new Faculty();
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -105,7 +105,7 @@ namespace SeatSave.Test
         {
             var user = new Staff();
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -125,7 +125,7 @@ namespace SeatSave.Test
                 YearGrade = "First Year",
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -145,7 +145,7 @@ namespace SeatSave.Test
                 YearGrade = "First Year",
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -165,7 +165,7 @@ namespace SeatSave.Test
                 YearGrade = "Grade 11",
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -183,7 +183,7 @@ namespace SeatSave.Test
                 FacultyOffice = "Purchasing Office"
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }
@@ -201,7 +201,7 @@ namespace SeatSave.Test
                 StaffOffice = "Invalid Staff Office"
             };
 
-            var canRegister = registrationService.CanUserRegister(user);
+            var canRegister = registrationService.CanUserRegister(user, out var _);
 
             Assert.False(canRegister);
         }

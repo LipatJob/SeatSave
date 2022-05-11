@@ -61,8 +61,8 @@ namespace SeatSave.Api.Controllers
             if (user == null) { return BadRequest("Invalid user type"); }
 
             RegistrationService registrationService = new RegistrationService(dbContext.Users);
-            var canRegister = registrationService.CanUserRegister(user);
-            if (!canRegister) { return BadRequest("Please check your information"); }
+            var canRegister = registrationService.CanUserRegister(user, out var message);
+            if (!canRegister) { return BadRequest(message); }
 
             dbContext.Users.Add(user);
             dbContext.SaveChanges();

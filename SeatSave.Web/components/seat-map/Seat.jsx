@@ -3,7 +3,6 @@ import { Rect } from 'react-konva';
 import {
   colorDarkPastelBlue,
   colorDuskBlue,
-  colorLightBlueGrey,
   colorPastelRed,
   toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';

@@ -7,6 +7,7 @@ const colorRodeoDust = '#CBB09A';
 const colorPearlBrush = '#E8DCD2';
 const colorBluish = '#307FB5';
 const colorDuskBlue = '#225090';
+const colorValentineRed = '#EA555A';
 const colorPastelRed = '#EA555A';
 const colorMediumForestGreed = '#37722B';
 const colorLightBlueGrey = '#B8C9DD';
@@ -22,6 +23,7 @@ export {
   colorDuskBlue,
   colorPastelRed,
   colorMediumForestGreed,
+  colorValentineRed,
   colorLightBlueGrey,
   colorDarkPastelBlue,
 };

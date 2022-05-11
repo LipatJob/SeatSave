@@ -1,10 +1,6 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-
-const Smap = dynamic(() => import('../components/seat-map/SeatMap'), {
-  ssr: false,
-});
+import EditableSeatMapLoader from '../components/seat-map/EditableSeatMapLoader';
 
 export default function SeatMap() {
-  return <Smap />;
+  return <EditableSeatMapLoader />;
 }

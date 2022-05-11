@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeatSave.Core.Schedule;
-
 using SeatSave.Core.Booking;
+using SeatSave.Core.Schedule;
 using SeatSave.Core.Seat;
 using SeatSave.Core.User;
 
@@ -30,7 +29,7 @@ namespace SeatSave.EF
         public DbSet<RegularDayOfWeekAvailability> RegularDayOfWeekAvailability { get; set; }
         public DbSet<SpecificDateAvailability> SpecificDayAvailability { get; set; }
         public DbSet<Period> Periods { get; set; }
-
+        public DbSet<Table> Tables { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

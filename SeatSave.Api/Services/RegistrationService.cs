@@ -13,24 +13,36 @@ namespace SeatSave.Api.Services
 
 
 
-        public bool CanUserRegister(UserModel userModel)
+        public bool CanUserRegister(UserModel userModel, out string? message)
         {
+            message = "";
             bool isUserTypeInformationValid = userModel.UserType switch
             {
-                Student.UserType => ((Student)userModel).IsValid(),
+                Student.UserType => ((Student)userModel).IsValid(out message),
                 Faculty.UserType => ((Faculty)userModel).IsValid(),
                 Staff.UserType => ((Staff)userModel).IsValid(),
                 _ => false,
             };
-            if (!isUserTypeInformationValid) { return false; }
+            if (!isUserTypeInformationValid)
+            {
+                return false;
+            }
 
             var isEmailValid = IsEmailValid(userModel.Email);
-            if (!isEmailValid) { return false; }
+            if (!isEmailValid)
+            {
+                message = "There is something wrong with the email";
+                return false;
+            }
 
             var isPasswordValid = ValidatePassword(userModel.Password);
-            if (!isPasswordValid) { return false; }
+            if (!isPasswordValid)
+            {
+                message = "There is something wrong with the password";
+                return false;
+            }
 
-
+            message = null;
             return true;
         }
 
@@ -44,13 +56,12 @@ namespace SeatSave.Api.Services
 
         public bool DoesEmailExist(string email)
         {
-            var user = users.FirstOrDefault(e => e.Email == email);
-            return user != null;
+            return users.Any(e => e.Email == email);
         }
 
         private bool ValidatePassword(string password)
         {
-            return password.Length > 5;
+            return password.Length >= 5;
         }
     }
 }

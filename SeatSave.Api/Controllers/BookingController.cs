@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SeatSave.EF;
 using SeatSave.Api.DTO;
-using System.Security.Claims;
 using SeatSave.Api.Services;
 using SeatSave.Core.Booking;
-using SeatSave.Core.User;
 using SeatSave.Core.Schedule;
+using SeatSave.Core.User;
+using SeatSave.EF;
+using System.Security.Claims;
 
 namespace SeatSave.Api.Controllers
 {
@@ -14,10 +14,15 @@ namespace SeatSave.Api.Controllers
     public class BookingController : ControllerBase
     {
         private SeatSaveContext dbContext;
+        private BookingService bookingService;
 
         public BookingController(SeatSaveContext dbContext)
         {
             this.dbContext = dbContext;
+
+            var currentDate = DateOnly.FromDateTime(DateTime.Now);
+            var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
+            bookingService = new BookingService(currentDate, schedule, dbContext.Bookings, dbContext.Seats);
         }
 
         [HttpGet]
@@ -62,32 +67,42 @@ namespace SeatSave.Api.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] BookingDTO bookingDTO)
         {
+            Visitor visitor;
+            if (!TryGetCurrentVisitor(out visitor)) { return BadRequest(); }
+
+            var bookingDate = DateOnly.Parse(bookingDTO.isoDate);
+            var period = dbContext.Periods.Find(bookingDTO.periodId);
+            var seat = dbContext.Seats.Find(bookingDTO.seatId);
+
+            if (!bookingService.IsValidBooking(bookingDate, period, seat, visitor)) { return BadRequest(); }
+            var booking = bookingService.book(bookingDate, period, seat, visitor);
+
+            dbContext.Bookings.Add(booking);
+            dbContext.SaveChanges();
+
+            return Ok(booking);
+        }
+
+
+        private bool TryGetCurrentVisitor(out Visitor visitor)
+        {
+            visitor = null;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity == null)
             {
-                return BadRequest();
+                return false;
             }
 
             var userClaims = identity.Claims;
             var user = AuthService.CreateUserModelFromClaims(userClaims);
-            var visitor = dbContext.Visitors.Find(user.Id);
-
+            visitor = dbContext.Visitors.Find(user.Id);
             if (visitor == null)
             {
-                return BadRequest();
+                return false;
             }
 
-            var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
-            var period = dbContext.Periods.Find(bookingDTO.periodId);
-            var seat = dbContext.Seat.Find(bookingDTO.seatId);
-            var policy = new BookablePolicy(schedule, dbContext.Bookings, DateOnly.FromDateTime(DateTime.Now));
-
-            var booking = visitor.Book(DateTime.Now, DateOnly.Parse(bookingDTO.isoDate), period, seat, policy);
-            dbContext.Bookings.Add(booking); // BUG: booking is not adding in Book() method
-            dbContext.SaveChanges();
-            return Ok(booking);
+            return true;
         }
-
 
         [HttpPatch("{id}")]
         public IActionResult PatchStatus([FromRoute] int id, [FromBody] string status)
@@ -146,7 +161,7 @@ namespace SeatSave.Api.Controllers
         [HttpDelete]
         public IActionResult Delete() { return Ok("To be implemented"); }
         [HttpGet("Search")]
-        public IActionResult SearchBookings([FromQuery] int? id = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null, [FromQuery] string? code = null)
+        public IActionResult SearchBookings([FromQuery] string? code = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
         {
             DateOnly bookingDate = new DateOnly(1, 1, 1);
             if (date != null)
@@ -154,11 +169,10 @@ namespace SeatSave.Api.Controllers
 
             var results = dbContext.Bookings
                             .Where(b =>
-                                (id == null || b.Id == id) &&
+                                (code == null || b.BookingCode.Contains(code)) &&
                                 (status == null || b.Status == status) &&
                                 (date == null || b.BookingDate == bookingDate) &&
-                                (email == null || b.VisitorModel.Email.ToLower() == email.ToLower()) &&
-                                (code == null || b.BookingCode == code)
+                                (email == null || b.VisitorModel.Email.ToLower().Contains(email.ToLower()))
                                 )
                             .OrderByDescending(b => b.Id);
 
@@ -172,7 +186,12 @@ namespace SeatSave.Api.Controllers
             var currentDate = DateOnly.FromDateTime(currentDateTime);
             var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
 
-            return Ok(dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime));
+            var pendingBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.PendingStatus);
+            var checkedInBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.CheckedInStatus);
+            var checkedOutBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.CheckedOutStatus);
+            var cancelledBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.CancelledStatus);
+
+            return Ok(pendingBookings.Concat(checkedInBookings).Concat(checkedOutBookings).Concat(cancelledBookings));
         }
 
     }

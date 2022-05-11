@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SeatSave.EF;
+using Microsoft.EntityFrameworkCore;
 using SeatSave.Core.Seat;
+using SeatSave.EF;
 
 namespace SeatSave.Api.Controllers
 {
@@ -18,28 +19,31 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var seat = context.Seat.ToList();
-            return Ok(seat);
+            var seats = context.Seats.ToList();
+            return Ok(seats);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id)
         {
-            var seat = context.Seat.Find(id);
+            var seat = context.Seats.Find(id);
+            if (seat == null) { return NotFound(); }
             return Ok(seat);
         }
 
         [HttpPost]
         public IActionResult Add([FromBody] SeatModel seat)
         {
-            context.Seat.Add(seat);
+            if (seat == null) { return BadRequest(); }
+            context.Seats.Add(seat);
             context.SaveChanges();
             return Ok(seat);
         }
         [HttpPut]
         public IActionResult Update([FromBody] SeatModel seat)
         {
-            context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            if (!context.Seats.Any(e => e.Id == seat.Id)) { return BadRequest(); }
+            context.Entry(seat).State = EntityState.Modified;
             context.SaveChanges();
             return Ok(seat);
         }
@@ -47,8 +51,10 @@ namespace SeatSave.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var seat = context.Seat.Find(id);
-            context.Entry(seat).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            var seat = context.Seats.Find(id);
+            if (seat == null) { return NotFound(); }
+
+            context.Entry(seat).State = EntityState.Deleted;
             context.SaveChanges();
             return NoContent();
         }

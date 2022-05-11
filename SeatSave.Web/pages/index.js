@@ -1,8 +1,8 @@
 import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
-import CheckedIn from '../components/home/CheckedIn';
-import NoBooking from '../components/home/NoBooking';
-import PendingBooking from '../components/home/PendingBooking';
+import CheckedIn from '../components/visitor/home/CheckedIn';
+import NoBooking from '../components/visitor/home/NoBooking';
+import PendingBooking from '../components/visitor/home/PendingBooking';
 import visitorAuthService from '../lib/visitorAuthService';
 
 export default function ViewBookingDetails() {

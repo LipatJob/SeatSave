@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import visitorAuthService from '../lib/visitorAuthService';
 import Router from 'next/router';
-import { useEffect } from 'react';
-import { formatDate, formatTime } from '../lib/DateHelper';
+import visitorAuthService from '../lib/visitorAuthService';
+import BookingDate from '../components/visitor/book-a-seat/BookingDate';
+import BookingTime from '../components/visitor/book-a-seat/BookingTime';
+import BookingSeat from '../components/visitor/book-a-seat/BookingSeat';
+import BookingSeatModal from '../components/visitor/book-a-seat/BookingSeatModal';
 
 export default function BookASeat({ availableDays }) {
   useEffect(() => {
@@ -39,7 +41,7 @@ export default function BookASeat({ availableDays }) {
     );
 
     if (response.status === 200) {
-      const json = await response.json(); // change to response.json() later
+      const json = await response.json();
       setDateSelected(selectedDate);
       setAvailablePeriods(json);
       setAvailableSeats(null);
@@ -130,142 +132,73 @@ export default function BookASeat({ availableDays }) {
   // ------------------ MAIN BODY ------------------
 
   return (
-    <div className='flex items-center justify-center min-h-screen min-w-screen'>
-      <div className='w-3/4 min-h-screen m-20 rounded-md'>
-        <h1 className='pt-10 font-bold text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
-          Book a Seat
-        </h1>
-        <h4 className='pt-5 pb-10 text-center lg:text-center md:text-center xl:text-left xl:pl-48'>
-          Center for Learning and Information Resources - Einstein Bldg.
-        </h4>
+    <div className='page-container-small'>
+      <h1 className='mb-4 font-bold'>Book a Seat</h1>
+      <h4>Center for Learning and Information Resources - Einstein Bldg.</h4>
 
-        <div className='flex justify-center'>
-          <h5 className='pt-20 font-bold'>Select your date</h5>
-        </div>
-
-        <div className='flex justify-center'>
-          <div className='flex w-3/4 py-6 overflow-x-auto flex-nowrap'>
-            {day.map((availableDay) => (
-              <button
-                key={availableDay}
-                className='w-56 mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust'
-                onClick={() => getSelectedDate(availableDay)}
-              >
-                <h5 className='px-16 py-4'>{formatDate(availableDay)}</h5>
-              </button>
-            ))}
+      <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
+        <div className=' sm:col-span-1'>
+          <h5 className='mb-4 font-bold'>Select your date</h5>
+          <div className='h-[300px] pt-20 '>
+            <BookingDate day={day} getSelectedDate={getSelectedDate} />
+          </div>
+          <h5 className='font-bold'>Select your time</h5>
+          <div className='h-[150px] pt-8'>
+            {availablePeriods && (
+              <BookingTime
+                availablePeriods={availablePeriods}
+                getSelectedPeriod={getSelectedPeriod}
+              />
+            )}
           </div>
         </div>
+        <div className='sm:col-span-2'>
+          <h5 className='pb-4 font-bold'>Pick your seat</h5>
 
-        {availablePeriods && (
-          <div id='periodElement'>
-            <div className='flex justify-center'>
-              <h5 className='pt-20 font-bold'>Select your time</h5>
-            </div>
-
-            <div className='flex justify-center'>
-              <div className='flex w-3/4 py-6 overflow-x-auto flex-nowrap'>
-                {availablePeriods?.map((aPeriods) => (
-                  <button
-                    key={aPeriods.id}
-                    className='mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust w-30'
-                    onClick={() => getSelectedPeriod(aPeriods.id)}
-                  >
-                    <h5 className='px-12 py-4'>
-                      {formatTime(aPeriods.timeStart)}
-                      <br />
-                      {formatTime(aPeriods.timeEnd)}
-                    </h5>
-                  </button>
-                ))}
+          <div className=' border-8 rounded-3xl border-pearl-bush w-full h-[370px] text-center text-red-500'>
+            SEAT MAP
+            {availableSeats && (
+              <BookingSeat
+                availableSeats={availableSeats}
+                viewSeatDetails={viewSeatDetails}
+              />
+            )}
+          </div>
+          <div className='hidden w-full mt-4 sm:block'>
+            <div className='grid grid-cols-3 gap-4 text-center'>
+              <div>
+                <div className='inline-block w-6 h-6  bg-[#37722B]' />
+                <div className='inline-block pl-2'> Available</div>
+              </div>
+              <div>
+                <div className='inline-block w-6 h-6 bg-[#CD201F]' />
+                <div className='inline-block pl-2'> Occupied</div>
+              </div>
+              <div>
+                <div className='inline-block w-6 h-6 bg-dawn' />
+                <div className='inline-block pl-2'> Seat Unavailable</div>
               </div>
             </div>
           </div>
-        )}
-
-        {availableSeats && (
-          <div>
-            <div className='flex justify-center'>
-              <h5 className='pt-20 font-bold'>Pick your seat</h5>
-            </div>
-
-            <div className='flex justify-center'>
-              <div className='w-3/4 py-6 m-6 overflow-x-auto rounded-lg bg-pearl-bush sm:w-3/6 h-96'>
-                <div className='grid grid-cols-1 sm:grid-cols-2'>
-                  {availableSeats.map(
-                    (aSeat) =>
-                      aSeat.active == true && (
-                        <button
-                          key={aSeat.id}
-                          className='m-5 rounded-md bg-bluish hover:bg-dusk-blue'
-                          onClick={() => viewSeatDetails(aSeat)}
-                        >
-                          <h5 className='px-3 pt-3 text-white'>{aSeat.name}</h5>
-                          <h5 className='pb-3 text-white'>{aSeat.id}</h5>
-                        </button>
-                      ),
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <br />
-        <br />
-
-        {seatSelected && (
-          <div>
-            <div className='flex justify-center'>
-              <button
-                onClick={submitBooking}
-                type='button'
-                className='rounded-lg button'
-              >
-                <h5 className='font-bold text-white'>Book your seat!</h5>
-              </button>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
-      {modal && (
-        <div className='modal'>
-          <div className='overlay'>
-            <div className='modal-content'>
-              <h2 className='m-6 text-center'>Seat Details</h2>
-              <p className='mx-6 mb-6'>
-                name: {seatCurrent.name}
-                <br />
-                id: {seatCurrent.id}
-              </p>
-
-              <div className='flex justify-center inline'>
-                <div>
-                  <button
-                    type='button'
-                    className='mb-6 rounded-lg button'
-                    onClick={() => {
-                      getSelectedSeat(seatCurrent.id);
-                      toggleModal();
-                    }}
-                  >
-                    <h6 className='font-medium text-white'>Select</h6>
-                  </button>
-                </div>
-
-                <div>
-                  <button
-                    type='button'
-                    onClick={toggleModal}
-                    className='px-4 ml-10 rounded-lg red-button'
-                  >
-                    <h6 className='font-medium text-white'>X</h6>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+      {seatSelected && (
+        <div className='mt-4 mb-8'>
+          <button
+            onClick={submitBooking}
+            className='w-full sm:max-w-[304px] button float-right'
+            type='button'
+          >
+            BOOK SEAT
+          </button>
         </div>
+      )}
+      {modal && (
+        <BookingSeatModal
+          seatCurrent={seatCurrent}
+          getSelectedSeat={getSelectedSeat}
+          toggleModal={toggleModal}
+        />
       )}
     </div>
   );

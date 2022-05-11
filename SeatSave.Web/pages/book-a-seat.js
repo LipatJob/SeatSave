@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Router from 'next/router';
 import visitorAuthService from '../lib/visitorAuthService';
-
-import BookingHeader from '../components/visitor/book-a-seat/BookingHeader';
 import BookingDate from '../components/visitor/book-a-seat/BookingDate';
 import BookingTime from '../components/visitor/book-a-seat/BookingTime';
 import BookingSeat from '../components/visitor/book-a-seat/BookingSeat';
@@ -134,44 +132,67 @@ export default function BookASeat({ availableDays }) {
   // ------------------ MAIN BODY ------------------
 
   return (
-    <div className='flex items-center justify-center min-h-screen min-w-screen'>
-      <div className='w-3/4 min-h-screen m-20 rounded-md'>
-        <BookingHeader />
+    <div className='page-container-small'>
+      <h1 className='mb-4 font-bold'>Book a Seat</h1>
+      <h4>Center for Learning and Information Resources - Einstein Bldg.</h4>
 
-        <BookingDate day={day} getSelectedDate={getSelectedDate} />
+      <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
+        <div className=' sm:col-span-1'>
+          <h5 className='mb-4 font-bold'>Select your date</h5>
+          <div className='h-[300px] pt-20 '>
+            <BookingDate day={day} getSelectedDate={getSelectedDate} />
+          </div>
+          <h5 className='font-bold'>Select your time</h5>
+          <div className='h-[150px] pt-8'>
+            {availablePeriods && (
+              <BookingTime
+                availablePeriods={availablePeriods}
+                getSelectedPeriod={getSelectedPeriod}
+              />
+            )}
+          </div>
+        </div>
+        <div className='sm:col-span-2'>
+          <h5 className='pb-4 font-bold'>Pick your seat</h5>
 
-        {availablePeriods && (
-          <BookingTime
-            availablePeriods={availablePeriods}
-            getSelectedPeriod={getSelectedPeriod}
-          />
-        )}
-
-        {availableSeats && (
-          <BookingSeat
-            availableSeats={availableSeats}
-            viewSeatDetails={viewSeatDetails}
-          />
-        )}
-
-        <br />
-        <br />
-
-        {seatSelected && (
-          <div>
-            <div className='flex justify-center'>
-              <button
-                onClick={submitBooking}
-                type='button'
-                className='rounded-lg button'
-              >
-                <h5 className='font-bold text-white'>Book your seat!</h5>
-              </button>
+          <div className=' border-8 rounded-3xl border-pearl-bush w-full h-[370px] text-center text-red-500'>
+            SEAT MAP
+            {availableSeats && (
+              <BookingSeat
+                availableSeats={availableSeats}
+                viewSeatDetails={viewSeatDetails}
+              />
+            )}
+          </div>
+          <div className='hidden w-full mt-4 sm:block'>
+            <div className='grid grid-cols-3 gap-4 text-center'>
+              <div>
+                <div className='inline-block w-6 h-6  bg-[#37722B]' />
+                <div className='inline-block pl-2'> Available</div>
+              </div>
+              <div>
+                <div className='inline-block w-6 h-6 bg-[#CD201F]' />
+                <div className='inline-block pl-2'> Occupied</div>
+              </div>
+              <div>
+                <div className='inline-block w-6 h-6 bg-dawn' />
+                <div className='inline-block pl-2'> Seat Unavailable</div>
+              </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
-
+      {seatSelected && (
+        <div className='mt-4 mb-8'>
+          <button
+            onClick={submitBooking}
+            className='w-full sm:max-w-[304px] button float-right'
+            type='button'
+          >
+            BOOK SEAT
+          </button>
+        </div>
+      )}
       {modal && (
         <BookingSeatModal
           seatCurrent={seatCurrent}

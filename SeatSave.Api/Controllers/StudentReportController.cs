@@ -7,9 +7,9 @@ namespace SeatSave.Api.Controllers
     public class StudentReportController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAll(DateOnly dateStart, DateOnly dateEnd) { return Ok("Sample output"); }
+        public IActionResult GetAll([FromQuery] DateOnly dateStart, [FromQuery] DateOnly dateEnd) { return Ok("Sample output"); }
 
         [HttpGet("Excel")]
-        public IActionResult GetExcel(DateOnly dateStart, DateOnly dateEnd) { return Ok("To be implemented"); }
+        public IActionResult GetExcel([FromQuery] DateOnly dateStart, [FromQuery] DateOnly dateEnd) { return Ok("To be implemented"); }
     }
 }

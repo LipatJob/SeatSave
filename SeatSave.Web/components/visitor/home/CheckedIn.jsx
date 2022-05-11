@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 import BookingDetails from './BookingDetails';
 import OkModal from '../../common/OkModal';
 import { formatTime } from '../../../lib/DateHelper';
@@ -31,7 +30,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
   };
 
   return (
-    <div>
+    <div className='page-container-small'>
       {checkoutMessageVisible && (
         <OkModal
           onOk={onCheckoutMessageSeen}
@@ -47,33 +46,27 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
           }
         />
       )}
-
-      <div className='grid grid-cols-1 sm:grid-cols-2 page-container-small'>
-        <div className='flex flex-col gap-8'>
-          <h1 className='mb-0 leading-tight sm:mb-4 text-dusk-blue'>
-            Your booking is until {formatTime(bookingDetails.period.timeEnd)}
-          </h1>
+      <h2 className='mb-8 font-bold text-dusk-blue'>
+        Your booking is until {formatTime(bookingDetails.period.timeEnd)}
+      </h2>
+      <div className='grid grid-cols-1 sm:grid-cols-3 sm:gap-8'>
+        <div className='sm:col-span-1'>
           <BookingDetails details={bookingDetails} />
-          <div className='flex flex-col max-w-xs gap-4 mt-6 sm:items-center'>
-            <h4 className='text-center'>Are you leaving CLIR?</h4>
-            <button
-              className='w-full button'
-              type='button'
-              onClick={onCheckOutClicked}
-            >
-              CHECK OUT
-            </button>
-          </div>
         </div>
-        <div className='hidden mt-20 sm:block sm:relative'>
-          <Image
-            src='/CheckedInDecoration.svg'
-            className='relative w-full h-auto'
-            layout='responsive'
-            objectFit='contain'
-            width={800}
-            height={800}
-          />
+        <div className='sm:col-span-2'>
+          <div className='w-full h-[320px] mt-4 bg-red-600'> SeatMap </div>
+        </div>
+      </div>
+      <div className='grid grid-cols-1 mt-4 mb-8 sm:grid-cols-3'>
+        <div className='col-span-1'>
+          <h4 className='mb-4 text-left'>Are you leaving CLIR?</h4>
+          <button
+            className='w-full button'
+            type='button'
+            onClick={onCheckOutClicked}
+          >
+            CHECK OUT
+          </button>
         </div>
       </div>
     </div>

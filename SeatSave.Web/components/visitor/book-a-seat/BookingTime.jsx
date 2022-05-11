@@ -3,28 +3,24 @@ import { formatTime } from '../../../lib/DateHelper';
 
 export default function BookingTime({ availablePeriods, getSelectedPeriod }) {
   return (
-    <div id='periodElement'>
-      <div className='flex justify-center'>
-        <h5 className='pt-20 font-bold'>Select your time</h5>
-      </div>
-
-      <div className='flex justify-center'>
-        <div className='flex justify-center w-3/4 py-6 overflow-x-auto flex-nowrap'>
-          {availablePeriods?.map((aPeriods) => (
+    <div className=' h-[120px] overflow-x-scroll flex '>
+      <div className='flex flex-nowrap '>
+        {availablePeriods.map((aPeriods) => (
+          <div className='inline-block px-4'>
             <button
-              key={aPeriods.id}
               type='button'
-              className='flex mx-5 rounded-md bg-pearl-bush hover:bg-rodeo-dust w-30'
+              key={aPeriods.id}
+              className=' w-[150px] h-full rounded-md bg-pearl-bush hover:bg-rodeo-dust '
               onClick={() => getSelectedPeriod(aPeriods.id)}
             >
-              <h5 className='px-12 py-4'>
+              <h5 className='px-8 text-center'>
                 {formatTime(aPeriods.timeStart)}
                 <br />
                 {formatTime(aPeriods.timeEnd)}
               </h5>
             </button>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

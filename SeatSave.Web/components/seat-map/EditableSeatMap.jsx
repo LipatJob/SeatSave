@@ -31,6 +31,8 @@ export default function EditableSeatMap({
     height: 50,
   };
 
+  const maxPosY = 400;
+
   useEffect(() => {
     setParentDimensions({
       width: parentDiv.current.clientWidth,
@@ -39,6 +41,10 @@ export default function EditableSeatMap({
   }, [parentDiv]);
 
   const addNewSeat = (x, y) => {
+    if (y > maxPosY) {
+      return;
+    }
+
     SeatService.addSeat({
       name: 'New Seat',
       type: 'Carrel Desk',
@@ -47,7 +53,7 @@ export default function EditableSeatMap({
       width: 50,
       height: 50,
       positionX: x,
-      positionY: y,
+      positionY: Math.floor(y),
     }).then((seat) => {
       setSeats((oldSeats) => [...oldSeats, seat]);
     });
@@ -55,10 +61,14 @@ export default function EditableSeatMap({
   };
 
   const updateSeatPosition = (id, x, y) => {
+    if (y > maxPosY) {
+      return;
+    }
+
     const seatToUpdate = {
       ...seats.find((e) => e.id === id),
       positionX: x,
-      positionY: y,
+      positionY: Math.floor(y),
     };
     SeatService.updateSeat(id, seatToUpdate).then((updatedSeat) => {
       setSeats((oldSeats) =>
@@ -75,6 +85,10 @@ export default function EditableSeatMap({
   };
 
   const addNewTable = (x, y) => {
+    if (y > maxPosY) {
+      return;
+    }
+
     TableService.addTable({
       width: 50,
       height: 50,
@@ -86,10 +100,15 @@ export default function EditableSeatMap({
   };
 
   const updateTablePosition = (id, x, y) => {
+    if (y > maxPosY) {
+      return;
+    }
+
     const tableToUpdate = {
       ...tables.find((e) => e.id === id),
       positionX: Math.floor(x),
       positionY: Math.floor(y),
+      minPosY: maxPosY,
     };
     TableService.updateTable(id, tableToUpdate).then((updatedTable) => {
       setTables((oldTables) =>
@@ -141,7 +160,7 @@ export default function EditableSeatMap({
     <div className='w-full' ref={parentDiv}>
       <Stage
         width={parentDimensions && parentDimensions.width}
-        height={800}
+        height={600}
         ref={stage}
         onClick={(e) => {
           if (e.target === stage.current) {
@@ -187,7 +206,7 @@ export default function EditableSeatMap({
           ))}
           <Rect
             x={0}
-            y={470}
+            y={maxPosY + 70}
             width={parentDimensions.width}
             height={5}
             fill={colorIron}
@@ -201,15 +220,6 @@ export default function EditableSeatMap({
           />
         </Layer>
       </Stage>
-      <div className='ml-8'>
-        <p>Seats</p>
-        <p>{JSON.stringify(seats)} </p>
-        <p>Selected: {selectedSeatId}</p>
-        <br />
-        <p>Tables</p>
-        <p>{JSON.stringify(tables)} </p>
-        <p>Selected: {selectedTable}</p>
-      </div>
     </div>
   );
 }

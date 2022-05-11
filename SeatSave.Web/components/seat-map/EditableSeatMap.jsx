@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
-import { colorIron } from '../../lib/seatMapHelper';
+import { areColliding, colorIron } from '../../lib/seatMapHelper';
 import ClientOnly from '../common/ClientOnly';
 import Seat from './Seat';
 import SeatDragOn from './SeatDragOn';
@@ -14,6 +14,13 @@ export default function EditableSeatMap() {
   const [seats, setSeats] = useState({});
   const [tables, setTables] = useState({});
   const stage = useRef();
+  const trashCan = useRef();
+  const trashCanTransform = {
+    x: 600,
+    y: 500,
+    width: 50,
+    height: 50,
+  };
 
   const updateTablePosition = (index, x, y) => {
     setTables({
@@ -64,6 +71,18 @@ export default function EditableSeatMap() {
     }));
   };
 
+  const isCollidingWithTrashCan = (e) => {
+    const result = areColliding(e.target.getClientRect(), trashCanTransform);
+    console.log(`Result: ${result}`);
+    return result;
+  };
+
+  const deleteSeat = (key) => {
+    const { [key]: keyToRemove, ...newSeats } = seats;
+    console.log(`DELETED ${key}`);
+    setSeats(newSeats);
+  };
+
   return (
     <ClientOnly>
       <Stage
@@ -92,6 +111,8 @@ export default function EditableSeatMap() {
               isActive={seat.active}
               isSelected={key === selectedSeat}
               onClick={() => setSelectedSeat(key)}
+              isCollidingWithTrashCan={isCollidingWithTrashCan}
+              onDelete={() => deleteSeat(key)}
             />
           ))}
 
@@ -115,7 +136,7 @@ export default function EditableSeatMap() {
           <Rect x={0} y={470} width={800} height={5} fill={colorIron} />
           <SeatDragOn x={200} y={500} onDragEnd={addNewSeat} />
           <TableDragOn x={300} y={500} onDragEnd={addNewTable} />
-          <TrashCan />
+          <TrashCan x={600} y={500} ref={trashCan} />
         </Layer>
       </Stage>
       <div className='ml-8'>

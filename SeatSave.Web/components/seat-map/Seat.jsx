@@ -12,8 +12,10 @@ export default function Seat({
   y,
   isSelected,
   isActive,
+  isCollidingWithTrashCan,
   onPositionUpdated,
   onClick,
+  onDelete,
 }) {
   return (
     <Rect
@@ -29,6 +31,12 @@ export default function Seat({
           x: newX,
           y: newY,
         });
+
+        if (isCollidingWithTrashCan(e)) {
+          onDelete();
+          return;
+        }
+
         onPositionUpdated(newX, newY);
       }}
       fill={isActive ? colorDarkPastelBlue : colorPastelRed}

@@ -1,74 +1,127 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
 import { areColliding, colorIron } from '../../lib/seatMapHelper';
-import ClientOnly from '../common/ClientOnly';
+import SeatService from '../../services/SeatService';
+import SeatSevice from '../../services/SeatService';
+import TableService from '../../services/TableService';
 import Seat from './Seat';
 import SeatDragOn from './SeatDragOn';
 import Table from './Table';
 import TableDragOn from './TableDragOn';
 import TrashCan from './TrashCan';
 
-export default function EditableSeatMap() {
-  const [selectedSeat, setSelectedSeat] = useState(null);
+export default function EditableSeatMap({
+  selectedSeatId,
+  setSelectedSeatId,
+  initialSeats,
+}) {
   const [selectedTable, setSelectedTable] = useState();
-  const [seats, setSeats] = useState({});
-  const [tables, setTables] = useState({});
+  const [seats, setSeats] = useState(initialSeats);
+  const [tables, setTables] = useState([]);
+  const [parentDimensions, setParentDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+  const parentDiv = useRef(null);
   const stage = useRef();
   const trashCan = useRef();
   const trashCanTransform = {
-    x: 600,
+    x: parentDimensions.width - 100,
     y: 500,
     width: 50,
     height: 50,
   };
 
-  const updateTablePosition = (index, x, y) => {
-    setTables({
-      ...tables,
-      [index]: { ...tables[index], x, y },
+  useEffect(() => {
+    setParentDimensions({
+      width: parentDiv.current.clientWidth,
+      height: parentDiv.current.clientHeight,
     });
-  };
-
-  const updateTableDimensions = (index, x, y, width, height) => {
-    console.log(width);
-    console.log(height);
-
-    setTables({
-      ...tables,
-      [index]: { ...tables[index], x, y, width, height },
-    });
-  };
-
-  const updateSeatPosition = (index, x, y) => {
-    setSeats({
-      ...seats,
-      [index]: { ...seats[index], x, y },
-    });
-  };
+  }, [parentDiv]);
 
   const addNewSeat = (x, y) => {
-    setSeats((oldSeats) => ({
-      ...oldSeats,
-      [Math.floor(Math.random() * 10000)]: {
-        x,
-        y,
-        width: 50,
-        height: 50,
-        active: true,
-      },
-    }));
+    SeatSevice.addSeat({
+      name: 'New Seat',
+      active: false,
+      description: 'Edit Description',
+      width: 50,
+      height: 50,
+      positionX: x,
+      positionY: y,
+    }).then((seat) => {
+      setSeats((oldSeats) => [...oldSeats, seat]);
+    });
+  };
+
+  const updateSeatPosition = (id, x, y) => {
+    const seatToUpdate = {
+      ...seats.find((e) => e.id === id),
+      positionX: x,
+      positionY: y,
+    };
+    SeatService.updateSeat(id, seatToUpdate).then((updatedSeat) => {
+      setSeats((oldSeats) =>
+        oldSeats.map((oldSeat) => (oldSeat.id === id ? updatedSeat : oldSeat)),
+      );
+    });
+  };
+
+  const deleteSeat = (id) => {
+    SeatService.deleteSeat(id).then(() => {
+      setSeats((oldSeats) => oldSeats.filter((e) => e.id !== id));
+    });
   };
 
   const addNewTable = (x, y) => {
-    setTables((oldTables) => ({
-      ...oldTables,
-      [Math.floor(Math.random() * 10000)]: {
-        x,
-        y,
-        width: 50,
-        height: 50,
-      },
-    }));
+    TableService.addTable({
+      width: 50,
+      height: 50,
+      positionX: Math.floor(x),
+      positionY: Math.floor(y),
+    }).then((table) => {
+      setTables((oldTables) => [...oldTables, table]);
+    });
+  };
+
+  const updateTablePosition = (id, x, y) => {
+    const tableToUpdate = {
+      ...tables.find((e) => e.id === id),
+      positionX: Math.floor(x),
+      positionY: Math.floor(y),
+    };
+    TableService.updateTable(id, tableToUpdate).then((updatedTable) => {
+      setTables((oldTables) =>
+        oldTables.map((oldTable) =>
+          oldTable.id === id ? updatedTable : oldTable,
+        ),
+      );
+    });
+  };
+
+  const updateTableDimensions = (id, x, y, width, height) => {
+    const tableToUpdate = {
+      ...tables.find((e) => e.id === id),
+      positionX: Math.floor(x),
+      positionY: Math.floor(y),
+      width: Math.floor(width),
+      height: Math.floor(height),
+    };
+    console.log(tableToUpdate);
+    TableService.updateTable(id, tableToUpdate)
+      .then((updatedTable) => {
+        setTables((oldTables) =>
+          oldTables.map((oldTable) =>
+            oldTable.id === id ? updatedTable : oldTable,
+          ),
+        );
+      })
+      .catch((e) => console.log(e.message));
+  };
+
+  const deleteTable = (id) => {
+    TableService.deleteTable(id).then(() => {
+      setTables((oldTables) => oldTables.filter((e) => e.id !== id));
+    });
   };
 
   const isCollidingWithTrashCan = (e) => {
@@ -77,77 +130,84 @@ export default function EditableSeatMap() {
     return result;
   };
 
-  const deleteSeat = (key) => {
-    const { [key]: keyToRemove, ...newSeats } = seats;
-    console.log(`DELETED ${key}`);
-    setSeats(newSeats);
-  };
+  useEffect(() => {
+    TableService.getTables().then((fetchedTables) => setTables(fetchedTables));
+  }, []);
 
   return (
-    <ClientOnly>
+    <div className='w-full' ref={parentDiv}>
       <Stage
-        width={700}
-        height={600}
+        width={parentDimensions && parentDimensions.width}
+        height={800}
         ref={stage}
         onClick={(e) => {
-          console.log('target');
-          console.log(e.target);
-          console.log('stage');
-          console.log(stage);
           if (e.target === stage.current) {
             setSelectedTable(null);
-            setSelectedSeat(null);
+            setSelectedSeatId(null);
           }
         }}
       >
         <Layer>
-          {Object.entries(seats).map(([key, seat]) => (
+          {seats.map((seat) => (
             <Seat
-              key={key}
-              x={seat.x}
-              y={seat.y}
-              onPositionUpdated={(x, y) => updateSeatPosition(key, x, y)}
-              isAvailable={key === selectedSeat}
-              isActive={seat.active}
-              isSelected={key === selectedSeat}
-              onClick={() => setSelectedSeat(key)}
+              id={seat.id}
+              key={seat.id}
+              x={seat.positionX}
+              y={seat.positionY}
               isCollidingWithTrashCan={isCollidingWithTrashCan}
-              onDelete={() => deleteSeat(key)}
+              isAvailable={seat.id === selectedSeatId}
+              isActive={seat.active}
+              isSelected={seat.id === selectedSeatId}
+              onClick={() => setSelectedSeatId(seat.id)}
+              onDelete={() => deleteSeat(seat.id)}
+              onPositionUpdated={(x, y) => updateSeatPosition(seat.id, x, y)}
             />
           ))}
 
-          {Object.entries(tables).map(([key, table]) => (
+          {tables.map((table) => (
             <Table
-              key={key}
-              x={table.x}
-              y={table.y}
+              key={table.id}
+              x={table.positionX}
+              y={table.positionY}
               width={table.width}
               height={table.height}
-              isSelected={key === selectedTable}
+              isSelected={table.id === selectedTable}
               onSelected={() => {
-                setSelectedTable(key);
+                setSelectedTable(table.id);
               }}
-              onPositionUpdated={(x, y) => updateTablePosition(key, x, y)}
+              onPositionUpdated={(x, y) => updateTablePosition(table.id, x, y)}
               onDimensionsUpdated={(x, y, width, height) =>
-                updateTableDimensions(key, x, y, width, height)
+                updateTableDimensions(table.id, x, y, width, height)
               }
+              isCollidingWithTrashCan={isCollidingWithTrashCan}
+              onDelete={() => deleteTable(table.id)}
             />
           ))}
-          <Rect x={0} y={470} width={800} height={5} fill={colorIron} />
+          <Rect
+            x={0}
+            y={470}
+            width={parentDimensions.width}
+            height={5}
+            fill={colorIron}
+          />
           <SeatDragOn x={200} y={500} onDragEnd={addNewSeat} />
           <TableDragOn x={300} y={500} onDragEnd={addNewTable} />
-          <TrashCan x={600} y={500} ref={trashCan} />
+          <TrashCan
+            x={trashCanTransform.x}
+            y={trashCanTransform.y}
+            ref={trashCan}
+          />
         </Layer>
       </Stage>
       <div className='ml-8'>
         <p>Seats</p>
         <p>{JSON.stringify(seats)} </p>
-        <p>Selected: {selectedSeat}</p>
+        <p>Selected: {selectedSeatId}</p>
         <br />
         <p>Tables</p>
         <p>{JSON.stringify(tables)} </p>
         <p>Selected: {selectedTable}</p>
       </div>
-    </ClientOnly>
+    </div>
   );
 }

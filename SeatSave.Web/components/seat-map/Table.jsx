@@ -12,9 +12,11 @@ export default function Table({
   width,
   height,
   isSelected,
+  isCollidingWithTrashCan,
   onSelected,
   onPositionUpdated,
   onDimensionsUpdated,
+  onDelete,
 }) {
   const transformRef = useRef();
   const shapeRef = useRef();
@@ -34,6 +36,7 @@ export default function Table({
         ref={shapeRef}
         draggable
         onClick={onSelected}
+        onTap={onSelected}
         width={width}
         height={height}
         x={x}
@@ -46,17 +49,20 @@ export default function Table({
             x: newX,
             y: newY,
           });
+
+          if (isCollidingWithTrashCan(e)) {
+            onDelete();
+            return;
+          }
+
           onPositionUpdated(newX, newY);
         }}
         onTransformEnd={() => {
           const node = shapeRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
-
-          // we will reset it back
           node.scaleX(1);
           node.scaleY(1);
-
           const newWidth = Math.max(5, node.width() * scaleX);
           const newHeight = Math.max(node.height() * scaleY);
           onDimensionsUpdated(node.x(), node.y(), newWidth, newHeight);

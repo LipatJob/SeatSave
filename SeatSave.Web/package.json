@@ -28,6 +28,7 @@
     "react-modal-bootstrap": "^1.1.1",
     "reactjs-popup": "^2.0.5",
     "reactstrap": "^9.0.2",
+    "use-image": "^1.0.12",
     "yup": "^0.32.11"
   },
   "devDependencies": {

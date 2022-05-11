@@ -8,14 +8,12 @@ import Table from './Table';
 import TableDragOn from './TableDragOn';
 import TrashCan from './TrashCan';
 
-export default function SeatMapComponent() {
+export default function EditableSeatMap() {
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [selectedTable, setSelectedTable] = useState();
   const [seats, setSeats] = useState({});
   const [tables, setTables] = useState({});
-
   const stage = useRef();
-  const gridSize = 25;
 
   const updateTablePosition = (index, x, y) => {
     setTables({
@@ -67,7 +65,7 @@ export default function SeatMapComponent() {
   };
 
   return (
-    <div>
+    <ClientOnly>
       <Stage
         width={700}
         height={600}
@@ -129,6 +127,6 @@ export default function SeatMapComponent() {
         <p>{JSON.stringify(tables)} </p>
         <p>Selected: {selectedTable}</p>
       </div>
-    </div>
+    </ClientOnly>
   );
 }

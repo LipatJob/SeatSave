@@ -6,8 +6,7 @@ import OkModal from '../../components/common/OkModal';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
 import EditableSeatMapLoader from '../../components/seat-map/EditableSeatMapLoader';
 
-export default function ManageSeats() {
-  // States
+export default function ManageSeats({ seatTypes }) {
   const [formPart, setFormPart] = useState(0);
   const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
   const [currentID, setCurrentID] = useState(0);
@@ -80,7 +79,7 @@ export default function ManageSeats() {
               }}
             />
           )}
-          {formPart === 1 && (
+          {formPart === 1 && currentID && (
             <PanelWithHeader
               className='absolute top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative'
               header={
@@ -104,6 +103,11 @@ export default function ManageSeats() {
                   setSeatName={setSeatName}
                   onAvailableSeatsUpdated={updateAvailableSeats}
                   currentID={currentID}
+                  seatTypes={seatTypes}
+                  goToPreviousFormPart={() => {
+                    setFormPart(0);
+                    setCurrentID(null);
+                  }}
                 />
               }
             />
@@ -112,6 +116,14 @@ export default function ManageSeats() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const response = await fetch(`${process.env.API_URL}/Api/Seats/Types`);
+  const seatTypes = await response.json();
+  return {
+    props: { seatTypes },
+  };
 }
 
 ManageSeats.page = 'ManageSeats';

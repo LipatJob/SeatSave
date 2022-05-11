@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import Image from 'next/image';
@@ -29,6 +29,9 @@ export default function Register({ visitorSelection }) {
       const json = await response.json();
       console.log(json);
       router.push('/login?RegisterSuccessful=True');
+    } else if (response.status === 400) {
+      const body = await response.text();
+      console.log(`there is something wrong with your request ${body}`);
     } else {
       console.log('there was an error');
     }

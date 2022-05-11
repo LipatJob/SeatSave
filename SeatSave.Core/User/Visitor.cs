@@ -10,7 +10,7 @@ namespace SeatSave.Core.User
         {
         }
 
-        public virtual IEnumerable<BookingModel> Bookings { get; set; }
+        public virtual IEnumerable<BookingModel> Bookings { get; set; } = new List<BookingModel>();
 
         public BookingModel? GetActiveBooking()
         {

@@ -1,3 +1,4 @@
+using SeatSave.Core.Booking;
 using System.ComponentModel.DataAnnotations;
 
 namespace SeatSave.Api.DTO
@@ -8,5 +9,14 @@ namespace SeatSave.Api.DTO
         public string? isoDate { get; set; }
         public int periodId { get; set; }
         public int seatId { get; set; }
+
+
+        public BookingModel ToModel()
+        {
+            return new BookingModel()
+            {
+
+            };
+        }
     }
 }

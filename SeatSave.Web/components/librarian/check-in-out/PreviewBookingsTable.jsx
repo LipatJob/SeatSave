@@ -21,6 +21,7 @@ export default function PreviewBookingsTable({ bookings, previewDetails }) {
               <th className='px-2'>Seat</th>
               <th className='px-2'>Visitor</th>
               <th className='px-2'>Date & Time</th>
+              <th className='px-2'>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -43,9 +44,10 @@ export default function PreviewBookingsTable({ bookings, previewDetails }) {
                       {booking.visitorModel.lastName}
                     </td>
                     <td className='px-2'>
-                      {formatDate(booking.bookingDate)} -{' '}
+                      {formatDate(booking.bookingDate, false)} -{' '}
                       {formatTime(booking.period.timeStart)}
                     </td>
+                    <td className='px-2'>{booking.status}</td>
                   </tr>
                 ))
             ) : (

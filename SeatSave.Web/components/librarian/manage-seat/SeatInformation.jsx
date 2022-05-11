@@ -1,25 +1,48 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 
 export default function SeatInformation({
-  seatData,
+  seatTypes,
   goToPreviousFormPart,
   setShowModalAddedSeat,
   setSeatName,
   onAvailableSeatsUpdated,
-  seatTypes,
+  currentID,
 }) {
+  // States
   const [showModalDeleteSeat, setShowModalDeleteSeat] = useState(false);
+  const [seatData, seatSeatData] = useState();
+
+  // Manage State and API
+  const updateSeatData = async () => {
+    if (currentID === 0) {
+      seatSeatData({
+        id: '',
+        name: '',
+        type: '',
+        active: 'true',
+        description: '',
+      });
+      return;
+    }
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Seats/${currentID}`,
+    );
+    const jsonData = await response.json();
+    seatSeatData(jsonData);
+  };
 
   const submitData = async (data) => {
+    const newSeat = data;
+    delete newSeat.id;
     const requestData = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(newSeat),
     };
     console.log(requestData);
 
@@ -72,13 +95,21 @@ export default function SeatInformation({
       goToPreviousFormPart();
       setShowModalDeleteSeat(false);
       onAvailableSeatsUpdated();
+    } else {
+      console.log('there was an error');
     }
   };
+
   const seatInformationSchema = Yup.object().shape({
     name: Yup.string().trim().required('This field is required'),
     type: Yup.string().trim().required('This field is required'),
     description: Yup.string().trim().required('This field is required'),
   });
+
+  // Effects
+  useEffect(() => {
+    updateSeatData();
+  }, [currentID]);
 
   return (
     <Formik
@@ -87,7 +118,7 @@ export default function SeatInformation({
       enableReinitialize
       onSubmit={(values) => {
         console.log(values);
-        if (seatData.id === 0) {
+        if (seatData.id === '') {
           setShowModalAddedSeat(true);
           submitData(values);
         } else {
@@ -96,7 +127,7 @@ export default function SeatInformation({
       }}
     >
       {() => (
-        <Form className='flex flex-col items-center w-full gap-y-7'>
+        <Form className='flex flex-col items-center w-full h-full gap-y-7'>
           {showModalDeleteSeat && (
             <WarningConfirmationModal
               text='Are you sure you want to delete this seat?'
@@ -106,14 +137,14 @@ export default function SeatInformation({
             />
           )}
           <div className='w-full h-full'>
-            <div className='w-full h-content lg:h-[450px]  '>
+            <div className='w-full h-content md:h-[450px]  '>
               <div className=''>
                 <p>Seat ID</p>
                 <Field
                   type='text'
                   id='id'
                   name='id'
-                  placeholder='Text'
+                  placeholder='Seat ID'
                   className='bg-iron'
                   disabled
                 />
@@ -167,18 +198,18 @@ export default function SeatInformation({
                   type='textarea'
                   id='description'
                   name='description'
-                  className='flex w-full h-32'
+                  className='flex w-full h-24 md:h-32'
                   style={{ resize: 'none' }}
                   placeholder='Enter Seat Description'
                 />
               </div>
             </div>
-            <div className='grid h-content pt-8 lg:h-[70px] lg:pt-0 content-center grid-cols-1 gap-4 text-center lg:gap-0 lg:grid-cols-4 '>
-              <div className='md:col-span-1 '>
-                {seatData.id !== 0 && (
+            <div className='grid h-content pt-8 md:h-[70px] md:pt-0 content-center grid-cols-1 gap-2 text-center items-center md:grid-cols-4 '>
+              <div className='order-3 text-center md:order-1 md:col-span-1'>
+                {currentID !== 0 && (
                   <button
                     type='button'
-                    className='w-full h-full align-middle text-valentine-red'
+                    className='h-full text-valentine-red'
                     onClick={() => {
                       setShowModalDeleteSeat(true);
                     }}
@@ -187,19 +218,21 @@ export default function SeatInformation({
                   </button>
                 )}
               </div>
-              <div className='text-right md:col-span-1'>
+              <div className='order-1 md:order-2 md:text-right md:col-span-1'>
                 <Field
-                  className='inline-block align-middle'
+                  className='inline-block w-4 h-4 align-middle'
                   type='checkbox'
                   name='active'
                   id='active'
                 />
-                <span className='inline-block align-middle'>Activate Seat</span>
+                <span className='ml-2 inline-block md:text-[12px] align-middle lg:body-normal'>
+                  Activate Seat
+                </span>
               </div>
-              <div className='md:col-span-1'>
+              <div className='hidden md:col-span-1 md:block'>
                 <button
                   type='button'
-                  className='w-full lg:w-min gray-button'
+                  className='w-full px-0 py-0 gray-button '
                   onClick={() => {
                     goToPreviousFormPart();
                   }}
@@ -207,8 +240,8 @@ export default function SeatInformation({
                   CANCEL
                 </button>
               </div>
-              <div className='md:col-span-1'>
-                <button type='submit' className='w-full button'>
+              <div className='order-2 md:order-4 md:col-span-1'>
+                <button type='submit' className='w-full px-0 py-0 button '>
                   SAVE
                 </button>
               </div>

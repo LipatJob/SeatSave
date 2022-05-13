@@ -3,6 +3,7 @@ import { Rect, Transformer } from 'react-konva';
 import {
   colorDawn,
   colorIron,
+  gridSize,
   toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';
 
@@ -20,7 +21,6 @@ export default function Table({
 }) {
   const transformRef = useRef();
   const shapeRef = useRef();
-  const gridSize = 25;
 
   useEffect(() => {
     if (isSelected) {

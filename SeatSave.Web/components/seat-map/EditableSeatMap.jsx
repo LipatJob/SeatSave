@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
-import { areColliding, colorIron } from '../../lib/seatMapHelper';
+import { areColliding, colorIron, standardSize } from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
 import TableService from '../../services/TableService';
 import Seat from './Seat';
@@ -23,22 +23,14 @@ export default function EditableSeatMap({
   });
   const parentDiv = useRef(null);
   const stage = useRef();
-  const trashCan = useRef();
-  const trashCanTransform = {
-    x: parentDimensions.width - 100,
-    y: 500,
-    width: 50,
-    height: 50,
-  };
-
   const maxPosY = 400;
 
-  useEffect(() => {
-    setParentDimensions({
-      width: parentDiv.current.clientWidth,
-      height: parentDiv.current.clientHeight,
-    });
-  }, [parentDiv]);
+  const trashCanTransform = {
+    x: parentDimensions.width - 100,
+    y: maxPosY + 100,
+    width: standardSize,
+    height: standardSize,
+  };
 
   const addNewSeat = (x, y) => {
     if (y > maxPosY) {
@@ -50,14 +42,17 @@ export default function EditableSeatMap({
       type: 'Carrel Desk',
       active: false,
       description: 'Edit Description',
-      width: 50,
-      height: 50,
+      width: standardSize,
+      height: standardSize,
       positionX: x,
       positionY: Math.floor(y),
     }).then((seat) => {
-      setSeats((oldSeats) => [...oldSeats, seat]);
+      setSeats((oldSeats) => {
+        const newSeats = [...oldSeats, seat];
+        onSeatsUpdated(newSeats);
+        return newSeats;
+      });
     });
-    onSeatsUpdated();
   };
 
   const updateSeatPosition = (id, x, y) => {
@@ -79,8 +74,11 @@ export default function EditableSeatMap({
 
   const deleteSeat = (id) => {
     SeatService.deleteSeat(id).then(() => {
-      setSeats((oldSeats) => oldSeats.filter((e) => e.id !== id));
-      onSeatsUpdated();
+      setSeats((oldSeats) => {
+        const newSeats = oldSeats.filter((e) => e.id !== id);
+        onSeatsUpdated(newSeats);
+        return newSeats;
+      });
     });
   };
 
@@ -90,8 +88,8 @@ export default function EditableSeatMap({
     }
 
     TableService.addTable({
-      width: 50,
-      height: 50,
+      width: standardSize,
+      height: standardSize,
       positionX: Math.floor(x),
       positionY: Math.floor(y),
     }).then((table) => {
@@ -140,9 +138,8 @@ export default function EditableSeatMap({
   };
 
   const deleteTable = (id) => {
-    TableService.deleteTable(id).then(() => {
-      setTables((oldTables) => oldTables.filter((e) => e.id !== id));
-    });
+    TableService.deleteTable(id).then(() => {});
+    setTables((oldTables) => oldTables.filter((e) => e.id !== id));
   };
 
   const isCollidingWithTrashCan = (e) => {
@@ -154,6 +151,17 @@ export default function EditableSeatMap({
   useEffect(() => {
     SeatService.getSeats().then((fetchedSeats) => setSeats(fetchedSeats));
     TableService.getTables().then((fetchedTables) => setTables(fetchedTables));
+
+    const checkSize = () => {
+      setParentDimensions({
+        width: parentDiv.current.offsetWidth,
+        height: parentDiv.current.offsetHeight,
+      });
+    };
+    checkSize();
+
+    window.addEventListener('resize', checkSize);
+    return () => window.removeEventListener('resize', checkSize);
   }, []);
 
   return (
@@ -204,20 +212,18 @@ export default function EditableSeatMap({
               onDelete={() => deleteTable(table.id)}
             />
           ))}
+        </Layer>
+        <Layer>
           <Rect
             x={0}
             y={maxPosY + 70}
-            width={parentDimensions.width}
+            width={parentDimensions && parentDimensions.width}
             height={5}
             fill={colorIron}
           />
-          <SeatDragOn x={50} y={500} onDragEnd={addNewSeat} />
-          <TableDragOn x={150} y={500} onDragEnd={addNewTable} />
-          <TrashCan
-            x={trashCanTransform.x}
-            y={trashCanTransform.y}
-            ref={trashCan}
-          />
+          <SeatDragOn x={50} y={maxPosY + 100} onDragEnd={addNewSeat} />
+          <TableDragOn x={150} y={maxPosY + 100} onDragEnd={addNewTable} />
+          <TrashCan x={trashCanTransform.x} y={trashCanTransform.y} />
         </Layer>
       </Stage>
     </div>

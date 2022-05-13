@@ -21,9 +21,14 @@ const colorMediumForestGreed = '#37722B';
 const colorLightBlueGrey = '#B8C9DD';
 const colorDarkPastelBlue = '#7DA0D4';
 
+const gridSize = 20;
+const standardSize = 40;
+
 export {
   toNearestSnappingPoint,
   areColliding,
+  gridSize,
+  standardSize,
   colorDawn,
   colorIron,
   colorRodeoDust,

@@ -6,7 +6,7 @@ export default function BookingDetails({ details, column }) {
     <div>
       {column && (
         <div className='mt-4 '>
-          <h4>Booking Details</h4>
+          <h4 className='mb-8'>Booking Details</h4>
           <div className='grid grid-cols-3 gap-3'>
             <div className='col-span-1'>
               <p className='font-bold '>Date</p>

@@ -40,7 +40,7 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
           onYes={onCancelBookingConfirmed}
         />
       )}
-      <h2 className='mb-4 font-bold text-dusk-blue'>
+      <h2 className='mb-8 font-bold text-dusk-blue'>
         Your booking is at {formatDate(bookingDetails.bookingDate)} (
         {formatTime(bookingDetails.period.timeStart)})
       </h2>

@@ -5,6 +5,8 @@ import {
   colorDawn,
   colorDuskBlue,
   colorPastelRed,
+  gridSize,
+  standardSize,
   toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';
 
@@ -25,8 +27,8 @@ export default function Seat({
   const [isHovering, setIsHovering] = useState(false);
 
   function snapToGrid(e) {
-    const newX = toNearestSnappingPoint(e.target.x(), 25);
-    const newY = toNearestSnappingPoint(e.target.y(), 25);
+    const newX = toNearestSnappingPoint(e.target.x(), gridSize);
+    const newY = toNearestSnappingPoint(e.target.y(), gridSize);
     e.target.position({
       x: newX,
       y: newY,
@@ -39,8 +41,8 @@ export default function Seat({
     <>
       <Rect
         draggable
-        width={50}
-        height={50}
+        width={standardSize}
+        height={standardSize}
         x={x}
         y={y}
         ref={seatRectRef}
@@ -70,11 +72,11 @@ export default function Seat({
 
       {isHovering && !isDragging && (
         <Group
-          x={seatRectRef.current.x() - 25}
+          x={seatRectRef.current.x() - standardSize / 2}
           y={seatRectRef.current.y() - 60}
           ref={popUpRef}
         >
-          <Rect width={100} height={50} fill={colorDawn} />
+          <Rect width={100} height={standardSize} fill={colorDawn} />
           <Text
             align='center'
             verticalAlign='middle'

@@ -137,18 +137,34 @@ export default function SeatInformation({
             />
           )}
           <div className='w-full h-full'>
-            <div className='w-full h-content md:h-[450px]  '>
-              <div className=''>
-                <p>Seat ID</p>
-                <Field
-                  type='text'
-                  id='id'
-                  name='id'
-                  placeholder='Seat ID'
-                  className='bg-iron'
-                  disabled
-                />
+            <div className='flex flex-col w-full gap-3 mb-4 h-content'>
+              <div className='grid grid-cols-3'>
+                <div className='col-span-2'>
+                  <p>Seat ID</p>
+                  <Field
+                    type='text'
+                    id='id'
+                    name='id'
+                    placeholder='Seat ID'
+                    className='w-full bg-iron'
+                    disabled
+                  />
+                </div>
+                <div>
+                  <div className='flex flex-col items-center h-full'>
+                    <span className='md:text-[12px] lg:body-normal'>
+                      Active
+                    </span>
+                    <Field
+                      className='flex-grow w-5 h-5'
+                      type='checkbox'
+                      name='active'
+                      id='active'
+                    />
+                  </div>
+                </div>
               </div>
+
               <div>
                 Name
                 <ErrorMessage
@@ -204,8 +220,8 @@ export default function SeatInformation({
                 />
               </div>
             </div>
-            <div className='grid h-content pt-8 md:h-[70px] md:pt-0 content-center grid-cols-1 gap-2 text-center items-center md:grid-cols-4 '>
-              <div className='order-3 text-center md:order-1 md:col-span-1'>
+            <div className=' h-content pt-8 md:h-[70px] md:pt-0 content-center  gap-2 text-center flex flex-col items-stretch '>
+              <div className='order-3 text-center md:col-span-1'>
                 {currentID !== 0 && (
                   <button
                     type='button'
@@ -218,29 +234,8 @@ export default function SeatInformation({
                   </button>
                 )}
               </div>
-              <div className='order-1 md:order-2 md:text-right md:col-span-1'>
-                <Field
-                  className='inline-block w-4 h-4 align-middle'
-                  type='checkbox'
-                  name='active'
-                  id='active'
-                />
-                <span className='ml-2 inline-block md:text-[12px] align-middle lg:body-normal'>
-                  Activate Seat
-                </span>
-              </div>
-              <div className='hidden md:col-span-1 md:block'>
-                <button
-                  type='button'
-                  className='w-full px-0 py-0 gray-button '
-                  onClick={() => {
-                    goToPreviousFormPart();
-                  }}
-                >
-                  CANCEL
-                </button>
-              </div>
-              <div className='order-2 md:order-4 md:col-span-1'>
+
+              <div className='order-2 md:col-span-1'>
                 <button type='submit' className='w-full px-0 py-0 button '>
                   SAVE
                 </button>

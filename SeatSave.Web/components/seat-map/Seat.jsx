@@ -38,19 +38,19 @@ export default function Seat({
     onPositionUpdated(newX, newY);
   }
 
+  const strokeGap = 4;
+
   return (
     <>
-      <Rect
+      <Group
         draggable
-        width={standardSize}
-        height={standardSize}
+        ref={seatRectRef}
         x={x}
         y={y}
-        ref={seatRectRef}
-        fill={isActive ? colorIron : colorDawn}
-        stroke={colorDuskBlue}
-        strokeWidth={isSelected ? 3 : 0}
-        onClick={onClick}
+        onClick={(e) => {
+          onClick(e);
+          e.target.moveToTop();
+        }}
         onTap={onClick}
         onMouseOver={() => {
           setIsHovering(true);
@@ -77,7 +77,24 @@ export default function Seat({
             popUpRef.current.moveToTop();
           }
         }}
-      />
+      >
+        <Rect
+          width={standardSize}
+          height={standardSize}
+          fill={isActive ? colorIron : colorDawn}
+        />
+
+        {isSelected && (
+          <Rect
+            width={standardSize + strokeGap * 2}
+            height={standardSize + strokeGap * 2}
+            x={-strokeGap}
+            y={-strokeGap}
+            stroke={colorDuskBlue}
+            strokeWidth={2.5}
+          />
+        )}
+      </Group>
 
       {isHovering && !isDragging && (
         <Group

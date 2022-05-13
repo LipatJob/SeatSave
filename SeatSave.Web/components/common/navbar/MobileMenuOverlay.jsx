@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function MobileMenuOverlay({
   navbarOpen,
@@ -8,27 +9,45 @@ export default function MobileMenuOverlay({
   links,
   onLogout,
 }) {
+  const router = useRouter();
+
   return (
     <div
-    className={`fixed left-0 z-50 flex flex-col gap-10 w-full h-screen pt-28 text-black top-20 bg-pearl-bush bg-opacity-100 transform delay-100 transition-all duration-300 ${
+      className={`fixed left-0 z-50 flex flex-col gap-10 w-full h-screen pt-28 text-black top-20 bg-pearl-bush bg-opacity-100 transform delay-100 transition-all duration-300 ${
         navbarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full'
       }`}
     >
       <div className='flex flex-col items-center gap-10 text-black'>
         {links.map((link) => (
-          <button
-            type='button'
-            key={link.key}
-            className={link.key === 3 ? 'button' : ''}
-            onClick={(e) => {
-              e.preventDefault();
-              setNavbarOpen(false);
-            }}
-          >
-            <Link href={link.path}>
-              <h4>{link.name}</h4>
-            </Link>
-          </button>
+          <div key={link.key}>
+            {link.key === 3 ? (
+              <button
+                type='button'
+                className={`button ${
+                  router.pathname === '/librarian' ? 'bg-white text-bluish' : ''
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setNavbarOpen(false);
+                }}
+              >
+                <Link href={link.path}>{link.name}</Link>
+              </button>
+            ) : (
+              <button
+                type='button'
+                className={
+                  router.pathname === link.path ? 'border-b border-black' : ''
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  setNavbarOpen(false);
+                }}
+              >
+                <Link href={link.path}>{link.name}</Link>
+              </button>
+            )}
+          </div>
         ))}
 
         <div className='flex flex-col items-center'>

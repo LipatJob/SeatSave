@@ -1,7 +1,7 @@
 import React from 'react';
 import { Rect, Text } from 'react-konva';
 import {
-  colorDarkPastelBlue,
+  colorDawn,
   gridSize,
   standardSize,
   toNearestSnappingPoint,
@@ -28,7 +28,7 @@ export default function SeatDragOn({ x, y, onDragEnd }) {
             y,
           });
         }}
-        fill={colorDarkPastelBlue}
+        fill={colorDawn}
       />
       <Text
         text='Seat'

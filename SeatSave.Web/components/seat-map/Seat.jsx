@@ -18,6 +18,7 @@ export default function Seat({
   isActive,
   isCollidingWithTrashCan,
   onPositionUpdated,
+  isValidPosition,
   onClick,
   onDelete,
 }) {
@@ -48,7 +49,7 @@ export default function Seat({
         ref={seatRectRef}
         fill={isActive ? colorDarkPastelBlue : colorPastelRed}
         stroke={colorDuskBlue}
-        strokeWidth={isSelected ? 2 : 0}
+        strokeWidth={isSelected ? 3 : 0}
         onClick={onClick}
         onTap={onClick}
         onMouseOver={() => {
@@ -65,6 +66,10 @@ export default function Seat({
             onDelete();
             return;
           }
+          if (!isValidPosition(e.target.getClientRect())) {
+            e.target.to({ x, y });
+            return;
+          }
           snapToGrid(e);
           setIsDragging(false);
         }}
@@ -76,14 +81,18 @@ export default function Seat({
           y={seatRectRef.current.y() - 60}
           ref={popUpRef}
         >
-          <Rect width={100} height={standardSize} fill={colorDawn} />
+          <Rect
+            width={standardSize * 2}
+            height={standardSize}
+            fill={colorDawn}
+          />
           <Text
             align='center'
             verticalAlign='middle'
             text={id}
             fontSize={20}
-            width={100}
-            height={50}
+            width={standardSize * 2}
+            height={standardSize}
             strokeWidth={1}
           />
         </Group>

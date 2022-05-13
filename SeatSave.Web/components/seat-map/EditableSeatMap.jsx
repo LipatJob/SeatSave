@@ -10,12 +10,13 @@ import TableDragOn from './TableDragOn';
 import TrashCan from './TrashCan';
 
 export default function EditableSeatMap({
+  seats,
+  setSeats,
   selectedSeatId,
   setSelectedSeatId,
   onSeatsUpdated,
 }) {
   const [selectedTable, setSelectedTable] = useState();
-  const [seats, setSeats] = useState([]);
   const [tables, setTables] = useState([]);
   const [parentDimensions, setParentDimensions] = useState({
     width: 0,
@@ -23,17 +24,18 @@ export default function EditableSeatMap({
   });
   const parentDiv = useRef(null);
   const stage = useRef();
-  const maxPosY = 400;
+  const maxPosX = parentDimensions.width;
+  const maxPosY = 500;
 
   const trashCanTransform = {
     x: parentDimensions.width - 100,
-    y: maxPosY + 100,
+    y: maxPosY + 20,
     width: standardSize,
     height: standardSize,
   };
 
   const addNewSeat = (x, y) => {
-    if (y > maxPosY) {
+    if (y + standardSize > maxPosY) {
       return;
     }
 
@@ -56,7 +58,7 @@ export default function EditableSeatMap({
   };
 
   const updateSeatPosition = (id, x, y) => {
-    if (y > maxPosY) {
+    if (y + standardSize > maxPosY) {
       return;
     }
 
@@ -65,6 +67,7 @@ export default function EditableSeatMap({
       positionX: x,
       positionY: Math.floor(y),
     };
+
     SeatService.updateSeat(id, seatToUpdate).then((updatedSeat) => {
       setSeats((oldSeats) =>
         oldSeats.map((oldSeat) => (oldSeat.id === id ? updatedSeat : oldSeat)),
@@ -83,7 +86,7 @@ export default function EditableSeatMap({
   };
 
   const addNewTable = (x, y) => {
-    if (y > maxPosY) {
+    if (y + standardSize > maxPosY) {
       return;
     }
 
@@ -108,6 +111,7 @@ export default function EditableSeatMap({
       positionY: Math.floor(y),
       minPosY: maxPosY,
     };
+
     TableService.updateTable(id, tableToUpdate).then((updatedTable) => {
       setTables((oldTables) =>
         oldTables.map((oldTable) =>
@@ -125,16 +129,14 @@ export default function EditableSeatMap({
       width: Math.floor(width),
       height: Math.floor(height),
     };
-    console.log(tableToUpdate);
-    TableService.updateTable(id, tableToUpdate)
-      .then((updatedTable) => {
-        setTables((oldTables) =>
-          oldTables.map((oldTable) =>
-            oldTable.id === id ? updatedTable : oldTable,
-          ),
-        );
-      })
-      .catch((e) => console.log(e.message));
+
+    TableService.updateTable(id, tableToUpdate).then((updatedTable) => {
+      setTables((oldTables) =>
+        oldTables.map((oldTable) =>
+          oldTable.id === id ? updatedTable : oldTable,
+        ),
+      );
+    });
   };
 
   const deleteTable = (id) => {
@@ -148,8 +150,13 @@ export default function EditableSeatMap({
     return result;
   };
 
+  const isValidPosition = (box) =>
+    box.x > 0 &&
+    box.y > 0 &&
+    box.y + box.height < maxPosY &&
+    box.x + box.width < maxPosX;
+
   useEffect(() => {
-    SeatService.getSeats().then((fetchedSeats) => setSeats(fetchedSeats));
     TableService.getTables().then((fetchedTables) => setTables(fetchedTables));
 
     const checkSize = () => {
@@ -184,6 +191,7 @@ export default function EditableSeatMap({
               key={seat.id}
               x={seat.positionX}
               y={seat.positionY}
+              isValidPosition={isValidPosition}
               isCollidingWithTrashCan={isCollidingWithTrashCan}
               isSelected={seat.id === selectedSeatId}
               isActive={seat.active}
@@ -204,6 +212,7 @@ export default function EditableSeatMap({
               onSelected={() => {
                 setSelectedTable(table.id);
               }}
+              isValidPosition={isValidPosition}
               onPositionUpdated={(x, y) => updateTablePosition(table.id, x, y)}
               onDimensionsUpdated={(x, y, width, height) =>
                 updateTableDimensions(table.id, x, y, width, height)
@@ -216,14 +225,14 @@ export default function EditableSeatMap({
         <Layer>
           <Rect
             x={0}
-            y={maxPosY + 70}
+            y={maxPosY}
             width={parentDimensions && parentDimensions.width}
             height={5}
             fill={colorIron}
           />
-          <SeatDragOn x={50} y={maxPosY + 100} onDragEnd={addNewSeat} />
-          <TableDragOn x={150} y={maxPosY + 100} onDragEnd={addNewTable} />
-          <TrashCan x={trashCanTransform.x} y={trashCanTransform.y} />
+          <SeatDragOn x={50} y={maxPosY + 20} onDragEnd={addNewSeat} />
+          <TableDragOn x={150} y={maxPosY + 20} onDragEnd={addNewTable} />
+          <TrashCan x={trashCanTransform.x} y={maxPosY + 20} />
         </Layer>
       </Stage>
     </div>

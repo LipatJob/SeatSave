@@ -9,18 +9,22 @@ const librarianLinks = [
   {
     name: 'Check In / Out',
     path: '/librarian/',
+    key: 3,
   },
   {
     name: 'View Bookings',
     path: '/librarian/view-bookings',
+    key: 4,
   },
   {
     name: 'Manage Seats',
     path: '/librarian/manage-seats',
+    key: 5,
   },
   {
     name: 'Manage Date & Time',
     path: '/librarian/manage-date-time',
+    key: 6,
   },
 ];
 

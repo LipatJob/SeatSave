@@ -17,14 +17,19 @@ const librarianLinks = [
     key: 4,
   },
   {
+    name: 'Generate Reports',
+    path: '/librarian/generate-reports',
+    key: 5,
+  },
+  {
     name: 'Manage Seats',
     path: '/librarian/manage-seats',
-    key: 5,
+    key: 6,
   },
   {
     name: 'Manage Date & Time',
     path: '/librarian/manage-date-time',
-    key: 6,
+    key: 7,
   },
 ];
 

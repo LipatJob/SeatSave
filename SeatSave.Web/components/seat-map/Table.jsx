@@ -16,6 +16,7 @@ export default function Table({
   isCollidingWithTrashCan,
   onSelected,
   onPositionUpdated,
+  isValidPosition,
   onDimensionsUpdated,
   onDelete,
 }) {
@@ -52,6 +53,11 @@ export default function Table({
 
           if (isCollidingWithTrashCan(e)) {
             onDelete();
+            return;
+          }
+
+          if (!isValidPosition(e.target.getClientRect())) {
+            e.target.to({ x, y });
             return;
           }
 

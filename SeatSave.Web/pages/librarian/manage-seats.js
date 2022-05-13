@@ -58,8 +58,8 @@ export default function ManageSeats({ seatTypes }) {
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>
-      <div className='relative md:grid md:gap-8 md:grid-cols-3'>
-        <div className='border-8 rounded-lg md:col-span-2 border-pearl-bush'>
+      <div className='md:grid md:gap-8 md:grid-cols-3'>
+        <div className='mb-4 border-8 rounded-lg sm:mb-0 md:col-span-2 border-pearl-bush'>
           <EditableSeatMap
             seats={seats}
             setSeats={setSeats}
@@ -70,9 +70,10 @@ export default function ManageSeats({ seatTypes }) {
             onSeatsUpdated={(newSeats) => setSeats(newSeats)}
           />
         </div>
-        <div>
+        <div className='relative'>
           {!currentID && (
             <SeatSelectionPanel
+              className={currentID && 'hidden'}
               seats={seats}
               onAddClicked={() => {
                 setCurrentID(null);
@@ -84,7 +85,9 @@ export default function ManageSeats({ seatTypes }) {
           )}
           {currentID && (
             <PanelWithHeader
-              className='absolute top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative'
+              className={`top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative ${
+                !currentID && 'hidden'
+              }`}
               header={
                 <div className='flow-root'>
                   <h4 className='float-left '> Seat Information</h4>

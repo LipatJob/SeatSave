@@ -20,6 +20,7 @@ const colorPastelRed = '#EA555A';
 const colorMediumForestGreed = '#37722B';
 const colorLightBlueGrey = '#B8C9DD';
 const colorDarkPastelBlue = '#7DA0D4';
+const colorAlmond = '#E8DCD2';
 
 const gridSize = 20;
 const standardSize = 40;
@@ -36,6 +37,7 @@ export {
   colorBluish,
   colorDuskBlue,
   colorPastelRed,
+  colorAlmond,
   colorMediumForestGreed,
   colorValentineRed,
   colorLightBlueGrey,

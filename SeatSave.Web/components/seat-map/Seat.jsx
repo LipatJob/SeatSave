@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { Group, Rect, Text } from 'react-konva';
+import { Group, Rect, RegularPolygon, Text } from 'react-konva';
 import {
-  colorDarkPastelBlue,
   colorDawn,
   colorDuskBlue,
-  colorPastelRed,
+  colorIron,
+  colorLightBlueGrey,
   gridSize,
   standardSize,
   toNearestSnappingPoint,
@@ -47,13 +47,14 @@ export default function Seat({
         x={x}
         y={y}
         ref={seatRectRef}
-        fill={isActive ? colorDarkPastelBlue : colorPastelRed}
+        fill={isActive ? colorIron : colorDawn}
         stroke={colorDuskBlue}
         strokeWidth={isSelected ? 3 : 0}
         onClick={onClick}
         onTap={onClick}
         onMouseOver={() => {
           setIsHovering(true);
+          popUpRef.current.moveToTop();
         }}
         onMouseLeave={() => {
           setIsHovering(false);
@@ -72,6 +73,9 @@ export default function Seat({
           }
           snapToGrid(e);
           setIsDragging(false);
+          if (popUpRef) {
+            popUpRef.current.moveToTop();
+          }
         }}
       />
 
@@ -84,16 +88,25 @@ export default function Seat({
           <Rect
             width={standardSize * 2}
             height={standardSize}
-            fill={colorDawn}
+            fill={colorLightBlueGrey}
           />
+
           <Text
             align='center'
             verticalAlign='middle'
             text={id}
-            fontSize={20}
+            fontSize={18}
             width={standardSize * 2}
             height={standardSize}
             strokeWidth={1}
+          />
+          <RegularPolygon
+            x={standardSize}
+            y={standardSize}
+            fill={colorLightBlueGrey}
+            sides={3}
+            radius={standardSize / 2}
+            rotation={180}
           />
         </Group>
       )}

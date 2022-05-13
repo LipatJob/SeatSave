@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import {
-  colorDawn,
-  colorIron,
+  colorAlmond,
+  colorRodeoDust,
   gridSize,
   toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';
@@ -42,7 +42,7 @@ export default function Table({
         height={height}
         x={x}
         y={y}
-        fill={isSelected ? colorDawn : colorIron}
+        fill={isSelected ? colorRodeoDust : colorAlmond}
         onDragEnd={(e) => {
           const newX = toNearestSnappingPoint(e.target.x(), gridSize);
           const newY = toNearestSnappingPoint(e.target.y(), gridSize);

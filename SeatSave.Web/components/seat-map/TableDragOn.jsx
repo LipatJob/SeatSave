@@ -1,7 +1,7 @@
 import React from 'react';
 import { Rect, Text } from 'react-konva';
 import {
-  colorIron,
+  colorAlmond,
   gridSize,
   standardSize,
   toNearestSnappingPoint,
@@ -28,7 +28,7 @@ export default function TableDragOn({ x, y, onDragEnd }) {
             y,
           });
         }}
-        fill={colorIron}
+        fill={colorAlmond}
       />
       <Text
         text='Table'

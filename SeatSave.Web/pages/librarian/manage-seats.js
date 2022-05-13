@@ -63,7 +63,7 @@ export default function ManageSeats({ seatTypes }) {
           <EditableSeatMap
             seats={seats}
             setSeats={setSeats}
-            selectedSeatId={null}
+            selectedSeatId={currentID}
             setSelectedSeatId={(id) => {
               setCurrentID(id);
             }}

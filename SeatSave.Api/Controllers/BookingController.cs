@@ -26,8 +26,13 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] string? bookingCode = null)
         {
+            if (bookingCode != null)
+            {
+                return Ok(dbContext.Bookings.FirstOrDefault(e => e.BookingCode == bookingCode));
+            }
+
             return Ok(dbContext.Bookings.OrderByDescending(b => b.Id));
         }
         [HttpGet("{id}")]
@@ -84,7 +89,7 @@ namespace SeatSave.Api.Controllers
         }
 
 
-        private bool TryGetCurrentVisitor(out Visitor visitor)
+        private bool TryGetCurrentVisitor(out Visitor? visitor)
         {
             visitor = null;
             var identity = HttpContext.User.Identity as ClaimsIdentity;

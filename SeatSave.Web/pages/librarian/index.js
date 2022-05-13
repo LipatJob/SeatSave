@@ -1,19 +1,21 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import SearchBookingForm from '../../components/librarian/check-in-out/SearchBookingForm';
 import SearchResultsSection from '../../components/librarian/check-in-out/SearchResultsSection';
 import PresentBookingsSection from '../../components/librarian/check-in-out/PresentBookingsSection';
 import BookingDetailsSection from '../../components/librarian/check-in-out/BookingDetailsSection';
 import { width } from '@mui/system';
+import dynamic from 'next/dynamic';
+import { Hidden } from '@mui/material';
 
-const isBrowser = typeof window != 'undefined';
-
-if (isBrowser) {
-  var { QrReader } = require('react-qr-reader');
-}
+const QrReader = dynamic(() => import('react-qr-reader'), {
+  ssr: false,
+});
 
 export default function CheckInOut({ presentPeriod, presentBookings }) {
+  const camera = useRef();
+
   const [showBookings, setShowBookings] = useState(true);
 
   const [showQRCodeScanner, setShowQRCodeScanner] = useState(false);
@@ -56,6 +58,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
   }
 
   function handleBookings() {
+    setShowDetails(false);
     setShowBookings(true);
     setShowQRCodeScanner(false);
   }
@@ -70,28 +73,28 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
     console.log(error);
   };
 
-  const handleScannedQRCode = (data) => {
-    if (data) {
-      setScannedCode(data);
+  const handleScannedQRCode = async (data) => {
+    if (!showQRCodeScanner) {
+      return;
+    }
+
+    if (data && !showDetails) {
+      const res = await fetch(
+        `${process.env.API_URL}/Api/Booking?bookingCode=${data}`,
+      );
+
+      if (res.status === 200) {
+        const json = await res.json();
+        setScannedCode(data);
+        setShowDetails(true);
+        setBookingToDisplay(json);
+      }
     }
   };
 
   return (
     <div className='page-container-small'>
       <h1>Check In / Out</h1>
-
-      {showQRCodeScanner && isBrowser && (
-        <div>
-          {JSON.stringify(QrReader)}
-          <QrReader
-            delay={300}
-            style={{ width: '100%' }}
-            onError={handleErrorWebCam}
-            onScan={handleScannedQRCode}
-          />
-          <h3>Code: {scannedCode}</h3>
-        </div>
-      )}
       <div className='grid grid-cols-2 gap-x-3 my-10'>
         <button
           className='bg-pearl-bush hover:bg-rodeo-dust text-black button'
@@ -124,6 +127,18 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               previewDetails={handlePreviewDetails}
             />
           )}
+          <div className={showQRCodeScanner ? '' : 'hidden'}>
+            <QrReader
+              delay={300}
+              style={{ width: '100%' }}
+              onError={handleErrorWebCam}
+              onScan={handleScannedQRCode}
+              className={`p-10 pb-10`}
+              ref={camera}
+              showViewFinder={false}
+            />
+            <h3>Code Scanned: {scannedCode}</h3>
+          </div>
         </div>
         <div className='absolute top-0 w-full lg:relative lg:basis-2/5'>
           {showDetails && (
@@ -132,14 +147,16 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               close={handleCloseDetails}
             />
           )}
-          <div className='absolute right-0 hidden lg:block top-20'>
-            <Image
-              src='/CheckInOutDecoration.svg'
-              width={393.24}
-              height={424.18}
-              layout='fixed'
-            />
-          </div>
+          {!showDetails && (
+            <div className='absolute right-0 hidden lg:block top-20'>
+              <Image
+                src='/CheckInOutDecoration.svg'
+                width={393.24}
+                height={424.18}
+                layout='fixed'
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

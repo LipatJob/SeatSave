@@ -14,9 +14,8 @@ const EditableSeatMap = dynamic(
 );
 
 export default function ManageSeats({ seatTypes }) {
-  const [formPart, setFormPart] = useState(0);
   const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
-  const [currentID, setCurrentID] = useState(0);
+  const [currentID, setCurrentID] = useState(null);
   const [seats, setSeats] = useState([]);
   const [seatName, setSeatName] = useState();
 
@@ -59,67 +58,64 @@ export default function ManageSeats({ seatTypes }) {
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>
-      <div className='relative md:grid md:gap-8 md:grid-cols-3'>
-        <div className='border-8 rounded-lg md:col-span-2 border-pearl-bush'>
+      <div className='md:grid md:gap-8 md:grid-cols-3'>
+        <div className='mb-4 border-8 rounded-lg sm:mb-0 md:col-span-2 border-pearl-bush'>
           <EditableSeatMap
-            selectedSeatId={null}
+            seats={seats}
+            setSeats={setSeats}
+            selectedSeatId={currentID}
             setSelectedSeatId={(id) => {
               setCurrentID(id);
-              setFormPart(1);
             }}
             onSeatsUpdated={(newSeats) => setSeats(newSeats)}
           />
         </div>
-        <div>
-          {formPart === 0 && (
+        <div className='relative'>
+          {!currentID && (
             <SeatSelectionPanel
+              className={currentID && 'hidden'}
               seats={seats}
               onAddClicked={() => {
-                setCurrentID(0);
-                setFormPart(1);
+                setCurrentID(null);
               }}
               onSeatSelected={(id) => {
                 setCurrentID(id);
-                setFormPart(1);
               }}
             />
           )}
-
-          <div>
-            {formPart === 1 && currentID && (
-              <PanelWithHeader
-                className='absolute top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative'
-                header={
-                  <div className='flow-root'>
-                    <h4 className='float-left '> Seat Information</h4>
-                    <span className='float-right pt-2 pr-4'>
-                      <button
-                        type='button'
-                        onClick={() => setFormPart(0)}
-                        className='ml-auto'
-                      >
-                        <GrClose className='mx-auto my-auto' />
-                      </button>
-                    </span>
-                  </div>
-                }
-                body={
-                  <SeatInformation
-                    setFormPart={setFormPart}
-                    setShowModalAddedSeat={setShowModalAddedSeat}
-                    setSeatName={setSeatName}
-                    onAvailableSeatsUpdated={updateAvailableSeats}
-                    currentID={currentID}
-                    seatTypes={seatTypes}
-                    goToPreviousFormPart={() => {
-                      setFormPart(0);
-                      setCurrentID(null);
-                    }}
-                  />
-                }
-              />
-            )}
-          </div>
+          {currentID && (
+            <PanelWithHeader
+              className={`top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative ${
+                !currentID && 'hidden'
+              }`}
+              header={
+                <div className='flow-root'>
+                  <h4 className='float-left '> Seat Information</h4>
+                  <span className='float-right pt-2 pr-4'>
+                    <button
+                      type='button'
+                      onClick={() => setCurrentID(null)}
+                      className='ml-auto'
+                    >
+                      <GrClose className='mx-auto my-auto' />
+                    </button>
+                  </span>
+                </div>
+              }
+              body={
+                <SeatInformation
+                  setShowModalAddedSeat={setShowModalAddedSeat}
+                  setSeatName={setSeatName}
+                  onAvailableSeatsUpdated={updateAvailableSeats}
+                  currentID={currentID}
+                  seatTypes={seatTypes}
+                  goToPreviousFormPart={() => {
+                    setCurrentID(null);
+                  }}
+                />
+              }
+            />
+          )}
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { Group, Rect, Text } from 'react-konva';
+import { Group, Rect, RegularPolygon, Text } from 'react-konva';
 import {
-  colorDarkPastelBlue,
   colorDawn,
   colorDuskBlue,
-  colorPastelRed,
+  colorIron,
+  colorLightBlueGrey,
   gridSize,
   standardSize,
   toNearestSnappingPoint,
@@ -18,6 +18,7 @@ export default function Seat({
   isActive,
   isCollidingWithTrashCan,
   onPositionUpdated,
+  isValidPosition,
   onClick,
   onDelete,
 }) {
@@ -37,22 +38,23 @@ export default function Seat({
     onPositionUpdated(newX, newY);
   }
 
+  const strokeGap = 4;
+
   return (
     <>
-      <Rect
+      <Group
         draggable
-        width={standardSize}
-        height={standardSize}
+        ref={seatRectRef}
         x={x}
         y={y}
-        ref={seatRectRef}
-        fill={isActive ? colorDarkPastelBlue : colorPastelRed}
-        stroke={colorDuskBlue}
-        strokeWidth={isSelected ? 2 : 0}
-        onClick={onClick}
+        onClick={(e) => {
+          onClick(e);
+          e.target.moveToTop();
+        }}
         onTap={onClick}
         onMouseOver={() => {
           setIsHovering(true);
+          popUpRef.current.moveToTop();
         }}
         onMouseLeave={() => {
           setIsHovering(false);
@@ -65,10 +67,34 @@ export default function Seat({
             onDelete();
             return;
           }
+          if (!isValidPosition(e.target.getClientRect())) {
+            e.target.to({ x, y });
+            return;
+          }
           snapToGrid(e);
           setIsDragging(false);
+          if (popUpRef) {
+            popUpRef.current.moveToTop();
+          }
         }}
-      />
+      >
+        <Rect
+          width={standardSize}
+          height={standardSize}
+          fill={isActive ? colorIron : colorDawn}
+        />
+
+        {isSelected && (
+          <Rect
+            width={standardSize + strokeGap * 2}
+            height={standardSize + strokeGap * 2}
+            x={-strokeGap}
+            y={-strokeGap}
+            stroke={colorDuskBlue}
+            strokeWidth={2.5}
+          />
+        )}
+      </Group>
 
       {isHovering && !isDragging && (
         <Group
@@ -76,15 +102,28 @@ export default function Seat({
           y={seatRectRef.current.y() - 60}
           ref={popUpRef}
         >
-          <Rect width={100} height={standardSize} fill={colorDawn} />
+          <Rect
+            width={standardSize * 2}
+            height={standardSize}
+            fill={colorLightBlueGrey}
+          />
+
           <Text
             align='center'
             verticalAlign='middle'
             text={id}
-            fontSize={20}
-            width={100}
-            height={50}
+            fontSize={18}
+            width={standardSize * 2}
+            height={standardSize}
             strokeWidth={1}
+          />
+          <RegularPolygon
+            x={standardSize}
+            y={standardSize}
+            fill={colorLightBlueGrey}
+            sides={3}
+            radius={standardSize / 2}
+            rotation={180}
           />
         </Group>
       )}

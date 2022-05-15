@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { GrClose } from 'react-icons/gr';
+import dynamic from 'next/dynamic';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
 import OkModal from '../../components/common/OkModal';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
-import EditableSeatMapLoader from '../../components/seat-map/EditableSeatMapLoader';
+
+const EditableSeatMap = dynamic(
+  () => import('../../components/seat-map/EditableSeatMap'),
+  {
+    ssr: false,
+  },
+);
 
 export default function ManageSeats({ seatTypes }) {
-  const [formPart, setFormPart] = useState(0);
   const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
-  const [currentID, setCurrentID] = useState(0);
+  const [currentID, setCurrentID] = useState(null);
   const [seats, setSeats] = useState([]);
   const [seatName, setSeatName] = useState();
 
-  // Manage State and API
   const updateSeats = async () => {
     const res = await fetch(`${process.env.API_URL}/Api/Seats`);
     if (!res.ok) {
       console.log('There was an error');
+      return;
     }
     const data = await res.json();
     setSeats(data);
@@ -28,7 +34,6 @@ export default function ManageSeats({ seatTypes }) {
     updateSeats();
   };
 
-  // Effects
   useEffect(() => {
     updateSeats();
   }, []);
@@ -53,42 +58,43 @@ export default function ManageSeats({ seatTypes }) {
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>
-      <div className='relative md:grid md:gap-8 md:grid-cols-3'>
-        <div className='border-8 rounded-lg md:col-span-2 border-pearl-bush'>
-          <EditableSeatMapLoader
-            selectedSeatId={null}
+      <div className='md:grid md:gap-8 md:grid-cols-3'>
+        <div className='mb-4 border-8 rounded-lg sm:mb-0 md:col-span-2 border-pearl-bush'>
+          <EditableSeatMap
+            seats={seats}
+            setSeats={setSeats}
+            selectedSeatId={currentID}
             setSelectedSeatId={(id) => {
               setCurrentID(id);
-              setFormPart(1);
             }}
-            onSubmit={() => {}}
-            onSeatsUpdated={() => updateAvailableSeats()}
+            onSeatsUpdated={(newSeats) => setSeats(newSeats)}
           />
         </div>
-        <div>
-          {formPart === 0 && (
+        <div className='relative'>
+          {!currentID && (
             <SeatSelectionPanel
+              className={currentID && 'hidden'}
               seats={seats}
               onAddClicked={() => {
-                setCurrentID(0);
-                setFormPart(1);
+                setCurrentID(null);
               }}
               onSeatSelected={(id) => {
                 setCurrentID(id);
-                setFormPart(1);
               }}
             />
           )}
-          {formPart === 1 && currentID && (
+          {currentID && (
             <PanelWithHeader
-              className='absolute top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative'
+              className={`top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative ${
+                !currentID && 'hidden'
+              }`}
               header={
                 <div className='flow-root'>
                   <h4 className='float-left '> Seat Information</h4>
-                  <span className='float-right pt-2 pr-4 md:hidden'>
+                  <span className='float-right pt-2 pr-4'>
                     <button
                       type='button'
-                      onClick={() => setFormPart(0)}
+                      onClick={() => setCurrentID(null)}
                       className='ml-auto'
                     >
                       <GrClose className='mx-auto my-auto' />
@@ -98,14 +104,12 @@ export default function ManageSeats({ seatTypes }) {
               }
               body={
                 <SeatInformation
-                  setFormPart={setFormPart}
                   setShowModalAddedSeat={setShowModalAddedSeat}
                   setSeatName={setSeatName}
                   onAvailableSeatsUpdated={updateAvailableSeats}
                   currentID={currentID}
                   seatTypes={seatTypes}
                   goToPreviousFormPart={() => {
-                    setFormPart(0);
                     setCurrentID(null);
                   }}
                 />

@@ -7,13 +7,14 @@ export default function SeatSelectionPanel({
   seats,
   onAddClicked,
   onSeatSelected,
+  className,
 }) {
   return (
     <div>
       <PanelWithHeader
         header={<h4>Available Seats</h4>}
         body={
-          <div>
+          <div className={className}>
             <div className=' h-[450px] overflow-y-scroll'>
               {seats.map((seat) => (
                 <div key={seat.id}>

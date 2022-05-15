@@ -13,13 +13,15 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private SeatSaveContext dbContext;
-        private BookingService bookingService;
+        private readonly SeatSaveContext dbContext;
+        private readonly IEmailService emailService;
+        private readonly BookingService bookingService;
 
-        public BookingController(SeatSaveContext dbContext)
+
+        public BookingController(SeatSaveContext dbContext, IEmailService emailService)
         {
             this.dbContext = dbContext;
-
+            this.emailService = emailService;
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
             var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
             bookingService = new BookingService(currentDate, schedule, dbContext.Bookings, dbContext.Seats);
@@ -80,6 +82,8 @@ namespace SeatSave.Api.Controllers
 
             dbContext.Bookings.Add(booking);
             dbContext.SaveChanges();
+
+            emailService.SendConfirmationMessage(visitor.Email, booking);
 
             return Ok(booking);
         }

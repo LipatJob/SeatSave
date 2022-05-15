@@ -4,6 +4,7 @@ import moment from 'moment';
 import TableService from '../../services/TableService';
 import ClickSeat from './ClickSeat';
 import Table from './Table';
+import { seatMapHeight } from '../../lib/seatMapHelper';
 
 export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
   const [seats, setSeats] = useState([]);
@@ -76,7 +77,7 @@ export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
     <div className='w-full' ref={parentDiv}>
       <Stage
         width={parentDimensions && parentDimensions.width}
-        height={600}
+        height={seatMapHeight}
         ref={stage}
       >
         <Layer>

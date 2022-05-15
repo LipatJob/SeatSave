@@ -174,20 +174,22 @@ export default function BookASeat({ availableDays }) {
         <div className='sm:col-span-2'>
           <h5 className='pb-4 font-bold'>Pick your seat</h5>
 
-          <div className=' border-8 rounded-3xl border-pearl-bush w-full h-[370px] text-center text-red-500'>
-            <ClickSeatMap
-              id={null}
-              date={selectedDate}
-              time={getSelectedPeriod}
-              setSeatId={setSeatSelected}
-              seatId={seatSelected}
-            />{' '}
+          <div className='w-full text-center text-red-500 border-8 rounded-3xl border-pearl-bush'>
             {availableSeats && (
+              <ClickSeatMap
+                id={null}
+                date={selectedDate}
+                time={getSelectedPeriod}
+                setSeatId={setSeatSelected}
+                seatId={seatSelected}
+              />
+            )}
+            {/* {availableSeats && (
               <BookingSeat
                 availableSeats={availableSeats}
                 viewSeatDetails={viewSeatDetails}
               />
-            )}
+            )} */}
           </div>
           <div className='hidden w-full mt-4 sm:block'>
             <div className='grid grid-cols-3 gap-4 text-center'>

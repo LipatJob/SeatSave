@@ -4,6 +4,7 @@ import moment from 'moment';
 import TableService from '../../services/TableService';
 import ViewSeat from './ViewSeat';
 import Table from './Table';
+import { seatMapHeight } from '../../lib/seatMapHelper';
 
 export default function ViewSeatMap({ id, date, time }) {
   const selectedSeatId = id;
@@ -77,7 +78,7 @@ export default function ViewSeatMap({ id, date, time }) {
     <div className='w-full' ref={parentDiv}>
       <Stage
         width={parentDimensions && parentDimensions.width}
-        height={600}
+        height={seatMapHeight}
         ref={stage}
       >
         <Layer>

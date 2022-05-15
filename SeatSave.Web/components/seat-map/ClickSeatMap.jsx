@@ -5,8 +5,7 @@ import TableService from '../../services/TableService';
 import ClickSeat from './ClickSeat';
 import Table from './Table';
 
-export default function ClickSeatMap({ id, date, time }) {
-  const selectedSeatId = id;
+export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
   const [seats, setSeats] = useState([]);
   const updateSeats = async () => {
     const res = await fetch(`${process.env.API_URL}/Api/Seats`);
@@ -73,10 +72,6 @@ export default function ClickSeatMap({ id, date, time }) {
     getBookings();
   }, []);
 
-  function haha(seatID) {
-    console.log('haha', seatID);
-  }
-
   return (
     <div className='w-full' ref={parentDiv}>
       <Stage
@@ -92,10 +87,10 @@ export default function ClickSeatMap({ id, date, time }) {
               x={seat.positionX}
               y={seat.positionY}
               isValidPosition={isValidPosition}
-              isSelected={seat.id === selectedSeatId}
+              isSelected={seat.id === seatId}
               isActive={seat.active}
-              seatBooked={seatIdBooked}
-              onClick={haha(seat.id)}
+              seatBooked={seat.id === seatId}
+              onClick={() => setSeatId(seat.id)}
             />
           ))}
 

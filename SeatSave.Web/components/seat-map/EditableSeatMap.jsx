@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
-import { areColliding, colorIron, standardSize } from '../../lib/seatMapHelper';
+import {
+  areColliding,
+  colorIron,
+  seatMapHeight,
+  standardSize,
+} from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
 import TableService from '../../services/TableService';
 import Seat from './Seat';
@@ -175,7 +180,7 @@ export default function EditableSeatMap({
     <div className='w-full' ref={parentDiv}>
       <Stage
         width={parentDimensions && parentDimensions.width}
-        height={600}
+        height={seatMapHeight}
         ref={stage}
         onClick={(e) => {
           if (e.target === stage.current) {

@@ -3,7 +3,6 @@ import { Group, Rect, RegularPolygon, Text } from 'react-konva';
 import {
   colorDawn,
   colorDuskBlue,
-  colorIron,
   colorLightBlueGrey,
   colorValentineRed,
   colorMediumForestGreed,
@@ -17,26 +16,23 @@ export default function ClickSeat({
   isSelected,
   isActive,
   seatBooked,
-  seatClicked,
+  onClick,
 }) {
   const popUpRef = useRef();
   const seatRectRef = useRef();
   const [isHovering, setIsHovering] = useState(false);
-
   const strokeGap = 4;
 
-  function fillColor(active, bookedSeats, seatId) {
+  function fillColor(active, booked) {
     let color = '';
-    if (bookedSeats === null) {
-      if (active) color = colorIron;
-      else color = colorDawn;
-    }
-    if (bookedSeats !== null) {
-      if (active) {
-        if (Object.values(bookedSeats).indexOf(seatId) > -1) {
-          color = colorValentineRed;
-        } else color = colorMediumForestGreed;
-      } else color = colorDawn;
+    if (active) {
+      if (booked) {
+        color = colorValentineRed;
+      } else {
+        color = colorMediumForestGreed;
+      }
+    } else {
+      color = colorDawn;
     }
     return color;
   }
@@ -47,7 +43,7 @@ export default function ClickSeat({
         ref={seatRectRef}
         x={x}
         y={y}
-        onClick={seatClicked}
+        onClick={onClick}
         onMouseOver={() => {
           setIsHovering(true);
           popUpRef.current.moveToTop();
@@ -59,7 +55,7 @@ export default function ClickSeat({
         <Rect
           width={standardSize}
           height={standardSize}
-          fill={fillColor(isActive, seatBooked, id)}
+          fill={fillColor(isActive, seatBooked)}
         />
 
         {isSelected && (

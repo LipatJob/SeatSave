@@ -8,8 +8,8 @@ function formatDate(date, showYear = true) {
   return moment(date).format(`MMMM D${showYear ? ', YYYY' : ''}`);
 }
 
-function subtractTime(t1, t2) {
-  return moment(t1).subtract(t2);
+function toIsoDate(date) {
+  return moment(date).format('YYYY-MM-DD');
 }
 
-export { formatTime, formatDate, subtractTime };
+export { formatTime, formatDate, toIsoDate };

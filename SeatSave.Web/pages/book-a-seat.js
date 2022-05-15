@@ -9,6 +9,7 @@ import BookingTime from '../components/visitor/book-a-seat/BookingTime';
 import BookingSeat from '../components/visitor/book-a-seat/BookingSeat';
 import BookingSeatModal from '../components/visitor/book-a-seat/BookingSeatModal';
 import 'react-datepicker/dist/react-datepicker.css';
+import { toIsoDate } from '../lib/DateHelper';
 
 const ClickSeatMap = dynamic(
   () => import('../components/seat-map/ClickSeatMap'),
@@ -110,7 +111,7 @@ export default function BookASeat({ availableDays }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          isoDate: moment(dateSelected).format('YYYY-MM-DD'),
+          isoDate: toIsoDate(dateSelected),
           periodId: periodSelected,
           seatId: seatSelected,
         }),
@@ -138,6 +139,7 @@ export default function BookASeat({ availableDays }) {
       document.body.classList.remove('active-modal');
     }
   }
+
   const [selectedDate, setSelectedDate] = useState(null);
   const availableDates = availableDays.map(
     (availableDay) => new Date(availableDay),
@@ -173,36 +175,42 @@ export default function BookASeat({ availableDays }) {
         </div>
         <div className='sm:col-span-2'>
           <h5 className='pb-4 font-bold'>Pick your seat</h5>
+          {availableSeats && (
+            <>
+              <div className='w-full text-center text-red-500 border-8 rounded-3xl border-pearl-bush'>
+                <ClickSeatMap
+                  date={dateSelected}
+                  period={periodSelected}
+                  availableSeats={availableSeats}
+                  setSeatId={setSeatSelected}
+                  seatId={seatSelected}
+                />
 
-          <div className=' border-8 rounded-3xl border-pearl-bush w-full h-[370px] text-center text-red-500'>
-            <ClickSeatMap
-              id={null}
-              date={selectedDate}
-              time={getSelectedPeriod}
-            />{' '}
-            {availableSeats && (
+                {/* {availableSeats && (
               <BookingSeat
                 availableSeats={availableSeats}
                 viewSeatDetails={viewSeatDetails}
               />
-            )}
-          </div>
-          <div className='hidden w-full mt-4 sm:block'>
-            <div className='grid grid-cols-3 gap-4 text-center'>
-              <div>
-                <div className='inline-block w-6 h-6  bg-[#37722B]' />
-                <div className='inline-block pl-2'> Available</div>
+            )} */}
               </div>
-              <div>
-                <div className='inline-block w-6 h-6 bg-[#CD201F]' />
-                <div className='inline-block pl-2'> Occupied</div>
+              <div className='hidden w-full mt-4 sm:block'>
+                <div className='grid grid-cols-3 gap-4 text-center'>
+                  <div>
+                    <div className='inline-block w-6 h-6  bg-[#37722B]' />
+                    <div className='inline-block pl-2'> Available</div>
+                  </div>
+                  <div>
+                    <div className='inline-block w-6 h-6 bg-[#CD201F]' />
+                    <div className='inline-block pl-2'> Occupied</div>
+                  </div>
+                  <div>
+                    <div className='inline-block w-6 h-6 bg-dawn' />
+                    <div className='inline-block pl-2'> Seat Unavailable</div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className='inline-block w-6 h-6 bg-dawn' />
-                <div className='inline-block pl-2'> Seat Unavailable</div>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
       {seatSelected && (

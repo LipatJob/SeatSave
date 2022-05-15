@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import BookingDetails from './BookingDetails';
 import OkModal from '../../common/OkModal';
 import { formatTime } from '../../../lib/DateHelper';
 import visitorAuthService from '../../../lib/visitorAuthService';
+
+const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
+  ssr: false,
+});
 
 export default function CheckedIn({ bookingDetails, onCheckOut }) {
   const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
@@ -54,7 +59,13 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
           <BookingDetails details={bookingDetails} />
         </div>
         <div className='sm:col-span-2'>
-          <div className='w-full h-[320px] mt-4 bg-red-600'> SeatMap </div>
+          <div className='w-full h-[320px] mt-4'>
+            <ViewSeatMap
+              id={bookingDetails.seat.id}
+              date={bookingDetails.bookingDate}
+              time={bookingDetails.period.timeStart}
+            />
+          </div>
         </div>
       </div>
       <div className='grid grid-cols-1 mt-4 mb-8 sm:grid-cols-3'>

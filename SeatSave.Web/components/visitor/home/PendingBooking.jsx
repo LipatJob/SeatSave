@@ -55,7 +55,7 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
         </div>
         <div className='sm:col-span-2'>
           <BookingDetails column details={bookingDetails} />
-          <div className='w-full h-[320px] mt-4'>
+          <div className='w-full mt-4'>
             <ViewSeatMap
               id={bookingDetails.seat.id}
               date={bookingDetails.bookingDate}

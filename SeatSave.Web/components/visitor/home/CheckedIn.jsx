@@ -98,7 +98,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
           <BookingDetails details={bookingDetails} />
         </div>
         <div className='sm:col-span-2'>
-          <div className='w-full h-[320px] mt-4'>
+          <div className='w-full mt-4'>
             <ViewSeatMap
               id={bookingDetails.seat.id}
               date={bookingDetails.bookingDate}

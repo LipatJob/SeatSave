@@ -80,7 +80,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 
     if (data && !showDetails) {
       const res = await fetch(
-        `${process.env.API_URL}/Api/Booking?bookingCode=${data}`,
+        `${process.env.API_URL}/Api/Booking/Search?code=${data}`,
       );
 
       if (res.status === 200) {
@@ -95,15 +95,15 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
   return (
     <div className='page-container-small'>
       <h1>Check In / Out</h1>
-      <div className='grid grid-cols-2 gap-x-3 my-10'>
+      <div className='grid grid-cols-2 my-10 gap-x-3'>
         <button
-          className='bg-pearl-bush hover:bg-rodeo-dust text-black button'
+          className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
           onClick={handleQRCodeScanner}
         >
           Scan QR Code
         </button>
         <button
-          className='bg-pearl-bush hover:bg-rodeo-dust text-black button'
+          className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
           onClick={handleBookings}
         >
           Search
@@ -137,7 +137,6 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               ref={camera}
               showViewFinder={false}
             />
-            <h3>Code Scanned: {scannedCode}</h3>
           </div>
         </div>
         <div className='absolute top-0 w-full lg:relative lg:basis-2/5'>

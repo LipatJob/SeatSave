@@ -1,10 +1,22 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
-import { GrClose } from 'react-icons/gr';
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import ViewBookingsForm from '../../components/librarian/view-bookings/ViewBookingsForm';
 import ViewBookingsTable from '../../components/librarian/view-bookings/ViewBookingsTable';
+import 'react-datepicker/dist/react-datepicker.css';
+import { formatTime } from '../../lib/DateHelper';
+import ViewBookingDetails from '../../components/librarian/view-bookings/ViewBookingDetails';
 
-export default function ViewBookings({ allBookings }) {
+const ClickSeatMap = dynamic(
+  () => import('../../components/seat-map/ClickSeatMap'),
+  {
+    ssr: false,
+  },
+);
+
+export default function ViewBookings({ allBookings, availableDays }) {
   const [displayBookings, setDisplayBookings] = useState(allBookings);
 
   async function handleSearchBookings(e) {
@@ -26,39 +38,87 @@ export default function ViewBookings({ allBookings }) {
     setDisplayBookings(allBookings);
   }
 
+  const availableDates = availableDays.map(
+    (availableDay) => new Date(availableDay),
+  );
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availablePeriods, setAvailablePeriods] = useState();
+  const [periodStartTime, setPeriodStartTime] = useState(null);
+
+  const handleChange = (e) => {
+    setPeriodStartTime(e.target.value);
+  };
+
+  const updatePeriods = async (date) => {
+    const isoDate = moment(date).format('YYYY-MM-DD');
+    const response = await fetch(
+      `${process.env.API_URL}/Api/Schedule/${isoDate}/periods`,
+    );
+    if (response.status === 200) {
+      const json = await response.json();
+      setAvailablePeriods(json);
+    } else {
+      console.log('Error!');
+    }
+  };
+
+  const getSelectedDate = (date) => {
+    setSelectedDate(date);
+    setPeriodStartTime('Select Period');
+    updatePeriods(date);
+  };
+
+  useEffect(() => {
+    updatePeriods();
+  }, []);
+
+  const [showBookingInformation, setShowBookingInformation] = useState(false);
+
   return (
     <div className='page-container'>
       <h1>View Bookings</h1>
       <h4 className='pt-8 pb-4'>Seat Map</h4>
       <form className=''>
         <div className='w-full sm:w-[250px] sm:inline-block sm:pr-4 pb-4 sm:pb-0'>
-          <label htmlFor='bookingDate' className='flex flex-col'>
-            <input
-              id='bookingDate'
-              name='bookingDate'
-              type='date'
-              placeholder='Select Date'
-            />
-          </label>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(dateViewBooking) => getSelectedDate(dateViewBooking)}
+            className='flex flex-col'
+            includeDates={availableDates}
+            placeholderText='Select Date'
+          />
         </div>
         <div className='w-full sm:w-[250px] sm:inline-block'>
-          <label htmlFor='status' className='flex flex-col'>
-            <select id='status' name='status'>
-              <option value='' defaultChecked hidden>
+          <label htmlFor='period' className='flex flex-col'>
+            <select
+              id='period'
+              name='period'
+              value={periodStartTime}
+              onChange={handleChange}
+            >
+              <option value={null} defaultChecked hidden>
                 Select Period
               </option>
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>D</option>
+              {availablePeriods &&
+                availablePeriods.map((aPeriods) => (
+                  <option value={aPeriods.timeStart}>
+                    {formatTime(aPeriods.timeStart)} -{' '}
+                    {formatTime(aPeriods.timeEnd)}
+                  </option>
+                ))}
             </select>
           </label>
         </div>
       </form>
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className='sm:col-span-2'>
-          <div className='border-0  sm:border-8 rounded-3xl border-pearl-bush w-full h-[370px] text-center text-red-500'>
-            SEAT MAP
+          <div className='border-0  sm:border-8 rounded-3xl border-pearl-bush w-full h-[370px]'>
+            <ClickSeatMap
+              id={null}
+              date={selectedDate}
+              time={periodStartTime}
+            />{' '}
           </div>
           <div className='w-full mt-4 '>
             <div className='grid grid-cols-3 gap-4 text-center'>
@@ -67,7 +127,7 @@ export default function ViewBookings({ allBookings }) {
                 <div className='inline-block pl-2'> Available</div>
               </div>
               <div className='col-span-2 sm:col-span-1'>
-                <div className='inline-block w-6 h-6 bg-[#CD201F]' />
+                <div className='inline-block w-6 h-6 bg-[#EA555A]' />
                 <div className='inline-block pl-2'> Occupied</div>
               </div>
               <div className='col-span-3 sm:col-span-1'>
@@ -77,41 +137,11 @@ export default function ViewBookings({ allBookings }) {
             </div>
           </div>
         </div>
-        <div className='hidden sm:col-span-1 sm:block'>
-          <div className='w-full h-full p-4 bg-pearl-bush'>
-            <span className='float-right'>
-              <button type='button' className=''>
-                <GrClose className='' />
-              </button>
-            </span>
-            <div className='pt-8'>
-              <h4> Booking Details</h4>
-            </div>
-
-            <div className='grid grid-cols-1 gap-3 mt-4 sm:flex sm:flex-col'>
-              <div className='col-span-1'>
-                <p className='font-bold'>Code</p>
-                <p>465465</p>
-              </div>
-              <div className='col-span-1'>
-                <p className='font-bold'>Seat</p>
-                <p>R01 - carrel desk</p>
-              </div>
-              <div className='col-span-1'>
-                <p className='font-bold'>Visitor</p>
-                <p>John Doe</p>
-              </div>
-              <div className='col-span-1'>
-                <p className='font-bold'>Date</p>
-                <p>May 2, 2022</p>
-              </div>
-              <div className='col-span-1 pb-8'>
-                <p className='font-bold'>Time</p>
-                <p>10:00 AM to 11:00 PM</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        {showBookingInformation && (
+          <ViewBookingDetails
+            onClose={() => setShowBookingInformation(false)}
+          />
+        )}
       </div>
       <h4 className='mt-16'>All Bookings</h4>
       <ViewBookingsForm onSubmit={handleSearchBookings} />
@@ -123,10 +153,12 @@ export default function ViewBookings({ allBookings }) {
 export async function getServerSideProps() {
   const res = await fetch(`${process.env.API_URL}/Api/Booking`);
   const allBookings = await res.json();
-
+  const availableDaysData = await fetch(`${process.env.API_URL}/Api/Schedule`);
+  const availableDays = await availableDaysData.json();
   return {
     props: {
       allBookings,
+      availableDays,
     },
   };
 }

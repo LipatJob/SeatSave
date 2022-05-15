@@ -5,53 +5,49 @@ import {
   colorDuskBlue,
   colorIron,
   colorLightBlueGrey,
-  gridSize,
+  colorValentineRed,
+  colorMediumForestGreed,
   standardSize,
-  toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';
 
-export default function Seat({
+export default function ClickSeat({
   id,
   x,
   y,
   isSelected,
   isActive,
-  isCollidingWithTrashCan,
-  onPositionUpdated,
-  isValidPosition,
-  onClick,
-  onDelete,
+  seatBooked,
+  seatClicked,
 }) {
   const popUpRef = useRef();
   const seatRectRef = useRef();
-  const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
-  function snapToGrid(e) {
-    const newX = toNearestSnappingPoint(e.target.x(), gridSize);
-    const newY = toNearestSnappingPoint(e.target.y(), gridSize);
-    e.target.position({
-      x: newX,
-      y: newY,
-    });
-
-    onPositionUpdated(newX, newY);
-  }
-
   const strokeGap = 4;
+
+  function fillColor(active, bookedSeats, seatId) {
+    let color = '';
+    if (bookedSeats === null) {
+      if (active) color = colorIron;
+      else color = colorDawn;
+    }
+    if (bookedSeats !== null) {
+      if (active) {
+        if (Object.values(bookedSeats).indexOf(seatId) > -1) {
+          color = colorValentineRed;
+        } else color = colorMediumForestGreed;
+      } else color = colorDawn;
+    }
+    return color;
+  }
 
   return (
     <>
       <Group
-        draggable
         ref={seatRectRef}
         x={x}
         y={y}
-        onClick={(e) => {
-          onClick(e);
-          e.target.moveToTop();
-        }}
-        onTap={onClick}
+        onClick={seatClicked}
         onMouseOver={() => {
           setIsHovering(true);
           popUpRef.current.moveToTop();
@@ -59,29 +55,11 @@ export default function Seat({
         onMouseLeave={() => {
           setIsHovering(false);
         }}
-        onDragStart={() => {
-          setIsDragging(true);
-        }}
-        onDragEnd={(e) => {
-          if (isCollidingWithTrashCan(e)) {
-            onDelete();
-            return;
-          }
-          if (!isValidPosition(e.target.getClientRect())) {
-            e.target.to({ x, y });
-            return;
-          }
-          snapToGrid(e);
-          setIsDragging(false);
-          if (popUpRef) {
-            popUpRef.current.moveToTop();
-          }
-        }}
       >
         <Rect
           width={standardSize}
           height={standardSize}
-          fill={isActive ? colorIron : colorDawn}
+          fill={fillColor(isActive, seatBooked, id)}
         />
 
         {isSelected && (
@@ -96,7 +74,7 @@ export default function Seat({
         )}
       </Group>
 
-      {isHovering && !isDragging && (
+      {isHovering && (
         <Group
           x={seatRectRef.current.x() - standardSize / 2}
           y={seatRectRef.current.y() - 60}

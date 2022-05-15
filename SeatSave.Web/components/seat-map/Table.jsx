@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import {
-  colorDawn,
-  colorIron,
+  colorAlmond,
+  colorRodeoDust,
+  gridSize,
   toNearestSnappingPoint,
 } from '../../lib/seatMapHelper';
 
@@ -15,12 +16,12 @@ export default function Table({
   isCollidingWithTrashCan,
   onSelected,
   onPositionUpdated,
+  isValidPosition,
   onDimensionsUpdated,
   onDelete,
 }) {
   const transformRef = useRef();
   const shapeRef = useRef();
-  const gridSize = 25;
 
   useEffect(() => {
     if (isSelected) {
@@ -41,7 +42,7 @@ export default function Table({
         height={height}
         x={x}
         y={y}
-        fill={isSelected ? colorDawn : colorIron}
+        fill={isSelected ? colorRodeoDust : colorAlmond}
         onDragEnd={(e) => {
           const newX = toNearestSnappingPoint(e.target.x(), gridSize);
           const newY = toNearestSnappingPoint(e.target.y(), gridSize);
@@ -52,6 +53,11 @@ export default function Table({
 
           if (isCollidingWithTrashCan(e)) {
             onDelete();
+            return;
+          }
+
+          if (!isValidPosition(e.target.getClientRect())) {
+            e.target.to({ x, y });
             return;
           }
 

@@ -179,6 +179,8 @@ export default function BookASeat({ availableDays }) {
               id={null}
               date={selectedDate}
               time={getSelectedPeriod}
+              setSeatId={setSeatSelected}
+              seatId={seatSelected}
             />{' '}
             {availableSeats && (
               <BookingSeat

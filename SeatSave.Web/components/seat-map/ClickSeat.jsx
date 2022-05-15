@@ -17,7 +17,7 @@ export default function ClickSeat({
   isSelected,
   isActive,
   seatBooked,
-  seatClicked,
+  onClick,
 }) {
   const popUpRef = useRef();
   const seatRectRef = useRef();
@@ -47,7 +47,7 @@ export default function ClickSeat({
         ref={seatRectRef}
         x={x}
         y={y}
-        onClick={seatClicked}
+        onClick={onClick}
         onMouseOver={() => {
           setIsHovering(true);
           popUpRef.current.moveToTop();

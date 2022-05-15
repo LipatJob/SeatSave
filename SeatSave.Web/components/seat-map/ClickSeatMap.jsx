@@ -5,21 +5,11 @@ import TableService from '../../services/TableService';
 import ClickSeat from './ClickSeat';
 import Table from './Table';
 import { seatMapHeight } from '../../lib/seatMapHelper';
+import SeatService from '../../services/SeatService';
+import { toIsoDate } from '../../lib/DateHelper';
 
-export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
+export default function ClickSeatMap({ id, date, period, setSeatId, seatId }) {
   const [seats, setSeats] = useState([]);
-  const updateSeats = async () => {
-    const res = await fetch(`${process.env.API_URL}/Api/Seats`);
-    if (!res.ok) {
-      console.log('There was an error');
-      return;
-    }
-    const data = await res.json();
-    setSeats(data);
-  };
-  useEffect(() => {
-    updateSeats();
-  }, []);
   const [tables, setTables] = useState([]);
   const [parentDimensions, setParentDimensions] = useState({
     width: 0,
@@ -27,16 +17,29 @@ export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
   });
   const parentDiv = useRef(null);
   const stage = useRef();
-  const maxPosX = parentDimensions.width;
-  const maxPosY = 500;
 
-  const isValidPosition = (box) =>
-    box.x > 0 &&
-    box.y > 0 &&
-    box.y + box.height < maxPosY &&
-    box.x + box.width < maxPosX;
+  const updateSeats = async () => {
+    const allSeats = await SeatService.getSeats();
+    const availableSeats = await SeatService.getAvailableSeats(
+      toIsoDate(date),
+      period,
+    );
+    const availableSeatIds = new Set(availableSeats.map((e) => e.id));
+    const seatsWithAvailability = allSeats.map((e) => ({
+      ...e,
+      bookable: availableSeatIds.has(e.id),
+    }));
+    console.log(seatsWithAvailability);
+
+    setSeats(seatsWithAvailability);
+  };
 
   useEffect(() => {
+    updateSeats();
+  }, [date, period]);
+
+  useEffect(() => {
+    updateSeats();
     TableService.getTables().then((fetchedTables) => setTables(fetchedTables));
 
     const checkSize = () => {
@@ -50,29 +53,6 @@ export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
     window.addEventListener('resize', checkSize);
     return () => window.removeEventListener('resize', checkSize);
   }, []);
-
-  const seatIdBooked = [];
-  const [allBookings, setAllBookings] = useState(null);
-  const getBookings = async () => {
-    const response = await fetch(`${process.env.API_URL}/Api/Booking`);
-    const bookingData = await response.json();
-    setAllBookings(bookingData);
-  };
-  if (allBookings !== null) {
-    allBookings.forEach((element) => {
-      if (
-        element.bookingDate === moment(date).format('YYYY-MM-DD') &&
-        element.period.timeStart === time &&
-        element.seat.active === true
-      ) {
-        seatIdBooked.push(element.seatId);
-      }
-    });
-  }
-  useEffect(() => {
-    getBookings();
-  }, []);
-
   return (
     <div className='w-full' ref={parentDiv}>
       <Stage
@@ -87,10 +67,9 @@ export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
               key={seat.id}
               x={seat.positionX}
               y={seat.positionY}
-              isValidPosition={isValidPosition}
               isSelected={seat.id === seatId}
               isActive={seat.active}
-              seatBooked={seat.id === seatId}
+              seatBooked={!seat.bookable}
               onClick={() => setSeatId(seat.id)}
             />
           ))}
@@ -102,7 +81,6 @@ export default function ClickSeatMap({ id, date, time, setSeatId, seatId }) {
               y={table.positionY}
               width={table.width}
               height={table.height}
-              isValidPosition={isValidPosition}
             />
           ))}
         </Layer>

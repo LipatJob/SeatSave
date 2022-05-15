@@ -28,15 +28,11 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] string? bookingCode = null)
+        public IActionResult GetAll()
         {
-            if (bookingCode != null)
-            {
-                return Ok(dbContext.Bookings.FirstOrDefault(e => e.BookingCode == bookingCode));
-            }
-
             return Ok(dbContext.Bookings.OrderByDescending(b => b.Id));
         }
+
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id)
         {
@@ -91,7 +87,6 @@ namespace SeatSave.Api.Controllers
 
             return Ok(booking);
         }
-
 
         private bool TryGetCurrentVisitor(out Visitor? visitor)
         {
@@ -169,6 +164,7 @@ namespace SeatSave.Api.Controllers
         public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]
         public IActionResult Delete() { return Ok("To be implemented"); }
+
         [HttpGet("Search")]
         public IActionResult SearchBookings([FromQuery] string? code = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
         {

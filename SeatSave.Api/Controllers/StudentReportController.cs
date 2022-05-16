@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using SeatSave.Api.Services;
+using SeatSave.EF;
+using SeatSave.Core.User;
 
 namespace SeatSave.Api.Controllers
 {
@@ -6,10 +9,22 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class StudentReportController : ControllerBase
     {
+        private SeatSaveContext dbContext;
+        private StudentReportService reportService;
+
+        public StudentReportController(SeatSaveContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
-        public IActionResult GetAll([FromQuery] DateOnly dateStart, [FromQuery] DateOnly dateEnd) { return Ok("Sample output"); }
+        public IActionResult GetAll([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null)
+        {
+            reportService = new StudentReportService(dbContext, DateOnly.Parse("2022-01-01"), DateOnly.Parse("2022-05-14"));
+            return Ok(reportService.GetTopDepartments());
+        }
 
         [HttpGet("Excel")]
-        public IActionResult GetExcel([FromQuery] DateOnly dateStart, [FromQuery] DateOnly dateEnd) { return Ok("To be implemented"); }
+        public IActionResult GetExcel([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null) { return Ok("To be implemented"); }
     }
 }

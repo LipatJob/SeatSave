@@ -20,8 +20,22 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAll([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null)
         {
-            reportService = new StudentReportService(dbContext, DateOnly.Parse("2022-01-01"), DateOnly.Parse("2022-05-14"));
-            return Ok(reportService.GetTopDepartments());
+            DateOnly? dateStart = null;
+            DateOnly? dateEnd = null;
+
+            if (dateStartString != null)
+                dateStart = DateOnly.Parse(dateStartString);
+            if (dateEndString != null)
+                dateEnd = DateOnly.Parse(dateEndString);
+
+            reportService = new StudentReportService(dbContext, dateStart, dateEnd);
+            
+            var topDepartmentsData = reportService.GetTopDepartments();
+            var topProgramStrandsData = reportService.GetTopProgramStrands();
+            var topYearLevelsData = reportService.GetTopYearLevel();
+            var topProgramYearsData = reportService.GetTopProgramStrandAndYearLevel();
+            
+            return Ok(topDepartmentsData.Concat(topProgramStrandsData).Concat(topYearLevelsData).Concat(topProgramYearsData));
         }
 
         [HttpGet("Excel")]

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReportSection from '../../components/librarian/generate-reports/ReportSection';
 
 const DEPARTMENTS_NAME = 'Departments';
@@ -6,25 +6,24 @@ const PROGRAMS_NAME = 'Programs/Strands';
 const YEARS_NAME = 'Year Levels';
 const PROGRAMS_YEARS_NAME = 'Programs/Strands and Year Levels';
 
-// dummy data
-const departmentsData = {
-  categories: ['MITL', 'CCIS', 'CAS', 'SHS', 'ETYCB'],
-  series: [{ name: 'Student count', data: [66, 46, 34, 33, 23] }],
-};
-const programsData = {
-  categories: ['CHE', 'CE', 'AR', 'CS', 'COMM'],
-  series: [{ name: 'Student count', data: [32, 22, 21, 20, 16] }],
-};
-const yearsData = {
-  categories: [3, 4, 2, 1, 12],
-  series: [{ name: 'Student count', data: [30, 19, 18, 17, 10] }],
-};
-const programsYearsData = {
-  categories: ['CHE - 3', 'CHE - 2', 'AR - 4', 'CS - 4', 'COMM - 2'],
-  series: [{ name: 'Student count', data: [22, 20, 16, 15, 9] }],
-};
+export default function GenerateReports({ allReports }) {
+  const [departmentsData, setDepartmentsData] = useState({
+    categories: allReports[0].categories,
+    series: [{ name: 'Student count', data: allReports[0].counts }],
+  });
+  const [programsData, setProgramsData] = useState({
+    categories: ['CHE', 'CE', 'AR', 'CS', 'COMM'],
+    series: [{ name: 'Student count', data: [32, 22, 21, 20, 16] }],
+  });
+  const [yearsData, setYearsData] = useState({
+    categories: [3, 4, 2, 1, 12],
+    series: [{ name: 'Student count', data: [30, 19, 18, 17, 10] }],
+  });
+  const [programsYearsData, setProgramsYearsData] = useState({
+    categories: ['CHE - 3', 'CHE - 2', 'AR - 4', 'CS - 4', 'COMM - 2'],
+    series: [{ name: 'Student count', data: [22, 20, 16, 15, 9] }],
+  });
 
-export default function GenerateReports() {
   return (
     <div className='page-container'>
       <h1>Generate Reports</h1>
@@ -71,6 +70,17 @@ export default function GenerateReports() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch(`${process.env.API_URL}/Api/StudentReport`);
+  const allReports = await res.json();
+
+  return {
+    props: {
+      allReports,
+    },
+  };
 }
 
 GenerateReports.page = 'Generate Reports';

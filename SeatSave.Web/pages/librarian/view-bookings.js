@@ -44,13 +44,16 @@ export default function ViewBookings({ allBookings, availableDays }) {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [availablePeriods, setAvailablePeriods] = useState();
-  const [periodStartTime, setPeriodStartTime] = useState(null);
+  const [periodStartTime, setPeriodStartTime] = useState(0);
+  const [seatSelected, setSeatSelected] = useState();
+  const [seatCurrent, setSeatCurrent] = useState();
+  const [showBookingInformation, setShowBookingInformation] = useState(false);
 
   const handleChange = (e) => {
     setPeriodStartTime(e.target.value);
   };
 
-  const updatePeriods = async (date) => {
+  async function updatePeriods(date) {
     const isoDate = moment(date).format('YYYY-MM-DD');
     const response = await fetch(
       `${process.env.API_URL}/Api/Schedule/${isoDate}/periods`,
@@ -61,19 +64,19 @@ export default function ViewBookings({ allBookings, availableDays }) {
     } else {
       console.log('Error!');
     }
-  };
+  }
 
-  const getSelectedDate = (date) => {
+  function getSelectedDate(date) {
     setSelectedDate(date);
-    setPeriodStartTime('Select Period');
+    setPeriodStartTime(0);
     updatePeriods(date);
-  };
+    setShowBookingInformation(false);
+  }
 
-  useEffect(() => {
-    updatePeriods();
-  }, []);
-
-  const [showBookingInformation, setShowBookingInformation] = useState(false);
+  function viewSeatDetails(x) {
+    setSeatCurrent(x);
+    setShowBookingInformation(true);
+  }
 
   return (
     <div className='page-container'>
@@ -97,12 +100,12 @@ export default function ViewBookings({ allBookings, availableDays }) {
               value={periodStartTime}
               onChange={handleChange}
             >
-              <option value={null} defaultChecked hidden>
+              <option value={0} defaultChecked hidden>
                 Select Period
               </option>
               {availablePeriods &&
                 availablePeriods.map((aPeriods) => (
-                  <option value={aPeriods.timeStart}>
+                  <option value={aPeriods.id}>
                     {formatTime(aPeriods.timeStart)} -{' '}
                     {formatTime(aPeriods.timeEnd)}
                   </option>
@@ -114,31 +117,43 @@ export default function ViewBookings({ allBookings, availableDays }) {
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className='sm:col-span-2'>
           <div className='border-0  sm:border-8 rounded-3xl border-pearl-bush w-full h-[370px]'>
-            <ClickSeatMap
-              id={null}
-              date={selectedDate}
-              time={periodStartTime}
-            />{' '}
+            {periodStartTime !== 0 && (
+              <ClickSeatMap
+                date={selectedDate}
+                period={periodStartTime}
+                setSeatId={setSeatSelected}
+                seatId={seatSelected}
+                viewDetails={viewSeatDetails}
+                closeDetails={() => setShowBookingInformation(false)}
+                clickable
+              />
+            )}
           </div>
-          <div className='w-full mt-4 '>
-            <div className='grid grid-cols-3 gap-4 text-center'>
-              <div>
-                <div className='inline-block w-6 h-6  bg-[#37722B]' />
-                <div className='inline-block pl-2'> Available</div>
-              </div>
-              <div className='col-span-2 sm:col-span-1'>
-                <div className='inline-block w-6 h-6 bg-[#EA555A]' />
-                <div className='inline-block pl-2'> Occupied</div>
-              </div>
-              <div className='col-span-3 sm:col-span-1'>
-                <div className='inline-block w-6 h-6 bg-dawn' />
-                <div className='inline-block pl-2'> Seat Unavailable</div>
+          {periodStartTime !== 0 && (
+            <div className='w-full mt-4 '>
+              <div className='grid grid-cols-3 gap-4 text-center'>
+                <div>
+                  <div className='inline-block w-6 h-6  bg-[#37722B]' />
+                  <div className='inline-block pl-2'> Available</div>
+                </div>
+                <div className='col-span-2 sm:col-span-1'>
+                  <div className='inline-block w-6 h-6 bg-[#EA555A]' />
+                  <div className='inline-block pl-2'> Occupied</div>
+                </div>
+                <div className='col-span-3 sm:col-span-1'>
+                  <div className='inline-block w-6 h-6 bg-dawn' />
+                  <div className='inline-block pl-2'> Seat Unavailable</div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
         {showBookingInformation && (
           <ViewBookingDetails
+            allBookings={allBookings}
+            date={selectedDate}
+            period={periodStartTime}
+            seatCurrent={seatCurrent}
             onClose={() => setShowBookingInformation(false)}
           />
         )}

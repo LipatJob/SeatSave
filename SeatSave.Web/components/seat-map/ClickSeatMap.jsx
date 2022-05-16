@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
-import moment from 'moment';
 import TableService from '../../services/TableService';
 import ClickSeat from './ClickSeat';
 import Table from './Table';
@@ -8,7 +7,13 @@ import { seatMapHeight } from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
 import { toIsoDate } from '../../lib/DateHelper';
 
-export default function ClickSeatMap({ id, date, period, setSeatId, seatId }) {
+export default function ClickSeatMap({
+  date,
+  period,
+  setSeatId,
+  seatId,
+  viewDetails,
+}) {
   const [seats, setSeats] = useState([]);
   const [tables, setTables] = useState([]);
   const [parentDimensions, setParentDimensions] = useState({
@@ -53,6 +58,13 @@ export default function ClickSeatMap({ id, date, period, setSeatId, seatId }) {
     window.addEventListener('resize', checkSize);
     return () => window.removeEventListener('resize', checkSize);
   }, []);
+
+  function seatClicked(x) {
+    viewDetails(x);
+    if (x.bookable) setSeatId(x.id);
+    else setSeatId(null);
+  }
+
   return (
     <div className='w-full' ref={parentDiv}>
       <Stage
@@ -70,7 +82,7 @@ export default function ClickSeatMap({ id, date, period, setSeatId, seatId }) {
               isSelected={seat.id === seatId}
               isActive={seat.active}
               seatBooked={!seat.bookable}
-              onClick={() => setSeatId(seat.id)}
+              onClick={() => seatClicked(seat)}
             />
           ))}
 

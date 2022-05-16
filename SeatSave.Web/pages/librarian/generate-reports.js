@@ -9,20 +9,50 @@ const PROGRAMS_YEARS_NAME = 'Programs/Strands and Year Levels';
 export default function GenerateReports({ allReports }) {
   const [departmentsData, setDepartmentsData] = useState({
     categories: allReports[0].categories,
-    series: [{ name: 'Student count', data: allReports[0].counts }],
+    counts: allReports[0].counts,
   });
   const [programsData, setProgramsData] = useState({
     categories: allReports[1].categories,
-    series: [{ name: 'Student count', data: allReports[1].counts }],
+    counts: allReports[1].counts,
   });
   const [yearsData, setYearsData] = useState({
     categories: allReports[2].categories,
-    series: [{ name: 'Student count', data: allReports[2].counts }],
+    counts: allReports[2].counts,
   });
   const [programsYearsData, setProgramsYearsData] = useState({
     categories: allReports[3].categories,
-    series: [{ name: 'Student count', data: allReports[3].counts }],
+    counts: allReports[3].counts,
   });
+
+  async function handleChangeDate() {
+    const dateStart = document.getElementById('fromDate').value;
+    const dateEnd = document.getElementById('toDate').value;
+
+    const response = await fetch(
+      `${process.env.API_URL}/Api/StudentReport?dateStartString=${dateStart}&dateEndString=${dateEnd}`,
+    );
+    if (response.ok) {
+      const newData = await response.json();
+      setDepartmentsData({
+        categories: newData[0].categories,
+        counts: newData[0].counts,
+      });
+      setProgramsData({
+        categories: newData[1].categories,
+        counts: newData[1].counts,
+      });
+      setYearsData({
+        categories: newData[2].categories,
+        counts: newData[2].counts,
+      });
+      setProgramsYearsData({
+        categories: newData[3].categories,
+        counts: newData[3].counts,
+      });
+    } else {
+      console.log('There was an error');
+    }
+  }
 
   return (
     <div className='page-container'>
@@ -38,11 +68,21 @@ export default function GenerateReports({ allReports }) {
         <div className='flex flex-col gap-5 mt-6 lg:flex-row lg:mt-0'>
           <label htmlFor='fromDate' className='flex flex-col w-[304px]'>
             From
-            <input id='fromDate' name='fromDate' type='date' />
+            <input
+              id='fromDate'
+              name='fromDate'
+              type='date'
+              onChange={handleChangeDate}
+            />
           </label>
           <label htmlFor='toDate' className='flex flex-col w-[304px]'>
             To
-            <input id='toDate' name='toDate' type='date' />
+            <input
+              id='toDate'
+              name='toDate'
+              type='date'
+              onChange={handleChangeDate}
+            />
           </label>
         </div>
       </div>

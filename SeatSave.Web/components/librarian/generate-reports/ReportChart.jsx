@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function ReportChart({ data }) {
-  const chartData = {
+  const [chartData, setChartData] = useState({
     options: {
       chart: {
-        id: 'basic-bar',
+        id: 'VisitorDataReports',
       },
       xaxis: {
         categories: data.categories,
@@ -20,8 +20,33 @@ export default function ReportChart({ data }) {
       },
       colors: ['#00214E', '#003174', '#3F7FC2', '#7DA0D4', '#B8C9DD'],
     },
-    series: data.series,
-  };
+    series: [{ name: 'Student Count', data: data.counts }],
+  });
+
+  function updateChart() {
+    setChartData(() => ({
+      options: {
+        chart: {
+          id: 'VisitorDataReports',
+        },
+        xaxis: {
+          categories: data.categories,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            distributed: true,
+          },
+        },
+        colors: ['#00214E', '#003174', '#3F7FC2', '#7DA0D4', '#B8C9DD'],
+      },
+      series: [{ name: 'Student Count', data: data.counts }],
+    }));
+  }
+
+  useEffect(() => {
+    updateChart();
+  }, [data]);
 
   return (
     <div className='w-full p-4 border'>

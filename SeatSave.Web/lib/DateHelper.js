@@ -8,4 +8,8 @@ function formatDate(date, showYear = true) {
   return moment(date).format(`MMMM D${showYear ? ', YYYY' : ''}`);
 }
 
-export { formatTime, formatDate };
+function toIsoDate(date) {
+  return moment(date).format('YYYY-MM-DD');
+}
+
+export { formatTime, formatDate, toIsoDate };

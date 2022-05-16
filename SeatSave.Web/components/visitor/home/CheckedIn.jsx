@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import BookingDetails from './BookingDetails';
 import OkModal from '../../common/OkModal';
-import { formatTime } from '../../../lib/DateHelper';
+import { formatTime, subtractTime } from '../../../lib/DateHelper';
 import visitorAuthService from '../../../lib/visitorAuthService';
 
+const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
+  ssr: false,
+});
+
 export default function CheckedIn({ bookingDetails, onCheckOut }) {
+  // Interval object for Expiration Timer
+  const expirationTimerInterval = setInterval(triggerExpirationTimer, 5000);
+  const [timeExpired, setTimeExpired] = useState(false);
   const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
   const onCheckOutClicked = async () => {
     const response = await fetch(
@@ -29,6 +37,25 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
     onCheckOut();
   };
 
+  function triggerExpirationTimer(e) {
+    var dateNow = new Date();
+    var timeNow =
+      dateNow.getHours() +
+      ':' +
+      dateNow.getMinutes() +
+      ':' +
+      dateNow.getSeconds();
+
+    var currentDateTime = new Date('1970-01-01 ' + timeNow);
+    var dateToCompare = new Date('1970-01-01 ' + bookingDetails.period.timeEnd);
+    console.log(currentDateTime.getTime() - dateToCompare.getTime());
+
+    if (currentDateTime.getTime() - dateToCompare.getTime() / 60000 >= 15) {
+      setTimeExpired(true);
+      clearInterval(expirationTimerInterval);
+    }
+  }
+
   return (
     <div className='page-container-small'>
       {checkoutMessageVisible && (
@@ -46,6 +73,23 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
           }
         />
       )}
+      {timeExpired && (
+        <OkModal
+          onOk={onCheckoutMessageSeen}
+          onClose={onCheckoutMessageSeen}
+          message={
+            <div>
+              <h4 className='mb-6'>Your time is up!</h4>
+              <p className='body-normal'>
+                You have exceeded your time for your reserved booking schedule.
+                You may now leave the library premises and book a seat for your
+                next visit.
+              </p>
+            </div>
+          }
+        />
+      )}
+
       <h2 className='mb-8 font-bold text-dusk-blue'>
         Your booking is until {formatTime(bookingDetails.period.timeEnd)}
       </h2>
@@ -54,7 +98,13 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
           <BookingDetails details={bookingDetails} />
         </div>
         <div className='sm:col-span-2'>
-          <div className='w-full h-[320px] mt-4 bg-red-600'> SeatMap </div>
+          <div className='w-full mt-4'>
+            <ViewSeatMap
+              id={bookingDetails.seat.id}
+              date={bookingDetails.bookingDate}
+              time={bookingDetails.period.timeStart}
+            />
+          </div>
         </div>
       </div>
       <div className='grid grid-cols-1 mt-4 mb-8 sm:grid-cols-3'>

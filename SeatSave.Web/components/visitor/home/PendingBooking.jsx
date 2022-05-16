@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import BookingCode from './BookingCode';
 import BookingDetails from './BookingDetails';
 import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 import visitorAuthService from '../../../lib/visitorAuthService';
 import { formatDate, formatTime } from '../../../lib/DateHelper';
+
+const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
+  ssr: false,
+});
 
 export default function PendingBooking({ bookingDetails, onCancel }) {
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -50,7 +55,13 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
         </div>
         <div className='sm:col-span-2'>
           <BookingDetails column details={bookingDetails} />
-          <div className='w-full h-[320px] mt-4 bg-red-600'> SeatMap </div>
+          <div className='w-full mt-4'>
+            <ViewSeatMap
+              id={bookingDetails.seat.id}
+              date={bookingDetails.bookingDate}
+              time={bookingDetails.period.timeStart}
+            />
+          </div>
         </div>
       </div>
       <div className='mt-4 mb-8'>

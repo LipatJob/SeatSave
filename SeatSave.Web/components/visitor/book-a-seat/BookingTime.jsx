@@ -10,7 +10,7 @@ export default function BookingTime({ availablePeriods, getSelectedPeriod }) {
             <button
               type='button'
               key={aPeriods.id}
-              className=' w-[150px] h-full rounded-md bg-pearl-bush hover:bg-rodeo-dust '
+              className=' w-[150px] h-full rounded-md bg-pearl-bush hover:bg-rodeo-dust focus:bg-rodeo-dust  '
               onClick={() => getSelectedPeriod(aPeriods.id)}
             >
               <h5 className='px-8 text-center'>

@@ -12,16 +12,16 @@ export default function GenerateReports({ allReports }) {
     series: [{ name: 'Student count', data: allReports[0].counts }],
   });
   const [programsData, setProgramsData] = useState({
-    categories: ['CHE', 'CE', 'AR', 'CS', 'COMM'],
-    series: [{ name: 'Student count', data: [32, 22, 21, 20, 16] }],
+    categories: allReports[1].categories,
+    series: [{ name: 'Student count', data: allReports[1].counts }],
   });
   const [yearsData, setYearsData] = useState({
-    categories: [3, 4, 2, 1, 12],
-    series: [{ name: 'Student count', data: [30, 19, 18, 17, 10] }],
+    categories: allReports[2].categories,
+    series: [{ name: 'Student count', data: allReports[2].counts }],
   });
   const [programsYearsData, setProgramsYearsData] = useState({
-    categories: ['CHE - 3', 'CHE - 2', 'AR - 4', 'CS - 4', 'COMM - 2'],
-    series: [{ name: 'Student count', data: [22, 20, 16, 15, 9] }],
+    categories: allReports[3].categories,
+    series: [{ name: 'Student count', data: allReports[3].counts }],
   });
 
   return (

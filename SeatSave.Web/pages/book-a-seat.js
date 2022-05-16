@@ -4,9 +4,7 @@ import Router from 'next/router';
 import dynamic from 'next/dynamic';
 import DatePicker from 'react-datepicker';
 import visitorAuthService from '../lib/visitorAuthService';
-// import BookingDate from '../components/visitor/book-a-seat/BookingDate';
 import BookingTime from '../components/visitor/book-a-seat/BookingTime';
-import BookingSeat from '../components/visitor/book-a-seat/BookingSeat';
 import BookingSeatModal from '../components/visitor/book-a-seat/BookingSeatModal';
 import 'react-datepicker/dist/react-datepicker.css';
 import { toIsoDate } from '../lib/DateHelper';
@@ -25,9 +23,6 @@ export default function BookASeat({ availableDays }) {
     }
   }, []);
 
-  // const day = availableDays.map((availableDay) => new Date(availableDay));
-  const [seatID, setSeatID] = useState();
-
   // Variables for Booking Details
   const [dateSelected, setDateSelected] = useState();
   const [periodSelected, setPeriodSelected] = useState();
@@ -36,24 +31,28 @@ export default function BookASeat({ availableDays }) {
   const [availablePeriods, setAvailablePeriods] = useState();
   const [availableSeats, setAvailableSeats] = useState();
   const [seatCurrent, setSeatCurrent] = useState();
+  const [selectedDate] = useState(null);
 
   const [modal, setModal] = useState(false);
   const toggleModal = () => {
     setModal(!modal);
   };
 
+  const availableDates = availableDays.map(
+    (availableDay) => new Date(availableDay),
+  );
   // ------------------ BOOKING FUNCTIONS ------------------
 
-  async function getSelectedDate(selectedDate) {
-    console.log(moment(selectedDate).format('YYYY-MM-DD'));
-    const isoDate = moment(selectedDate).format('YYYY-MM-DD');
+  async function getSelectedDate(date) {
+    console.log(moment(date).format('YYYY-MM-DD'));
+    const isoDate = moment(date).format('YYYY-MM-DD');
     const response = await fetch(
       `${process.env.API_URL}/Api/Schedule/${isoDate}/periods`,
     );
 
     if (response.status === 200) {
       const json = await response.json();
-      setDateSelected(selectedDate);
+      setDateSelected(date);
       setAvailablePeriods(json);
       setAvailableSeats(null);
       setPeriodSelected(null);
@@ -82,16 +81,9 @@ export default function BookASeat({ availableDays }) {
     }
   }
 
-  async function getSelectedSeat(selectedSeat) {
-    console.log(selectedSeat);
-    setSeatSelected(selectedSeat);
-  }
-
   function viewSeatDetails(x) {
     toggleModal.call();
-    setSeatID(x);
     setSeatCurrent(x);
-    console.log(seatID);
   }
 
   async function submitBooking(e) {
@@ -132,18 +124,6 @@ export default function BookASeat({ availableDays }) {
     }
   }
 
-  if (typeof window !== 'undefined') {
-    if (modal) {
-      document.body.classList.add('active-modal');
-    } else {
-      document.body.classList.remove('active-modal');
-    }
-  }
-
-  const [selectedDate, setSelectedDate] = useState(null);
-  const availableDates = availableDays.map(
-    (availableDay) => new Date(availableDay),
-  );
   // ------------------ MAIN BODY ------------------
 
   return (
@@ -181,19 +161,12 @@ export default function BookASeat({ availableDays }) {
                 <ClickSeatMap
                   date={dateSelected}
                   period={periodSelected}
-                  availableSeats={availableSeats}
                   setSeatId={setSeatSelected}
                   seatId={seatSelected}
+                  viewDetails={viewSeatDetails}
                 />
-
-                {/* {availableSeats && (
-              <BookingSeat
-                availableSeats={availableSeats}
-                viewSeatDetails={viewSeatDetails}
-              />
-            )} */}
               </div>
-              <div className='hidden w-full mt-4 sm:block'>
+              <div className='w-full mt-4'>
                 <div className='grid grid-cols-3 gap-4 text-center'>
                   <div>
                     <div className='inline-block w-6 h-6  bg-[#37722B]' />
@@ -225,11 +198,7 @@ export default function BookASeat({ availableDays }) {
         </div>
       )}
       {modal && (
-        <BookingSeatModal
-          seatCurrent={seatCurrent}
-          getSelectedSeat={getSelectedSeat}
-          toggleModal={toggleModal}
-        />
+        <BookingSeatModal seatCurrent={seatCurrent} toggleModal={toggleModal} />
       )}
     </div>
   );

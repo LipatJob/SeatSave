@@ -13,6 +13,8 @@ export default function ClickSeatMap({
   setSeatId,
   seatId,
   viewDetails,
+  closeDetails,
+  clickable,
 }) {
   const [seats, setSeats] = useState([]);
   const [tables, setTables] = useState([]);
@@ -60,9 +62,19 @@ export default function ClickSeatMap({
   }, []);
 
   function seatClicked(x) {
-    viewDetails(x);
-    if (x.bookable) setSeatId(x.id);
-    else setSeatId(null);
+    if (!clickable) {
+      viewDetails(x);
+      if (x.bookable) setSeatId(x.id);
+      else setSeatId(null);
+    }
+    if (clickable) {
+      closeDetails();
+      if (x.bookable || !x.active) setSeatId(null);
+      else {
+        setSeatId(x.id);
+        viewDetails(x);
+      }
+    }
   }
 
   return (

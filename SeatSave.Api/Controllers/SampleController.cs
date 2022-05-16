@@ -6,7 +6,9 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
+
         [HttpGet]
         public IActionResult GetAll() { return Ok("Sample output"); }
+
     }
 }

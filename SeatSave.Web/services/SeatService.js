@@ -55,4 +55,17 @@ async function deleteSeat(id) {
   throw Error(response.statusText);
 }
 
-export default { getSeats, addSeat, updateSeat, deleteSeat };
+async function getAvailableSeats(isoDate, periodId) {
+  const response = await fetch(
+    `${process.env.API_URL}/Api/Schedule/${isoDate}/${periodId}/Seat`,
+  );
+
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  }
+
+  throw Error(response.statusText);
+}
+
+export default { getSeats, addSeat, updateSeat, deleteSeat, getAvailableSeats };

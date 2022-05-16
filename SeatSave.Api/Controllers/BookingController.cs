@@ -13,28 +13,26 @@ namespace SeatSave.Api.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private SeatSaveContext dbContext;
-        private BookingService bookingService;
+        private readonly SeatSaveContext dbContext;
+        private readonly IEmailService emailService;
+        private readonly BookingService bookingService;
 
-        public BookingController(SeatSaveContext dbContext)
+
+        public BookingController(SeatSaveContext dbContext, IEmailService emailService)
         {
             this.dbContext = dbContext;
-
+            this.emailService = emailService;
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
             var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
             bookingService = new BookingService(currentDate, schedule, dbContext.Bookings, dbContext.Seats);
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] string? bookingCode = null)
+        public IActionResult GetAll()
         {
-            if (bookingCode != null)
-            {
-                return Ok(dbContext.Bookings.FirstOrDefault(e => e.BookingCode == bookingCode));
-            }
-
             return Ok(dbContext.Bookings.OrderByDescending(b => b.Id));
         }
+
         [HttpGet("{id}")]
         public IActionResult GetSpecific(int id)
         {
@@ -85,9 +83,10 @@ namespace SeatSave.Api.Controllers
             dbContext.Bookings.Add(booking);
             dbContext.SaveChanges();
 
+            emailService.SendConfirmationMessage(visitor.Email, booking);
+
             return Ok(booking);
         }
-
 
         private bool TryGetCurrentVisitor(out Visitor? visitor)
         {
@@ -165,6 +164,7 @@ namespace SeatSave.Api.Controllers
         public IActionResult Update() { return Ok("To be implemented"); }
         [HttpDelete]
         public IActionResult Delete() { return Ok("To be implemented"); }
+
         [HttpGet("Search")]
         public IActionResult SearchBookings([FromQuery] string? code = null, [FromQuery] string? status = null, [FromQuery] string? date = null, [FromQuery] string? email = null)
         {

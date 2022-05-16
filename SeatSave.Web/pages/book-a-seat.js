@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Router from 'next/router';
+import dynamic from 'next/dynamic';
+import DatePicker from 'react-datepicker';
 import visitorAuthService from '../lib/visitorAuthService';
-import BookingDate from '../components/visitor/book-a-seat/BookingDate';
+// import BookingDate from '../components/visitor/book-a-seat/BookingDate';
 import BookingTime from '../components/visitor/book-a-seat/BookingTime';
 import BookingSeat from '../components/visitor/book-a-seat/BookingSeat';
 import BookingSeatModal from '../components/visitor/book-a-seat/BookingSeatModal';
+import 'react-datepicker/dist/react-datepicker.css';
+import { toIsoDate } from '../lib/DateHelper';
+
+const ClickSeatMap = dynamic(
+  () => import('../components/seat-map/ClickSeatMap'),
+  {
+    ssr: false,
+  },
+);
 
 export default function BookASeat({ availableDays }) {
   useEffect(() => {
@@ -14,7 +25,7 @@ export default function BookASeat({ availableDays }) {
     }
   }, []);
 
-  const day = availableDays.map((availableDay) => new Date(availableDay));
+  // const day = availableDays.map((availableDay) => new Date(availableDay));
   const [seatID, setSeatID] = useState();
 
   // Variables for Booking Details
@@ -100,7 +111,7 @@ export default function BookASeat({ availableDays }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          isoDate: moment(dateSelected).format('YYYY-MM-DD'),
+          isoDate: toIsoDate(dateSelected),
           periodId: periodSelected,
           seatId: seatSelected,
         }),
@@ -129,6 +140,10 @@ export default function BookASeat({ availableDays }) {
     }
   }
 
+  const [selectedDate, setSelectedDate] = useState(null);
+  const availableDates = availableDays.map(
+    (availableDay) => new Date(availableDay),
+  );
   // ------------------ MAIN BODY ------------------
 
   return (
@@ -139,8 +154,14 @@ export default function BookASeat({ availableDays }) {
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className=' sm:col-span-1'>
           <h5 className='mb-4 font-bold'>Select your date</h5>
-          <div className='h-[300px] pt-20 '>
-            <BookingDate day={day} getSelectedDate={getSelectedDate} />
+          <div className='h-[300px] pt-4 '>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(dateViewBooking) => getSelectedDate(dateViewBooking)}
+              className='flex flex-col'
+              includeDates={availableDates}
+              inline
+            />
           </div>
           <h5 className='font-bold'>Select your time</h5>
           <div className='h-[150px] pt-8'>
@@ -154,32 +175,42 @@ export default function BookASeat({ availableDays }) {
         </div>
         <div className='sm:col-span-2'>
           <h5 className='pb-4 font-bold'>Pick your seat</h5>
+          {availableSeats && (
+            <>
+              <div className='w-full text-center text-red-500 border-8 rounded-3xl border-pearl-bush'>
+                <ClickSeatMap
+                  date={dateSelected}
+                  period={periodSelected}
+                  availableSeats={availableSeats}
+                  setSeatId={setSeatSelected}
+                  seatId={seatSelected}
+                />
 
-          <div className=' border-8 rounded-3xl border-pearl-bush w-full h-[370px] text-center text-red-500'>
-            SEAT MAP
-            {availableSeats && (
+                {/* {availableSeats && (
               <BookingSeat
                 availableSeats={availableSeats}
                 viewSeatDetails={viewSeatDetails}
               />
-            )}
-          </div>
-          <div className='hidden w-full mt-4 sm:block'>
-            <div className='grid grid-cols-3 gap-4 text-center'>
-              <div>
-                <div className='inline-block w-6 h-6  bg-[#37722B]' />
-                <div className='inline-block pl-2'> Available</div>
+            )} */}
               </div>
-              <div>
-                <div className='inline-block w-6 h-6 bg-[#CD201F]' />
-                <div className='inline-block pl-2'> Occupied</div>
+              <div className='hidden w-full mt-4 sm:block'>
+                <div className='grid grid-cols-3 gap-4 text-center'>
+                  <div>
+                    <div className='inline-block w-6 h-6  bg-[#37722B]' />
+                    <div className='inline-block pl-2'> Available</div>
+                  </div>
+                  <div>
+                    <div className='inline-block w-6 h-6 bg-[#CD201F]' />
+                    <div className='inline-block pl-2'> Occupied</div>
+                  </div>
+                  <div>
+                    <div className='inline-block w-6 h-6 bg-dawn' />
+                    <div className='inline-block pl-2'> Seat Unavailable</div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className='inline-block w-6 h-6 bg-dawn' />
-                <div className='inline-block pl-2'> Seat Unavailable</div>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
       {seatSelected && (

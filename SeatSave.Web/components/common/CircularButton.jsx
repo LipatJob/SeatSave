@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function CircularButton({ onClick }) {
+export default function CircularButton({ onClick, className }) {
   return (
-    <div className='text-right'>
+    <div className={`text-right ${className}`}>
       <button
         onClick={() => onClick()}
         type='button'

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Router from 'next/router';
+import Head from 'next/head';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import visitorAuthService from '../lib/visitorAuthService';
@@ -25,6 +26,10 @@ export default function VisitorLogin() {
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <Head>
+        <title>Login | SeatSave Visitor</title>
+      </Head>
+      
       <div className='hidden sm:block'>
         <Image
           src='/LoginDecoration.svg'
@@ -34,27 +39,28 @@ export default function VisitorLogin() {
           height={500}
         />
       </div>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={LoginSchema}
-        onSubmit={(values, { setFieldError }) => {
-          visitorAuthService
-            .login(values.email, values.password)
-            .then((user) => {
-              if (user == null) {
-                setFieldError('email', 'Email or password not found');
-                return;
-              }
-              Router.push('/');
-            });
-        }}
-      >
-        {() => (
-          <Form>
-            <div className='sm:max-w-md'>
+      <div className='sm:max-w-md'>
+        <h1 className='mb-16 text-dusk-blue'>Welcome Back!</h1>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={LoginSchema}
+          onSubmit={(values, { setFieldError }) => {
+            visitorAuthService
+              .login(values.email, values.password)
+              .then((user) => {
+                if (user == null) {
+                  setFieldError('email', 'Email or password not found');
+                  return;
+                }
+                Router.push('/');
+              });
+          }}
+        >
+          {() => (
+            <Form>
               <div className='flex flex-col items-center mb-12 gap-y-7'>
                 <div className='w-full'>
                   <p className='font-light body-small'>Email</p>
@@ -100,10 +106,10 @@ export default function VisitorLogin() {
                   </Link>
                 </p>
               </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 }

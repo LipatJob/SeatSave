@@ -1,12 +1,34 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import Router from 'next/router';
 import Image from 'next/image';
+import Head from 'next/head';
+import { width } from '@mui/system';
+import dynamic from 'next/dynamic';
+import { Hidden } from '@mui/material';
 import SearchBookingForm from '../../components/librarian/check-in-out/SearchBookingForm';
 import SearchResultsSection from '../../components/librarian/check-in-out/SearchResultsSection';
 import PresentBookingsSection from '../../components/librarian/check-in-out/PresentBookingsSection';
 import BookingDetailsSection from '../../components/librarian/check-in-out/BookingDetailsSection';
+import librarianAuthService from '../../lib/librarianAuthService';
+
+const QrReader = dynamic(() => import('react-qr-reader'), {
+  ssr: false,
+});
 
 export default function CheckInOut({ presentPeriod, presentBookings }) {
+  useEffect(() => {
+    if (!librarianAuthService.isLoggedIn()) {
+      Router.push('/librarian/login');
+    }
+  }, []);
+
+  const camera = useRef();
+
+  const [showBookings, setShowBookings] = useState(true);
+
+  const [showQRCodeScanner, setShowQRCodeScanner] = useState(false);
+
   const [searchResults, setSearchResults] = useState();
 
   const [showResults, setShowResults] = useState(false);
@@ -15,6 +37,9 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 
   const [bookingToDisplay, setBookingToDisplay] = useState([]);
 
+  // FOR QR CODE SCANNING
+  const [scannedCode, setScannedCode] = useState('');
+
   async function handleSearchBooking(e) {
     e.preventDefault();
     const code = e.target.bookingCode.value;
@@ -22,7 +47,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
       `${process.env.API_URL}/Api/Booking/Search?code=${code}`,
     );
     const results = await res.json();
-    
+
     setSearchResults(results);
     setShowResults(true);
   }
@@ -41,12 +66,66 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
     setShowDetails(false);
   }
 
+  function handleBookings() {
+    setShowDetails(false);
+    setShowBookings(true);
+    setShowQRCodeScanner(false);
+  }
+
+  function handleQRCodeScanner() {
+    setShowBookings(false);
+    setShowDetails(false);
+    setShowQRCodeScanner(true);
+  }
+
+  const handleErrorWebCam = (error) => {
+    console.log(error);
+  };
+
+  const handleScannedQRCode = async (data) => {
+    if (!showQRCodeScanner) {
+      return;
+    }
+
+    if (data && !showDetails) {
+      const res = await fetch(
+        `${process.env.API_URL}/Api/Booking/Search?code=${data}`,
+      );
+
+      if (res.status === 200) {
+        const json = await res.json();
+        setScannedCode(data);
+        setShowDetails(true);
+        setBookingToDisplay(json);
+      }
+    }
+  };
+
   return (
     <div className='page-container-small'>
+      <Head>
+        <title>Check In/Out | SeatSave Librarian</title>
+      </Head>
+
       <h1>Check In / Out</h1>
+      <div className='grid grid-cols-2 my-10 gap-x-3'>
+        <button
+          className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
+          onClick={handleQRCodeScanner}
+        >
+          Scan QR Code
+        </button>
+        <button
+          className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
+          onClick={handleBookings}
+        >
+          Search
+        </button>
+      </div>
+
       <div className='relative flex flex-col lg:flex-row gap-5 mt-8 lg:mt-14 min-h-[600px]'>
         <div className='lg:basis-3/5'>
-          <SearchBookingForm onSubmit={handleSearchBooking} />
+          {showBookings && <SearchBookingForm onSubmit={handleSearchBooking} />}
           {showResults && (
             <SearchResultsSection
               results={searchResults}
@@ -54,11 +133,24 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               clear={handleClearSearch}
             />
           )}
-          <PresentBookingsSection
-            period={presentPeriod[0]}
-            bookings={presentBookings}
-            previewDetails={handlePreviewDetails}
-          />
+          {showBookings && (
+            <PresentBookingsSection
+              period={presentPeriod[0]}
+              bookings={presentBookings}
+              previewDetails={handlePreviewDetails}
+            />
+          )}
+          <div className={showQRCodeScanner ? '' : 'hidden'}>
+            <QrReader
+              delay={300}
+              style={{ width: '100%' }}
+              onError={handleErrorWebCam}
+              onScan={handleScannedQRCode}
+              className='p-10 pb-10'
+              ref={camera}
+              showViewFinder={false}
+            />
+          </div>
         </div>
         <div className='absolute top-0 w-full lg:relative lg:basis-2/5'>
           {showDetails && (
@@ -67,14 +159,16 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               close={handleCloseDetails}
             />
           )}
-          <div className='absolute right-0 hidden lg:block top-20'>
-            <Image
-              src='/CheckInOutDecoration.svg'
-              width={393.24}
-              height={424.18}
-              layout='fixed'
-            />
-          </div>
+          {!showDetails && (
+            <div className='absolute right-0 hidden lg:block top-20'>
+              <Image
+                src='/CheckInOutDecoration.svg'
+                width={393.24}
+                height={424.18}
+                layout='fixed'
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

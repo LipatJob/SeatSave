@@ -21,7 +21,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet]
         public IActionResult GetAvailableDays()
         {
-            return Ok(schedule.GetAvailableDays(DateOnly.FromDateTime(DateTime.Today), 21));
+            return Ok(schedule.GetAvailableDays(DateOnly.FromDateTime(DateTime.Today), 21).OrderBy(e => e));
         }
 
         private bool IsUnavailable(DateTime currentDay)
@@ -34,19 +34,21 @@ namespace SeatSave.Api.Controllers
         public IActionResult GetAvailablePeriodsForDay(string isoDate)
         {
             var date = DateOnly.Parse(isoDate);
-            return Ok(schedule.GetAvailablePeriods(date, DateOnly.FromDateTime(DateTime.Today)));
+            return Ok(schedule.GetAvailablePeriods(date, DateOnly.FromDateTime(DateTime.Today)).OrderBy(e => e.TimeStart));
         }
 
         [HttpGet("periods")]
         public IActionResult GetPeriods()
         {
-            return Ok(new PeriodFactory().GetPeriodsInDay());
+            return Ok(new PeriodFactory().GetPeriodsInDay().OrderBy(e => e.TimeStart));
         }
 
         [HttpGet("{isoDate}/{periodId}/Seat")]
         public IActionResult GetBookableSeats(string isoDate, int periodId)
         {
-            return Ok(dbContext.Seat);
+            var unavailableSeatsForBooking = dbContext.Bookings.Where(e => e.BookingDate == DateOnly.Parse(isoDate) && e.PeriodId == periodId).Select(e => e.Seat);
+            var bookableSeats = dbContext.Seats.Where(e => !unavailableSeatsForBooking.Contains(e) && e.Active == true);
+            return Ok(bookableSeats);
         }
 
         [HttpGet("Periods/Present")]

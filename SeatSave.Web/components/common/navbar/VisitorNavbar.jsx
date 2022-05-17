@@ -20,10 +20,10 @@ const visitorLinks = [
 
 export default function VisitorNavbar() {
   return (
-    <div className='fixed z-50 flex flex-col justify-center w-full h-20 bg-dusk-blue'>
+    <div className='fixed z-50 flex flex-col justify-center w-full h-20 shadow-lg bg-dusk-blue'>
       <div className='flex flex-row items-center justify-between w-full text-white page-container'>
         <div className='flex flex-row items-center'>
-          <NavbarLogo />
+          <NavbarLogo logoLink='/' />
           <div className='hidden ml-12 lg:block'>
             <DesktopMenu links={visitorLinks} />
           </div>

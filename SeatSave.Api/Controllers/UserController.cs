@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatSave.Api.DTO;
+using SeatSave.Api.Services;
 using SeatSave.Core.User;
 using SeatSave.EF;
 
@@ -56,8 +57,12 @@ namespace SeatSave.Api.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] UserDto userDto)
         {
-            var user = DtoToUserType(userDto);
-            if (user == null) { return BadRequest(); }
+            var user = userDto.ToUserType();
+            if (user == null) { return BadRequest("Invalid user type"); }
+
+            RegistrationService registrationService = new RegistrationService(dbContext.Users);
+            var canRegister = registrationService.CanUserRegister(user, out var message);
+            if (!canRegister) { return BadRequest(message); }
 
             dbContext.Users.Add(user);
             dbContext.SaveChanges();
@@ -73,26 +78,15 @@ namespace SeatSave.Api.Controllers
             return Ok(true);
         }
 
-        private static UserModel? DtoToUserType(UserDto userDto)
-        {
-            return userDto.UserType switch
-            {
-                Librarian.UserType => userDto.ToLibrarian(),
-                Student.UserType => userDto.ToStudent(),
-                Faculty.UserType => userDto.ToFaculty(),
-                _ => null,
-            };
-        }
+
 
         [HttpPut("{id}")]
         public IActionResult Update([FromBody] UserDto userDto, int id)
         {
             if (userDto.Id != id) { return BadRequest(); }
 
-            var user = DtoToUserType(userDto);
-
+            var user = userDto.ToUserType();
             if (user == null) { return BadRequest(); }
-
 
             dbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             dbContext.SaveChanges();
@@ -113,6 +107,7 @@ namespace SeatSave.Api.Controllers
 
         [HttpGet("Enum/Current")]
         public IActionResult GetCurrent() { throw new NotImplementedException("TODO"); }
+
 
         [HttpGet("Enum/Student/Department")]
         public IActionResult GetDepartments()

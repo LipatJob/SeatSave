@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Router from 'next/router';
+import Head from 'next/head';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import librarianAuthService from '../../lib/librarianAuthService';
@@ -25,6 +26,10 @@ export default function LibrarianLogin() {
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <Head>
+        <title>Login | SeatSave Librarian</title>
+      </Head>
+
       <div className='hidden sm:block'>
         <Image
           src='/LoginDecoration.svg'
@@ -34,27 +39,28 @@ export default function LibrarianLogin() {
           height={500}
         />
       </div>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={LoginSchema}
-        onSubmit={(values, { setFieldError }) => {
-          librarianAuthService
-            .login(values.email, values.password)
-            .then((user) => {
-              if (user == null) {
-                setFieldError('email', 'Email or password not found');
-                return;
-              }
-              Router.push('/librarian');
-            });
-        }}
-      >
-        {() => (
-          <Form>
-            <div className='sm:max-w-md'>
+      <div className='sm:max-w-md'>
+        <h1 className='mb-16 text-dusk-blue'>Welcome Back!</h1>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={LoginSchema}
+          onSubmit={(values, { setFieldError }) => {
+            librarianAuthService
+              .login(values.email, values.password)
+              .then((user) => {
+                if (user == null) {
+                  setFieldError('email', 'Email or password not found');
+                  return;
+                }
+                Router.push('/librarian');
+              });
+          }}
+        >
+          {() => (
+            <Form>
               <div className='flex flex-col items-center mb-12 gap-y-7'>
                 <div className='w-full'>
                   <p className='font-light body-small'>Email</p>
@@ -98,10 +104,10 @@ export default function LibrarianLogin() {
                   </p>
                 </Link>
               </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 }

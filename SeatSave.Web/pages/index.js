@@ -1,8 +1,9 @@
 import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
-import CheckedIn from '../components/home/CheckedIn';
-import NoBooking from '../components/home/NoBooking';
-import PendingBooking from '../components/home/PendingBooking';
+import Head from 'next/head';
+import CheckedIn from '../components/visitor/home/CheckedIn';
+import NoBooking from '../components/visitor/home/NoBooking';
+import PendingBooking from '../components/visitor/home/PendingBooking';
 import visitorAuthService from '../lib/visitorAuthService';
 
 export default function ViewBookingDetails() {
@@ -22,7 +23,7 @@ export default function ViewBookingDetails() {
       console.log('No booking');
       setCurrentBooking(null);
     } else {
-      console.log('An error occured trying to fetch your booking details');
+      console.log('An error occurred trying to fetch your booking details');
     }
   };
 
@@ -39,6 +40,10 @@ export default function ViewBookingDetails() {
 
   return (
     <div>
+      <Head>
+        <title>View Booking Details | SeatSave Visitor</title>
+      </Head>
+
       {currentBooking && currentBooking.status === 'Pending' && (
         <PendingBooking
           bookingDetails={currentBooking}

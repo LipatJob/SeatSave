@@ -71,92 +71,112 @@ namespace SeatSave.EF
                 }
             );
 
-            context.Librarians.AddRange(
+            var librarians = new[]{
                 new Librarian
                 {
-                    Id = 1,
                     Email = "librarian@gmail.com",
                     FirstName = "Text",
                     LastName = "Account",
                     Password = "1234567"
                 }
-            );
+            };
+            context.Librarians.AddRange(librarians);
 
-            context.Students.AddRange(
-               new Student
+            var students = new[]{
+              new Student
                {
-                   Id = 2,
                    Email = "student@gmail.com",
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "1234567",
-                   ProgramStrand = "CS",
-                   YearGrade = "First Year",
+                   ProgramStrand = "STEM",
+                   Department = "SHS",
+                   YearGrade = "Grade 11",
                },
                new Student
                {
-                   Id = 3,
                    Email = "student2@gmail.com",
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "password",
-                   ProgramStrand = "IT",
+                   ProgramStrand = "BA",
+                   Department = "ETCYB",
                    YearGrade = "First Year",
                },
-                new Student
+              new Student
+              {
+                  Email = "student3@gmail.com",
+                  FirstName = "Text",
+                  LastName = "Account",
+                  Password = "1234567",
+                  ProgramStrand = "CS",
+                  Department = "CCIS",
+                  YearGrade = "First Year",
+              }
+            };
+            context.Students.AddRange(students);
+
+            var staff = new[]{
+              new Staff
                 {
-                    Id = 4,
-                    Email = "student3@gmail.com",
-                    FirstName = "Text",
+                    Email = "staff@mcl.edu.ph",
+                    FirstName = "Staff",
                     LastName = "Account",
                     Password = "1234567",
-                    ProgramStrand = "IT",
-                    YearGrade = "First Year",
+                    StaffOffice = "Blue and Silver Bookshop"
                 }
-            );
+            };
+            context.Staffs.AddRange(staff);
 
-            context.AddRange(
-                new SeatModel
+            var facultyMembers = new[]{
+              new Faculty
+              {
+                  Email = "faculty@mcl.edu.ph",
+                  FirstName = "Staff",
+                  LastName = "Account",
+                  Password = "1234567",
+                  FacultyOffice = "College of Computer and Information Science (CCIS)"
+              }
+            };
+            context.FacultyMembers.AddRange(facultyMembers);
+
+            var seats = new[]{new SeatModel
                 {
-                    Id = 1,
                     Name = "ABC",
-                    Type = "1",
+                    Type = SeatModelTypes.CarrelDesk,
                     Active = true,
                     Description = "description description",
                 },
                 new SeatModel
                 {
-                    Id = 2,
                     Name = "DEF",
-                    Type = "2",
+                    Type = SeatModelTypes.CarrelDeskWithOutlet,
                     Active = false,
                     Description = "description2 description2",
                 }
-            );
+              };
+            context.AddRange(seats);
 
-            context.Bookings.AddRange(
-
-                new BookingModel
+            var bookings = new[]{
+              new BookingModel
                 {
-                    Id = 2,
                     BookingCode = "5678",
                     BookingDate = new DateOnly(2022, 04, 29),
-                    PeriodId = 5,
-                    SeatId = 2,
+                    Period = periods[4],
+                    Seat = seats[1],
                     Status = BookingModel.PendingStatus,
                     StatusHistory = new StatusHistory
                     {
                         DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10)
                     },
-                    VisitorId = 2
+                    VisitorModel = students[1]
                 },
                 new BookingModel
                 {
-                    Id = 3,
                     BookingCode = "1234",
                     BookingDate = new DateOnly(2022, 04, 28),
-                    PeriodId = 3,
-                    SeatId = 1,
+                    Period = periods[2],
+                    Seat = seats[0],
                     Status = BookingModel.CheckedOutStatus,
                     StatusHistory = new StatusHistory
                     {
@@ -164,24 +184,24 @@ namespace SeatSave.EF
                         DateTimeCheckedIn = new DateTime(2022, 4, 28, 10, 2, 0),
                         DateTimeCheckedOut = new DateTime(2022, 4, 28, 11, 26, 0),
                     },
-                    VisitorId = 3
+                    VisitorModel = students[0]
                 },
                  new BookingModel
                  {
-                     Id = 4,
                      BookingCode = "34531",
                      BookingDate = new DateOnly(2022, 04, 29),
-                     PeriodId = 5,
-                     SeatId = 2,
+                     Period = periods[4],
+                     Seat = seats[1],
                      Status = BookingModel.CheckedInStatus,
                      StatusHistory = new StatusHistory
                      {
                          DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
                          DateTimeCheckedIn = new DateTime(2022, 04, 28, 11, 10, 10),
                      },
-                     VisitorId = 4
+                     VisitorModel = students[2]
                  }
-            );
+            };
+            context.Bookings.AddRange(bookings);
 
             context.SaveChanges();
         }

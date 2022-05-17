@@ -8,15 +8,16 @@ export default function Navbar({ page }) {
   const librarianPages = [
     'CheckInOut',
     'ViewBookings',
+    'Generate Reports',
     'ManageSeats',
     'ManageDateTime',
   ];
 
   if (visitorPages.includes(page)) {
     return <VisitorNavbar />;
-  } if (librarianPages.includes(page)) {
+  }
+  if (librarianPages.includes(page)) {
     return <LibrarianNavbar />;
-  } 
-    return <LoginNavbar />;
-  
+  }
+  return <LoginNavbar />;
 }

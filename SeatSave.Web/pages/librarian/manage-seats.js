@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GrClose } from 'react-icons/gr';
 import dynamic from 'next/dynamic';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
-import SeatInformation from '../../components/librarian/manage-seat/SeatInformation';
-import OkModal from '../../components/common/OkModal';
+import SeatInformationForm from '../../components/librarian/manage-seat/SeatInformationForm';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
 
 const EditableSeatMap = dynamic(
@@ -14,10 +13,9 @@ const EditableSeatMap = dynamic(
 );
 
 export default function ManageSeats({ seatTypes }) {
-  const [showModalAddedSeat, setShowModalAddedSeat] = useState(false);
+  const [showSeatDetails, setShowSeatDetails] = useState(false);
   const [currentID, setCurrentID] = useState(null);
   const [seats, setSeats] = useState([]);
-  const [seatName, setSeatName] = useState();
 
   const updateSeats = async () => {
     const res = await fetch(`${process.env.API_URL}/Api/Seats`);
@@ -40,21 +38,6 @@ export default function ManageSeats({ seatTypes }) {
 
   return (
     <div className='page-container '>
-      {showModalAddedSeat && (
-        <OkModal
-          onOk={() => setShowModalAddedSeat(false)}
-          onClose={() => setShowModalAddedSeat(false)}
-          message={
-            <div>
-              <h4 className='mb-6'>Seat Added!</h4>
-              <p className='body-normal'>
-                You have successfully added a new seat:
-                <br /> {seatName}
-              </p>
-            </div>
-          }
-        />
-      )}
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>
@@ -66,35 +49,38 @@ export default function ManageSeats({ seatTypes }) {
             selectedSeatId={currentID}
             setSelectedSeatId={(id) => {
               setCurrentID(id);
+              setShowSeatDetails(id !== null);
             }}
             onSeatsUpdated={(newSeats) => setSeats(newSeats)}
           />
         </div>
         <div className='relative'>
-          {!currentID && (
+          {!showSeatDetails && (
             <SeatSelectionPanel
-              className={currentID && 'hidden'}
               seats={seats}
               onAddClicked={() => {
                 setCurrentID(null);
+                setShowSeatDetails(true);
               }}
               onSeatSelected={(id) => {
                 setCurrentID(id);
+                setShowSeatDetails(true);
               }}
             />
           )}
-          {currentID && (
+          {showSeatDetails && (
             <PanelWithHeader
-              className={`top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative ${
-                !currentID && 'hidden'
-              }`}
+              className='top-0 w-full h-full bg-white md:col-span-2 md:top-auto md:relative'
               header={
                 <div className='flow-root'>
                   <h4 className='float-left '> Seat Information</h4>
                   <span className='float-right pt-2 pr-4'>
                     <button
                       type='button'
-                      onClick={() => setCurrentID(null)}
+                      onClick={() => {
+                        setCurrentID(null);
+                        setShowSeatDetails(false);
+                      }}
                       className='ml-auto'
                     >
                       <GrClose className='mx-auto my-auto' />
@@ -103,14 +89,13 @@ export default function ManageSeats({ seatTypes }) {
                 </div>
               }
               body={
-                <SeatInformation
-                  setShowModalAddedSeat={setShowModalAddedSeat}
-                  setSeatName={setSeatName}
+                <SeatInformationForm
                   onAvailableSeatsUpdated={updateAvailableSeats}
                   currentID={currentID}
                   seatTypes={seatTypes}
                   goToPreviousFormPart={() => {
                     setCurrentID(null);
+                    setShowSeatDetails(false);
                   }}
                 />
               }

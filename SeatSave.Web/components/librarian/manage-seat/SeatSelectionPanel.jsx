@@ -10,28 +10,26 @@ export default function SeatSelectionPanel({
   className,
 }) {
   return (
-    <div>
-      <PanelWithHeader
-        header={<h4>Available Seats</h4>}
-        body={
-          <div className={className}>
-            <div className=' h-[450px] overflow-y-scroll'>
-              {seats.map((seat) => (
-                <div key={seat.id}>
-                  <Seat
-                    Name={seat.name}
-                    Code={seat.id}
-                    onClick={() => onSeatSelected(seat.id)}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className='h-[70px]'>
-              <CircularButton onClick={onAddClicked} />
-            </div>
-          </div>
-        }
-      />
-    </div>
+    <PanelWithHeader
+      className={`h-[620px]   ${className}`}
+      header={<h4>Available Seats</h4>}
+      body={
+        <div className='flex flex-col max-h-full overflow-hidden overflow-y-scroll'>
+          {seats.map((seat) => (
+            <Seat
+              key={seat.id}
+              Name={seat.name}
+              Code={seat.id}
+              onClick={() => onSeatSelected(seat.id)}
+            />
+          ))}
+
+          <CircularButton
+            className='sticky mt-auto bottom-3 right-3'
+            onClick={onAddClicked}
+          />
+        </div>
+      }
+    />
   );
 }

@@ -207,9 +207,12 @@ namespace SeatSave.Api.Controllers
             var currentDate = DateOnly.FromDateTime(currentDateTime);
             var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
 
-            var pendingBookings = dbContext.Bookings.Where(b => b.Period.TimeStart <= currentTime);
+            var pendingBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.PendingStatus);
+            var checkedInBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.CheckedInStatus);
+            var checkedOutBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.CheckedOutStatus);
+            var cancelledBookings = dbContext.Bookings.Where(b => b.BookingDate == currentDate && b.Period.TimeStart <= currentTime && b.Period.TimeEnd >= currentTime && b.Status == BookingModel.CancelledStatus);
 
-            return Ok(pendingBookings);
+            return Ok(pendingBookings.Concat(checkedInBookings).Concat(checkedOutBookings).Concat(cancelledBookings));
         }
 
     }

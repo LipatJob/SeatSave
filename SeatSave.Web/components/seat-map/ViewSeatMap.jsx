@@ -75,7 +75,7 @@ export default function ViewSeatMap({ id, date, time }) {
   }, []);
 
   return (
-    <div className='w-full' ref={parentDiv}>
+    <div className='w-full h-[300px] sm:h-[400px]' ref={parentDiv}>
       <Stage
         width={parentDimensions && parentDimensions.width}
         height={seatMapHeight}

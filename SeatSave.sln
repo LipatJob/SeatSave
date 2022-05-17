@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeatSave.Scratch", "SeatSave.Scratch\SeatSave.Scratch.csproj", "{EAEA1900-2E2E-45D1-9081-43A5BB3B9852}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeatSave.Trigger", "SeatSave.Trigger\SeatSave.Trigger.csproj", "{0B4264F2-EB76-499F-9451-E28E6912E05C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeatSave.Trigger", "SeatSave.Trigger\SeatSave.Trigger.csproj", "{0B4264F2-EB76-499F-9451-E28E6912E05C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,7 +44,6 @@ Global
 		{EAEA1900-2E2E-45D1-9081-43A5BB3B9852}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAEA1900-2E2E-45D1-9081-43A5BB3B9852}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B4264F2-EB76-499F-9451-E28E6912E05C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B4264F2-EB76-499F-9451-E28E6912E05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B4264F2-EB76-499F-9451-E28E6912E05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B4264F2-EB76-499F-9451-E28E6912E05C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

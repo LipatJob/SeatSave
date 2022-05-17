@@ -56,7 +56,7 @@ namespace SeatSave.EF
 
             configurationBuilder.Properties<TimeOnly>()
                 .HaveConversion<TimeOnlyConverter, TimeOnlyComparer>()
-                .HaveColumnType("time");
+                .HaveColumnType("long");
         }
     }
 }
@@ -130,14 +130,14 @@ public class NullableDateOnlyComparer : ValueComparer<DateOnly?>
 /// <summary>
 /// Converts <see cref="DateOnly" /> to <see cref="DateTime"/> and vice versa.
 /// </summary>
-public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
+public class TimeOnlyConverter : ValueConverter<TimeOnly, long>
 {
     /// <summary>
     /// Creates a new instance of this converter.
     /// </summary>
     public TimeOnlyConverter() : base(
-            d => d.ToTimeSpan(),
-            d => TimeOnly.FromTimeSpan(d))
+            d => d.Ticks,
+            d => new TimeOnly(d))
     { }
 }
 

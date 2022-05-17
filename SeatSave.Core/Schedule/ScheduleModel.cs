@@ -43,7 +43,7 @@
         private IEnumerable<DateOnly> GetAvailabilityOnRegularDays(int numberOfDaysToCheck, DateOnly startDate)
         {
             var datesToCheck = Enumerable.Range(0, numberOfDaysToCheck).Select(d => startDate.AddDays(d));
-            var availableDayOfWeeks = regularDaySchedule.Where(e => e.Periods.Count > 0).Select(e => e.DayOfWeek);
+            var availableDayOfWeeks = regularDaySchedule.Where(e => e.Periods.Count > 0).Select(e => e.DayOfWeek).ToList();
             var availableDatesOnRegularAvailability = datesToCheck.Where(e => availableDayOfWeeks.Contains(e.DayOfWeek));
             return availableDatesOnRegularAvailability.ToList();
         }

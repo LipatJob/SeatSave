@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stage, Layer, Rect } from 'react-konva';
+import { Stage, Layer, Rect, Group } from 'react-konva';
 import {
   areColliding,
   colorPearlBrush,
   seatMapHeight,
+  seatMapWidth,
   standardSize,
 } from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
@@ -23,6 +24,7 @@ export default function EditableSeatMap({
 }) {
   const [selectedTable, setSelectedTable] = useState();
   const [tables, setTables] = useState([]);
+  const [editableAreaOffset, setEditableAreaOffset] = useState({ x: 0, y: 0 });
   const [parentDimensions, setParentDimensions] = useState({
     width: 0,
     height: 0,
@@ -53,7 +55,7 @@ export default function EditableSeatMap({
       width: standardSize,
       height: standardSize,
       positionX: x,
-      positionY: Math.floor(y),
+      positionY: Math.round(y),
     }).then((seat) => {
       setSeats((oldSeats) => {
         const newSeats = [...oldSeats, seat];
@@ -71,7 +73,7 @@ export default function EditableSeatMap({
     const seatToUpdate = {
       ...seats.find((e) => e.id === id),
       positionX: x,
-      positionY: Math.floor(y),
+      positionY: Math.round(y),
     };
 
     SeatService.updateSeat(id, seatToUpdate).then((updatedSeat) => {
@@ -99,8 +101,8 @@ export default function EditableSeatMap({
     TableService.addTable({
       width: standardSize,
       height: standardSize,
-      positionX: Math.floor(x),
-      positionY: Math.floor(y),
+      positionX: Math.round(x),
+      positionY: Math.round(y),
     }).then((table) => {
       setTables((oldTables) => [...oldTables, table]);
     });
@@ -113,8 +115,8 @@ export default function EditableSeatMap({
 
     const tableToUpdate = {
       ...tables.find((e) => e.id === id),
-      positionX: Math.floor(x),
-      positionY: Math.floor(y),
+      positionX: Math.round(x),
+      positionY: Math.round(y),
       minPosY: maxPosY,
     };
 
@@ -158,8 +160,8 @@ export default function EditableSeatMap({
   const isValidPosition = (box) =>
     box.x > 0 &&
     box.y > 0 &&
-    box.y + box.height < maxPosY &&
-    box.x + box.width < maxPosX;
+    box.y + box.height < seatMapHeight &&
+    box.x + box.width < seatMapWidth;
 
   useEffect(() => {
     TableService.getTables().then((fetchedTables) => setTables(fetchedTables));
@@ -190,54 +192,91 @@ export default function EditableSeatMap({
         }}
       >
         <Layer>
-          {seats.map((seat) => (
-            <Seat
-              id={seat.id}
-              key={seat.id}
-              x={seat.positionX}
-              y={seat.positionY}
-              isValidPosition={isValidPosition}
-              isCollidingWithTrashCan={isCollidingWithTrashCan}
-              isSelected={seat.id === selectedSeatId}
-              isActive={seat.active}
-              onClick={() => setSelectedSeatId(seat.id)}
-              onDelete={() => deleteSeat(seat.id)}
-              onPositionUpdated={(x, y) => updateSeatPosition(seat.id, x, y)}
+          <Group
+            draggable
+            onDragEnd={(e) => {
+              setEditableAreaOffset({ x: e.target.x(), y: e.target.y() });
+            }}
+          >
+            <Rect
+              width={seatMapWidth}
+              height={seatMapHeight}
+              stroke={colorPearlBrush}
+              strokeWidth={2}
             />
-          ))}
+            {seats.map((seat) => (
+              <Seat
+                id={seat.id}
+                key={seat.id}
+                x={seat.positionX}
+                y={seat.positionY}
+                isValidPosition={isValidPosition}
+                isCollidingWithTrashCan={isCollidingWithTrashCan}
+                isSelected={seat.id === selectedSeatId}
+                isActive={seat.active}
+                onClick={() => setSelectedSeatId(seat.id)}
+                onDelete={() => deleteSeat(seat.id)}
+                onPositionUpdated={(x, y) => updateSeatPosition(seat.id, x, y)}
+              />
+            ))}
 
-          {tables.map((table) => (
-            <Table
-              key={table.id}
-              x={table.positionX}
-              y={table.positionY}
-              width={table.width}
-              height={table.height}
-              isSelected={table.id === selectedTable}
-              onSelected={() => {
-                setSelectedTable(table.id);
-              }}
-              isValidPosition={isValidPosition}
-              onPositionUpdated={(x, y) => updateTablePosition(table.id, x, y)}
-              onDimensionsUpdated={(x, y, width, height) =>
-                updateTableDimensions(table.id, x, y, width, height)
-              }
-              isCollidingWithTrashCan={isCollidingWithTrashCan}
-              onDelete={() => deleteTable(table.id)}
-            />
-          ))}
+            {tables.map((table) => (
+              <Table
+                key={table.id}
+                x={table.positionX}
+                y={table.positionY}
+                width={table.width}
+                height={table.height}
+                isSelected={table.id === selectedTable}
+                onSelected={() => {
+                  setSelectedTable(table.id);
+                }}
+                isValidPosition={isValidPosition}
+                onPositionUpdated={(x, y) =>
+                  updateTablePosition(table.id, x, y)
+                }
+                onDimensionsUpdated={(x, y, width, height) =>
+                  updateTableDimensions(table.id, x, y, width, height)
+                }
+                isCollidingWithTrashCan={isCollidingWithTrashCan}
+                onDelete={() => deleteTable(table.id)}
+              />
+            ))}
+          </Group>
         </Layer>
+
         <Layer>
-          <Rect
-            x={0}
-            y={maxPosY}
-            width={parentDimensions && parentDimensions.width}
-            height={5}
-            fill={colorPearlBrush}
-          />
-          <SeatDragOn x={50} y={maxPosY + 20} onDragEnd={addNewSeat} />
-          <TableDragOn x={150} y={maxPosY + 20} onDragEnd={addNewTable} />
-          <TrashCan x={trashCanTransform.x} y={maxPosY + 20} />
+          <Group>
+            <Rect
+              x={0}
+              y={maxPosY}
+              width={parentDimensions && parentDimensions.width}
+              height={100}
+              fill='white'
+            />
+            <Rect
+              x={0}
+              y={maxPosY}
+              width={parentDimensions && parentDimensions.width}
+              height={5}
+              fill={colorPearlBrush}
+            />
+            <SeatDragOn
+              x={50}
+              y={maxPosY + 20}
+              onDragEnd={(x, y) =>
+                addNewSeat(x - editableAreaOffset.x, y - editableAreaOffset.y)
+              }
+            />
+            <TableDragOn
+              x={150}
+              y={maxPosY + 20}
+              onDragEnd={(x, y) =>
+                addNewTable(x - editableAreaOffset.x, y - editableAreaOffset.y)
+              }
+            />
+            <TrashCan x={trashCanTransform.x} y={maxPosY + 20} />
+          </Group>
         </Layer>
       </Stage>
     </div>

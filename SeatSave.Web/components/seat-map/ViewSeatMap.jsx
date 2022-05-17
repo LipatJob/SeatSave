@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer, Group, Rect } from 'react-konva';
 import moment from 'moment';
 import TableService from '../../services/TableService';
 import ViewSeat from './ViewSeat';
-import ViewTable from './ViewTable';
 import { seatMapHeight } from '../../lib/seatMapHelper';
+import ViewTable from './ViewTable';
 
 export default function ViewSeatMap({ id, date, time }) {
   const selectedSeatId = id;
@@ -80,31 +80,34 @@ export default function ViewSeatMap({ id, date, time }) {
         width={parentDimensions && parentDimensions.width}
         height={seatMapHeight}
         ref={stage}
+        draggable
       >
         <Layer>
-          {seats.map((seat) => (
-            <ViewSeat
-              id={seat.id}
-              key={seat.id}
-              x={seat.positionX}
-              y={seat.positionY}
-              isValidPosition={isValidPosition}
-              isSelected={seat.id === selectedSeatId}
-              isActive={seat.active}
-              seatBooked={seatIdBooked}
-            />
-          ))}
+          <Group draggable>
+            {seats.map((seat) => (
+              <ViewSeat
+                id={seat.id}
+                key={seat.id}
+                x={seat.positionX}
+                y={seat.positionY}
+                isValidPosition={isValidPosition}
+                isSelected={seat.id === selectedSeatId}
+                isActive={seat.active}
+                seatBooked={seatIdBooked}
+              />
+            ))}
 
-          {tables.map((table) => (
-            <ViewTable
-              key={table.id}
-              x={table.positionX}
-              y={table.positionY}
-              width={table.width}
-              height={table.height}
-              isValidPosition={isValidPosition}
-            />
-          ))}
+            {tables.map((table) => (
+              <ViewTable
+                key={table.id}
+                x={table.positionX}
+                y={table.positionY}
+                width={table.width}
+                height={table.height}
+                isValidPosition={isValidPosition}
+              />
+            ))}
+          </Group>
         </Layer>
       </Stage>
     </div>

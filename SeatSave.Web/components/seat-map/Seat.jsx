@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Group, Rect, RegularPolygon, Text } from 'react-konva';
 import {
   colorDawn,
@@ -39,6 +39,11 @@ export default function Seat({
   }
 
   const strokeGap = 4;
+  useEffect(() => {
+    if (popUpRef && isHovering && !isDragging) {
+      popUpRef.current.moveToTop();
+    }
+  }, [isHovering, isDragging]);
 
   return (
     <>
@@ -54,13 +59,15 @@ export default function Seat({
         onTap={onClick}
         onMouseOver={() => {
           setIsHovering(true);
-          popUpRef.current.moveToTop();
         }}
         onMouseLeave={() => {
           setIsHovering(false);
         }}
         onDragStart={() => {
           setIsDragging(true);
+        }}
+        onDragMove={(e) => {
+          e.target.moveToTop();
         }}
         onDragEnd={(e) => {
           if (isCollidingWithTrashCan(e)) {
@@ -73,9 +80,6 @@ export default function Seat({
           }
           snapToGrid(e);
           setIsDragging(false);
-          if (popUpRef) {
-            popUpRef.current.moveToTop();
-          }
         }}
       >
         <Rect

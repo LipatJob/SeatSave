@@ -63,14 +63,14 @@ export default function Table({
 
           onPositionUpdated(newX, newY);
         }}
-        onTransformEnd={() => {
-          const node = shapeRef.current;
+        onTransformEnd={(e) => {
+          const node = e.target;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
           node.scaleX(1);
           node.scaleY(1);
-          const newWidth = Math.max(5, node.width() * scaleX);
-          const newHeight = Math.max(node.height() * scaleY);
+          const newWidth = Math.max(gridSize, node.width() * scaleX);
+          const newHeight = Math.max(gridSize, node.height() * scaleY);
           onDimensionsUpdated(node.x(), node.y(), newWidth, newHeight);
         }}
       />
@@ -79,10 +79,6 @@ export default function Table({
           rotateEnabled={false}
           ref={transformRef}
           boundBoxFunc={(oldBox, newBox) => {
-            if (newBox.width < gridSize || newBox.height < gridSize) {
-              return oldBox;
-            }
-
             const snapBox = { ...newBox };
             snapBox.width = toNearestSnappingPoint(snapBox.width, gridSize);
             snapBox.height = toNearestSnappingPoint(snapBox.height, gridSize);

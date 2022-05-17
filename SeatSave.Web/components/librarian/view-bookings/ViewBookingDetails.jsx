@@ -27,8 +27,8 @@ export default function ViewBookingDetails({
   );
 
   return (
-    <div className='hidden sm:col-span-1 sm:block'>
-      <div className='w-full h-full p-4 bg-pearl-bush'>
+    <div className='mt-4 sm:col-span-1 sm:mt-0'>
+      <div className='w-full p-4 h-content bg-pearl-bush'>
         <span className='float-right'>
           <button type='button' onClick={onClose}>
             <GrClose />
@@ -59,7 +59,7 @@ export default function ViewBookingDetails({
             <p className='font-bold'>Date</p>
             <p>{dateText}</p>
           </div>
-          <div className='col-span-1 pb-8'>
+          <div className='col-span-1 pb-4'>
             <p className='font-bold'>Time</p>
             <p>
               {startTime} to {endTime}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer } from 'react-konva';
 import TableService from '../../services/TableService';
 import ClickSeat from './ClickSeat';
-import Table from './Table';
+import ViewTable from './ViewTable';
 import { seatMapHeight } from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
 import { toIsoDate } from '../../lib/DateHelper';
@@ -99,7 +99,7 @@ export default function ClickSeatMap({
           ))}
 
           {tables.map((table) => (
-            <Table
+            <ViewTable
               key={table.id}
               x={table.positionX}
               y={table.positionY}

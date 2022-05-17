@@ -24,7 +24,7 @@ const colorAlmond = '#E8DCD2';
 
 const gridSize = 20;
 const standardSize = 40;
-const seatMapHeight = 400;
+const seatMapHeight = 500;
 const maxPosY = 300;
 
 export {

@@ -100,7 +100,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
           <DatePicker
             selected={selectedDate}
             onChange={(dateViewBooking) => getSelectedDate(dateViewBooking)}
-            className='flex flex-col'
+            className='flex flex-col w-full'
             includeDates={availableDates}
             placeholderText='Select Date'
           />
@@ -129,7 +129,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
       </form>
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className='sm:col-span-2'>
-          <div className='border-0  sm:border-8 rounded-3xl border-pearl-bush w-full h-[370px]'>
+          <div className='w-full border-0 sm:border-8 rounded-3xl border-pearl-bush'>
             {periodStartTime !== 0 && (
               <ClickSeatMap
                 date={selectedDate}

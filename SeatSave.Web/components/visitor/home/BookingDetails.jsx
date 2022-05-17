@@ -22,7 +22,7 @@ export default function BookingDetails({ details, column }) {
             <div className='col-span-3 md:col-span-1'>
               <p className='font-bold'>Seat</p>
               <p>
-                {details.seat.id} - {details.seat.name}
+                {details.seat.name} - {details.seat.type}
               </p>
             </div>
           </div>

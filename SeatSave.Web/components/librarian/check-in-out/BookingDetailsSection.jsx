@@ -58,7 +58,7 @@ export default function BookingDetailsSection({ booking, close }) {
         </div>
         <div>
           <p className='font-bold body-small'>Seat</p>
-          <p>{booking.seat.name}</p>
+          <p>{booking.seat.name} - {booking.seat.type}</p>
         </div>
         <div>
           <p className='font-bold body-small'>Visitor</p>

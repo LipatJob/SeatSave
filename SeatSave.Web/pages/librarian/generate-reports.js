@@ -26,12 +26,13 @@ export default function GenerateReports({ allReports }) {
     counts: allReports[3].counts,
   });
 
-  async function handleChangeDate() {
+  async function handleChangeConditions() {
     const dateStart = document.getElementById('fromDate').value;
     const dateEnd = document.getElementById('toDate').value;
+    const isUnique = document.getElementById('uniqueCount').checked;
 
     const response = await fetch(
-      `${process.env.API_URL}/Api/StudentReport?dateStartString=${dateStart}&dateEndString=${dateEnd}`,
+      `${process.env.API_URL}/Api/StudentReport?dateStartString=${dateStart}&dateEndString=${dateEnd}&uniqueCount=${isUnique}`,
     );
     if (response.ok) {
       const newData = await response.json();
@@ -59,15 +60,15 @@ export default function GenerateReports({ allReports }) {
   return (
     <div className='page-container'>
       <h1>Generate Reports</h1>
-      <h4 className='mt-8'>Visitor Data</h4>
 
-      <div className='flex flex-col items-end justify-between mt-4 lg:flex-row'>
-        <div className='lg:order-last'>
-          <button type='button' className='button w-[304px]'>
-            Download All Reports
-          </button>
-        </div>
-        <ReportDataConditions handleChangeDate={handleChangeDate} />
+      <div className='flex flex-col justify-between mt-8 lg:flex-row'>
+        <h4>Visitor Data</h4>
+        <button type='button' className='button w-[304px] mt-4 lg:mt-0'>
+          Download All Reports
+        </button>
+      </div>
+      <div className='mt-8 lg:mt-4'>
+        <ReportDataConditions changeConditions={handleChangeConditions} />
       </div>
 
       <div className='lg:mt-16'>

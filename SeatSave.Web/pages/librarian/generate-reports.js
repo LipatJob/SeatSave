@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
+import { useExcelDownloder } from 'react-xls';
 import ReportDataConditions from '../../components/librarian/generate-reports/ReportDataConditions';
 import ReportSection from '../../components/librarian/generate-reports/ReportSection';
 
@@ -8,22 +9,31 @@ const PROGRAMS_NAME = 'Programs/Strands';
 const YEARS_NAME = 'Year Levels';
 const PROGRAMS_YEARS_NAME = 'Programs/Strands and Year Levels';
 
-export default function GenerateReports({ allReports }) {
+export default function GenerateReports({ allChartReports, allExcelReports }) {
+  const { ExcelDownloder, Type } = useExcelDownloder();
+
+  const excelData = {
+    Top_Departments: allExcelReports[0],
+    Top_Programs: allExcelReports[1],
+    Top_YearLevels: allExcelReports[2],
+    Top_Programs_and_YearLevels: allExcelReports[3]
+  }
+
   const [departmentsData, setDepartmentsData] = useState({
-    categories: allReports[0].categories,
-    counts: allReports[0].counts,
+    categories: allChartReports[0].categories,
+    counts: allChartReports[0].counts,
   });
   const [programsData, setProgramsData] = useState({
-    categories: allReports[1].categories,
-    counts: allReports[1].counts,
+    categories: allChartReports[1].categories,
+    counts: allChartReports[1].counts,
   });
   const [yearsData, setYearsData] = useState({
-    categories: allReports[2].categories,
-    counts: allReports[2].counts,
+    categories: allChartReports[2].categories,
+    counts: allChartReports[2].counts,
   });
   const [programsYearsData, setProgramsYearsData] = useState({
-    categories: allReports[3].categories,
-    counts: allReports[3].counts,
+    categories: allChartReports[3].categories,
+    counts: allChartReports[3].counts,
   });
 
   async function handleChangeConditions() {
@@ -63,9 +73,14 @@ export default function GenerateReports({ allReports }) {
 
       <div className='flex flex-col justify-between mt-8 lg:flex-row'>
         <h4>Visitor Data</h4>
-        <button type='button' className='button w-[304px] mt-4 lg:mt-0'>
+        <ExcelDownloder
+          data={excelData}
+          filename='VisitorReportsData'
+          type={Type.Button}
+          className='button w-[304px] mt-4 lg:mt-0'
+        >
           Download All Reports
-        </button>
+        </ExcelDownloder>
       </div>
       <div className='mt-8 lg:mt-4'>
         <ReportDataConditions changeConditions={handleChangeConditions} />
@@ -97,12 +112,16 @@ export default function GenerateReports({ allReports }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.API_URL}/Api/StudentReport`);
-  const allReports = await res.json();
+  const res1 = await fetch(`${process.env.API_URL}/Api/StudentReport`);
+  const allChartReports = await res1.json();
+  
+  const res2 = await fetch(`${process.env.API_URL}/Api/StudentReport/Excel`);
+  const allExcelReports = await res2.json();
 
   return {
     props: {
-      allReports,
+      allChartReports,
+      allExcelReports
     },
   };
 }

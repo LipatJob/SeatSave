@@ -10,6 +10,11 @@ namespace SeatSave.Api.Services
         public IEnumerable<string> Categories { get; set; }
         public IEnumerable<int> Counts { get; set; }
     }
+    public class ExcelData
+    {
+        public string Category { get; set; }
+        public int Count { get; set; }
+    }
 
     public class StudentReportService
     {
@@ -50,12 +55,10 @@ namespace SeatSave.Api.Services
                 return dbContext.Bookings.Where(b => b.BookingDate >= start && b.BookingDate <= end)
                         .Where(b => b.Status == BookingModel.CheckedOutStatus)
                         .Select(b => b.VisitorModel).OfType<Student>();
-
         }
-
         public IEnumerable<ReportData> GetTopDepartments(bool uniqueCount)
         {
-            var departmentGroups = GetStudentsData(uniqueCount).GroupBy(e => e.Department);
+            var departmentGroups = GetStudentsData(uniqueCount).GroupBy(e => e.Department).OrderByDescending(group => group.Count());
 
             var topDepartmentsData = new List<ReportData>() { new ReportData() {
                 Categories = departmentGroups.Select(group => group.Key),
@@ -66,7 +69,7 @@ namespace SeatSave.Api.Services
         }
         public IEnumerable<ReportData> GetTopProgramStrands(bool uniqueCount)
         {
-            var programStrandsGroups = GetStudentsData(uniqueCount).GroupBy(e => e.ProgramStrand);
+            var programStrandsGroups = GetStudentsData(uniqueCount).GroupBy(e => e.ProgramStrand).OrderByDescending(group => group.Count());
 
             var topProgramStrandsData = new List<ReportData>() { new ReportData() {
                 Categories = programStrandsGroups.Select(group => group.Key),
@@ -77,7 +80,7 @@ namespace SeatSave.Api.Services
         }
         public IEnumerable<ReportData> GetTopYearLevel(bool uniqueCount)
         {
-            var yearLevelGroups = GetStudentsData(uniqueCount).GroupBy(e => e.YearGrade);
+            var yearLevelGroups = GetStudentsData(uniqueCount).GroupBy(e => e.YearGrade).OrderByDescending(group => group.Count());
 
             var topYearLevelsData = new List<ReportData>() { new ReportData() {
                 Categories = yearLevelGroups.Select(group => group.Key),
@@ -93,7 +96,7 @@ namespace SeatSave.Api.Services
                 {
                     Category = key.ProgramStrand + " - " + key.YearGrade,
                     Count = group.Count()
-                });
+                }).OrderByDescending(e => e.Count);
 
             var topProgramYearsData = new List<ReportData>() { new ReportData() {
                 Categories = programYearGroups.Select(e => e.Category),
@@ -101,6 +104,39 @@ namespace SeatSave.Api.Services
             }};
 
             return topProgramYearsData;
+        }
+        public IEnumerable<ExcelData> GetExcelDepartments(bool uniqueCount)
+        {
+            return GetStudentsData(uniqueCount).GroupBy(e => e.Department)
+                .Select(group => new ExcelData()
+                { Category = group.Key, Count = group.Count() })
+                .OrderByDescending(e => e.Count);
+        }
+        public IEnumerable<ExcelData> GetExcelProgramStrands(bool uniqueCount)
+        {
+            return GetStudentsData(uniqueCount).GroupBy(e => e.ProgramStrand)
+                .Select(group => new ExcelData()
+                { Category = group.Key, Count = group.Count() })
+                .OrderByDescending(e => e.Count);
+        }
+        public IEnumerable<ExcelData> GetExcelYearLevel(bool uniqueCount)
+        {
+            return GetStudentsData(uniqueCount).GroupBy(e => e.YearGrade)
+                .Select(group => new ExcelData()
+                { Category = group.Key, Count = group.Count() })
+                .OrderByDescending(e => e.Count);
+        }
+        public IEnumerable<ExcelData> GetExcelProgramStrandAndYearLevel(bool uniqueCount)
+        {
+            return GetStudentsData(uniqueCount)
+                .GroupBy(e => new { e.ProgramStrand, e.YearGrade }, (key, group) => new
+                {
+                    Category = key.ProgramStrand + " - " + key.YearGrade,
+                    Count = group.Count()
+                })
+                .Select(group => new ExcelData()
+                { Category = group.Category, Count = group.Count })
+                .OrderByDescending(e => e.Count);
         }
     }
 }

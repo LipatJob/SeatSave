@@ -1,4 +1,6 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react';
+import ReportDataConditions from '../../components/librarian/generate-reports/ReportDataConditions';
 import ReportSection from '../../components/librarian/generate-reports/ReportSection';
 
 const DEPARTMENTS_NAME = 'Departments';
@@ -65,26 +67,7 @@ export default function GenerateReports({ allReports }) {
             Download All Reports
           </button>
         </div>
-        <div className='flex flex-col gap-5 mt-6 lg:flex-row lg:mt-0'>
-          <label htmlFor='fromDate' className='flex flex-col w-[304px]'>
-            From
-            <input
-              id='fromDate'
-              name='fromDate'
-              type='date'
-              onChange={handleChangeDate}
-            />
-          </label>
-          <label htmlFor='toDate' className='flex flex-col w-[304px]'>
-            To
-            <input
-              id='toDate'
-              name='toDate'
-              type='date'
-              onChange={handleChangeDate}
-            />
-          </label>
-        </div>
+        <ReportDataConditions handleChangeDate={handleChangeDate} />
       </div>
 
       <div className='lg:mt-16'>

@@ -16,25 +16,27 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
     Top_Departments: allExcelReports[0],
     Top_Programs: allExcelReports[1],
     Top_YearLevels: allExcelReports[2],
-    Top_Programs_and_YearLevels: allExcelReports[3]
-  }
+    Top_Programs_and_YearLevels: allExcelReports[3],
+  };
 
-  const [departmentsData, setDepartmentsData] = useState({
-    categories: allChartReports[0].categories,
-    counts: allChartReports[0].counts,
-  });
-  const [programsData, setProgramsData] = useState({
-    categories: allChartReports[1].categories,
-    counts: allChartReports[1].counts,
-  });
-  const [yearsData, setYearsData] = useState({
-    categories: allChartReports[2].categories,
-    counts: allChartReports[2].counts,
-  });
-  const [programsYearsData, setProgramsYearsData] = useState({
-    categories: allChartReports[3].categories,
-    counts: allChartReports[3].counts,
-  });
+  const [chartData, setChartData] = useState([
+    {
+      categories: allChartReports[0].categories.slice(0, 5),
+      counts: allChartReports[0].counts.slice(0, 5),
+    },
+    {
+      categories: allChartReports[1].categories.slice(0, 5),
+      counts: allChartReports[1].counts.slice(0, 5),
+    },
+    {
+      categories: allChartReports[2].categories.slice(0, 5),
+      counts: allChartReports[2].counts.slice(0, 5),
+    },
+    {
+      categories: allChartReports[3].categories.slice(0, 5),
+      counts: allChartReports[3].counts.slice(0, 5),
+    },
+  ]);
 
   async function handleChangeConditions() {
     const dateStart = document.getElementById('fromDate').value;
@@ -46,22 +48,24 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
     );
     if (response.ok) {
       const newData = await response.json();
-      setDepartmentsData({
-        categories: newData[0].categories,
-        counts: newData[0].counts,
-      });
-      setProgramsData({
-        categories: newData[1].categories,
-        counts: newData[1].counts,
-      });
-      setYearsData({
-        categories: newData[2].categories,
-        counts: newData[2].counts,
-      });
-      setProgramsYearsData({
-        categories: newData[3].categories,
-        counts: newData[3].counts,
-      });
+      setChartData([
+        {
+          categories: newData[0].categories.slice(0, 5),
+          counts: newData[0].counts.slice(0, 5),
+        },
+        {
+          categories: newData[1].categories.slice(0, 5),
+          counts: newData[1].counts.slice(0, 5),
+        },
+        {
+          categories: newData[2].categories.slice(0, 5),
+          counts: newData[2].counts.slice(0, 5),
+        },
+        {
+          categories: newData[3].categories.slice(0, 5),
+          counts: newData[3].counts.slice(0, 5),
+        },
+      ]);
     } else {
       console.log('There was an error');
     }
@@ -89,21 +93,18 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
       <div className='lg:mt-16'>
         <div className='flex flex-col w-full gap-5 lg:flex-row'>
           <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={DEPARTMENTS_NAME} data={departmentsData} />
+            <ReportSection name={DEPARTMENTS_NAME} data={chartData[0]} />
           </div>
           <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={PROGRAMS_NAME} data={programsData} />
+            <ReportSection name={PROGRAMS_NAME} data={chartData[1]} />
           </div>
         </div>
         <div className='flex flex-col w-full gap-5 lg:mt-8 lg:flex-row'>
           <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={YEARS_NAME} data={yearsData} />
+            <ReportSection name={YEARS_NAME} data={chartData[2]} />
           </div>
           <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection
-              name={PROGRAMS_YEARS_NAME}
-              data={programsYearsData}
-            />
+            <ReportSection name={PROGRAMS_YEARS_NAME} data={chartData[3]} />
           </div>
         </div>
       </div>
@@ -114,14 +115,14 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
 export async function getServerSideProps() {
   const res1 = await fetch(`${process.env.API_URL}/Api/StudentReport`);
   const allChartReports = await res1.json();
-  
+
   const res2 = await fetch(`${process.env.API_URL}/Api/StudentReport/Excel`);
   const allExcelReports = await res2.json();
 
   return {
     props: {
       allChartReports,
-      allExcelReports
+      allExcelReports,
     },
   };
 }

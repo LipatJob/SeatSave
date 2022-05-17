@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import BookingDetails from './BookingDetails';
 import OkModal from '../../common/OkModal';
-import { formatTime, subtractTime } from '../../../lib/DateHelper';
+import { formatTime } from '../../../lib/DateHelper';
 import visitorAuthService from '../../../lib/visitorAuthService';
 
 const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
@@ -38,21 +38,24 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
   };
 
   function triggerExpirationTimer(e) {
-    var dateNow = new Date();
-    var timeNow =
-      dateNow.getHours() +
-      ':' +
-      dateNow.getMinutes() +
-      ':' +
-      dateNow.getSeconds();
+    if (timeExpired == false) {
+      var dateNow = new Date();
+      var timeNow =
+        dateNow.getHours() +
+        ':' +
+        dateNow.getMinutes() +
+        ':' +
+        dateNow.getSeconds();
 
-    var currentDateTime = new Date('1970-01-01 ' + timeNow);
-    var dateToCompare = new Date('1970-01-01 ' + bookingDetails.period.timeEnd);
-    console.log(currentDateTime.getTime() - dateToCompare.getTime());
+      var currentDateTime = new Date('1970-01-01 ' + timeNow);
+      var dateToCompare = new Date(
+        '1970-01-01 ' + bookingDetails.period.timeEnd,
+      );
 
-    if (currentDateTime.getTime() - dateToCompare.getTime() / 60000 >= 15) {
-      setTimeExpired(true);
-      clearInterval(expirationTimerInterval);
+      if (currentDateTime.getTime() - dateToCompare.getTime() / 60000 >= 16) {
+        setTimeExpired(true);
+        clearInterval(expirationTimerInterval);
+      }
     }
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Router from 'next/router';
@@ -31,7 +32,7 @@ export default function BookASeat({ availableDays }) {
   const [availablePeriods, setAvailablePeriods] = useState();
   const [availableSeats, setAvailableSeats] = useState();
   const [seatCurrent, setSeatCurrent] = useState();
-  const [selectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [modal, setModal] = useState(false);
   const toggleModal = () => {
@@ -53,6 +54,7 @@ export default function BookASeat({ availableDays }) {
     if (response.status === 200) {
       const json = await response.json();
       setDateSelected(date);
+      setSelectedDate(date);
       setAvailablePeriods(json);
       setAvailableSeats(null);
       setPeriodSelected(null);
@@ -124,6 +126,25 @@ export default function BookASeat({ availableDays }) {
     }
   }
 
+  const [isDesktop, setDesktop] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth > 800) {
+      setDesktop(true);
+    } else {
+      setDesktop(false);
+    }
+
+    const updateMedia = () => {
+      if (window.innerWidth > 800) {
+        setDesktop(true);
+      } else {
+        setDesktop(false);
+      }
+    };
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
   // ------------------ MAIN BODY ------------------
 
   return (
@@ -134,17 +155,18 @@ export default function BookASeat({ availableDays }) {
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className=' sm:col-span-1'>
           <h5 className='mb-4 font-bold'>Select your date</h5>
-          <div className='h-[300px] pt-4 '>
+          <div className={isDesktop ? 'h-[300px] pt-4' : 'pt-4'}>
             <DatePicker
               selected={selectedDate}
               onChange={(dateViewBooking) => getSelectedDate(dateViewBooking)}
-              className='flex flex-col'
               includeDates={availableDates}
-              inline
+              placeholderText='Select Date'
+              inline={isDesktop}
+              className={isDesktop ? '' : 'flex flex-col w-full'}
             />
           </div>
-          <h5 className='font-bold'>Select your time</h5>
-          <div className='h-[150px] pt-8'>
+          <h5 className='mt-4 font-bold'>Select your time</h5>
+          <div className='h-[150px] pt-4'>
             {availablePeriods && (
               <BookingTime
                 availablePeriods={availablePeriods}
@@ -172,11 +194,11 @@ export default function BookASeat({ availableDays }) {
                     <div className='inline-block w-6 h-6  bg-[#37722B]' />
                     <div className='inline-block pl-2'> Available</div>
                   </div>
-                  <div>
-                    <div className='inline-block w-6 h-6 bg-[#CD201F]' />
+                  <div className='col-span-2 sm:col-span-1'>
+                    <div className='inline-block w-6 h-6 bg-[#EA555A]' />
                     <div className='inline-block pl-2'> Occupied</div>
                   </div>
-                  <div>
+                  <div className='col-span-3 sm:col-span-1'>
                     <div className='inline-block w-6 h-6 bg-dawn' />
                     <div className='inline-block pl-2'> Seat Unavailable</div>
                   </div>
@@ -184,19 +206,20 @@ export default function BookASeat({ availableDays }) {
               </div>
             </>
           )}
+          {seatSelected && (
+            <div className='grid w-full mt-8 mb-8 place-items-center'>
+              <button
+                onClick={submitBooking}
+                className='w-full sm:max-w-[400px] button '
+                type='button'
+              >
+                BOOK SEAT
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      {seatSelected && (
-        <div className='mt-4 mb-8'>
-          <button
-            onClick={submitBooking}
-            className='w-full sm:max-w-[304px] button float-right'
-            type='button'
-          >
-            BOOK SEAT
-          </button>
-        </div>
-      )}
+
       {modal && (
         <BookingSeatModal seatCurrent={seatCurrent} toggleModal={toggleModal} />
       )}

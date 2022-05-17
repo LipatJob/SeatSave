@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SeatSave.Api.Services;
 using SeatSave.EF;
 using SeatSave.Core.User;
+using System.Linq;
 
 namespace SeatSave.Api.Controllers
 {
@@ -39,6 +40,24 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet("Excel")]
-        public IActionResult GetExcel([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null) { return Ok("To be implemented"); }
+        public IActionResult GetExcel([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null, [FromQuery] bool uniqueCount = false) 
+        { 
+            DateOnly? dateStart = null;
+            DateOnly? dateEnd = null;
+
+            if (dateStartString != null)
+                dateStart = DateOnly.Parse(dateStartString);
+            if (dateEndString != null)
+                dateEnd = DateOnly.Parse(dateEndString);
+
+            reportService = new StudentReportService(dbContext, dateStart, dateEnd);
+
+            var excelDepartmentsData = new List<List<ExcelData>>() {reportService.GetExcelDepartments(uniqueCount).ToList()};
+            var excelProgramStrandsData = new List<List<ExcelData>>() {reportService.GetExcelProgramStrands(uniqueCount).ToList()};
+            var excelYearLevelData = new List<List<ExcelData>>() {reportService.GetExcelYearLevel(uniqueCount).ToList()};
+            var excelProgramStrandAndYearLevelData = new List<List<ExcelData>>() {reportService.GetExcelProgramStrandAndYearLevel(uniqueCount).ToList()};
+
+            return Ok(excelDepartmentsData.Concat(excelProgramStrandsData).Concat(excelYearLevelData).Concat(excelProgramStrandAndYearLevelData));
+        }
     }
 }

@@ -44,6 +44,7 @@ export default function ClickSeat({
         x={x}
         y={y}
         onClick={onClick}
+        onTap={onClick}
         onMouseOver={() => {
           setIsHovering(true);
           popUpRef.current.moveToTop();

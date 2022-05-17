@@ -1,5 +1,5 @@
 const toNearestSnappingPoint = (value, snappingValue) =>
-  Math.round(value / snappingValue) * snappingValue;
+  Math.round(value / parseFloat(snappingValue)) * snappingValue;
 
 const areColliding = (r1, r2) =>
   !(
@@ -24,13 +24,15 @@ const colorAlmond = '#E8DCD2';
 
 const gridSize = 20;
 const standardSize = 40;
-const seatMapHeight = 500;
+const seatMapHeight = 400;
+const seatMapWidth = seatMapHeight * (4 / 3);
 const maxPosY = 300;
 
 export {
   toNearestSnappingPoint,
   areColliding,
   seatMapHeight,
+  seatMapWidth,
   maxPosY,
   gridSize,
   standardSize,

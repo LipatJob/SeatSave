@@ -16,20 +16,46 @@ namespace SeatSave.Api.Services
         private readonly SeatSaveContext dbContext;
         private readonly DateOnly? dateStart;
         private readonly DateOnly? dateEnd;
-        private readonly IEnumerable<BookingModel> bookings;
 
         public StudentReportService(SeatSaveContext dbContext, DateOnly? dateStart, DateOnly? dateEnd)
         {
             this.dbContext = dbContext;
             this.dateStart = dateStart;
             this.dateEnd = dateEnd;
-
-            this.bookings = GetBookingsReportPeriod(dateStart, dateEnd);
         }
 
-        public IEnumerable<ReportData> GetTopDepartments()
+        public IEnumerable<Student> GetStudentsData(bool uniqueCount)
         {
-            var departmentGroups = bookings.Where(b => b.Status == BookingModel.CheckedOutStatus).Select(b => b.VisitorModel).OfType<Student>().GroupBy(e => e.Department);
+            DateOnly minDate = dbContext.Bookings.Min(b => b.BookingDate);
+            DateOnly maxDate = dbContext.Bookings.Max(b => b.BookingDate);
+
+            DateOnly? start;
+            DateOnly? end;
+
+            if (dateStart == null)
+                start = minDate;
+            else
+                start = dateStart;
+
+            if (dateEnd == null)
+                end = maxDate;
+            else
+                end = dateEnd;
+
+            if (uniqueCount)
+                return dbContext.Bookings.Where(b => b.BookingDate >= start && b.BookingDate <= end)
+                        .Where(b => b.Status == BookingModel.CheckedOutStatus)
+                        .Select(b => b.VisitorModel).Distinct().OfType<Student>();
+            else
+                return dbContext.Bookings.Where(b => b.BookingDate >= start && b.BookingDate <= end)
+                        .Where(b => b.Status == BookingModel.CheckedOutStatus)
+                        .Select(b => b.VisitorModel).OfType<Student>();
+
+        }
+
+        public IEnumerable<ReportData> GetTopDepartments(bool uniqueCount)
+        {
+            var departmentGroups = GetStudentsData(uniqueCount).GroupBy(e => e.Department);
 
             var topDepartmentsData = new List<ReportData>() { new ReportData() {
                 Categories = departmentGroups.Select(group => group.Key),
@@ -38,9 +64,9 @@ namespace SeatSave.Api.Services
 
             return topDepartmentsData;
         }
-        public IEnumerable<ReportData> GetTopProgramStrands()
+        public IEnumerable<ReportData> GetTopProgramStrands(bool uniqueCount)
         {
-            var programStrandsGroups = bookings.Where(b => b.Status == BookingModel.CheckedOutStatus).Select(b => b.VisitorModel).OfType<Student>().GroupBy(e => e.ProgramStrand);
+            var programStrandsGroups = GetStudentsData(uniqueCount).GroupBy(e => e.ProgramStrand);
 
             var topProgramStrandsData = new List<ReportData>() { new ReportData() {
                 Categories = programStrandsGroups.Select(group => group.Key),
@@ -49,9 +75,9 @@ namespace SeatSave.Api.Services
 
             return topProgramStrandsData;
         }
-        public IEnumerable<ReportData> GetTopYearLevel()
+        public IEnumerable<ReportData> GetTopYearLevel(bool uniqueCount)
         {
-            var yearLevelGroups = bookings.Where(b => b.Status == BookingModel.CheckedOutStatus).Select(b => b.VisitorModel).OfType<Student>().GroupBy(e => e.YearGrade);
+            var yearLevelGroups = GetStudentsData(uniqueCount).GroupBy(e => e.YearGrade);
 
             var topYearLevelsData = new List<ReportData>() { new ReportData() {
                 Categories = yearLevelGroups.Select(group => group.Key),
@@ -60,13 +86,14 @@ namespace SeatSave.Api.Services
 
             return topYearLevelsData;
         }
-        public IEnumerable<ReportData> GetTopProgramStrandAndYearLevel()
+        public IEnumerable<ReportData> GetTopProgramStrandAndYearLevel(bool uniqueCount)
         {
-            var programYearGroups = bookings.Where(b => b.Status == BookingModel.CheckedOutStatus).Select(b => b.VisitorModel).OfType<Student>()
-                .GroupBy(e => new { e.ProgramStrand, e.YearGrade }, (key, group) => new {
+            var programYearGroups = GetStudentsData(uniqueCount)
+                .GroupBy(e => new { e.ProgramStrand, e.YearGrade }, (key, group) => new
+                {
                     Category = key.ProgramStrand + " - " + key.YearGrade,
                     Count = group.Count()
-            });
+                });
 
             var topProgramYearsData = new List<ReportData>() { new ReportData() {
                 Categories = programYearGroups.Select(e => e.Category),
@@ -74,18 +101,6 @@ namespace SeatSave.Api.Services
             }};
 
             return topProgramYearsData;
-        }
-        public IEnumerable<BookingModel> GetBookingsReportPeriod(DateOnly? dateStart, DateOnly? dateEnd)
-        {
-            DateOnly minDate = dbContext.Bookings.Min(b => b.BookingDate);
-            DateOnly maxDate = dbContext.Bookings.Max(b => b.BookingDate);
-
-            if (dateStart == null)
-                dateStart = minDate;
-            if (dateEnd == null)
-                dateEnd = maxDate;
-
-            return dbContext.Bookings.Where(b => b.BookingDate >= dateStart && b.BookingDate <= dateEnd);
         }
     }
 }

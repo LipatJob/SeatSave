@@ -18,7 +18,7 @@ namespace SeatSave.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null)
+        public IActionResult GetAll([FromQuery] string? dateStartString = null, [FromQuery] string? dateEndString = null, [FromQuery] bool uniqueCount = false)
         {
             DateOnly? dateStart = null;
             DateOnly? dateEnd = null;
@@ -30,10 +30,10 @@ namespace SeatSave.Api.Controllers
 
             reportService = new StudentReportService(dbContext, dateStart, dateEnd);
             
-            var topDepartmentsData = reportService.GetTopDepartments();
-            var topProgramStrandsData = reportService.GetTopProgramStrands();
-            var topYearLevelsData = reportService.GetTopYearLevel();
-            var topProgramYearsData = reportService.GetTopProgramStrandAndYearLevel();
+            var topDepartmentsData = reportService.GetTopDepartments(uniqueCount);
+            var topProgramStrandsData = reportService.GetTopProgramStrands(uniqueCount);
+            var topYearLevelsData = reportService.GetTopYearLevel(uniqueCount);
+            var topProgramYearsData = reportService.GetTopProgramStrandAndYearLevel(uniqueCount);
             
             return Ok(topDepartmentsData.Concat(topProgramStrandsData).Concat(topYearLevelsData).Concat(topProgramYearsData));
         }

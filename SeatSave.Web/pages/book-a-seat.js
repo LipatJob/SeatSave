@@ -3,6 +3,7 @@ import moment from 'moment';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
 import DatePicker from 'react-datepicker';
+import Head from 'next/head';
 import visitorAuthService from '../lib/visitorAuthService';
 import BookingTime from '../components/visitor/book-a-seat/BookingTime';
 import BookingSeatModal from '../components/visitor/book-a-seat/BookingSeatModal';
@@ -128,6 +129,10 @@ export default function BookASeat({ availableDays }) {
 
   return (
     <div className='page-container-small'>
+      <Head>
+        <title>Book A Seat | SeatSave Visitor</title>
+      </Head>
+      
       <h1 className='mb-4 font-bold'>Book a Seat</h1>
       <h4>Center for Learning and Information Resources - Einstein Bldg.</h4>
 

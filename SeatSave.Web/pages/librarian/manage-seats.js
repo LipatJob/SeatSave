@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GrClose } from 'react-icons/gr';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformationForm from '../../components/librarian/manage-seat/SeatInformationForm';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
@@ -38,6 +39,10 @@ export default function ManageSeats({ seatTypes }) {
 
   return (
     <div className='page-container '>
+      <Head>
+        <title>Manage Seats | SeatSave Librarian</title>
+      </Head>
+
       <div className='pb-4 h-fit '>
         <h1>Manage Seats</h1>
       </div>

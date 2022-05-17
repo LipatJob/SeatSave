@@ -1,8 +1,11 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Router from 'next/router';
 import { useExcelDownloder } from 'react-xls';
+import Head from 'next/head';
 import ReportDataConditions from '../../components/librarian/generate-reports/ReportDataConditions';
 import ReportSection from '../../components/librarian/generate-reports/ReportSection';
+import librarianAuthService from '../../lib/librarianAuthService';
 
 const DEPARTMENTS_NAME = 'Departments';
 const PROGRAMS_NAME = 'Programs/Strands';
@@ -10,6 +13,12 @@ const YEARS_NAME = 'Year Levels';
 const PROGRAMS_YEARS_NAME = 'Programs/Strands and Year Levels';
 
 export default function GenerateReports({ allChartReports, allExcelReports }) {
+  useEffect(() => {
+    if (!librarianAuthService.isLoggedIn()) {
+      Router.push('/librarian/login');
+    }
+  }, []);
+
   const { ExcelDownloder, Type } = useExcelDownloder();
 
   const excelData = {
@@ -73,6 +82,10 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
 
   return (
     <div className='page-container'>
+      <Head>
+        <title>Generate Reports | SeatSave Librarian</title>
+      </Head>
+
       <h1>Generate Reports</h1>
 
       <div className='flex flex-col justify-between mt-8 lg:flex-row'>

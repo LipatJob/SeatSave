@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Router from 'next/router';
+import Head from 'next/head';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import visitorAuthService from '../lib/visitorAuthService';
@@ -25,6 +26,10 @@ export default function VisitorLogin() {
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <Head>
+        <title>Login | SeatSave Visitor</title>
+      </Head>
+      
       <div className='hidden sm:block'>
         <Image
           src='/LoginDecoration.svg'

@@ -39,6 +39,7 @@ namespace SeatSave.Api.Controllers
             context.SaveChanges();
             return Ok(seat);
         }
+        
         [HttpPut]
         public IActionResult Update([FromBody] SeatModel seat)
         {

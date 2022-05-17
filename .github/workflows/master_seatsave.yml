@@ -1,0 +1,52 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - SeatSave
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - SeatSave.Api/**
+      - SeatSave.Core/**
+      - SeatSave.EF/**
+  workflow_dispatch:
+
+
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: '.' # Set this to the path to your web app project, defaults to the repository root:
+  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+      
+      - name: Install dependencies
+        run: dotnet restore
+      
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -p:UseAppHost=false -o ./dotnet-webapp
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'SeatSave'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F9AEA760216B41E6BE45DD0416BC953D }}
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/dotnet-webapp'
+
+
+

@@ -9,10 +9,20 @@ export default function Footer() {
           <div className='flex flex-col gap-2'>
             <p className='text-sm font-bold lg:text-base'>Links</p>
             <div className='flex flex-col gap-2 lg:flex-row lg:gap-4'>
-              <a href='' className='text-sm lg:text-base'>
+              <a
+                href='https://www.mcl.edu.ph/'
+                target='_blank'
+                className='text-sm lg:text-base'
+                rel='noreferrer'
+              >
                 <u>Malayan Colleges Laguna</u>
               </a>
-              <a href='' className='text-sm lg:text-base'>
+              <a
+                href='https://clir.mcl.edu.ph/'
+                target='_blank'
+                className='text-sm lg:text-base'
+                rel='noreferrer'
+              >
                 <u>MCL Center for Learning and Information Resources</u>
               </a>
             </div>

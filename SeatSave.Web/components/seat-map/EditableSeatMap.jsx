@@ -36,7 +36,7 @@ export default function EditableSeatMap({
   const maxPosY = seatMapHeight;
 
   const trashCanTransform = {
-    x: parentDimensions.width - 100,
+    x: maxPosX - 100,
     y: maxPosY + 20,
     width: standardSize,
     height: standardSize,
@@ -160,8 +160,8 @@ export default function EditableSeatMap({
   const isValidPosition = (box) =>
     box.x > 0 &&
     box.y > 0 &&
-    box.y + box.height < seatMapHeight &&
-    box.x + box.width < seatMapWidth;
+    box.x + box.width < seatMapWidth &&
+    box.y + box.height < seatMapHeight;
 
   useEffect(() => {
     TableService.getTables().then((fetchedTables) => setTables(fetchedTables));

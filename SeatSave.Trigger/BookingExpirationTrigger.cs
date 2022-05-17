@@ -24,14 +24,17 @@ namespace SeatSave.Trigger
                       .Add(new MediaTypeWithQualityHeaderValue("application/json"));//ACCEPT header
             }
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, END_POINT);
-            request.Content = new StringContent("", Encoding.UTF8, "application/json"); //CONTENT-TYPE header
-            client.SendAsync(request)
-                  .ContinueWith(responseTask =>
-                  {
-                      string res = responseTask.Result.Content.ReadAsStringAsync().Result;
-                      log.Info($"C# Timer trigger function executed at: {DateTime.Now}, Response: {res}");
-                  });
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), END_POINT)
+            {
+                Content = new StringContent("Expire", Encoding.UTF8, "application/json"),
+            };
+            client
+                .SendAsync(request)
+                .ContinueWith(responseTask =>
+                {
+                    string res = responseTask.Result.Content.ReadAsStringAsync().Result;
+                    log.Info($"C# Timer trigger function executed at: {DateTime.Now}, Response: {res}");
+                });
         }
     }
 }

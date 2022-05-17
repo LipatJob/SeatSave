@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer, Group, Rect } from 'react-konva';
 import TableService from '../../services/TableService';
 import ClickSeat from './ClickSeat';
+import {
+  colorPearlBrush,
+  seatMapHeight,
+  seatMapWidth,
+} from '../../lib/seatMapHelper';
 import ViewTable from './ViewTable';
-import { seatMapHeight } from '../../lib/seatMapHelper';
 import SeatService from '../../services/SeatService';
 import { toIsoDate } from '../../lib/DateHelper';
 
@@ -85,28 +89,36 @@ export default function ClickSeatMap({
         ref={stage}
       >
         <Layer>
-          {seats.map((seat) => (
-            <ClickSeat
-              id={seat.id}
-              key={seat.id}
-              x={seat.positionX}
-              y={seat.positionY}
-              isSelected={seat.id === seatId}
-              isActive={seat.active}
-              seatBooked={!seat.bookable}
-              onClick={() => seatClicked(seat)}
+          <Group draggable>
+            <Rect
+              width={seatMapWidth}
+              height={seatMapHeight}
+              stroke={colorPearlBrush}
+              strokeWidth={2}
             />
-          ))}
+            {seats.map((seat) => (
+              <ClickSeat
+                id={seat.id}
+                key={seat.id}
+                x={seat.positionX}
+                y={seat.positionY}
+                isSelected={seat.id === seatId}
+                isActive={seat.active}
+                seatBooked={!seat.bookable}
+                onClick={() => seatClicked(seat)}
+              />
+            ))}
 
-          {tables.map((table) => (
-            <ViewTable
-              key={table.id}
-              x={table.positionX}
-              y={table.positionY}
-              width={table.width}
-              height={table.height}
-            />
-          ))}
+            {tables.map((table) => (
+              <ViewTable
+                key={table.id}
+                x={table.positionX}
+                y={table.positionY}
+                width={table.width}
+                height={table.height}
+              />
+            ))}
+          </Group>
         </Layer>
       </Stage>
     </div>

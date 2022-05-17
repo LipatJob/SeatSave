@@ -16,7 +16,7 @@
             do
             {
                 currentPeriodEnd = currentPeriodStart.Add(periodDuration);
-                periods.Add(new Period(id, currentPeriodStart, currentPeriodEnd));
+                periods.Add(new Period { TimeStart = currentPeriodStart, TimeEnd = currentPeriodEnd }); ;
                 currentPeriodStart = currentPeriodEnd;
                 id += 1;
             } while (currentPeriodEnd < closingTime);

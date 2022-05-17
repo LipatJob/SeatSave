@@ -83,23 +83,20 @@ if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<SeatSaveContext>(options =>
     {
+        options.UseLazyLoadingProxies();
         var connectionString = builder.Configuration.GetConnectionString("SeatSaveDb");
         options.UseSqlServer(connectionString);
     });
 }
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "AllowAll";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         name: MyAllowSpecificOrigins,
         builder =>
         {
-            builder.AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .SetIsOriginAllowed(origin => true) // allow any origin
-                                                        //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins separated with comma
-                    .AllowCredentials();
+            builder.SetIsOriginAllowed(isOriginAllowed: _ => true).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         });
 });
 

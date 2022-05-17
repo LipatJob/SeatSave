@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatSave.Core.Booking;
 using SeatSave.Core.Schedule;
 using SeatSave.Core.Seat;
@@ -34,6 +36,8 @@ namespace SeatSave.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             var period = new PeriodFactory().GetPeriodsInDay();
             modelBuilder.Entity<Period>().HasIndex(p => new { p.TimeStart, p.TimeEnd }).IsUnique();
             modelBuilder.Entity<RegularDayOfWeekAvailability>()
@@ -43,5 +47,111 @@ namespace SeatSave.EF
                 .HasMany(g => g.Periods)
                 .WithMany("SpecificDateAvailabilities");
         }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Properties<DateOnly>()
+             .HaveConversion<DateOnlyConverter, DateOnlyComparer>()
+             .HaveColumnType("date");
+
+            configurationBuilder.Properties<TimeOnly>()
+                .HaveConversion<TimeOnlyConverter, TimeOnlyComparer>()
+                .HaveColumnType("time");
+        }
+    }
+}
+
+
+/// <summary>
+/// Converts <see cref="DateOnly" /> to <see cref="DateTime"/> and vice versa.
+/// </summary>
+public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
+{
+    /// <summary>
+    /// Creates a new instance of this converter.
+    /// </summary>
+    public DateOnlyConverter() : base(
+            d => d.ToDateTime(TimeOnly.MinValue),
+            d => DateOnly.FromDateTime(d))
+    { }
+}
+
+/// <summary>
+/// Compares <see cref="DateOnly" />.
+/// </summary>
+public class DateOnlyComparer : ValueComparer<DateOnly>
+{
+    /// <summary>
+    /// Creates a new instance of this converter.
+    /// </summary>
+    public DateOnlyComparer() : base(
+        (d1, d2) => d1 == d2 && d1.DayNumber == d2.DayNumber,
+        d => d.GetHashCode())
+    {
+    }
+}
+
+/// <summary>
+/// Converts <see cref="DateOnly?" /> to <see cref="DateTime?"/> and vice versa.
+/// </summary>
+public class NullableDateOnlyConverter : ValueConverter<DateOnly?, DateTime?>
+{
+    /// <summary>
+    /// Creates a new instance of this converter.
+    /// </summary>
+    public NullableDateOnlyConverter() : base(
+        d => d == null
+            ? null
+            : new DateTime?(d.Value.ToDateTime(TimeOnly.MinValue)),
+        d => d == null
+            ? null
+            : new DateOnly?(DateOnly.FromDateTime(d.Value)))
+    { }
+}
+
+/// <summary>
+/// Compares <see cref="DateOnly?" />.
+/// </summary>
+public class NullableDateOnlyComparer : ValueComparer<DateOnly?>
+{
+    /// <summary>
+    /// Creates a new instance of this converter.
+    /// </summary>
+    public NullableDateOnlyComparer() : base(
+        (d1, d2) => d1 == d2 && d1.GetValueOrDefault().DayNumber == d2.GetValueOrDefault().DayNumber,
+        d => d.GetHashCode())
+    {
+    }
+}
+
+
+
+
+/// <summary>
+/// Converts <see cref="DateOnly" /> to <see cref="DateTime"/> and vice versa.
+/// </summary>
+public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
+{
+    /// <summary>
+    /// Creates a new instance of this converter.
+    /// </summary>
+    public TimeOnlyConverter() : base(
+            d => d.ToTimeSpan(),
+            d => TimeOnly.FromTimeSpan(d))
+    { }
+}
+
+/// <summary>
+/// Compares <see cref="DateOnly" />.
+/// </summary>
+public class TimeOnlyComparer : ValueComparer<TimeOnly>
+{
+    /// <summary>
+    /// Creates a new instance of this converter.
+    /// </summary>
+    public TimeOnlyComparer() : base(
+        (d1, d2) => d1 == d2,
+        d => d.GetHashCode())
+    {
     }
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
 import {
   areColliding,
-  colorIron,
+  colorPearlBrush,
   seatMapHeight,
   standardSize,
 } from '../../lib/seatMapHelper';
@@ -29,8 +29,9 @@ export default function EditableSeatMap({
   });
   const parentDiv = useRef(null);
   const stage = useRef();
+
   const maxPosX = parentDimensions.width;
-  const maxPosY = 500;
+  const maxPosY = seatMapHeight;
 
   const trashCanTransform = {
     x: parentDimensions.width - 100,
@@ -129,19 +130,18 @@ export default function EditableSeatMap({
   const updateTableDimensions = (id, x, y, width, height) => {
     const tableToUpdate = {
       ...tables.find((e) => e.id === id),
-      positionX: Math.floor(x),
-      positionY: Math.floor(y),
-      width: Math.floor(width),
-      height: Math.floor(height),
+      positionX: Math.round(x),
+      positionY: Math.round(y),
+      width: Math.round(width),
+      height: Math.round(height),
     };
+    setTables((oldTables) =>
+      oldTables.map((oldTable) =>
+        oldTable.id === id ? tableToUpdate : oldTable,
+      ),
+    );
 
-    TableService.updateTable(id, tableToUpdate).then((updatedTable) => {
-      setTables((oldTables) =>
-        oldTables.map((oldTable) =>
-          oldTable.id === id ? updatedTable : oldTable,
-        ),
-      );
-    });
+    TableService.updateTable(id, tableToUpdate).then(() => {});
   };
 
   const deleteTable = (id) => {
@@ -180,7 +180,7 @@ export default function EditableSeatMap({
     <div className='w-full' ref={parentDiv}>
       <Stage
         width={parentDimensions && parentDimensions.width}
-        height={seatMapHeight}
+        height={seatMapHeight + 100}
         ref={stage}
         onClick={(e) => {
           if (e.target === stage.current) {
@@ -233,7 +233,7 @@ export default function EditableSeatMap({
             y={maxPosY}
             width={parentDimensions && parentDimensions.width}
             height={5}
-            fill={colorIron}
+            fill={colorPearlBrush}
           />
           <SeatDragOn x={50} y={maxPosY + 20} onDragEnd={addNewSeat} />
           <TableDragOn x={150} y={maxPosY + 20} onDragEnd={addNewTable} />

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';

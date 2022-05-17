@@ -22,7 +22,7 @@ export default function ViewBookingDetails() {
       console.log('No booking');
       setCurrentBooking(null);
     } else {
-      console.log('An error occured trying to fetch your booking details');
+      console.log('An error occurred trying to fetch your booking details');
     }
   };
 

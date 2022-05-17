@@ -136,6 +136,22 @@ namespace SeatSave.Api.Controllers
             return Ok();
         }
 
+        [HttpPatch]
+        public IActionResult ExpireBookings(string action)
+        {
+            if (action == "Expire")
+            {
+                BookingExpirationService expirationService = new BookingExpirationService(dbContext.Bookings);
+                var bookingsToBeExpired = expirationService.ExpireBookings();
+                dbContext.SaveChanges();
+                return Ok(bookingsToBeExpired);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         private bool CanCurrentUserPatchBooking(BookingModel booking, string newStatus)
         {
             // get current user

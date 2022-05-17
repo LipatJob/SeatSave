@@ -99,7 +99,7 @@ namespace SeatSave.EF
                    FirstName = "Text",
                    LastName = "Account",
                    Password = "password",
-                   ProgramStrand = "B.S. BUSINESS ADMINISTRATION",
+                   ProgramStrand = "BA",
                    Department = "ETCYB",
                    YearGrade = "First Year",
                },
@@ -109,7 +109,7 @@ namespace SeatSave.EF
                   FirstName = "Text",
                   LastName = "Account",
                   Password = "1234567",
-                  ProgramStrand = "B.S. COMPUTER SCIENCE",
+                  ProgramStrand = "CS",
                   Department = "CCIS",
                   YearGrade = "First Year",
               }

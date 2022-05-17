@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import CheckedIn from '../components/visitor/home/CheckedIn';
 import NoBooking from '../components/visitor/home/NoBooking';
 import PendingBooking from '../components/visitor/home/PendingBooking';
@@ -39,6 +40,10 @@ export default function ViewBookingDetails() {
 
   return (
     <div>
+      <Head>
+        <title>View Booking Details | SeatSave Visitor</title>
+      </Head>
+
       {currentBooking && currentBooking.status === 'Pending' && (
         <PendingBooking
           bookingDetails={currentBooking}

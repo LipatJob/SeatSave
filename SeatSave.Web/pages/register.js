@@ -1,12 +1,21 @@
-﻿import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-
+﻿import React, { useState, useEffect } from 'react';
+import Router, { useRouter } from 'next/router';
 import Image from 'next/image';
+import Head from 'next/head';
+import visitorAuthService from '../lib/visitorAuthService';
+
 
 import AccountInformationForm from '../components/register/AccountInformationForm';
 import VisitorInformationForm from '../components/register/VisitorInformationForm';
 
 export default function Register({ visitorSelection }) {
+  useEffect(() => {
+    // redirect to home if already logged in
+    if (visitorAuthService.isLoggedIn()) {
+      Router.push('/');
+    }
+  }, []);
+  
   const [formPartData, setFormPartData] = useState([{}, {}]);
   const [formPartIndex, setFormPartIndex] = useState(0);
   const router = useRouter();
@@ -61,6 +70,10 @@ export default function Register({ visitorSelection }) {
 
   return (
     <div className='sm:grid sm:grid-cols-2 page-container sm:gap-x-20'>
+      <Head>
+        <title>Register | SeatSave Visitor</title>
+      </Head>
+      
       <div className='hidden sm:block'>
         {formPartIndex === 0 && (
           <Image

@@ -74,7 +74,13 @@ export default function Seat({
             onDelete();
             return;
           }
-          if (!isValidPosition(e.target.getClientRect())) {
+          const rect = {
+            x: e.target.x(),
+            y: e.target.y(),
+            width: e.target.getClientRect().width,
+            height: e.target.getClientRect().height,
+          };
+          if (!isValidPosition(rect)) {
             e.target.to({ x, y });
             return;
           }

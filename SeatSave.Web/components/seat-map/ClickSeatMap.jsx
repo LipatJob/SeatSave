@@ -82,20 +82,18 @@ export default function ClickSeatMap({
   }
 
   return (
-    <div className='w-full' ref={parentDiv}>
+    <div
+      className='w-full h-[300px] sm:h-[400px] overflow-hidden'
+      ref={parentDiv}
+    >
       <Stage
         width={parentDimensions && parentDimensions.width}
         height={seatMapHeight}
         ref={stage}
+        draggable
       >
         <Layer>
-          <Group draggable>
-            <Rect
-              width={seatMapWidth}
-              height={seatMapHeight}
-              stroke={colorPearlBrush}
-              strokeWidth={2}
-            />
+          <Group>
             {seats.map((seat) => (
               <ClickSeat
                 id={seat.id}

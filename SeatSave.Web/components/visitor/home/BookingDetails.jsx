@@ -6,7 +6,7 @@ export default function BookingDetails({ details, column }) {
     <div>
       {column && (
         <div className='mt-4 '>
-          <h4 className='mb-8'>Booking Details</h4>
+          <h4 className='mb-4'>Booking Details</h4>
           <div className='grid grid-cols-3 gap-3'>
             <div className='col-span-1'>
               <p className='font-bold '>Date</p>
@@ -22,7 +22,7 @@ export default function BookingDetails({ details, column }) {
             <div className='col-span-3 md:col-span-1'>
               <p className='font-bold'>Seat</p>
               <p>
-                {details.seat.id} - {details.seat.name}
+                {details.seat.id} - {details.seat.type}
               </p>
             </div>
           </div>
@@ -46,7 +46,7 @@ export default function BookingDetails({ details, column }) {
             <div className='col-span-3'>
               <p className='font-bold'>Seat</p>
               <p>
-                {details.seat.id} - {details.seat.name}
+                {details.seat.id} - {details.seat.type}
               </p>
             </div>
           </div>

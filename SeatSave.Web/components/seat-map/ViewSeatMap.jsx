@@ -3,7 +3,7 @@ import { Stage, Layer } from 'react-konva';
 import moment from 'moment';
 import TableService from '../../services/TableService';
 import ViewSeat from './ViewSeat';
-import Table from './Table';
+import ViewTable from './ViewTable';
 import { seatMapHeight } from '../../lib/seatMapHelper';
 
 export default function ViewSeatMap({ id, date, time }) {
@@ -96,7 +96,7 @@ export default function ViewSeatMap({ id, date, time }) {
           ))}
 
           {tables.map((table) => (
-            <Table
+            <ViewTable
               key={table.id}
               x={table.positionX}
               y={table.positionY}

@@ -1,14 +1,27 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Router from 'next/router';
+import Head from 'next/head';
 import DaySelectionPanel from '../../components/librarian/manage-date-time/DaySelectionPanel';
 import PeriodSelectionPanel from '../../components/librarian/manage-date-time/PeriodSelectionPanel';
+import librarianAuthService from '../../lib/librarianAuthService';
 
 export default function ManageDateTime() {
+  useEffect(() => {
+    if (!librarianAuthService.isLoggedIn()) {
+      Router.push('/librarian/login');
+    }
+  }, []);
+
   const [availabilityType, setAvailabilityType] = useState('RegularHours');
   const [selectedId, setSelectedId] = useState();
 
   return (
     <div className='page-container'>
+      <Head>
+        <title>Manage Date & Time | SeatSave Librarian</title>
+      </Head>
+
       <h1 className='mb-6'>Manage Date & Time</h1>
       <div className='relative sm:grid sm:grid-cols-3 sm:gap-x-7'>
         <DaySelectionPanel

@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Router from 'next/router';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import ViewBookingsForm from '../../components/librarian/view-bookings/ViewBookingsForm';
@@ -8,6 +10,7 @@ import ViewBookingsTable from '../../components/librarian/view-bookings/ViewBook
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatTime } from '../../lib/DateHelper';
 import ViewBookingDetails from '../../components/librarian/view-bookings/ViewBookingDetails';
+import librarianAuthService from '../../lib/librarianAuthService';
 
 const ClickSeatMap = dynamic(
   () => import('../../components/seat-map/ClickSeatMap'),
@@ -17,6 +20,12 @@ const ClickSeatMap = dynamic(
 );
 
 export default function ViewBookings({ allBookings, availableDays }) {
+  useEffect(() => {
+    if (!librarianAuthService.isLoggedIn()) {
+      Router.push('/librarian/login');
+    }
+  }, []);
+
   const [displayBookings, setDisplayBookings] = useState(allBookings);
 
   async function handleSearchBookings(e) {
@@ -80,6 +89,10 @@ export default function ViewBookings({ allBookings, availableDays }) {
 
   return (
     <div className='page-container'>
+      <Head>
+        <title>View Bookings | SeatSave Librarian</title>
+      </Head>
+      
       <h1>View Bookings</h1>
       <h4 className='pt-8 pb-4'>Seat Map</h4>
       <form className=''>

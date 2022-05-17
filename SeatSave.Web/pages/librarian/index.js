@@ -1,19 +1,28 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import Router from 'next/router';
 import Image from 'next/image';
+import Head from 'next/head';
+import { width } from '@mui/system';
+import dynamic from 'next/dynamic';
+import { Hidden } from '@mui/material';
 import SearchBookingForm from '../../components/librarian/check-in-out/SearchBookingForm';
 import SearchResultsSection from '../../components/librarian/check-in-out/SearchResultsSection';
 import PresentBookingsSection from '../../components/librarian/check-in-out/PresentBookingsSection';
 import BookingDetailsSection from '../../components/librarian/check-in-out/BookingDetailsSection';
-import { width } from '@mui/system';
-import dynamic from 'next/dynamic';
-import { Hidden } from '@mui/material';
+import librarianAuthService from '../../lib/librarianAuthService';
 
 const QrReader = dynamic(() => import('react-qr-reader'), {
   ssr: false,
 });
 
 export default function CheckInOut({ presentPeriod, presentBookings }) {
+  useEffect(() => {
+    if (!librarianAuthService.isLoggedIn()) {
+      Router.push('/librarian/login');
+    }
+  }, []);
+
   const camera = useRef();
 
   const [showBookings, setShowBookings] = useState(true);
@@ -94,6 +103,10 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 
   return (
     <div className='page-container-small'>
+      <Head>
+        <title>Check In/Out | SeatSave Librarian</title>
+      </Head>
+
       <h1>Check In / Out</h1>
       <div className='grid grid-cols-2 my-10 gap-x-3'>
         <button
@@ -133,7 +146,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               style={{ width: '100%' }}
               onError={handleErrorWebCam}
               onScan={handleScannedQRCode}
-              className={`p-10 pb-10`}
+              className='p-10 pb-10'
               ref={camera}
               showViewFinder={false}
             />

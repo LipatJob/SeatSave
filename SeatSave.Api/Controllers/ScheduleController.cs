@@ -15,7 +15,7 @@ namespace SeatSave.Api.Controllers
         public ScheduleController(SeatSaveContext dbContext)
         {
             this.dbContext = dbContext;
-            this.schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
+            this.schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability.ToList(), dbContext.SpecificDayAvailability.ToList());
         }
 
         [HttpGet]

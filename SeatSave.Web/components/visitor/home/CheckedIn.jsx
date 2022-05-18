@@ -43,18 +43,13 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
   };
 
   function triggerExpirationTimer(e) {
-    if (timeExpired == false) {
-      var dateNow = new Date();
-      var timeNow =
-        dateNow.getHours() +
-        ':' +
-        dateNow.getMinutes() +
-        ':' +
-        dateNow.getSeconds();
+    if (timeExpired === false) {
+      const dateNow = new Date();
+      const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
 
-      var currentDateTime = new Date('1970-01-01 ' + timeNow);
-      var dateToCompare = new Date(
-        '1970-01-01 ' + bookingDetails.period.timeEnd,
+      const currentDateTime = new Date(`1970-01-01 ${timeNow}`);
+      const dateToCompare = new Date(
+        `1970-01-01 ${bookingDetails.period.timeEnd}`,
       );
 
       console.log(

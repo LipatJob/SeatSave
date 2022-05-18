@@ -3,9 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Router from 'next/router';
 import Image from 'next/image';
 import Head from 'next/head';
-import { width } from '@mui/system';
 import dynamic from 'next/dynamic';
-import { Hidden } from '@mui/material';
 import SearchBookingForm from '../../components/librarian/check-in-out/SearchBookingForm';
 import SearchResultsSection from '../../components/librarian/check-in-out/SearchResultsSection';
 import PresentBookingsSection from '../../components/librarian/check-in-out/PresentBookingsSection';
@@ -58,6 +56,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
   }
 
   function handlePreviewDetails(booking) {
+    console.log(booking);
     setBookingToDisplay(booking);
     setShowDetails(true);
   }
@@ -84,6 +83,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
   };
 
   const handleScannedQRCode = async (data) => {
+    console.log(data);
     if (!showQRCodeScanner) {
       return;
     }
@@ -97,7 +97,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
         const json = await res.json();
         setScannedCode(data);
         setShowDetails(true);
-        setBookingToDisplay(json);
+        setBookingToDisplay(json[0]);
       }
     }
   };
@@ -109,25 +109,27 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
       </Head>
 
       <h1>Check In / Out</h1>
-      <div className='grid grid-cols-2 my-10 gap-x-3'>
-        <button
-          className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
-          onClick={handleQRCodeScanner}
-        >
-          Scan QR Code
-        </button>
-        <button
-          className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
-          onClick={handleBookings}
-        >
-          Search
-        </button>
-      </div>
 
       <div className='relative flex flex-col lg:flex-row gap-5 mt-8 lg:mt-14 min-h-[600px]'>
         <div className='lg:basis-3/5'>
+          <div className='grid grid-cols-2 mb-10 gap-x-3'>
+            <button
+              type='button'
+              className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
+              onClick={handleQRCodeScanner}
+            >
+              Scan QR Code
+            </button>
+            <button
+              type='button'
+              className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
+              onClick={handleBookings}
+            >
+              Search
+            </button>
+          </div>
           {showBookings && <SearchBookingForm onSubmit={handleSearchBooking} />}
-          {showResults && (
+          {showBookings && showResults && (
             <SearchResultsSection
               results={searchResults}
               previewDetails={handlePreviewDetails}
@@ -141,7 +143,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               previewDetails={handlePreviewDetails}
             />
           )}
-          <div className={showQRCodeScanner ? '' : 'hidden'}>
+          {showQRCodeScanner && (
             <QrReader
               delay={300}
               style={{ width: '100%' }}
@@ -151,7 +153,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               ref={camera}
               showViewFinder={false}
             />
-          </div>
+          )}
         </div>
         <div className='absolute top-0 w-full lg:relative lg:basis-2/5'>
           {showDetails && (

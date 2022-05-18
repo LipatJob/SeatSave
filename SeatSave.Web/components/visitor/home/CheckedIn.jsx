@@ -37,6 +37,11 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
     onCheckOut();
   };
 
+  function onExpirationMessageSeen(e) {
+    setTimeExpired(true);
+    onCheckOut();
+  }
+
   function triggerExpirationTimer(e) {
     if (timeExpired == false) {
       var dateNow = new Date();
@@ -52,7 +57,11 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
         '1970-01-01 ' + bookingDetails.period.timeEnd,
       );
 
-      if (currentDateTime.getTime() - dateToCompare.getTime() / 60000 >= 16) {
+      console.log(
+        (currentDateTime.getTime() - dateToCompare.getTime()) / 60000,
+      );
+
+      if ((currentDateTime.getTime() - dateToCompare.getTime()) / 60000 >= 16) {
         setTimeExpired(true);
         clearInterval(expirationTimerInterval);
       }
@@ -78,8 +87,8 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
       )}
       {timeExpired && (
         <OkModal
-          onOk={onCheckoutMessageSeen}
-          onClose={onCheckoutMessageSeen}
+          onOk={onExpirationMessageSeen}
+          onClose={onExpirationMessageSeen}
           message={
             <div>
               <h4 className='mb-6'>Your time is up!</h4>

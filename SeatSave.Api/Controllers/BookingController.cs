@@ -24,7 +24,7 @@ namespace SeatSave.Api.Controllers
             this.emailService = emailService;
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
             var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability.ToList(), dbContext.SpecificDayAvailability.ToList());
-            bookingService = new BookingService(currentDate, schedule, dbContext.Bookings, dbContext.Seats);
+            bookingService = new BookingService(currentDate, schedule, dbContext.Bookings.ToList(), dbContext.Seats);
         }
 
         [HttpGet]

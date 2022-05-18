@@ -72,6 +72,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
   }
 
   function handleQRCodeScanner() {
+    setShowResults(false);
     setShowBookings(false);
     setShowDetails(false);
     setShowQRCodeScanner(true);
@@ -148,7 +149,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               style={{ width: '100%' }}
               onError={handleErrorWebCam}
               onScan={handleScannedQRCode}
-              className='p-10 pb-10'
+              className='pr-10 pb-10'
               ref={camera}
               showViewFinder={false}
             />

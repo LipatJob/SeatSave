@@ -94,6 +94,8 @@ export default function ClickSeatMap({
       >
         <Layer>
           <Group>
+            <Rect width={2000} height={2000} x={-1000} y={-1000} />
+
             {seats.map((seat) => (
               <ClickSeat
                 id={seat.id}

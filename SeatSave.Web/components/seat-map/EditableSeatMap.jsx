@@ -199,8 +199,9 @@ export default function EditableSeatMap({
             }}
           >
             <Rect
-              width={seatMapWidth}
-              height={seatMapHeight}
+              x={-1000}
+              width={2000}
+              height={2000}
               stroke={colorPearlBrush}
               strokeWidth={2}
             />

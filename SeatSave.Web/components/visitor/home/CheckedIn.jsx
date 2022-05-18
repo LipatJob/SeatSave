@@ -52,7 +52,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
         ':' +
         dateNow.getSeconds();
 
-      var currentDateTime = new Date('1970-01-01 ' + '14:59');
+      var currentDateTime = new Date('1970-01-01 ' + timeNow);
       var dateToCompare = new Date(
         '1970-01-01 ' + bookingDetails.period.timeEnd,
       );

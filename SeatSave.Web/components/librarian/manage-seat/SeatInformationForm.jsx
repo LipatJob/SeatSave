@@ -11,7 +11,7 @@ export default function SeatInformationForm({
   onAvailableSeatsUpdated,
   currentID,
 }) {
-  const [seatData, seatSeatData] = useState({
+  const [seatData, setSeatData] = useState({
     id: '',
     name: '',
     type: '',
@@ -27,7 +27,7 @@ export default function SeatInformationForm({
       `${process.env.API_URL}/Api/Seats/${currentID}`,
     );
     const jsonData = await response.json();
-    seatSeatData(jsonData);
+    setSeatData(jsonData);
   };
 
   const addSeat = async (data) => {
@@ -40,7 +40,9 @@ export default function SeatInformationForm({
   };
 
   const editData = async (data) => {
-    SeatService.editData(data).then((response) => {
+    console.log(data);
+
+    SeatService.updateSeat(data).then((response) => {
       console.log(response);
       onAvailableSeatsUpdated();
       goToPreviousFormPart();
@@ -96,7 +98,6 @@ export default function SeatInformationForm({
         validationSchema={seatInformationSchema}
         enableReinitialize
         onSubmit={(values) => {
-          console.log(values);
           if (currentID === null) {
             setShowModalAddedSeat(true);
             addSeat(values);

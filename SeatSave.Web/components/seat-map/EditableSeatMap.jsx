@@ -76,7 +76,7 @@ export default function EditableSeatMap({
       positionY: Math.round(y),
     };
 
-    SeatService.updateSeat(id, seatToUpdate).then((updatedSeat) => {
+    SeatService.updateSeat(seatToUpdate).then((updatedSeat) => {
       setSeats((oldSeats) =>
         oldSeats.map((oldSeat) => (oldSeat.id === id ? updatedSeat : oldSeat)),
       );

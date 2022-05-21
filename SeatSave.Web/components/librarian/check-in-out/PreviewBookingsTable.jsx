@@ -5,10 +5,17 @@ import { formatTime, formatDate } from '../../../lib/DateHelper';
 export default function PreviewBookingsTable({ bookings, previewDetails }) {
   const [page, setPage] = useState(1);
 
+  const [selectedBooking, setSelectedBooking] = useState();
+
   const ROWS_PER_PAGE = 5;
 
   function handlePaginationChange(e, value) {
     setPage(value);
+  }
+
+  function handleBookingClick(booking) {
+    setSelectedBooking(booking);
+    previewDetails(booking);
   }
 
   return (
@@ -33,8 +40,10 @@ export default function PreviewBookingsTable({ bookings, previewDetails }) {
                 )
                 .map((booking) => (
                   <tr
-                    className='h-12 bg-white border-b hover:bg-iron whitespace-nowrap'
-                    onClick={() => previewDetails(booking)}
+                    className={`h-12 border-b hover:bg-iron whitespace-nowrap ${
+                      selectedBooking === booking ? 'bg-iron' : 'bg-white'
+                    }`}
+                    onClick={() => handleBookingClick(booking)}
                     key={booking.id}
                   >
                     <td className='px-2'>{booking.bookingCode}</td>

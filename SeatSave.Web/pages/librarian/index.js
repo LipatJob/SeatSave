@@ -121,10 +121,8 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
           <div className='grid grid-cols-2 mb-10 gap-x-3'>
             <button
               type='button'
-              className={`text-black button ${
-                showQRCodeScanner
-                  ? 'bg-rodeo-dust hover:bg-rodeo-dust'
-                  : 'bg-pearl-bush hover:bg-rodeo-dust'
+              className={`text-black hover:bg-rodeo-dust button ${
+                showQRCodeScanner ? 'bg-rodeo-dust' : 'bg-pearl-bush'
               }`}
               onClick={handleQRCodeScanner}
             >
@@ -132,10 +130,8 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
             </button>
             <button
               type='button'
-              className={`text-black button ${
-                showBookings
-                  ? 'bg-rodeo-dust hover:bg-rodeo-dust'
-                  : 'bg-pearl-bush hover:bg-rodeo-dust'
+              className={`text-black hover:bg-rodeo-dust button ${
+                showBookings ? 'bg-rodeo-dust' : 'bg-pearl-bush'
               }`}
               onClick={handleBookings}
             >

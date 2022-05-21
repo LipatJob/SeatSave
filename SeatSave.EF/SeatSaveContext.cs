@@ -50,13 +50,17 @@ namespace SeatSave.EF
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
-            configurationBuilder.Properties<DateOnly>()
-             .HaveConversion<DateOnlyConverter, DateOnlyComparer>()
-             .HaveColumnType("date");
+            if (this.Database.IsSqlServer())
+            {
+                configurationBuilder.Properties<DateOnly>()
+                       .HaveConversion<DateOnlyConverter, DateOnlyComparer>()
+                       .HaveColumnType("date");
 
-            configurationBuilder.Properties<TimeOnly>()
-                .HaveConversion<TimeOnlyConverter, TimeOnlyComparer>()
-                .HaveColumnType("long");
+                configurationBuilder.Properties<TimeOnly>()
+                    .HaveConversion<TimeOnlyConverter, TimeOnlyComparer>()
+                    .HaveColumnType("time");
+            }
+
         }
     }
 }
@@ -130,14 +134,14 @@ public class NullableDateOnlyComparer : ValueComparer<DateOnly?>
 /// <summary>
 /// Converts <see cref="DateOnly" /> to <see cref="DateTime"/> and vice versa.
 /// </summary>
-public class TimeOnlyConverter : ValueConverter<TimeOnly, long>
+public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
 {
     /// <summary>
     /// Creates a new instance of this converter.
     /// </summary>
     public TimeOnlyConverter() : base(
-            d => d.Ticks,
-            d => new TimeOnly(d))
+            d => d.ToTimeSpan(),
+            d => TimeOnly.FromTimeSpan(d))
     { }
 }
 

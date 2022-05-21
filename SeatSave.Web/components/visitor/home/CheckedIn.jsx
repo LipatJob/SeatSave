@@ -12,8 +12,8 @@ const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
 export default function CheckedIn({ bookingDetails, onCheckOut }) {
   // Interval object for Expiration Timer
   const expirationTimerInterval = setInterval(triggerExpirationTimer, 5000);
-  const [timeExpired, setTimeExpired] = useState(false);
   const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
+  const [timeExpired, setTimeExpired] = useState(false);
   const onCheckOutClicked = async () => {
     const response = await fetch(
       `${process.env.API_URL}/Api/Booking/${bookingDetails.id}`,
@@ -37,24 +37,29 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
     onCheckOut();
   };
 
-  function triggerExpirationTimer(e) {
-    if (timeExpired == false) {
-      var dateNow = new Date();
-      var timeNow =
-        dateNow.getHours() +
-        ':' +
-        dateNow.getMinutes() +
-        ':' +
-        dateNow.getSeconds();
+  const onExpirationMessageSeen = () => {
+    setTimeExpired(false);
+    onCheckOut();
+  };
 
-      var currentDateTime = new Date('1970-01-01 ' + timeNow);
-      var dateToCompare = new Date(
-        '1970-01-01 ' + bookingDetails.period.timeEnd,
+  function triggerExpirationTimer(e) {
+    if (timeExpired === false) {
+      const dateNow = new Date();
+      const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
+
+      const currentDateTime = new Date(`1970-01-01 ${timeNow}`);
+      const dateToCompare = new Date(
+        `1970-01-01 ${bookingDetails.period.timeEnd}`,
       );
 
-      if (currentDateTime.getTime() - dateToCompare.getTime() / 60000 >= 16) {
+      console.log(
+        (currentDateTime.getTime() - dateToCompare.getTime()) / 60000,
+      );
+
+      if ((currentDateTime.getTime() - dateToCompare.getTime()) / 60000 >= 16) {
         setTimeExpired(true);
         clearInterval(expirationTimerInterval);
+        onCheckOutClicked();
       }
     }
   }
@@ -78,8 +83,8 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
       )}
       {timeExpired && (
         <OkModal
-          onOk={onCheckoutMessageSeen}
-          onClose={onCheckoutMessageSeen}
+          onOk={onExpirationMessageSeen}
+          onClose={onExpirationMessageSeen}
           message={
             <div>
               <h4 className='mb-6'>Your time is up!</h4>

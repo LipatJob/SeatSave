@@ -23,8 +23,8 @@ namespace SeatSave.Api.Controllers
             this.dbContext = dbContext;
             this.emailService = emailService;
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
-            var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
-            bookingService = new BookingService(currentDate, schedule, dbContext.Bookings, dbContext.Seats);
+            var schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability.ToList(), dbContext.SpecificDayAvailability.ToList());
+            bookingService = new BookingService(currentDate, schedule, dbContext.Bookings.ToList(), dbContext.Seats);
         }
 
         [HttpGet]
@@ -202,8 +202,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet("Present")]
         public IActionResult GetPresentBookings()
         {
-            var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0); // FOR TESTING
-            //var currentDateTime = DateTime.Now;
+            var currentDateTime = DateTime.Now;
             var currentDate = DateOnly.FromDateTime(currentDateTime);
             var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
 

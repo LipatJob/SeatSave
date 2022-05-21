@@ -34,7 +34,7 @@ jobs:
         run: dotnet restore
       
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build SeatSave.Api --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -p:UseAppHost=false -o ./dotnet-webapp

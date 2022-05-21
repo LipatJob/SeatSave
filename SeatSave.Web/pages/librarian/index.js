@@ -27,6 +27,8 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 
   const [showQRCodeScanner, setShowQRCodeScanner] = useState(false);
 
+  const [cameraAccess, setCameraAccess] = useState(false);
+
   const [searchResults, setSearchResults] = useState();
 
   const [showResults, setShowResults] = useState(false);
@@ -78,6 +80,10 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
     setShowQRCodeScanner(true);
   }
 
+  function handleToggleCamera() {
+    setCameraAccess(!cameraAccess);
+  }
+
   const handleErrorWebCam = (error) => {
     console.log(error);
   };
@@ -115,14 +121,22 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
           <div className='grid grid-cols-2 mb-10 gap-x-3'>
             <button
               type='button'
-              className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
+              className={`text-black button ${
+                showQRCodeScanner
+                  ? 'bg-rodeo-dust hover:bg-rodeo-dust'
+                  : 'bg-pearl-bush hover:bg-rodeo-dust'
+              }`}
               onClick={handleQRCodeScanner}
             >
               Scan QR Code
             </button>
             <button
               type='button'
-              className='text-black bg-pearl-bush hover:bg-rodeo-dust button'
+              className={`text-black button ${
+                showBookings
+                  ? 'bg-rodeo-dust hover:bg-rodeo-dust'
+                  : 'bg-pearl-bush hover:bg-rodeo-dust'
+              }`}
               onClick={handleBookings}
             >
               Search
@@ -144,15 +158,26 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
             />
           )}
           {showQRCodeScanner && (
-            <QrReader
-              delay={300}
-              style={{ width: '100%' }}
-              onError={handleErrorWebCam}
-              onScan={handleScannedQRCode}
-              className='p-10 border'
-              ref={camera}
-              showViewFinder={false}
-            />
+            <div className='flex flex-col items-center'>
+              <button
+                type='button'
+                className='button'
+                onClick={handleToggleCamera}
+              >
+                Open/Close Camera
+              </button>
+              {cameraAccess && (
+                <QrReader
+                  delay={300}
+                  style={{ width: '50%' }}
+                  className='mt-10'
+                  onError={handleErrorWebCam}
+                  onScan={handleScannedQRCode}
+                  ref={camera}
+                  showViewFinder={false}
+                />
+              )}
+            </div>
           )}
         </div>
         <div className='absolute top-0 w-full lg:relative lg:basis-2/5'>

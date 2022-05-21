@@ -15,7 +15,7 @@ namespace SeatSave.Api.Controllers
         public ScheduleController(SeatSaveContext dbContext)
         {
             this.dbContext = dbContext;
-            this.schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability, dbContext.SpecificDayAvailability);
+            this.schedule = new ScheduleModel(dbContext.RegularDayOfWeekAvailability.ToList(), dbContext.SpecificDayAvailability.ToList());
         }
 
         [HttpGet]
@@ -54,8 +54,7 @@ namespace SeatSave.Api.Controllers
         [HttpGet("Periods/Present")]
         public IActionResult GetPresentPeriod()
         {
-            var currentDateTime = new DateTime(2022, 04, 29, 13, 30, 0); // FOR TESTING
-            //var currentDateTime = DateTime.Now;
+            var currentDateTime = DateTime.Now;
             var currentTime = new TimeOnly(currentDateTime.Hour, currentDateTime.Minute, currentDateTime.Second);
             return Ok(new PeriodFactory().GetPeriodsInDay().Where(p => p.TimeStart <= currentTime && p.TimeEnd >= currentTime));
         }

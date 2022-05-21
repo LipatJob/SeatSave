@@ -26,7 +26,7 @@ async function addSeat(seat) {
   throw Error(response.statusText);
 }
 
-async function updateSeat(id, seat) {
+async function updateSeat(seat) {
   const response = await fetch(`${process.env.API_URL}/Api/Seats`, {
     method: 'PUT',
     headers: {

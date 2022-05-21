@@ -11,7 +11,7 @@ export default function LibrarianLogin() {
   useEffect(() => {
     // redirect to home if already logged in
     if (librarianAuthService.isLoggedIn()) {
-      Router.push('/');
+      Router.push('/librarian');
     }
   }, []);
 
@@ -40,7 +40,7 @@ export default function LibrarianLogin() {
         />
       </div>
       <div className='sm:max-w-md'>
-        <h1 className='mb-16 text-dusk-blue'>Welcome Back!</h1>
+        <h1 className='mb-16 text-center text-dusk-blue'>Welcome Back!</h1>
         <Formik
           initialValues={{
             email: '',

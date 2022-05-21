@@ -92,7 +92,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
       <Head>
         <title>View Bookings | SeatSave Librarian</title>
       </Head>
-      
+
       <h1>View Bookings</h1>
       <h4 className='pt-8 pb-4'>Seat Map</h4>
       <form className=''>
@@ -129,7 +129,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
       </form>
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className='sm:col-span-2'>
-          <div className='w-full border-0 sm:border-8 rounded-3xl border-pearl-bush'>
+          <div className=' h-[300px] sm:h-[400px] w-full border-0 sm:border-8 rounded-3xl border-pearl-bush flex'>
             {periodStartTime !== 0 && (
               <ClickSeatMap
                 date={selectedDate}
@@ -140,6 +140,9 @@ export default function ViewBookings({ allBookings, availableDays }) {
                 closeDetails={() => setShowBookingInformation(false)}
                 clickable
               />
+            )}
+            {periodStartTime === 0 && (
+              <h2 className='m-auto font-light'> Select a Date and Period</h2>
             )}
           </div>
           {periodStartTime !== 0 && (

@@ -12,8 +12,9 @@ const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
 export default function CheckedIn({ bookingDetails, onCheckOut }) {
   // Interval object for Expiration Timer
   const expirationTimerInterval = setInterval(triggerExpirationTimer, 5000);
-  const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
   const [timeExpired, setTimeExpired] = useState(false);
+
+  const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
   const onCheckOutClicked = async () => {
     const response = await fetch(
       `${process.env.API_URL}/Api/Booking/${bookingDetails.id}`,

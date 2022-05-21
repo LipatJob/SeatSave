@@ -7,6 +7,18 @@ import visitorAuthService from '../../../lib/visitorAuthService';
 export default function BookingDetailsSection({ booking, close }) {
   const { status } = booking;
 
+  // GET THE CURRENT DATE
+  const dateNow = new Date();
+  const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
+  const currentDate = `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()}`;
+  const currentDateTime = new Date(`${currentDate} ${timeNow}`);
+  const bookingDateTimeStart = new Date(
+    `${booking.bookingDate} ${booking.period.timeStart}`,
+  );
+  const bookingDateTimeEnd = new Date(
+    `${booking.bookingDate} ${booking.period.timeEnd}`,
+  );
+
   async function handleCheckIn() {
     const response = await fetch(
       `${process.env.API_URL}/Api/Booking/${booking.id}`,
@@ -58,7 +70,9 @@ export default function BookingDetailsSection({ booking, close }) {
         </div>
         <div>
           <p className='font-bold body-small'>Seat</p>
-          <p>{booking.seat.name} - {booking.seat.type}</p>
+          <p>
+            {booking.seat.name} - {booking.seat.type}
+          </p>
         </div>
         <div>
           <p className='font-bold body-small'>Visitor</p>
@@ -87,15 +101,17 @@ export default function BookingDetailsSection({ booking, close }) {
           <p>{booking.status}</p>
         </div>
       </div>
-      {status === 'Pending' && (
-        <button
-          type='button'
-          className='w-full mt-8 button'
-          onClick={handleCheckIn}
-        >
-          Check In
-        </button>
-      )}
+      {status === 'Pending' &&
+        currentDateTime >= bookingDateTimeStart &&
+        currentDateTime <= bookingDateTimeEnd && (
+          <button
+            type='button'
+            className='w-full mt-8 button'
+            onClick={handleCheckIn}
+          >
+            Check In
+          </button>
+        )}
       {status === 'Checked In' && (
         <button
           type='button'

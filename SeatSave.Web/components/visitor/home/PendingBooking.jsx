@@ -5,12 +5,17 @@ import BookingDetails from './BookingDetails';
 import WarningConfirmationModal from '../../common/WarningConfirmationModal';
 import visitorAuthService from '../../../lib/visitorAuthService';
 import { formatDate, formatTime } from '../../../lib/DateHelper';
+import OkModal from '../../common/OkModal';
 
 const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
   ssr: false,
 });
 
 export default function PendingBooking({ bookingDetails, onCancel }) {
+  // Interval object for Expiration Timer
+  const expirationTimerInterval = setInterval(triggerExpirationTimer, 5000);
+  const [timeExpired, setTimeExpired] = useState(false);
+
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
   const onCancelBookingClicked = () => {
     setCancelModalVisible(true);
@@ -35,6 +40,33 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
     }
   };
 
+  const onExpirationMessageSeen = () => {
+    setTimeExpired(false);
+    onCancelBookingConfirmed();
+    onCancel();
+  };
+
+  function triggerExpirationTimer(e) {
+    if (timeExpired === false) {
+      const dateNow = new Date();
+      const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
+      const currentDate = `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()}`;
+
+      const currentDateTime = new Date(`${currentDate} ${timeNow}`);
+      const dateToCompare = new Date(
+        `${bookingDetails.bookingDate} ${bookingDetails.period.timeEnd}`,
+      );
+
+      console.log(currentDateTime);
+      console.log(dateToCompare);
+
+      if (currentDateTime >= dateToCompare) {
+        setTimeExpired(true);
+        clearInterval(expirationTimerInterval);
+      }
+    }
+  }
+
   return (
     <div className='page-container-small'>
       {cancelModalVisible && (
@@ -43,6 +75,21 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
           onClose={() => setCancelModalVisible(false)}
           onNo={() => setCancelModalVisible(false)}
           onYes={onCancelBookingConfirmed}
+        />
+      )}
+      {timeExpired && (
+        <OkModal
+          onOk={onExpirationMessageSeen}
+          onClose={onExpirationMessageSeen}
+          message={
+            <div>
+              <h4 className='mb-6'>Booking Expired</h4>
+              <p className='body-normal'>
+                Your booking has exceeded the time period. You may able to book
+                another seat again.
+              </p>
+            </div>
+          }
         />
       )}
       <h2 className='mb-8 font-bold text-dusk-blue'>

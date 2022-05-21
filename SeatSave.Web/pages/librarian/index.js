@@ -146,7 +146,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               style={{ width: '100%' }}
               onError={handleErrorWebCam}
               onScan={handleScannedQRCode}
-              className='p-10 pb-10'
+              className='p-10 border'
               ref={camera}
               showViewFinder={false}
             />

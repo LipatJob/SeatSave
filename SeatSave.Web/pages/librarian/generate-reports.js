@@ -21,6 +21,8 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
 
   const { ExcelDownloder, Type } = useExcelDownloder();
 
+  const [chartView, setChartView] = useState(0);
+
   const excelData = {
     Top_Departments: allExcelReports[0],
     Top_Programs: allExcelReports[1],
@@ -51,6 +53,10 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
     const dateStart = document.getElementById('fromDate').value;
     const dateEnd = document.getElementById('toDate').value;
     const isUnique = document.getElementById('uniqueCount').checked;
+    const selectedChart = document.getElementById('selectChart').value;
+
+    setChartView(Number(selectedChart));
+    console.log(selectedChart, chartView);
 
     const response = await fetch(
       `${process.env.API_URL}/Api/StudentReport?dateStartString=${dateStart}&dateEndString=${dateEnd}&uniqueCount=${isUnique}`,
@@ -105,20 +111,28 @@ export default function GenerateReports({ allChartReports, allExcelReports }) {
 
       <div className='lg:mt-16'>
         <div className='flex flex-col w-full gap-5 lg:flex-row'>
-          <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={DEPARTMENTS_NAME} data={chartData[0]} />
-          </div>
-          <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={PROGRAMS_NAME} data={chartData[1]} />
-          </div>
+          {(chartView === 0 || chartView === 1) && (
+            <div className='mt-16 basis-1/2 lg:mt-0'>
+              <ReportSection name={DEPARTMENTS_NAME} data={chartData[0]} />
+            </div>
+          )}
+          {(chartView === 0 || chartView === 2) && (
+            <div className='mt-16 basis-1/2 lg:mt-0'>
+              <ReportSection name={PROGRAMS_NAME} data={chartData[1]} />
+            </div>
+          )}
         </div>
         <div className='flex flex-col w-full gap-5 lg:mt-8 lg:flex-row'>
-          <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={YEARS_NAME} data={chartData[2]} />
-          </div>
-          <div className='mt-16 basis-1/2 lg:mt-0'>
-            <ReportSection name={PROGRAMS_YEARS_NAME} data={chartData[3]} />
-          </div>
+          {(chartView === 0 || chartView === 3) && (
+            <div className='mt-16 basis-1/2 lg:mt-0'>
+              <ReportSection name={YEARS_NAME} data={chartData[2]} />
+            </div>
+          )}
+          {(chartView === 0 || chartView === 4) && (
+            <div className='mt-16 basis-1/2 lg:mt-0'>
+              <ReportSection name={PROGRAMS_YEARS_NAME} data={chartData[3]} />
+            </div>
+          )}
         </div>
       </div>
     </div>

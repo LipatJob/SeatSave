@@ -25,6 +25,16 @@ export default function ReportDataConditions({ changeConditions }) {
             onChange={changeConditions}
           />
         </label>
+        <label htmlFor='selectChart' className='flex flex-col w-[304px]'>
+          Chart
+          <select id='selectChart' name='selectChart' onChange={changeConditions}>
+            <option value={0}>All</option>
+            <option value={1}>Top Departments</option>
+            <option value={2}>Top Programs/Strands</option>
+            <option value={3}>Top Year Levels</option>
+            <option value={4}>Top Programs/Strands and Year Levels</option>
+          </select>
+        </label>
       </div>
       <label htmlFor='uniqueCount' className='flex flex-row items-center mt-4'>
         <input

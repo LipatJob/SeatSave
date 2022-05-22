@@ -43,7 +43,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
     onCheckOut();
   };
 
-  function triggerExpirationTimer(e) {
+  function triggerExpirationTimer() {
     if (timeExpired === false) {
       const dateNow = new Date();
       const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;

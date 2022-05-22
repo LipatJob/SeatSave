@@ -162,17 +162,18 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
               >
                 Open/Close Camera
               </button>
-              {cameraAccess && (
-                <QrReader
-                  delay={300}
-                  style={{ width: '50%' }}
-                  className='mt-10'
-                  onError={handleErrorWebCam}
-                  onScan={handleScannedQRCode}
-                  ref={camera}
-                  showViewFinder={false}
-                />
-              )}
+              <div className='p-10 mt-5 border h-72 w-72 border-dusk-blue'>
+                {cameraAccess && (
+                  <QrReader
+                    delay={300}
+                    style={{ width: '100%' }}
+                    onError={handleErrorWebCam}
+                    onScan={handleScannedQRCode}
+                    ref={camera}
+                    showViewFinder={false}
+                  />
+                )}
+              </div>
             </div>
           )}
         </div>

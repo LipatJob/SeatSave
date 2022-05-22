@@ -30,7 +30,7 @@
   input,
   textarea,
   select {
-    @apply h-12 p-3 text-base border border-dawn focus:border-dusk-blue focus:border-2 focus:outline-none lg:text-lg;
+    @apply h-12 p-2 text-base border border-dawn focus:border-dusk-blue focus:border-2 focus:outline-none lg:text-lg;
   }
 
   label {
@@ -74,7 +74,7 @@
   }
 
   .button {
-    @apply h-12 px-4 py-2 text-base font-bold text-white uppercase bg-bluish hover:bg-dusk-blue;
+    @apply px-4 py-3 text-base font-bold text-white uppercase bg-bluish hover:bg-dusk-blue;
   }
 
   .red-button {

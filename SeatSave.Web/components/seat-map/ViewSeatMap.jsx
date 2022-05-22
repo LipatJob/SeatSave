@@ -5,6 +5,7 @@ import TableService from '../../services/TableService';
 import ViewSeat from './ViewSeat';
 import { seatMapHeight } from '../../lib/seatMapHelper';
 import ViewTable from './ViewTable';
+import SeatMapLegends from './SeatMapLegends';
 
 export default function ViewSeatMap({ id, date, time }) {
   const selectedSeatId = id;
@@ -75,43 +76,49 @@ export default function ViewSeatMap({ id, date, time }) {
   }, []);
 
   return (
-    <div className='w-full h-[300px] sm:h-[400px]' ref={parentDiv}>
-      <Stage
-        width={parentDimensions && parentDimensions.width}
-        height={seatMapHeight}
-        ref={stage}
-        draggable
+    <>
+      <div
+        className='w-full h-min-[300px] sm:h-[400px] border-2 border-pearl-bush'
+        ref={parentDiv}
       >
-        <Layer>
-          <Group>
-            <Rect width={2000} height={2000} x={-1000} y={-1000} />
+        <Stage
+          width={parentDimensions && parentDimensions.width}
+          height={seatMapHeight}
+          ref={stage}
+          draggable
+        >
+          <Layer>
+            <Group>
+              <Rect width={2000} height={2000} x={-1000} y={-1000} />
 
-            {seats.map((seat) => (
-              <ViewSeat
-                id={seat.id}
-                key={seat.id}
-                x={seat.positionX}
-                y={seat.positionY}
-                isValidPosition={isValidPosition}
-                isSelected={seat.id === selectedSeatId}
-                isActive={seat.active}
-                seatBooked={seatIdBooked}
-              />
-            ))}
+              {seats.map((seat) => (
+                <ViewSeat
+                  id={seat.id}
+                  key={seat.id}
+                  x={seat.positionX}
+                  y={seat.positionY}
+                  isValidPosition={isValidPosition}
+                  isSelected={seat.id === selectedSeatId}
+                  isActive={seat.active}
+                  seatBooked={seatIdBooked}
+                />
+              ))}
 
-            {tables.map((table) => (
-              <ViewTable
-                key={table.id}
-                x={table.positionX}
-                y={table.positionY}
-                width={table.width}
-                height={table.height}
-                isValidPosition={isValidPosition}
-              />
-            ))}
-          </Group>
-        </Layer>
-      </Stage>
-    </div>
+              {tables.map((table) => (
+                <ViewTable
+                  key={table.id}
+                  x={table.positionX}
+                  y={table.positionY}
+                  width={table.width}
+                  height={table.height}
+                  isValidPosition={isValidPosition}
+                />
+              ))}
+            </Group>
+          </Layer>
+        </Stage>
+      </div>
+      <SeatMapLegends />
+    </>
   );
 }

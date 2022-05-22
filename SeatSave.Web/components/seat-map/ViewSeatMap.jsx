@@ -78,7 +78,7 @@ export default function ViewSeatMap({ id, date, time }) {
   return (
     <>
       <div
-        className='w-full h-[300px] sm:h-[400px] border-2 border-pearl-bush'
+        className='w-full h-min-[300px] sm:h-[400px] border-2 border-pearl-bush'
         ref={parentDiv}
       >
         <Stage

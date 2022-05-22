@@ -11,6 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { formatTime } from '../../lib/DateHelper';
 import ViewBookingDetails from '../../components/librarian/view-bookings/ViewBookingDetails';
 import librarianAuthService from '../../lib/librarianAuthService';
+import SeatMapLegends from '../../components/seat-map/SeatMapLegends';
 
 const ClickSeatMap = dynamic(
   () => import('../../components/seat-map/ClickSeatMap'),
@@ -146,22 +147,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
             )}
           </div>
           {periodStartTime !== 0 && (
-            <div className='w-full mt-4 '>
-              <div className='grid grid-cols-3 gap-4 text-center'>
-                <div>
-                  <div className='inline-block w-6 h-6  bg-[#37722B]' />
-                  <div className='inline-block pl-2'> Available</div>
-                </div>
-                <div className='col-span-2 sm:col-span-1'>
-                  <div className='inline-block w-6 h-6 bg-[#EA555A]' />
-                  <div className='inline-block pl-2'> Occupied</div>
-                </div>
-                <div className='col-span-3 sm:col-span-1'>
-                  <div className='inline-block w-6 h-6 bg-dawn' />
-                  <div className='inline-block pl-2'> Seat Unavailable</div>
-                </div>
-              </div>
-            </div>
+            <SeatMapLegends />
           )}
         </div>
         {showBookingInformation && (

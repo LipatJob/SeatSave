@@ -71,11 +71,22 @@ namespace SeatSave.EF
                 }
             );
 
+            var headLibrarians = new[]{
+                new HeadLibrarian
+                {
+                    Email = "headlibrarian@mcl.edu.ph",
+                    FirstName = "Head Librarian",
+                    LastName = "Account",
+                    Password = "1234567"
+                }
+            };
+            context.HeadLibrarians.AddRange(headLibrarians);
+
             var librarians = new[]{
                 new Librarian
                 {
-                    Email = "librarian@gmail.com",
-                    FirstName = "Text",
+                    Email = "librarian@mcl.edu.ph",
+                    FirstName = "Librarian",
                     LastName = "Account",
                     Password = "1234567"
                 }
@@ -85,8 +96,8 @@ namespace SeatSave.EF
             var students = new[]{
               new Student
                {
-                   Email = "student@gmail.com",
-                   FirstName = "Text",
+                   Email = "student@live.mcl.edu.ph",
+                   FirstName = "Student",
                    LastName = "Account",
                    Password = "1234567",
                    ProgramStrand = "STEM",
@@ -95,19 +106,19 @@ namespace SeatSave.EF
                },
                new Student
                {
-                   Email = "student2@gmail.com",
-                   FirstName = "Text",
-                   LastName = "Account",
-                   Password = "password",
+                   Email = "student2@live.mcl.edu.ph",
+                   FirstName = "Student",
+                   LastName = "Account 2",
+                   Password = "1234567",
                    ProgramStrand = "BA",
                    Department = "ETCYB",
                    YearGrade = "First Year",
                },
               new Student
               {
-                  Email = "student3@gmail.com",
-                  FirstName = "Text",
-                  LastName = "Account",
+                  Email = "student3@live.mcl.edu.ph",
+                  FirstName = "Student",
+                  LastName = "Account 3",
                   Password = "1234567",
                   ProgramStrand = "CS",
                   Department = "CCIS",
@@ -142,17 +153,21 @@ namespace SeatSave.EF
 
             var seats = new[]{new SeatModel
                 {
-                    Name = "ABC",
+                    Name = "Einstein-1",
                     Type = SeatModelTypes.CarrelDesk,
                     Active = true,
                     Description = "description description",
+                    PositionX = 60,
+                    PositionY = 160,
                 },
                 new SeatModel
                 {
-                    Name = "DEF",
+                    Name = "Einstein-2",
                     Type = SeatModelTypes.CarrelDeskWithOutlet,
                     Active = false,
                     Description = "description2 description2",
+                    PositionX = 60,
+                    PositionY = 240,
                 }
               };
             context.AddRange(seats);
@@ -160,7 +175,7 @@ namespace SeatSave.EF
             var bookings = new[]{
               new BookingModel
                 {
-                    BookingCode = "5678",
+                    BookingCode = "56789",
                     BookingDate = new DateOnly(2022, 04, 29),
                     Period = periods[4],
                     Seat = seats[1],
@@ -173,7 +188,7 @@ namespace SeatSave.EF
                 },
                 new BookingModel
                 {
-                    BookingCode = "1234",
+                    BookingCode = "12345",
                     BookingDate = new DateOnly(2022, 04, 28),
                     Period = periods[2],
                     Seat = seats[0],

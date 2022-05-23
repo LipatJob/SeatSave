@@ -21,6 +21,7 @@ export default function EditableSeatMap({
   selectedSeatId,
   setSelectedSeatId,
   onSeatsUpdated,
+  setShowSeatDetails,
 }) {
   const [selectedTable, setSelectedTable] = useState();
   const [tables, setTables] = useState([]);
@@ -84,6 +85,7 @@ export default function EditableSeatMap({
   };
 
   const deleteSeat = (id) => {
+    setShowSeatDetails(false);
     SeatService.deleteSeat(id).then(() => {
       setSeats((oldSeats) => {
         const newSeats = oldSeats.filter((e) => e.id !== id);

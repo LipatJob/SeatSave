@@ -202,12 +202,12 @@ export default function SeatInformationForm({
                   />
                 </div>
               </div>
-              <div className=' h-content pt-8 md:h-[70px] md:pt-0 content-center  gap-2 text-center flex flex-col items-stretch '>
+              <div className='flex flex-col items-stretch content-center gap-2 pt-8 text-center h-content md:pt-0'>
                 <div className='order-3 text-center md:col-span-1'>
                   {currentID !== 0 && (
                     <button
                       type='button'
-                      className='h-full text-valentine-red'
+                      className='h-full py-3 text-valentine-red'
                       onClick={() => {
                         setShowModalDeleteSeat(true);
                       }}
@@ -218,7 +218,7 @@ export default function SeatInformationForm({
                 </div>
 
                 <div className='order-2 md:col-span-1'>
-                  <button type='submit' className='w-full px-0 py-0 button '>
+                  <button type='submit' className='w-full button '>
                     SAVE
                   </button>
                 </div>

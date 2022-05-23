@@ -118,7 +118,7 @@ export default function CheckInOut({ presentPeriod, presentBookings }) {
 
       <div className='relative flex flex-col lg:flex-row gap-5 mt-8 lg:mt-14 min-h-[600px]'>
         <div className='lg:basis-3/5'>
-          <div className='grid grid-cols-2 mb-10 gap-x-3'>
+          <div className='grid grid-cols-2 mb-10'>
             <button
               type='button'
               className={`text-black hover:bg-rodeo-dust button ${

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -7,9 +7,16 @@ export default function MobileMenuOverlay({
   navbarOpen,
   setNavbarOpen,
   links,
+  authService,
   onLogout,
 }) {
   const router = useRouter();
+
+  const [isSSR, setIsSSR] = useState(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
 
   return (
     <div
@@ -18,37 +25,47 @@ export default function MobileMenuOverlay({
       }`}
     >
       <div className='flex flex-col items-center gap-10 text-black'>
-        {links.map((link) => (
-          <div key={link.key}>
-            {link.key === 3 ? (
-              <button
-                type='button'
-                className={`button ${
-                  router.pathname === '/librarian' ? 'bg-white text-bluish' : ''
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setNavbarOpen(false);
-                }}
-              >
-                <Link href={link.path}>{link.name}</Link>
-              </button>
-            ) : (
-              <button
-                type='button'
-                className={
-                  router.pathname === link.path ? 'border-b border-black' : ''
-                }
-                onClick={(e) => {
-                  e.preventDefault();
-                  setNavbarOpen(false);
-                }}
-              >
-                <Link href={link.path}>{link.name}</Link>
-              </button>
-            )}
-          </div>
-        ))}
+        {links.map(
+          (link) =>
+            (!link.restricted ||
+              (!isSSR &&
+                link.restricted &&
+                authService.getUser().UserType === 'HeadLibrarian')) && (
+              <div key={link.key}>
+                {link.key === 3 ? (
+                  <button
+                    type='button'
+                    className={`button ${
+                      router.pathname === '/librarian'
+                        ? 'bg-white text-bluish'
+                        : ''
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setNavbarOpen(false);
+                    }}
+                  >
+                    <Link href={link.path}>{link.name}</Link>
+                  </button>
+                ) : (
+                  <button
+                    type='button'
+                    className={
+                      router.pathname === link.path
+                        ? 'border-b border-black'
+                        : ''
+                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setNavbarOpen(false);
+                    }}
+                  >
+                    <Link href={link.path}>{link.name}</Link>
+                  </button>
+                )}
+              </div>
+            ),
+        )}
 
         <div className='flex flex-col items-center'>
           <Image

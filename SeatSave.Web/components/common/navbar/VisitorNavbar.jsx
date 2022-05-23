@@ -9,11 +9,13 @@ const visitorLinks = [
   {
     name: 'View Booking Details',
     path: '/',
+    restricted: false,
     key: 1,
   },
   {
     name: 'Book A Seat',
     path: '/book-a-seat',
+    restricted: false,
     key: 2,
   },
 ];
@@ -25,7 +27,10 @@ export default function VisitorNavbar() {
         <div className='flex flex-row items-center'>
           <NavbarLogo logoLink='/' />
           <div className='hidden ml-12 lg:block'>
-            <DesktopMenu links={visitorLinks} />
+            <DesktopMenu
+              links={visitorLinks}
+              authService={visitorAuthService}
+              />
           </div>
         </div>
         <div className='hidden lg:block'>
@@ -34,6 +39,7 @@ export default function VisitorNavbar() {
         <div className='lg:hidden'>
           <MobileMenu
             links={visitorLinks}
+            authService={visitorAuthService}
             onLogout={visitorAuthService.logout}
           />
         </div>

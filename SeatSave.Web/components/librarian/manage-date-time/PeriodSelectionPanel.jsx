@@ -11,7 +11,7 @@ export default function PeriodSelectionPanel({
 }) {
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [periods, setPeriods] = useState([]);
-  const [periodStates, setPeriodStates] = useState({});
+  const [periodStates, setPeriodStates] = useState([]);
 
   async function getAllPeriods() {
     const response = await fetch(
@@ -49,7 +49,6 @@ export default function PeriodSelectionPanel({
     selectedPeriods.forEach((item) => {
       period[item.id] = true;
     });
-    console.log(period);
     setPeriodStates(period);
   }
 
@@ -57,8 +56,6 @@ export default function PeriodSelectionPanel({
     const content = Object.entries(periodStates)
       .filter(([, value]) => value)
       .map(([key]) => ({ id: key }));
-    console.log('Submitting');
-    console.log(content);
     const type =
       availabilityType === 'RegularHours' ? 'RegularDay' : 'SpecificDay';
     const response = await fetch(
@@ -96,8 +93,8 @@ export default function PeriodSelectionPanel({
           <GrClose className='mx-auto my-auto' />
         </button>
       </div>
-      <div className='flex flex-col items-center justify-center h-full p-10'>
-        <div className='grid w-full max-w-[628px] grid-cols-1 mb-4 sm:grid-cols-2 gap-y-4'>
+      <div className='flex flex-col items-center justify-center p-10'>
+        <div className='grid w-full max-w-[628px] grid-cols-1 mb-4 sm:grid-cols-2 gap-y-4 md:gap-y-8'>
           {periods.map(({ id, timeStart, timeEnd }) => (
             <label
               htmlFor={id}

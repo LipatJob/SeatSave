@@ -12,6 +12,11 @@ export default function ManageDateTime() {
       Router.push('/librarian/login');
     }
   }, []);
+  useEffect(() => {
+    if (librarianAuthService.getUser().UserType !== 'HeadLibrarian') {
+      Router.push('/librarian/');
+    }
+  }, []);
 
   const [availabilityType, setAvailabilityType] = useState('RegularHours');
   const [selectedId, setSelectedId] = useState();

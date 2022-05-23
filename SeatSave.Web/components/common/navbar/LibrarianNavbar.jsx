@@ -9,26 +9,31 @@ const librarianLinks = [
   {
     name: 'Check In / Out',
     path: '/librarian/',
+    restricted: false,
     key: 3,
   },
   {
     name: 'View Bookings',
     path: '/librarian/view-bookings',
+    restricted: false,
     key: 4,
   },
   {
     name: 'Generate Reports',
     path: '/librarian/generate-reports',
+    restricted: false,
     key: 5,
   },
   {
     name: 'Manage Seats',
     path: '/librarian/manage-seats',
+    restricted: true,
     key: 6,
   },
   {
     name: 'Manage Date & Time',
     path: '/librarian/manage-date-time',
+    restricted: true,
     key: 7,
   },
 ];
@@ -40,7 +45,10 @@ export default function LibrarianNavbar() {
         <div className='flex flex-row items-center'>
           <NavbarLogo logoLink='/librarian' />
           <div className='hidden ml-12 lg:block'>
-            <DesktopMenu links={librarianLinks} />
+            <DesktopMenu
+              links={librarianLinks}
+              authService={librarianAuthService}
+              />
           </div>
         </div>
         <div className='hidden lg:block'>
@@ -49,6 +57,7 @@ export default function LibrarianNavbar() {
         <div className='lg:hidden'>
           <MobileMenu
             links={librarianLinks}
+            authService={librarianAuthService}
             onLogout={librarianAuthService.logout}
           />
         </div>

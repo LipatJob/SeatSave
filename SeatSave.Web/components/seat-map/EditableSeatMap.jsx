@@ -23,6 +23,7 @@ export default function EditableSeatMap({
   onSeatsUpdated,
   setShowSeatDetails,
 }) {
+  const draggableAreaRef = useRef();
   const [selectedTable, setSelectedTable] = useState();
   const [tables, setTables] = useState([]);
   const [editableAreaOffset, setEditableAreaOffset] = useState({ x: 0, y: 0 });
@@ -195,12 +196,16 @@ export default function EditableSeatMap({
       >
         <Layer>
           <Group
+            ref={draggableAreaRef}
             draggable
             onDragEnd={(e) => {
-              setEditableAreaOffset({ x: e.target.x(), y: e.target.y() });
+              if (e.target === draggableAreaRef.current) {
+                setEditableAreaOffset({ x: e.target.x(), y: e.target.y() });
+              }
             }}
           >
             <Rect width={4000} height={4000} x={-2000} y={-2000} />
+
             <Rect
               width={seatMapWidth}
               height={seatMapHeight}

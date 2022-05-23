@@ -3,6 +3,7 @@ using SeatSave.Core.Booking;
 using SeatSave.Core.Schedule;
 using SeatSave.EF;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace SeatSave.Test
@@ -16,8 +17,13 @@ namespace SeatSave.Test
             this.DbContext = fixture.Context;
         }
 
-        [Fact]
-        public void CreateNewPendingBooking()
+        private BookingService GetBookingService(DateOnly currentDate)
+        {
+            var schedule = new ScheduleModel(DbContext.RegularDayOfWeekAvailability, DbContext.SpecificDayAvailability);
+            return new BookingService(currentDate, schedule, DbContext.Bookings, DbContext.Seats);
+        }
+
+        public BookingModel CreateNewPendingBooking()
         {
             var currentDateTime = DateTime.Now;
             var booking = new BookingModel()
@@ -27,7 +33,7 @@ namespace SeatSave.Test
                     DateTimeCreated = new DateTime(2022, 04, 28, 10, 10, 10),
                 },
                 Status = BookingModel.PendingStatus,
-                BookingDate = new DateOnly(2022, 04, 29),
+                BookingDate = new DateOnly(2024, 01, 02),
                 Period = new Period
                 {
                     TimeStart = new TimeOnly(10, 0, 0),
@@ -35,13 +41,7 @@ namespace SeatSave.Test
                 }
             };
 
-            Assert.Equal(booking.Status, BookingModel.PendingStatus);
-        }
-
-        private BookingService GetBookingService(DateOnly currentDate)
-        {
-            var schedule = new ScheduleModel(DbContext.RegularDayOfWeekAvailability, DbContext.SpecificDayAvailability);
-            return new BookingService(currentDate, schedule, DbContext.Bookings, DbContext.Seats);
+            return booking;
         }
 
         [Fact]
@@ -104,31 +104,48 @@ namespace SeatSave.Test
             Assert.True(seatBookable);
         }
     }
+}
+public class CreateBookingSeedFixture : IDisposable
+{
+    public SeatSaveContext Context { get; private set; }
 
-    public class CreateBookingSeedFixture : IDisposable
+    public CreateBookingSeedFixture()
     {
-        public SeatSaveContext Context { get; private set; }
+        var options = new DbContextOptionsBuilder<SeatSaveContext>()
+          .UseLazyLoadingProxies()
+          .UseInMemoryDatabase(databaseName: "SeatSaveDb")
+          .Options;
 
-        public CreateBookingSeedFixture()
+        var periods = new PeriodFactory().GetPeriodsInDay();
+        using (var context = new SeatSaveContext(options))
         {
-            var options = new DbContextOptionsBuilder<SeatSaveContext>()
-              .UseLazyLoadingProxies()
-              .UseInMemoryDatabase(databaseName: "SeatSaveDb")
-              .Options;
-
-            using (var context = new SeatSaveContext(options))
+            context.Periods.AddRange(periods);
+            context.SpecificDayAvailability.AddRange(new SpecificDateAvailability()
             {
-                context.Bookings.AddRange(new BookingModel[] { });
-                context.SaveChanges();
-            }
+                Date = new DateOnly(2024, 01, 02),
+                Periods = new List<Period>{
+                    periods[2],
+                    periods[4],
+                }
+            });
 
+            context.RegularDayOfWeekAvailability.AddRange(new RegularDayOfWeekAvailability
+            {
+                DayOfWeek = DayOfWeek.Monday,
+                Periods = new List<Period>{
+                    periods[1],
+                    periods[3],
+                    periods[5],
 
-            Context = new SeatSaveContext(options);
+                }
+            });
+
         }
+        Context = new SeatSaveContext(options);
+    }
 
-        public void Dispose()
-        {
-            Context.Dispose();
-        }
+    public void Dispose()
+    {
+        Context.Dispose();
     }
 }

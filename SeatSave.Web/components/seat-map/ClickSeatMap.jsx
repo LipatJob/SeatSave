@@ -35,13 +35,14 @@ export default function ClickSeatMap({
       toIsoDate(date),
       period,
     );
+
     const availableSeatIds = new Set(availableSeats.map((e) => e.id));
+    console.log('what?', availableSeatIds);
     const seatsWithAvailability = allSeats.map((e) => ({
       ...e,
       bookable: availableSeatIds.has(e.id),
     }));
     console.log(seatsWithAvailability);
-
     setSeats(seatsWithAvailability);
   };
 
@@ -66,15 +67,18 @@ export default function ClickSeatMap({
   }, []);
 
   function seatClicked(x) {
+    console.log('bookable?', x.bookable);
     if (!clickable) {
       viewDetails(x);
-      if (x.bookable) setSeatId(x.id);
-      else setSeatId(null);
+      if (x.bookable) {
+        setSeatId(x.id);
+      } else setSeatId(null);
     }
     if (clickable) {
       closeDetails();
-      if (x.bookable || !x.active) setSeatId(null);
-      else {
+      if (x.bookable || !x.active) {
+        setSeatId(null);
+      } else {
         setSeatId(x.id);
         viewDetails(x);
       }

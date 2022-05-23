@@ -57,6 +57,7 @@ export default function ManageSeats({ seatTypes }) {
               setShowSeatDetails(id !== null);
             }}
             onSeatsUpdated={(newSeats) => setSeats(newSeats)}
+            setShowSeatDetails={setShowSeatDetails}
           />
         </div>
         <div className='basis-1/3'>

@@ -184,6 +184,7 @@ public class UserLoginSeedFixture : IDisposable
                         Password = "student_password",
                         ProgramStrand = "B.S. COMPUTER SCIENCE",
                         YearGrade = "First Year",
+                        Department = "CCIS"
                     },
                     new Faculty
                     {
@@ -202,6 +203,7 @@ public class UserLoginSeedFixture : IDisposable
                         LastName = "Account",
                         Password = "staff_password",
                         StaffOffice = "Purchasing Office"
+
                     },
                 });
             context.SaveChanges();

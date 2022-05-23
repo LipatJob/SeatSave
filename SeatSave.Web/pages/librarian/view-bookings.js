@@ -130,7 +130,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
       </form>
       <div className='grid grid-cols-1 pt-8 sm:grid-cols-3 sm:gap-8'>
         <div className='sm:col-span-2'>
-          <div className=' h-[300px] sm:h-[400px] w-full border-0 sm:border-8 rounded-3xl border-pearl-bush flex'>
+          <div className=' h-[300px] sm:h-[400px] w-full border-4 sm:border-8 rounded-3xl border-pearl-bush flex'>
             {periodStartTime !== 0 && (
               <ClickSeatMap
                 date={selectedDate}
@@ -146,9 +146,7 @@ export default function ViewBookings({ allBookings, availableDays }) {
               <h2 className='m-auto font-light'> Select a Date and Period</h2>
             )}
           </div>
-          {periodStartTime !== 0 && (
-            <SeatMapLegends />
-          )}
+          {periodStartTime !== 0 && <SeatMapLegends />}
         </div>
         {showBookingInformation && (
           <ViewBookingDetails

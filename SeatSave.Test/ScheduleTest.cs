@@ -3,6 +3,7 @@ using SeatSave.Core.Schedule;
 using SeatSave.EF;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SeatSave.Test
@@ -27,7 +28,7 @@ namespace SeatSave.Test
         [Fact]
         public void BookingPeriodInScheduleIsAvailable()
         {
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
             var selectedDate = new DateOnly(2024, 1, 1);
 
@@ -41,7 +42,7 @@ namespace SeatSave.Test
         [Fact]
         public void BookingPeriodNotInScheduleIsUnavailable()
         {
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
             var selectedDate = new DateOnly(2024, 1, 5);
 
@@ -55,7 +56,7 @@ namespace SeatSave.Test
         [Fact]
         public void CannotBookAvailableDateButNotPeriod()
         {
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
             var selectedDate = new DateOnly(2024, 1, 5);
 
@@ -69,7 +70,7 @@ namespace SeatSave.Test
         [Fact]
         public void CannotBookAvailablePeriodButNotDate()
         {
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
             var selectedDate = new DateOnly(2024, 1, 5);
 
@@ -82,10 +83,10 @@ namespace SeatSave.Test
         [Fact]
         public void AvailablePeriodOnAvailableRegularDayOfWeekIsAvailable()
         {
-            var currentDate = new DateOnly(2024, 1, 1);
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var currentDate = new DateOnly(2023, 12, 20);
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
-            var selectedDate = new DateOnly(2024, 1, 1);
+            var selectedDate = new DateOnly(2024, 1, 1); // 2024-1-1 is a Monday
 
             var schedule = GetSchedule();
             var isAvailable = schedule.IsAvailable(selectedDate, selectedPeriod, currentDate);
@@ -97,7 +98,7 @@ namespace SeatSave.Test
         public void AvailablePeriodOnAvailableSpecificDateIsAvailable()
         {
             var currentDate = new DateOnly(2024, 1, 1);
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[2];
             var selectedDate = new DateOnly(2024, 1, 2);
 
@@ -111,7 +112,7 @@ namespace SeatSave.Test
         public void UnavailablePeriodOnAvailableRegularDayOfWeekIsUnavailable()
         {
             var currentDate = new DateOnly(2024, 1, 1);
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[2];
             var selectedDate = new DateOnly(2024, 1, 1);
 
@@ -125,7 +126,7 @@ namespace SeatSave.Test
         public void UnavailablePeriodOnAvailableSpecificDateIsUnavailable()
         {
             var currentDate = new DateOnly(2024, 1, 1);
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
             var selectedDate = new DateOnly(2024, 1, 2);
 
@@ -139,7 +140,7 @@ namespace SeatSave.Test
         public void UnavailableSpecificDateIsUnavailable()
         {
             var currentDate = new DateOnly(2024, 1, 1);
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var selectedPeriod = periods[1];
             var selectedDate = new DateOnly(2024, 1, 7);
 
@@ -166,11 +167,11 @@ namespace SeatSave.Test
         [Fact]
         public void GetAvailablePeriodsOnRegularDayGeneratesCorrectly()
         {
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var targetAvailablePeriods = new[] {
                 periods[1],
                 periods[3],
-                 periods[5],
+                periods[5],
             };
 
             var currentDate = new DateOnly(2024, 1, 1);
@@ -185,7 +186,7 @@ namespace SeatSave.Test
         [Fact]
         public void GetAvailablePeriodsOnSpecificDayGeneratesCorrectly()
         {
-            var periods = new PeriodFactory().GetPeriodsInDay();
+            var periods = _fixture.Context.Periods.ToList();
             var targetAvailablePeriods = new[] {
                 periods[2],
                 periods[4],

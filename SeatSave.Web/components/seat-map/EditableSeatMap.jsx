@@ -200,6 +200,7 @@ export default function EditableSeatMap({
               setEditableAreaOffset({ x: e.target.x(), y: e.target.y() });
             }}
           >
+            <Rect width={4000} height={4000} x={-2000} y={-2000} />
             <Rect
               width={seatMapWidth}
               height={seatMapHeight}

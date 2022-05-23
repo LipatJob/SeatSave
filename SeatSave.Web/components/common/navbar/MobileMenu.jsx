@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 import MobileMenuOverlay from './MobileMenuOverlay';
 
-export default function MobileMenu({ links, onLogout }) {
+export default function MobileMenu({ links, authService, onLogout }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   return (
@@ -15,6 +15,7 @@ export default function MobileMenu({ links, onLogout }) {
         navbarOpen={navbarOpen}
         setNavbarOpen={setNavbarOpen}
         links={links}
+        authService={authService}
         onLogout={onLogout}
       />
     </>

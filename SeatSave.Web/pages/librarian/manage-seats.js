@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Router from 'next/router';
 import { GrClose } from 'react-icons/gr';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import PanelWithHeader from '../../components/librarian/manage-seat/PanelWithHeader';
 import SeatInformationForm from '../../components/librarian/manage-seat/SeatInformationForm';
 import SeatSelectionPanel from '../../components/librarian/manage-seat/SeatSelectionPanel';
+import librarianAuthService from '../../lib/librarianAuthService';
 
 const EditableSeatMap = dynamic(
   () => import('../../components/seat-map/EditableSeatMap'),
@@ -14,6 +16,17 @@ const EditableSeatMap = dynamic(
 );
 
 export default function ManageSeats({ seatTypes }) {
+  useEffect(() => {
+    if (!librarianAuthService.isLoggedIn()) {
+      Router.push('/librarian/login');
+    }
+  }, []);
+  useEffect(() => {
+    if (librarianAuthService.getUser().UserType !== 'HeadLibrarian') {
+      Router.push('/librarian/');
+    }
+  }, []);
+
   const [showSeatDetails, setShowSeatDetails] = useState(false);
   const [currentID, setCurrentID] = useState(null);
   const [seats, setSeats] = useState([]);
@@ -57,6 +70,7 @@ export default function ManageSeats({ seatTypes }) {
               setShowSeatDetails(id !== null);
             }}
             onSeatsUpdated={(newSeats) => setSeats(newSeats)}
+            setShowSeatDetails={setShowSeatDetails}
           />
         </div>
         <div className='basis-1/3'>

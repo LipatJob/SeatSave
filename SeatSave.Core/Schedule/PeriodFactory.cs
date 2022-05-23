@@ -9,16 +9,16 @@
 
         public IList<Period> GetPeriodsInDay()
         {
-            int id = 1;
+            int idCount = 1;
             IList<Period> periods = new List<Period>();
             var currentPeriodStart = openingTime;
             TimeOnly currentPeriodEnd;
             do
             {
                 currentPeriodEnd = currentPeriodStart.Add(periodDuration);
-                periods.Add(new Period { TimeStart = currentPeriodStart, TimeEnd = currentPeriodEnd }); ;
+                periods.Add(new Period { id = idCount, TimeStart = currentPeriodStart, TimeEnd = currentPeriodEnd }); ;
                 currentPeriodStart = currentPeriodEnd;
-                id += 1;
+                idCount += 1;
             } while (currentPeriodEnd < closingTime);
 
             return periods;

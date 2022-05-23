@@ -11,10 +11,11 @@ export default function SeatSelectionPanel({
 }) {
   return (
     <PanelWithHeader
-      className={`h-[620px]   ${className}`}
+      className={`${className}`}
       header={<h4>Available Seats</h4>}
       body={
-        <div className='flex flex-col max-h-full overflow-hidden overflow-y-scroll'>
+        <div className='h-[436px] overflow-auto'>
+          <div className='flex flex-col max-h-full overflow-hidden overflow-y-scroll '>
           {seats.map((seat) => (
             <Seat
               key={seat.id}
@@ -24,11 +25,12 @@ export default function SeatSelectionPanel({
             />
           ))}
 
-          <CircularButton
-            className='sticky mt-auto bottom-3 right-3'
-            onClick={onAddClicked}
-          />
+          <div className='sticky mt-3 bottom-3 right-3'>
+            <CircularButton onClick={onAddClicked} />
+          </div>
         </div>
+        </div>
+        
       }
     />
   );

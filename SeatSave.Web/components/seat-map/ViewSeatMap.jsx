@@ -65,11 +65,14 @@ export default function ViewSeatMap({ id, date, time }) {
       if (
         element.bookingDate === moment(date).format('YYYY-MM-DD') &&
         element.period.timeStart === time &&
-        element.seat.active === true
+        element.seat.active === true &&
+        (element.seat.status === 'Pending' ||
+          element.seat.status === 'Checked In')
       ) {
         seatIdBooked.push(element.seatId);
       }
     });
+    console.log(seatIdBooked);
   }
   useEffect(() => {
     getBookings();

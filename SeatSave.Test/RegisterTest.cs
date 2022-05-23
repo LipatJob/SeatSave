@@ -35,7 +35,7 @@ namespace SeatSave.Test
                 LastName = "Account",
                 Password = "student_password",
                 Department = "CCIS",
-                ProgramStrand = "B.S. COMPUTER SCIENCE",
+                ProgramStrand = "CS",
                 YearGrade = "First Year",
             };
 

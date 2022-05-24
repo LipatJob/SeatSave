@@ -50,9 +50,10 @@ namespace SeatSave.Test
             bool dateBookable = false;
             var currDate = new DateOnly(2022, 04, 28);
             var dateToTest = new DateOnly(2022, 05, 05);
-            var booking = GetBookingService(currDate).GetBookableDates();
+            var booking = GetBookingService(currDate);
+            var bookingDates = booking.GetBookableDates();
 
-            foreach (var book in booking)
+            foreach (var book in bookingDates)
             {
                 if (book == dateToTest)
                 {

@@ -46,21 +46,22 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
     onCancel();
   };
 
-  function triggerExpirationTimer(e) {
+  function triggerExpirationTimer() {
     if (timeExpired === false) {
       const dateNow = new Date();
       const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
-      const currentDate = `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDate()}`;
+      const currentDate = `${dateNow.getFullYear()}-${
+        dateNow.getMonth() + 1
+      }-${dateNow.getDate()}`;
 
       const currentDateTime = new Date(`${currentDate} ${timeNow}`);
       const dateToCompare = new Date(
         `${bookingDetails.bookingDate} ${bookingDetails.period.timeEnd}`,
       );
 
-      console.log(currentDateTime);
-      console.log(dateToCompare);
-
-      if (currentDateTime >= dateToCompare) {
+      if (currentDateTime.getTime() >= dateToCompare.getTime()) {
+        console.log(currentDateTime);
+        console.log(dateToCompare);
         setTimeExpired(true);
         clearInterval(expirationTimerInterval);
       }

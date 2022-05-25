@@ -28,6 +28,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
       },
     );
     if (response.ok) {
+      console.log('here?');
       setCheckoutMessageVisible(true);
     } else {
       console.log('There was an error');

@@ -59,7 +59,7 @@ export default function PendingBooking({ bookingDetails, onCancel }) {
         `${bookingDetails.bookingDate} ${bookingDetails.period.timeEnd}`,
       );
 
-      if (currentDateTime.getTime() >= dateToCompare.getTime()) {
+      if (currentDateTime >= dateToCompare) {
         console.log(currentDateTime);
         console.log(dateToCompare);
         setTimeExpired(true);

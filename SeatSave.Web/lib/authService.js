@@ -43,6 +43,9 @@ function isLoggedIn(userGroup) {
 }
 
 function getUser(userGroup) {
+  if (!isLoggedIn(userGroup)) {
+    return {};
+  }
   const token = getToken(userGroup);
   return jwt_decode(token);
 }

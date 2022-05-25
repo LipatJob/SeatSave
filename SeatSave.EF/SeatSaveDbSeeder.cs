@@ -157,6 +157,8 @@ namespace SeatSave.EF
                     Type = SeatModelTypes.CarrelDesk,
                     Active = true,
                     Description = "description description",
+                    PositionX = 60,
+                    PositionY = 160,
                 },
                 new SeatModel
                 {
@@ -164,6 +166,8 @@ namespace SeatSave.EF
                     Type = SeatModelTypes.CarrelDeskWithOutlet,
                     Active = false,
                     Description = "description2 description2",
+                    PositionX = 60,
+                    PositionY = 240,
                 }
               };
             context.AddRange(seats);

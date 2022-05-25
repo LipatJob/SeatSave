@@ -1,18 +1,17 @@
 using SeatSave.Core.Booking;
 using SeatSave.Core.User;
 using SeatSave.EF;
-using System.Linq;
 
 namespace SeatSave.Api.Services
 {
     public class ReportData
     {
-        public IEnumerable<string> Categories { get; set; }
-        public IEnumerable<int> Counts { get; set; }
+        public IEnumerable<string>? Categories { get; set; }
+        public IEnumerable<int>? Counts { get; set; }
     }
     public class ExcelData
     {
-        public string Category { get; set; }
+        public string? Category { get; set; }
         public int Count { get; set; }
     }
 
@@ -31,6 +30,11 @@ namespace SeatSave.Api.Services
 
         public IEnumerable<Student> GetStudentsData(bool uniqueCount)
         {
+            if (dbContext.Bookings.Count() == 0)
+            {
+                return new List<Student>();
+            }
+
             DateOnly minDate = dbContext.Bookings.Min(b => b.BookingDate);
             DateOnly maxDate = dbContext.Bookings.Max(b => b.BookingDate);
 

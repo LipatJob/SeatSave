@@ -34,7 +34,7 @@ namespace SeatSave.Api.Services
             {
                 try
                 {
-                    smtp.Connect(config.SmtpServer, config.Port, SecureSocketOptions.StartTls);
+                    smtp.Connect(config.SmtpServer, config.Port, SecureSocketOptions.Auto);
                     smtp.Authenticate(config.UserName, config.Password);
                     smtp.Send(email);
                 }
@@ -54,11 +54,17 @@ namespace SeatSave.Api.Services
         {
             string subject = $"MCL CLIR Boooking on {booking.BookingDate.ToShortDateString()}";
             string body =
+                $"This email confirms that you have booked a seat in MCL's Center for Learning and Information Resources. The details of your booking are listed below. </br>" +
+                $"</br>" +
                 $"Booking Code: {booking.BookingCode} </br>" +
                 $"Date: {booking.BookingDate.ToShortDateString()}</br>" +
                 $"Seat: {booking.Seat.Id} {booking.Seat.Name}</br>" +
                 $"From: {booking.Period.TimeStart.ToShortTimeString()}</br>" +
-                $"Until: {booking.Period.TimeEnd.ToShortTimeString()}</br>";
+                $"Until: {booking.Period.TimeEnd.ToShortTimeString()}</br>" +
+                $"</br>" +
+                $"Sincerely,</br>" +
+                $"</br>" +
+                $"Seat Save Team</br>";
             Send(email, subject, body);
         }
     }

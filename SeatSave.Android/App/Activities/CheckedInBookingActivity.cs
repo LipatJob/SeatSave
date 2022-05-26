@@ -18,7 +18,7 @@ namespace SeatSave.Android.App.Activities
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your application here
+            SetContentView(Resource.Layout.checked_in_booking);
         }
     }
 }

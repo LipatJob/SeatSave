@@ -11,7 +11,16 @@ using System.Text;
 
 namespace SeatSave.Android.App.Activities
 {
-    class PendingBookingActivity
+    
+    [Activity(Label = "PendingBookingActivity")]
+    public class PendingBookingActivity : Activity
     {
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+
+
+            SetContentView(Resource.Layout.pending_booking);
+        }
     }
 }

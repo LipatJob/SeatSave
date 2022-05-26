@@ -37,7 +37,6 @@ namespace SeatSave.Android
             noBookingButton = FindViewById<Button>(Resource.Id.noBookingButton);
             pendingBookingButton = FindViewById<Button>(Resource.Id.pendingBookingButton);
 
-
             sampleButton.Click += (_, __) => SampleAction();
             loginButton.Click += (_, __) => StartActivity(new Intent(this, typeof(LoginActivity)));
             cannotBookButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CannotBookActivity)));

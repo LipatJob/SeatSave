@@ -14,12 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click Me!"
+        
         />
     <TextView
         android:text="Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sampleText" />
+        android:id="@+id/sampleText"
+        />
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
@@ -53,6 +55,6 @@
         android:layout_height="wrap_content"
         android:text="Go to Pening Booking Activity"
         />
-    
+
 
 </LinearLayout>

@@ -67,6 +67,8 @@
     <Compile Include="App\Activities\MainActivity.cs" />
     <Compile Include="App\Activities\NoBookingActivity.cs" />
     <Compile Include="App\Activities\PendingBookingActivity.cs" />
+    <Compile Include="App\Fragments\Footer.cs" />
+    <Compile Include="App\Fragments\Navbar.cs" />
     <Compile Include="App\Models\SampleModel.cs" />
     <Compile Include="App\Services\SampleService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

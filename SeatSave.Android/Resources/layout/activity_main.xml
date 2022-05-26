@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
 
     <Button
         android:id="@+id/sampleButton"
@@ -18,5 +20,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sampleText" />
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Login Activity"
+        />
+
+    <Button
+        android:id="@+id/cannotBookButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Cannot Book Activity"
+        />
+
+
+    <Button
+        android:id="@+id/checkedInBookingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Checked In Booking Activity"
+        />
+    <Button
+        android:id="@+id/noBookingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to No Booking Activity"
+        />
+    <Button
+        android:id="@+id/pendingBookingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Pening Booking Activity"
+        />
+    
 
 </LinearLayout>

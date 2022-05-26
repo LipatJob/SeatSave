@@ -5,13 +5,21 @@ using AndroidX.AppCompat.App;
 using Android.Content.PM;
 using Android.Widget;
 using SeatSave.Android.App.Services;
+using Android.Content;
+using SeatSave.Android.App.Activities;
 
 namespace SeatSave.Android
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-        Button button;
+        Button sampleButton;
+        Button loginButton;
+        Button cannotBookButton;
+        Button checkedInBookingButton;
+        Button noBookingButton;
+        Button pendingBookingButton;
+
         TextView text;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -20,9 +28,24 @@ namespace SeatSave.Android
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            button = FindViewById<Button>(Resource.Id.sampleButton);
+            sampleButton = FindViewById<Button>(Resource.Id.sampleButton);
             text = FindViewById<TextView>(Resource.Id.sampleText);
-            button.Click += (_, __) => SampleAction();
+
+            loginButton = FindViewById<Button>(Resource.Id.loginButton);
+            cannotBookButton = FindViewById<Button>(Resource.Id.cannotBookButton);
+            checkedInBookingButton = FindViewById<Button>(Resource.Id.checkedInBookingButton);
+            noBookingButton = FindViewById<Button>(Resource.Id.noBookingButton);
+            pendingBookingButton = FindViewById<Button>(Resource.Id.pendingBookingButton);
+
+
+            sampleButton.Click += (_, __) => SampleAction();
+            loginButton.Click += (_, __) => StartActivity(new Intent(this, typeof(LoginActivity)));
+            cannotBookButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CannotBookActivity)));
+            checkedInBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CheckedInBookingActivity)));
+            noBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(NoBookingActivity)));
+            pendingBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(PendingBookingActivity)));
+
+
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {

@@ -11,15 +11,14 @@ using System.Text;
 
 namespace SeatSave.Android.App.Activities
 {
-    [Activity(Label = "LoginActivity")]
-    public class LoginActivity : Activity
+    [Activity(Label = "CannotBookActivity")]
+    public class CannotBookActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-
-            SetContentView(Resource.Layout.login);
+            // Create your application here
         }
     }
 }

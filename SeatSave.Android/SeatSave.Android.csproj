@@ -61,6 +61,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\Activities\CannotBookActivity.cs" />
     <Compile Include="App\Activities\CheckedInBookingActivity.cs" />
     <Compile Include="App\Activities\CreateBookingActivity.cs" />
     <Compile Include="App\Activities\LoginActivity.cs" />

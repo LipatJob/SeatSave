@@ -3,4 +3,13 @@
     <color name="colorPrimary">#2c3e50</color>
     <color name="colorPrimaryDark">#1B3147</color>
     <color name="colorAccent">#3498db</color>
+	<color name="duskBlue">#225090</color>
+	<color name="bluish">#307FB5</color>
+	<color name="pearlBrush">#E8DCD2</color>
+	<color name="rodeoDust">#CBB09A</color>
+	<color name="softBlue">#5E8DF7</color>
+	<color name="valentineRed">#EA555A</color>
+	<color name="darkJungleGreen">#1E1E1E</color>
+	<color name="white">#FFFFFF</color>
+    
 </resources>

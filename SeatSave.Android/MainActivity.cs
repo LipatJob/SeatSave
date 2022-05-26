@@ -2,6 +2,7 @@
 using Android.OS;
 using Android.Runtime;
 using AndroidX.AppCompat.App;
+using Android.Content.PM;
 
 namespace SeatSave.Android
 {
@@ -12,10 +13,10 @@ namespace SeatSave.Android
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            // Set our view from the "main" layout resource
+            // Set our view from the "main" layout resourceetu
             SetContentView(Resource.Layout.activity_main);
         }
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 

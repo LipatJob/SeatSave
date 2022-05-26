@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SeatSave.Core.Booking;
 using SeatSave.Core.Schedule;
 using SeatSave.EF;
 
@@ -46,7 +47,9 @@ namespace SeatSave.Api.Controllers
         [HttpGet("{isoDate}/{periodId}/Seat")]
         public IActionResult GetBookableSeats(string isoDate, int periodId)
         {
-            var unavailableSeatsForBooking = dbContext.Bookings.Where(e => e.BookingDate == DateOnly.Parse(isoDate) && e.PeriodId == periodId).Select(e => e.Seat);
+            // FIXED: Added query for Status == Pending || Status == Checked In
+            var unavailableSeatsForBooking = dbContext.Bookings.Where(e => (e.BookingDate == DateOnly.Parse(isoDate) && e.PeriodId == periodId) &&
+            (e.Status == BookingModel.CheckedInStatus || e.Status == BookingModel.PendingStatus)).Select(e => e.Seat);
             var bookableSeats = dbContext.Seats.Where(e => !unavailableSeatsForBooking.Contains(e) && e.Active == true);
             return Ok(bookableSeats);
         }

@@ -59,15 +59,16 @@ export default function ViewSeatMap({ id, date, time }) {
     const response = await fetch(`${process.env.API_URL}/Api/Booking`);
     const bookingData = await response.json();
     setAllBookings(bookingData);
+    console.log(allBookings);
   };
   if (allBookings !== null) {
     allBookings.forEach((element) => {
+      // changed element.seat.status -> element.status
       if (
         element.bookingDate === moment(date).format('YYYY-MM-DD') &&
         element.period.timeStart === time &&
         element.seat.active === true &&
-        (element.seat.status === 'Pending' ||
-          element.seat.status === 'Checked In')
+        (element.status === 'Pending' || element.status === 'Checked In')
       ) {
         seatIdBooked.push(element.seatId);
       }

@@ -23,6 +23,9 @@ export default function EditableSeatMap({
   onSeatsUpdated,
   setShowSeatDetails,
 }) {
+  const insideBackgroundRef = useRef();
+
+  const outsideBackgroundRef = useRef();
   const draggableAreaRef = useRef();
   const [selectedTable, setSelectedTable] = useState();
   const [tables, setTables] = useState([]);
@@ -204,13 +207,32 @@ export default function EditableSeatMap({
               }
             }}
           >
-            <Rect width={4000} height={4000} x={-2000} y={-2000} />
+            <Rect
+              ref={outsideBackgroundRef}
+              width={4000}
+              height={4000}
+              x={-2000}
+              y={-2000}
+              onClick={(e) => {
+                if (e.target === outsideBackgroundRef.current) {
+                  setSelectedTable(null);
+                  setSelectedSeatId(null);
+                }
+              }}
+            />
 
             <Rect
+              ref={insideBackgroundRef}
               width={seatMapWidth}
               height={seatMapHeight}
               stroke={colorPearlBrush}
               strokeWidth={2}
+              onClick={(e) => {
+                if (e.target === insideBackgroundRef.current) {
+                  setSelectedTable(null);
+                  setSelectedSeatId(null);
+                }
+              }}
             />
             {seats.map((seat) => (
               <Seat

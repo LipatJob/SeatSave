@@ -12,8 +12,9 @@ const ViewSeatMap = dynamic(() => import('../../seat-map/ViewSeatMap'), {
 export default function CheckedIn({ bookingDetails, onCheckOut }) {
   // Interval object for Expiration Timer
   const expirationTimerInterval = setInterval(triggerExpirationTimer, 5000);
-  const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
   const [timeExpired, setTimeExpired] = useState(false);
+
+  const [checkoutMessageVisible, setCheckoutMessageVisible] = useState(false);
   const onCheckOutClicked = async () => {
     const response = await fetch(
       `${process.env.API_URL}/Api/Booking/${bookingDetails.id}`,
@@ -27,6 +28,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
       },
     );
     if (response.ok) {
+      console.log('here?');
       setCheckoutMessageVisible(true);
     } else {
       console.log('There was an error');
@@ -42,7 +44,7 @@ export default function CheckedIn({ bookingDetails, onCheckOut }) {
     onCheckOut();
   };
 
-  function triggerExpirationTimer(e) {
+  function triggerExpirationTimer() {
     if (timeExpired === false) {
       const dateNow = new Date();
       const timeNow = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;

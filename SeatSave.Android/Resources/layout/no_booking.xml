@@ -2,6 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:padding="40px">
+    <TextView
+        android:text="Sorry, you can’t book at the moment..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textColor="@color/duskBlue"
+        android:textStyle="bold"
+        android:textSize="@dimen/abc_text_size_display_2_material"
+        />
+    <TextView
+        android:text="You still have a pending booking and you are only allowed to have one booking at a time."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView8"
+        android:paddingTop="40px"
+        android:paddingBottom="40px" 
+        android:textColor="@android:color/black" 
+         />
+    <Button
+        android:text="VIEW BOOKING DETAILS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button1"
+        android:layout_marginTop="20px"
+        android:backgroundTint="@color/bluish"
+        android:textColor="@android:color/white" 
+        
+         />
 </LinearLayout>

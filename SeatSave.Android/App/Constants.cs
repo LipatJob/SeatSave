@@ -13,6 +13,11 @@ namespace SeatSave.Android.App
 {
     public static class Constants
     {
-        public const string SampleUri = "https://seatsave.azurewebsites.net/Api/Sample";
+        public const string DevelopmentHost = "https://localhost:7175/";
+        public const string ProductionHost = "https://seatsave.azurewebsites.net";
+
+        public const string SampleUri = ProductionHost + "/Api/Sample";
+        public const string AuthenticationUri = ProductionHost + "/Api/Authentication";
+
     }
 }

@@ -27,8 +27,9 @@ namespace SeatSave.Android.App.Activities
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.login);
+            ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
 
-            authService = new AuthenticationService();
+            authService = new AuthenticationService(pref);
 
             emailEditText = FindViewById<EditText>(Resource.Id.emailEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
@@ -61,16 +62,13 @@ namespace SeatSave.Android.App.Activities
             passwordEditTextLayout.Error = null;
         }
 
-        public void Login()
+        public async void Login()
         {
-            if (passwordEditTextLayout.ErrorEnabled || emailEditTextLayout.ErrorEnabled) {
-                return;
-            }
-
             var email = emailEditText.Text;
             var password = passwordEditText.Text;
 
-            if (authService.TryLogin(email, password))
+            var success = await authService.TryLogin(email, password);
+            if (success)
             {
                 StartActivity(new Intent(this, typeof(CannotBookActivity)));
             }

@@ -3,9 +3,32 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/duskBlue</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+        <item name="colorAccent">@color/rodeoDust</item>
+		<item name="android:fontFamily">@font/red_hat_text</item>
+		<item name="fontFamily">@font/red_hat_text</item>
+
+		<item name="android:textViewStyle">@style/TextViewStyle</item>
+		<item name="android:buttonStyle">@style/ButtonStyle</item>
+	</style>
+
+
+	<!-- Base application theme. -->
+	<style name="TextViewStyle" parent="android:Widget.TextView">
+		<item name="android:fontFamily">@font/red_hat_text</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:textColor">@android:color/black</item>
+
+	</style>
+
+	<style name="ButtonStyle" parent="Widget.AppCompat.Button">
+		<item name="android:backgroundTint">@color/bluish</item>
+	</style>
+
+
+
+
+
 
 </resources>

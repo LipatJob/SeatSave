@@ -31,104 +31,134 @@
             android:paddingHorizontal="40px"
             android:layout_marginBottom="37dp"
             />
+
         <LinearLayout
             android:orientation="vertical"
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout1"
             android:gravity="center_horizontal"
             >
-            <TextView
-                android:text="Select your date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:textFontWeight="700"
-                android:textSize="20sp"
-                android:layout_marginBottom="12dp"
-                />
-            <HorizontalScrollView
+            <LinearLayout
+                android:id="@+id/dateGroup"
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
                 >
-                <android.support.v7.widget.RecyclerView
+                <TextView
+                    android:text="Select your date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:minWidth="25px"
                     android:minHeight="25px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/date_recyler_view"
+                    android:textFontWeight="700"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="12dp"
+
                     />
-            </HorizontalScrollView>
+                <HorizontalScrollView
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    >
+                    <android.support.v7.widget.RecyclerView
+                        android:minWidth="25px"
+                        android:minHeight="25px"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/date_recyler_view"
+                    />
+                </HorizontalScrollView>
+            </LinearLayout>
 
 
-            <TextView
-                android:text="Select your time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:textFontWeight="700"
-                android:textSize="20sp"
-                android:layout_marginBottom="12dp"
-                />
-            <HorizontalScrollView
+            <LinearLayout
+                android:id="@+id/periodGroup"
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
                 >
-                <android.support.v7.widget.RecyclerView
+                <TextView
+                    android:text="Select your time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:textFontWeight="700"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="12dp"
+                    />
+                <HorizontalScrollView
                     android:minWidth="25px"
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/period_recycler_view"
+                    android:layout_marginBottom="30dp"
+                    >
+                    <android.support.v7.widget.RecyclerView
+                        android:minWidth="25px"
+                        android:minHeight="25px"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/period_recycler_view"
                 />
-            </HorizontalScrollView>
+                </HorizontalScrollView>
+            </LinearLayout>
 
-
-            <TextView
-                android:text="Pick your seat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:textFontWeight="700"
-                android:textSize="20sp"
-                android:layout_marginBottom="12dp"
-            />
-            <HorizontalScrollView
+            <LinearLayout
+                android:id="@+id/seatGroup"
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="38dp"
-            >
-                <android.support.v7.widget.RecyclerView
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                >
+                <TextView
+                    android:text="Pick your seat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:textFontWeight="700"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="12dp"
+                    />
+                <HorizontalScrollView
                     android:minWidth="25px"
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/seat_recycler_view"
+                    android:layout_marginBottom="38dp"
+                    >
+                    <android.support.v7.widget.RecyclerView
+                        android:minWidth="25px"
+                        android:minHeight="25px"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/seat_recycler_view"
                 />
-            </HorizontalScrollView>
-
+                </HorizontalScrollView>
+            </LinearLayout>
 
         </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:text="BOOK SEAT"
             android:backgroundTint="@color/bluish"
             android:textFontWeight="700"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/materialButton1"
+            android:id="@+id/bookSeatButton"
             android:minHeight="70dp"
             android:layout_marginHorizontal="40px"
         />

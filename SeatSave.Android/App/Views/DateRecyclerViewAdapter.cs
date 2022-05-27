@@ -18,6 +18,8 @@ namespace SeatSave.Android.App.Views
         public Context Context { get; }
         public List<string> Dates { get; }
 
+        public event EventHandler<int> ItemSelected;
+
         public DateRecyclerViewAdapter(Context context, List<string> dates)
         {
             Context = context;
@@ -26,11 +28,11 @@ namespace SeatSave.Android.App.Views
 
         public override int ItemCount => Dates.Count;
 
-
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var newHolder= holder as DateRecyclerViewAdapter.ViewHolder;
             newHolder.dateButton.Text = Dates[position];
+            newHolder.dateButton.Click += (_, __) => ItemSelected(this, position);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

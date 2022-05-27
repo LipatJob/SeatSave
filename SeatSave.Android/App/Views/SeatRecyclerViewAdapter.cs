@@ -16,6 +16,7 @@ namespace SeatSave.Android.App.Views
     {
         public Context Context { get; }
         public List<string> Seats { get; }
+        public event EventHandler<int> ItemSelected;
 
         public SeatRecyclerViewAdapter(Context context, List<string> seats)
         {
@@ -30,6 +31,7 @@ namespace SeatSave.Android.App.Views
         {
             var newHolder = holder as SeatRecyclerViewAdapter.ViewHolder;
             newHolder.seatButton.Text = Seats[position];
+            newHolder.seatButton.Click += (_, __) => ItemSelected(this, position);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

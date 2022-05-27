@@ -16,11 +16,12 @@ namespace SeatSave.Android.App.Views
     {
         public Context Context { get; }
         public List<string> Periods { get; }
+        public event EventHandler<int> ItemSelected;
 
-        public PeriodRecyclerViewAdapter(Context context, List<string> dates)
+        public PeriodRecyclerViewAdapter(Context context, List<string> periods)
         {
             Context = context;
-            Periods = dates;
+            Periods = periods;
         }
 
         public override int ItemCount => Periods.Count;
@@ -29,6 +30,7 @@ namespace SeatSave.Android.App.Views
         {
             var newHolder = holder as PeriodRecyclerViewAdapter.ViewHolder;
             newHolder.periodButton.Text = Periods[position];
+            newHolder.periodButton.Click += (_, __) => ItemSelected(this, position);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

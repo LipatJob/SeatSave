@@ -53,7 +53,13 @@
         android:id="@+id/pendingBookingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to Pening Booking Activity"
+        android:text="Go to Pending Booking Activity"
+        />
+     <Button
+        android:id="@+id/createBookingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Create Booking Activity"
         />
 
 

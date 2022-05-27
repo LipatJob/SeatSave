@@ -78,6 +78,9 @@
     <Compile Include="App\Models\SampleModel.cs" />
     <Compile Include="App\Services\AuthenticationService.cs" />
     <Compile Include="App\Services\SampleService.cs" />
+    <Compile Include="App\Views\DateRecyclerViewAdapter.cs" />
+    <Compile Include="App\Views\SeatRecyclerViewAdapter.cs" />
+    <Compile Include="App\Views\PeriodRecyclerViewAdapter.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,7 +88,16 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\font\red_hat_text.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_bold.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_bold_italic.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_italic.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_light.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_light_italic.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_medium.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_medium_italic.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_regular.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_semibold.ttf" />
+    <AndroidResource Include="Resources\font\red_hat_text_semibold_italic.ttf" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml">
@@ -123,7 +135,19 @@
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v4">
+      <Version>23.4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <Version>23.4.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.1.3" />
+    <PackageReference Include="Xamarin.AndroidX.Core">
+      <Version>1.6.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4">
+      <Version>1.0.0.10</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Google.Android.Material" Version="1.4.0.4" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
@@ -154,6 +178,26 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\create_booking.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\date_selection.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\font\red_hat_text.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\period_selection.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\seat_selection.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

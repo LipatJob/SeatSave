@@ -19,6 +19,8 @@ namespace SeatSave.Android
         Button checkedInBookingButton;
         Button noBookingButton;
         Button pendingBookingButton;
+        Button createBookingButton;
+
 
         TextView text;
 
@@ -36,6 +38,8 @@ namespace SeatSave.Android
             checkedInBookingButton = FindViewById<Button>(Resource.Id.checkedInBookingButton);
             noBookingButton = FindViewById<Button>(Resource.Id.noBookingButton);
             pendingBookingButton = FindViewById<Button>(Resource.Id.pendingBookingButton);
+            createBookingButton = FindViewById<Button>(Resource.Id.createBookingButton);
+
 
             sampleButton.Click += (_, __) => SampleAction();
             loginButton.Click += (_, __) => StartActivity(new Intent(this, typeof(LoginActivity)));
@@ -43,6 +47,8 @@ namespace SeatSave.Android
             checkedInBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CheckedInBookingActivity)));
             noBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(NoBookingActivity)));
             pendingBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(PendingBookingActivity)));
+            createBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CreateBookingActivity)));
+
 
 
         }

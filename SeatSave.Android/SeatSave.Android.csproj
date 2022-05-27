@@ -77,12 +77,13 @@
     <Compile Include="App\Fragments\Navbar.cs" />
     <Compile Include="App\Models\SampleModel.cs" />
     <Compile Include="App\Services\AuthenticationService.cs" />
+    <Compile Include="App\Services\BookingService.cs" />
     <Compile Include="App\Services\SampleService.cs" />
     <Compile Include="App\Views\DateRecyclerViewAdapter.cs" />
     <Compile Include="App\Views\SeatRecyclerViewAdapter.cs" />
     <Compile Include="App\Views\PeriodRecyclerViewAdapter.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

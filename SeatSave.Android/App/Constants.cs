@@ -16,8 +16,8 @@ namespace SeatSave.Android.App
         public const string DevelopmentHost = "https://localhost:7175/";
         public const string ProductionHost = "https://seatsave.azurewebsites.net";
 
-        public const string SampleUri = ProductionHost + "/Api/Sample";
         public const string AuthenticationUri = ProductionHost + "/Api/Authentication";
-
+        public const string SampleUri = "https://seatsave.azurewebsites.net/Api/Sample";
+        public const string GetBookingDetails = "https://seatsave.azurewebsites.net/Api/Booking/";
     }
 }

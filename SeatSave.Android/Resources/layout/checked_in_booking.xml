@@ -6,10 +6,10 @@
     android:padding="40px"
     >
     <TextView
-        android:text="Your booking is until 10:00 am"
+        android:text="Your booking is until --"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
+        android:id="@+id/bookingTime"
         android:textColor="@color/duskBlue"
         android:textStyle="bold"
         android:textSize="@dimen/abc_text_size_display_2_material"
@@ -33,10 +33,10 @@
         android:textColor="@android:color/black"
         android:textStyle="bold" />
     <TextView
-        android:text="May 26, 2022"
+        android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView10" 
+        android:id="@+id/bookingDate" 
         android:textColor="@android:color/black" 
     />
     <TextView
@@ -48,10 +48,10 @@
         android:textColor="@android:color/black"
         android:textStyle="bold"/>
     <TextView
-        android:text="10:00 am to 11:30am"
+        android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView12" 
+        android:id="@+id/bookingCompleteTime" 
         android:textColor="@android:color/black" />
     <TextView
         android:text="Seat"
@@ -62,10 +62,10 @@
         android:textColor="@android:color/black" 
         android:textStyle="bold"/>
     <TextView
-        android:text="R01 - carrel desk (with outlet)"
+        android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView14" 
+        android:id="@+id/bookingSeat"
         android:textColor="@android:color/black"
         android:paddingBottom="60px"/>
     <TextView
@@ -80,7 +80,7 @@
         android:text="CHECK OUT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button1"
+        android:id="@+id/buttonCheckOut"
         android:backgroundTint="@color/bluish"
         android:textColor="@android:color/white" 
         

@@ -22,7 +22,7 @@ namespace SeatSave.Android.App.Services
             client = new HttpClient();
         }
 
-        public async Task<DateTime> GetBookableDates(int id)
+        public async Task<DateTime> GetBookableDates()
         {
             throw new NotImplementedException();
         }

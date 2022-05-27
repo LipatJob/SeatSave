@@ -14,5 +14,6 @@ namespace SeatSave.Android.App
     public static class Constants
     {
         public const string SampleUri = "https://seatsave.azurewebsites.net/Api/Sample";
+        public const string GetBookingDetails = "https://seatsave.azurewebsites.net/Api/Booking/";
     }
 }

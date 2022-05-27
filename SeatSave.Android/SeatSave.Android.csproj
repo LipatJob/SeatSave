@@ -72,6 +72,7 @@
     <Compile Include="App\Fragments\Footer.cs" />
     <Compile Include="App\Fragments\Navbar.cs" />
     <Compile Include="App\Models\SampleModel.cs" />
+    <Compile Include="App\Services\BookingService.cs" />
     <Compile Include="App\Services\SampleService.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,6 +112,9 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>
     </PackageReference>

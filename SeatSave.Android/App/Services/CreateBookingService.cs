@@ -22,24 +22,49 @@ namespace SeatSave.Android.App.Services
             client = new HttpClient();
         }
 
-        public async Task<DateTime> GetBookableDates()
+        public async Task<IEnumerable<DateTime>> GetBookableDates()
         {
-            throw new NotImplementedException();
+            Random random = new Random();
+            return Enumerable.Range(0, random.Next(3, 10))
+               .Select(e => DateTime.Today.AddDays(random.Next(-100, 100)));
         }
 
-        public async Task<Period> GetBookablePeriodsForDate(DateTime date)
+        public async Task<IEnumerable<Period>> GetBookablePeriodsForDate(DateTime date)
         {
-            throw new NotImplementedException();
+            Random random = new Random();
+            return Enumerable.Range(0, random.Next(3, 10))
+                .Select(e => new Period()
+                {
+                    Id = e,
+                    timeEnd = DateTime.Today.AddHours(random.Next(100)).TimeOfDay,
+                    timeStart = DateTime.Today.AddHours(random.Next(100)).TimeOfDay
+                });
         }
 
-        public async Task<Seat> GetBookableSeatsForPeriod(DateTime date, Period period)
+        public async Task<IEnumerable<Seat>> GetBookableSeatsForPeriod(DateTime date, Period period)
         {
-            throw new NotImplementedException();
+            Random random = new Random();
+            return Enumerable.Range(0, random.Next(3, 10))
+                .Select(e => new Seat()
+                {
+                    Id = e,
+                    Name = RandomString(random.Next(5, 20))
+                });
         }
 
         public async Task<bool> CreateBooking(DateTime date, Period period, Seat seatid)
         {
-            throw new NotImplementedException();
+            return false;
         }
+
+
+        public static string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
     }
 }

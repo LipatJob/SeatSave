@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using Google.Android.Material.Button;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,13 @@ namespace SeatSave.Android.App.Views
     {
 
         public Context Context { get; }
-        public List<string> Dates { get; }
+        public List<DateTime> Dates { get; }
 
-        public event EventHandler<int> ItemSelected;
+        public event EventHandler<DateTime> ItemSelected;
 
-        public DateRecyclerViewAdapter(Context context, List<string> dates)
+        public DateTime selectedDate; // TODO: REFACTOR THIS
+
+        public DateRecyclerViewAdapter(Context context, List<DateTime> dates)
         {
             Context = context;
             Dates = dates;
@@ -31,8 +34,12 @@ namespace SeatSave.Android.App.Views
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var newHolder= holder as DateRecyclerViewAdapter.ViewHolder;
-            newHolder.dateButton.Text = Dates[position];
-            newHolder.dateButton.Click += (_, __) => ItemSelected(this, position);
+            var date = Dates[position];
+            newHolder.dateButton.Text = date.ToString();
+            newHolder.dateButton.Click += (_, __) => ItemSelected(this, date);
+
+            int colorResource = date == selectedDate ? Resource.Color.rodeoDust : Resource.Color.pearlBrush;
+            newHolder.dateButton.Background.SetTint(Context.GetColor(colorResource));
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -45,10 +52,10 @@ namespace SeatSave.Android.App.Views
 
         public class ViewHolder : RecyclerView.ViewHolder
         {
-            public Button dateButton;
+            public MaterialButton dateButton;
             public ViewHolder(View itemView) : base(itemView)
             {
-                dateButton = itemView.FindViewById<Button>(Resource.Id.date_button);
+                dateButton = itemView.FindViewById<MaterialButton>(Resource.Id.date_button);
             }
         }
     }

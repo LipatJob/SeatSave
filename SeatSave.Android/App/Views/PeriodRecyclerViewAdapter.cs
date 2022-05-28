@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using SeatSave.Android.App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,13 @@ namespace SeatSave.Android.App.Views
     class PeriodRecyclerViewAdapter : RecyclerView.Adapter
     {
         public Context Context { get; }
-        public List<string> Periods { get; }
-        public event EventHandler<int> ItemSelected;
+        public List<Period> Periods { get; }
 
-        public PeriodRecyclerViewAdapter(Context context, List<string> periods)
+        public event EventHandler<Period> ItemSelected;
+        public Period selectedPeriod; // TODO: REFACTOR THIS
+
+
+        public PeriodRecyclerViewAdapter(Context context, List<Period> periods)
         {
             Context = context;
             Periods = periods;
@@ -29,8 +33,12 @@ namespace SeatSave.Android.App.Views
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var newHolder = holder as PeriodRecyclerViewAdapter.ViewHolder;
-            newHolder.periodButton.Text = Periods[position];
-            newHolder.periodButton.Click += (_, __) => ItemSelected(this, position);
+            var period = Periods[position];
+            newHolder.periodButton.Text = period.timeStart.ToString();
+            newHolder.periodButton.Click += (_, __) => ItemSelected(this, period);
+
+            int colorResource = period == selectedPeriod ? Resource.Color.rodeoDust : Resource.Color.pearlBrush;
+            newHolder.periodButton.Background.SetTint(Context.GetColor(colorResource));
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

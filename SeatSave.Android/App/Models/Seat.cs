@@ -13,5 +13,7 @@ namespace SeatSave.Android.App.Models
 {
     class Seat
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

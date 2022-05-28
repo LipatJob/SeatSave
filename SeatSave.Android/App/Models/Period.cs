@@ -13,5 +13,8 @@ namespace SeatSave.Android.App.Models
 {
     class Period
     {
+        public int Id { get; set; }
+        public TimeSpan timeStart { get; set; }
+        public TimeSpan timeEnd { get; set; }
     }
 }

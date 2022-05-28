@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using SeatSave.Android.App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,11 @@ namespace SeatSave.Android.App.Views
     class SeatRecyclerViewAdapter : RecyclerView.Adapter
     {
         public Context Context { get; }
-        public List<string> Seats { get; }
-        public event EventHandler<int> ItemSelected;
+        public List<Seat> Seats { get; }
+        public event EventHandler<Seat> ItemSelected;
+        public Seat selectedSeat; // TODO: REFACTOR THIS
 
-        public SeatRecyclerViewAdapter(Context context, List<string> seats)
+        public SeatRecyclerViewAdapter(Context context, List<Seat> seats)
         {
             Context = context;
             Seats = seats;
@@ -30,8 +32,12 @@ namespace SeatSave.Android.App.Views
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var newHolder = holder as SeatRecyclerViewAdapter.ViewHolder;
-            newHolder.seatButton.Text = Seats[position];
-            newHolder.seatButton.Click += (_, __) => ItemSelected(this, position);
+            var seat = Seats[position];
+            newHolder.seatButton.Text = seat.Name;
+            newHolder.seatButton.Click += (_, __) => ItemSelected(this, seat);
+
+            int colorResource = seat == selectedSeat ? Resource.Color.rodeoDust : Resource.Color.pearlBrush;
+            newHolder.seatButton.Background.SetTint(Context.GetColor(colorResource));
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

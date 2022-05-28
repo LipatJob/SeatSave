@@ -5,6 +5,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using SeatSave.Android.App.Models;
+using SeatSave.Android.App.Services;
 using SeatSave.Android.App.Views;
 using System;
 using System.Collections.Generic;
@@ -16,17 +18,21 @@ namespace SeatSave.Android.App.Activities
     [Activity(Label = "CreateBookingActivity")]
     public class CreateBookingActivity : Activity
     {
-        int selectedDateId = 0;
-        int selectedPeriodId = 0;
-        int selectedSeatId = 0;
+        DateTime? selectedDate = null;
+        Period selectedPeriod = null;
+        Seat selectedSeat = null;
 
-        readonly List<string> dates = new List<string>();
-        readonly List<string> periods = new List<string>();
-        readonly List<string> seats = new List<string>();
+        readonly List<DateTime> dates = new List<DateTime>();
+        readonly List<Period> periods = new List<Period>();
+        readonly List<Seat> seats = new List<Seat>();
 
         RecyclerView dateRecyclerView;
         RecyclerView periodRecyclerView;
         RecyclerView seatRecyclerView;
+
+        DateRecyclerViewAdapter dateAdapter;
+        PeriodRecyclerViewAdapter periodAdapter;
+        SeatRecyclerViewAdapter seatAdapter;
 
         LinearLayout dateGroup;
         LinearLayout periodGroup;
@@ -34,10 +40,13 @@ namespace SeatSave.Android.App.Activities
 
         Button bookSeatbutton;
 
+        CreateBookingService service;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.create_booking);
+            service = new CreateBookingService();
 
             dateGroup = FindViewById<LinearLayout>(Resource.Id.dateGroup);
             periodGroup = FindViewById<LinearLayout>(Resource.Id.periodGroup);
@@ -48,69 +57,94 @@ namespace SeatSave.Android.App.Activities
             seatGroup.Visibility = ViewStates.Gone;
             bookSeatbutton.Visibility = ViewStates.Gone;
 
-            dates.AddRange(new []{
-                "Sample 1",
-                "Sample 2",
-                "Sample 3",
-            });
-
-            periods.AddRange(new List<string>() {
-                "Sample 1",
-                "Sample 2",
-                "Sample 3",
-            });
-
-            seats.AddRange(new List<string>() {
-                "Sample 1",
-                "Sample 2",
-                "Sample 3",
-            });
+            InitalizeDates();
 
             dateRecyclerView = FindViewById<RecyclerView>(Resource.Id.date_recyler_view);
-            var dateAdapter = new DateRecyclerViewAdapter(this, dates);
-            dateAdapter.ItemSelected += (_, index) => SelectDate(index);
+            dateAdapter = new DateRecyclerViewAdapter(this, dates);
+            dateAdapter.ItemSelected += (_, item) => SelectDate(item);
             dateRecyclerView.SetAdapter(dateAdapter);
             dateRecyclerView.SetLayoutManager(new LinearLayoutManager(this, 0, false));
 
             periodRecyclerView = FindViewById<RecyclerView>(Resource.Id.period_recycler_view);
-            var periodAdapter = new PeriodRecyclerViewAdapter(this, periods);
-            periodAdapter.ItemSelected += (_, index) => SelectPeriod(index);
+            periodAdapter = new PeriodRecyclerViewAdapter(this, periods);
+            periodAdapter.ItemSelected += (_, item) => SelectPeriod(item);
             periodRecyclerView.SetAdapter(periodAdapter);
             periodRecyclerView.SetLayoutManager(new LinearLayoutManager(this, 0, false));
 
             seatRecyclerView = FindViewById<RecyclerView>(Resource.Id.seat_recycler_view);
-            var seatAdapter = new SeatRecyclerViewAdapter(this, seats);
-            seatAdapter.ItemSelected += (_, index) => SelectSeat(index);
+            seatAdapter = new SeatRecyclerViewAdapter(this, seats);
+            seatAdapter.ItemSelected += (_, item) => SelectSeat(item);
             seatRecyclerView.SetAdapter(seatAdapter);
             seatRecyclerView.SetLayoutManager(new LinearLayoutManager(this, 0, false));
 
-            bookSeatbutton.Click += (_, __) => BookSeat(selectedDateId, selectedPeriodId, selectedSeatId);
+            bookSeatbutton.Click += (_, __) => BookSeat(selectedDate.Value, selectedPeriod, selectedSeat);
         }
 
-        private void SelectDate(int key)
+        private async void InitalizeDates()
         {
-            selectedDateId = key;
+            dates.Clear();
+            var bookableDates = await service.GetBookableDates();
+            dates.AddRange(bookableDates);
+        }
+
+        private async void SelectDate(DateTime date)
+        {
+            selectedDate = date;
             periodGroup.Visibility = ViewStates.Visible;
-            Toast.MakeText(this, "You selected Date " + key, ToastLength.Short).Show();
+            seatGroup.Visibility = ViewStates.Gone;
+            bookSeatbutton.Visibility = ViewStates.Gone;
+            
+            dateAdapter.selectedDate = selectedDate.Value; // TODO: REFACTOR THIS
+            dateAdapter.NotifyDataSetChanged();
+
+            periods.Clear();
+            var bookablePeriods = await service.GetBookablePeriodsForDate(date);
+            periods.AddRange(bookablePeriods);
+            periodAdapter.NotifyDataSetChanged();
+
+            Toast.MakeText(this, "You selected Date " + date.ToString("yyyy-MM-dd"), ToastLength.Short).Show();
         }
 
-        private void SelectPeriod(int key)
+        private async void SelectPeriod(Period period)
         {
-            selectedPeriodId = key;
+            selectedPeriod = period;
+            periodGroup.Visibility = ViewStates.Visible;
             seatGroup.Visibility = ViewStates.Visible;
-            Toast.MakeText(this, "You selected Period " + key, ToastLength.Short).Show();
+            bookSeatbutton.Visibility = ViewStates.Gone;
+
+            periodAdapter.selectedPeriod = selectedPeriod; // TODO: REFACTOR THIS
+            periodAdapter.NotifyDataSetChanged();
+
+            seats.Clear();
+            var bookableSeats = await service.GetBookableSeatsForPeriod(selectedDate.Value, period);
+            seats.AddRange(bookableSeats);
+            seatAdapter.NotifyDataSetChanged();
+
+            Toast.MakeText(this, "You selected Period " + period.Id, ToastLength.Short).Show();
         }
 
-        private void SelectSeat(int key)
+        private async void SelectSeat(Seat seat)
         {
-            selectedSeatId = key;
+            selectedSeat = seat;
+            periodGroup.Visibility = ViewStates.Visible;
+            seatGroup.Visibility = ViewStates.Visible;
             bookSeatbutton.Visibility = ViewStates.Visible;
-            Toast.MakeText(this, "You selected Seat " + key, ToastLength.Short).Show();
+
+            seatAdapter.selectedSeat = selectedSeat; // TODO: REFACTOR THIS
+            seatAdapter.NotifyDataSetChanged();
+
+            Toast.MakeText(this, "You selected Seat " + seat.Name, ToastLength.Short).Show();
         }
 
-        private void BookSeat(int selectedDateId, int selectedPeriodId, int selectedSeatId)
+        private async void BookSeat(DateTime selectedDate, Period selectedPeriod, Seat selectedSeat)
         {
-            Toast.MakeText(this, $"Creating booking for Date:{selectedDateId} Period:{selectedPeriodId} Seat:{selectedSeatId}", ToastLength.Short).Show();
+            var success = await service.CreateBooking(selectedDate, selectedPeriod, selectedSeat);
+            if (!success) {
+                Toast.MakeText(this, "Booking failed", ToastLength.Short);
+                return;
+            }
+            
+            Toast.MakeText(this, $"Creating booking for Date:{selectedDate} Period:{selectedPeriod} Seat:{selectedSeat}", ToastLength.Short).Show();
         }
     }
 }

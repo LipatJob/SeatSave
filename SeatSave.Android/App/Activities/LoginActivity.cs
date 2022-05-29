@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.TextField;
+using SeatSave.Android.App.Helpers;
 using SeatSave.Android.App.Services;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,8 @@ namespace SeatSave.Android.App.Activities
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.login);
-            ISharedPreferences pref = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
-
-            authService = new AuthenticationService(pref);
+            
+            authService = new AuthenticationService(SharedPreferencesSingleton.Instance);
 
             emailEditText = FindViewById<EditText>(Resource.Id.emailEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
@@ -70,7 +70,7 @@ namespace SeatSave.Android.App.Activities
             var success = await authService.TryLogin(email, password);
             if (success)
             {
-                StartActivity(new Intent(this, typeof(CannotBookActivity)));
+                StartActivity(new Intent(this, typeof(ViewBookingActivity)));
             }
             else
             {

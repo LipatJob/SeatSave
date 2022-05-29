@@ -22,7 +22,7 @@ namespace SeatSave.Android.App.Services
         }
 
         public async Task<string> GetSampleData() {
-            var uri = new Uri(string.Format(Constants.SampleUri, string.Empty));
+            var uri = new Uri(string.Format(Endpoints.Sample, string.Empty));
             var response = await client.GetAsync(uri);
             var content = await response.Content.ReadAsStringAsync();
             return content;

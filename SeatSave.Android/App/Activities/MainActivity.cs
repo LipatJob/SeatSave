@@ -7,6 +7,7 @@ using Android.Widget;
 using SeatSave.Android.App.Services;
 using Android.Content;
 using SeatSave.Android.App.Activities;
+using SeatSave.Android.App.Helpers;
 
 namespace SeatSave.Android
 {
@@ -49,8 +50,7 @@ namespace SeatSave.Android
             pendingBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(PendingBookingActivity)));
             createBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CreateBookingActivity)));
 
-
-
+            SharedPreferencesSingleton.Initialize(this);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {

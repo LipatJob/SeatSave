@@ -11,10 +11,12 @@ using System.Text;
 
 namespace SeatSave.Android.App.Models
 {
-    public class Period
+    class StatusHistory
     {
         public int Id { get; set; }
-        public TimeSpan timeStart { get; set; }
-        public TimeSpan timeEnd { get; set; }
+        public DateTime DateTimeCreated { get; set; }
+        public DateTime? DateTimeCanceled { get; set; }
+        public DateTime? DateTimeCheckedIn { get; set; }
+        public DateTime? DateTimeCheckedOut { get; set; }
     }
 }

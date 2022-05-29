@@ -85,6 +85,7 @@ namespace SeatSave.Android.App.Activities
             dates.Clear();
             var bookableDates = await service.GetBookableDates();
             dates.AddRange(bookableDates);
+            dateAdapter.NotifyDataSetChanged();
         }
 
         private async void SelectDate(DateTime date)
@@ -143,8 +144,9 @@ namespace SeatSave.Android.App.Activities
                 Toast.MakeText(this, "Booking failed", ToastLength.Short);
                 return;
             }
-            
+
             Toast.MakeText(this, $"Creating booking for Date:{selectedDate} Period:{selectedPeriod} Seat:{selectedSeat}", ToastLength.Short).Show();
+            StartActivity(new Intent(this, typeof(ViewBookingActivity)));
         }
     }
 }

@@ -65,6 +65,7 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\Activities\ViewBookingActivity.cs" />
     <Compile Include="App\Activities\CannotBookActivity.cs" />
     <Compile Include="App\Activities\CheckedInBookingActivity.cs" />
     <Compile Include="App\Activities\CreateBookingActivity.cs" />
@@ -72,12 +73,16 @@
     <Compile Include="App\Activities\MainActivity.cs" />
     <Compile Include="App\Activities\NoBookingActivity.cs" />
     <Compile Include="App\Activities\PendingBookingActivity.cs" />
-    <Compile Include="App\Constants.cs" />
+    <Compile Include="App\Endpoints.cs" />
     <Compile Include="App\Fragments\Footer.cs" />
     <Compile Include="App\Fragments\Navbar.cs" />
+    <Compile Include="App\Helpers\JsonHelper.cs" />
+    <Compile Include="App\Helpers\SharedPreferencesSingleton.cs" />
+    <Compile Include="App\Models\Booking.cs" />
     <Compile Include="App\Models\Period.cs" />
     <Compile Include="App\Models\SampleModel.cs" />
     <Compile Include="App\Models\Seat.cs" />
+    <Compile Include="App\Models\StatusHistory.cs" />
     <Compile Include="App\Services\AuthenticationService.cs" />
     <Compile Include="App\Services\BookingService.cs" />
     <Compile Include="App\Services\CreateBookingService.cs" />

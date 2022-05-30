@@ -13,8 +13,15 @@
 		<item name="android:buttonStyle">@style/ButtonStyle</item>
 	</style>
 
+	<style name="AppTheme.NoActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
 
-	<!-- Base application theme. -->
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
 	<style name="TextViewStyle" parent="android:Widget.TextView">
 		<item name="android:fontFamily">@font/red_hat_text</item>
 		<item name="android:textColor">@android:color/black</item>

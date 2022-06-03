@@ -75,5 +75,14 @@
         android:textFontWeight="700"
         android:paddingVertical="16sp"
         />
+    <TextView
+        android:layout_marginTop="14dp"
+        android:text="Create an Account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/createAccountLink"
+        android:textFontWeight="600"
+        android:textColor="@color/duskBlue"
+        />
 
 </LinearLayout>

@@ -33,11 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Log out" />
+                android:text="Log out"
+                android:backgroundTint="@color/rodeoDust"
+                />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
-
-
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

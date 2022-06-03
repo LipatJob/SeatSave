@@ -21,7 +21,7 @@ using static Android.Views.View;
 namespace SeatSave.Android
 {
     [Activity(Label = "Sample Activity")]
-    public class SampleActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
+    public class SampleActivity : AppCompatActivity
     {
         Button sampleButton;
         Button loginButton;
@@ -37,16 +37,6 @@ namespace SeatSave.Android
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.sample);
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
-
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
-            drawer.AddDrawerListener(toggle);
-            toggle.SyncState();
-
-            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-            navigationView.SetNavigationItemSelectedListener(this);
 
             sampleButton = FindViewById<Button>(Resource.Id.sampleButton);
             text = FindViewById<TextView>(Resource.Id.sampleText);
@@ -58,14 +48,12 @@ namespace SeatSave.Android
             pendingBookingButton = FindViewById<Button>(Resource.Id.pendingBookingButton);
             createBookingButton = FindViewById<Button>(Resource.Id.createBookingButton);
 
-
             sampleButton.Click += (_, __) => SampleAction();
             loginButton.Click += (_, __) => StartActivity(new Intent(this, typeof(LoginActivity)));
             cannotBookButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CannotBookActivity)));
             checkedInBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CheckedInBookingActivity)));
             noBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(NoBookingActivity)));
             pendingBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(PendingBookingActivity)));
-            createBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CreateBookingActivity)));
 
             SharedPreferencesSingleton.Initialize(this);
         }
@@ -82,59 +70,6 @@ namespace SeatSave.Android
             text.Text = data;
         }
 
-        public override void OnBackPressed()
-        {
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            if (drawer.IsDrawerOpen(GravityCompat.Start))
-            {
-                drawer.CloseDrawer(GravityCompat.Start);
-            }
-            else
-            {
-                base.OnBackPressed();
-            }
-        }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-            if (id == Resource.Id.action_settings)
-            {
-                return true;
-            }
-
-            return base.OnOptionsItemSelected(item);
-        }
-
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View)sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (IOnClickListener)null).Show();
-        }
-
-        public bool OnNavigationItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-
-            if (id == Resource.Id.currentBooking)
-            {
-                // Handle the camera action
-            }
-            else if (id == Resource.Id.createBooking)
-            {
-
-            }
-
-            DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-            drawer.CloseDrawer(GravityCompat.Start);
-            return true;
-        }
     }
 }

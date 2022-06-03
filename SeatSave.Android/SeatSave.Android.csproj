@@ -68,7 +68,6 @@
     <Compile Include="App\Activities\SampleActivity.cs" />
     <Compile Include="App\Activities\CannotBookActivity.cs" />
     <Compile Include="App\Activities\CheckedInBookingActivity.cs" />
-    <Compile Include="App\Activities\CreateBookingActivity.cs" />
     <Compile Include="App\Activities\LoginActivity.cs" />
     <Compile Include="App\Activities\MainActivity.cs" />
     <Compile Include="App\Activities\NoBookingActivity.cs" />
@@ -284,6 +283,16 @@
     <AndroidResource Include="Resources\layout\loading.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-v21\ic_book.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-v21\ic_add.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

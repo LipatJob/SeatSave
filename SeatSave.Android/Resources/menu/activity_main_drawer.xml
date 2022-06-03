@@ -6,12 +6,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/currentBooking"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_book"
             android:title="Current Booking" />
         <item
             android:id="@+id/createBooking"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_add"
             android:title="Create Booking" />
+		<item
+            android:id="@+id/sample"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Sample" />
     </group>
 
 </menu>

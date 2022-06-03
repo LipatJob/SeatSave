@@ -114,6 +114,11 @@ namespace SeatSave.Android
             {
                 fragment = new CreateBookingFragment();
             }
+            else if (id == Resource.Id.sample)
+            {
+                StartActivity(new Intent(this, typeof(SampleActivity)));
+                return true;
+            }
             ChangeFragment(fragment);
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);

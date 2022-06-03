@@ -70,7 +70,10 @@ namespace SeatSave.Android.App.Activities
             var success = await authService.TryLogin(email, password);
             if (success)
             {
-                StartActivity(new Intent(this, typeof(ViewBookingActivity)));
+                Intent intent = new Intent(this, typeof(MainActivity));
+                intent.AddFlags(ActivityFlags.NewTask);
+                intent.AddFlags(ActivityFlags.ClearTask);
+                base.StartActivity(intent);
             }
             else
             {

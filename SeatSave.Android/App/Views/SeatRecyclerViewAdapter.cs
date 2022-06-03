@@ -33,7 +33,7 @@ namespace SeatSave.Android.App.Views
         {
             var newHolder = holder as SeatRecyclerViewAdapter.ViewHolder;
             var seat = Seats[position];
-            newHolder.seatButton.Text = seat.Name;
+            newHolder.seatButton.Text = seat.Name + "\n" + seat.Id;
             newHolder.seatButton.Click += (_, __) => ItemSelected(this, seat);
 
             int colorResource = seat == selectedSeat ? Resource.Color.rodeoDust : Resource.Color.pearlBrush;

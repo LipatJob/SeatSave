@@ -34,7 +34,9 @@ namespace SeatSave.Android.App.Views
         {
             var newHolder = holder as PeriodRecyclerViewAdapter.ViewHolder;
             var period = Periods[position];
-            newHolder.periodButton.Text = period.timeStart.ToString();
+            var timeStartString = new DateTime(period.timeStart.Ticks).ToString("h:mm tt");
+            var timeEndString = new DateTime(period.timeEnd.Ticks).ToString("h:mm tt");
+            newHolder.periodButton.Text = timeStartString + "\n" + timeEndString;
             newHolder.periodButton.Click += (_, __) => ItemSelected(this, period);
 
             int colorResource = period == selectedPeriod ? Resource.Color.rodeoDust : Resource.Color.pearlBrush;

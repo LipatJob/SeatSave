@@ -12,7 +12,7 @@ using System.Text;
 
 namespace SeatSave.Android.App.Fragments
 {
-    public class Footer : Fragment
+    public class CurrentBookingFragment : AndroidX.Fragment.App.Fragment
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -24,9 +24,7 @@ namespace SeatSave.Android.App.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
-            // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
-
-            return base.OnCreateView(inflater, container, savedInstanceState);
+            return inflater.Inflate(Resource.Layout.cannot_book, container, false);
         }
     }
 }

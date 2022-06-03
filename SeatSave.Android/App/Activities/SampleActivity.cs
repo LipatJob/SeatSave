@@ -14,37 +14,31 @@ using Google.Android.Material.FloatingActionButton;
 using Google.Android.Material.Navigation;
 using Google.Android.Material.Snackbar;
 using SeatSave.Android.App.Activities;
-using SeatSave.Android.App.Fragments;
 using SeatSave.Android.App.Helpers;
 using SeatSave.Android.App.Services;
 using static Android.Views.View;
 
 namespace SeatSave.Android
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
+    [Activity(Label = "Sample Activity")]
+    public class SampleActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
-        private AuthenticationService authenticationService;
+        Button sampleButton;
+        Button loginButton;
+        Button cannotBookButton;
+        Button checkedInBookingButton;
+        Button noBookingButton;
+        Button pendingBookingButton;
+        Button createBookingButton;
+        TextView text;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
-            SharedPreferencesSingleton.Initialize(this);
-            authenticationService = new AuthenticationService(SharedPreferencesSingleton.Instance);
-            if (authenticationService.IsLoggedIn() == false)
-            {
-                StartBlankActivity(typeof(LoginActivity));
-                return;
-            }
-
-            SetContentView(Resource.Layout.activity_main);
-
+            SetContentView(Resource.Layout.sample);
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
-
-            var button = FindViewById<Button>(Resource.Id.logout);
-            button.Click += (_, __) => LogoutClicked();
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, Resource.String.navigation_drawer_open, Resource.String.navigation_drawer_close);
@@ -53,16 +47,28 @@ namespace SeatSave.Android
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
-        }
 
-        private void StartBlankActivity(Type type)
-        {
-            Intent intent = new Intent(this, type);
-            intent.AddFlags(ActivityFlags.NewTask);
-            intent.AddFlags(ActivityFlags.ClearTask);
-            base.StartActivity(intent);
-        }
+            sampleButton = FindViewById<Button>(Resource.Id.sampleButton);
+            text = FindViewById<TextView>(Resource.Id.sampleText);
 
+            loginButton = FindViewById<Button>(Resource.Id.loginButton);
+            cannotBookButton = FindViewById<Button>(Resource.Id.cannotBookButton);
+            checkedInBookingButton = FindViewById<Button>(Resource.Id.checkedInBookingButton);
+            noBookingButton = FindViewById<Button>(Resource.Id.noBookingButton);
+            pendingBookingButton = FindViewById<Button>(Resource.Id.pendingBookingButton);
+            createBookingButton = FindViewById<Button>(Resource.Id.createBookingButton);
+
+
+            sampleButton.Click += (_, __) => SampleAction();
+            loginButton.Click += (_, __) => StartActivity(new Intent(this, typeof(LoginActivity)));
+            cannotBookButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CannotBookActivity)));
+            checkedInBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CheckedInBookingActivity)));
+            noBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(NoBookingActivity)));
+            pendingBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(PendingBookingActivity)));
+            createBookingButton.Click += (_, __) => StartActivity(new Intent(this, typeof(CreateBookingActivity)));
+
+            SharedPreferencesSingleton.Initialize(this);
+        }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -70,6 +76,11 @@ namespace SeatSave.Android
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
+        public async void SampleAction() {
+            var service = new SampleService();
+            var data = await service.GetSampleData();
+            text.Text = data;
+        }
 
         public override void OnBackPressed()
         {
@@ -101,44 +112,29 @@ namespace SeatSave.Android
             return base.OnOptionsItemSelected(item);
         }
 
+        private void FabOnClick(object sender, EventArgs eventArgs)
+        {
+            View view = (View)sender;
+            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
+                .SetAction("Action", (IOnClickListener)null).Show();
+        }
+
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
-            AndroidX.Fragment.App.Fragment fragment = null;
 
             if (id == Resource.Id.currentBooking)
             {
-                fragment = new CurrentBookingFragment();
+                // Handle the camera action
             }
             else if (id == Resource.Id.createBooking)
             {
-                fragment = new CreateBookingFragment();
+
             }
-            ChangeFragment(fragment);
 
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
             return true;
-        }
-
-        public void GoToCurrentBookingFragment()
-        {
-            var fragment = new CurrentBookingFragment();
-            ChangeFragment(fragment);
-        }
-
-        public void ChangeFragment(AndroidX.Fragment.App.Fragment fragment)
-        {
-            var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-            fragmentTransaction.Replace(Resource.Id.fragmentContainer, fragment);
-            fragmentTransaction.AddToBackStack(null);
-            fragmentTransaction.Commit();
-        }
-
-        private void LogoutClicked()
-        {
-            authenticationService.Logout();
-            StartBlankActivity(typeof(LoginActivity));
         }
     }
 }

@@ -35,7 +35,9 @@ namespace SeatSave.Android.App.Views
         {
             var newHolder= holder as DateRecyclerViewAdapter.ViewHolder;
             var date = Dates[position];
-            newHolder.dateButton.Text = date.ToString();
+
+            var dateString = date.ToString("MMM\ndd\nyyyy");
+            newHolder.dateButton.Text = dateString;
             newHolder.dateButton.Click += (_, __) => ItemSelected(this, date);
 
             int colorResource = date == selectedDate ? Resource.Color.rodeoDust : Resource.Color.pearlBrush;

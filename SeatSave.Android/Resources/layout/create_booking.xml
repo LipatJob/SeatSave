@@ -21,6 +21,8 @@
             android:textColor="@android:color/black"
             android:paddingHorizontal="40px"
             />
+    
+
         <TextView
             android:text="Center for Learning and Information Resources - Einstein Building"
             android:layout_width="match_parent"
@@ -57,8 +59,14 @@
                     android:textFontWeight="700"
                     android:textSize="20sp"
                     android:layout_marginBottom="12dp"
-
                     />
+                 <ProgressBar
+                    android:id="@+id/dateProgressLoader"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
                 <HorizontalScrollView
                     android:minWidth="25px"
                     android:minHeight="25px"
@@ -96,6 +104,13 @@
                     android:textSize="20sp"
                     android:layout_marginBottom="12dp"
                     />
+                    <ProgressBar
+                    android:id="@+id/periodProgressLoader"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
                 <HorizontalScrollView
                     android:minWidth="25px"
                     android:minHeight="25px"
@@ -132,6 +147,13 @@
                     android:textSize="20sp"
                     android:layout_marginBottom="12dp"
                     />
+                <ProgressBar
+                    android:id="@+id/seatProgressLoader"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
                 <HorizontalScrollView
                     android:minWidth="25px"
                     android:minHeight="25px"

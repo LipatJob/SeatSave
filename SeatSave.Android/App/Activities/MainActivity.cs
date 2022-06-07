@@ -42,6 +42,8 @@ namespace SeatSave.Android
 
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+
 
             var button = FindViewById<Button>(Resource.Id.logout);
             button.Click += (_, __) => LogoutClicked();
@@ -84,12 +86,6 @@ namespace SeatSave.Android
             {
                 base.OnBackPressed();
             }
-        }
-
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

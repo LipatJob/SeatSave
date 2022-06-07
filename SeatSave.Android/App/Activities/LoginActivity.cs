@@ -27,6 +27,9 @@ namespace SeatSave.Android.App.Activities
         Button loginButton;
         TextView createAccountLink;
         AuthenticationService authService;
+        LinearLayout loadingGroup;
+        LinearLayout fieldsGroup;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -41,6 +44,10 @@ namespace SeatSave.Android.App.Activities
             passwordEditTextLayout = FindViewById<TextInputLayout>(Resource.Id.passwordEditTextLayout);
             emailEditTextLayout = FindViewById<TextInputLayout>(Resource.Id.emailEditTextLayout);
             createAccountLink = FindViewById<TextView>(Resource.Id.createAccountLink);
+            loadingGroup = FindViewById<LinearLayout>(Resource.Id.loadingGroup);
+            fieldsGroup = FindViewById<LinearLayout>(Resource.Id.fieldsGroup);
+
+
 
             emailEditText.AfterTextChanged += (_, __) => afterEmailEditTextChanged();
             passwordEditText.AfterTextChanged += (_, __) => afterPasswordEditTextChanged();
@@ -81,19 +88,38 @@ namespace SeatSave.Android.App.Activities
             var email = emailEditText.Text;
             var password = passwordEditText.Text;
 
-            var success = await authService.TryLogin(email, password);
-            if (success)
+            if (email.Trim() == "" )
             {
-                Intent intent = new Intent(this, typeof(MainActivity));
-                intent.AddFlags(ActivityFlags.NewTask);
-                intent.AddFlags(ActivityFlags.ClearTask);
-                base.StartActivity(intent);
+                emailEditTextLayout.Error = "Please enter your email";
+                return;
             }
-            else
+
+            if (password.Trim() == "")
+            {
+                passwordEditTextLayout.Error = "Please enter your password";
+                return;
+            }
+
+
+            loadingGroup.Visibility = ViewStates.Visible;
+            fieldsGroup.Visibility = ViewStates.Gone;
+
+            var success = await authService.TryLogin(email, password);
+            if (!success)
             {
                 emailEditTextLayout.Error = "Please check your email";
                 passwordEditTextLayout.Error = "Please check your password";
+                return;
             }
+
+            Intent intent = new Intent(this, typeof(MainActivity));
+            intent.AddFlags(ActivityFlags.NewTask);
+            intent.AddFlags(ActivityFlags.ClearTask);
+            base.StartActivity(intent);
+
+            loadingGroup.Visibility = ViewStates.Gone;
+            fieldsGroup.Visibility = ViewStates.Visible;
+
         }
 
 

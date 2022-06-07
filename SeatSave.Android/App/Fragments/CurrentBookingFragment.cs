@@ -24,7 +24,7 @@ namespace SeatSave.Android.App.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            return inflater.Inflate(Resource.Layout.loading, container, false);
+            return inflater.Inflate(Resource.Layout.loading_current_booking, container, false);
         }
 
         public async void ViewCurrentBooking()

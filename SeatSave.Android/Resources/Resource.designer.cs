@@ -6242,19 +6242,19 @@ namespace SeatSave.Android
 			public const int browser_actions_menu_view = 2131296366;
 			
 			// aapt resource value: 0x7F09006F
-			public const int button1 = 2131296367;
+			public const int buttonBookSeat = 2131296367;
 			
 			// aapt resource value: 0x7F090070
-			public const int buttonBookSeat = 2131296368;
+			public const int buttonCancel = 2131296368;
 			
 			// aapt resource value: 0x7F090071
-			public const int buttonCancel = 2131296369;
+			public const int buttonCheckOut = 2131296369;
 			
 			// aapt resource value: 0x7F090072
-			public const int buttonCheckOut = 2131296370;
+			public const int buttonPanel = 2131296370;
 			
 			// aapt resource value: 0x7F090073
-			public const int buttonPanel = 2131296371;
+			public const int buttonViewBook = 2131296371;
 			
 			// aapt resource value: 0x7F090074
 			public const int cache_measures = 2131296372;

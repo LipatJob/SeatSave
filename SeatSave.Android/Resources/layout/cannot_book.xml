@@ -3,34 +3,36 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:padding="40px">
+    android:padding="40px">
     <TextView
         android:text="Sorry, you can’t book at the moment..."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
         android:textColor="@color/duskBlue"
-        android:textStyle="bold"
-        android:textSize="@dimen/abc_text_size_display_2_material"
-        />
+        android:layout_marginTop="32sp"
+        android:layout_marginBottom="32sp"
+        android:textSize="40sp"
+        android:textFontWeight="700"/>
     <TextView
         android:text="You still have a pending booking and you are only allowed to have one booking at a time."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView8"
-        android:paddingTop="40px"
-        android:paddingBottom="60px" 
-        android:textColor="@android:color/black" 
-        
-         />
+        android:layout_marginBottom="32sp" />
     <Button
         android:text="VIEW BOOKING DETAILS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button1"
+        android:id="@+id/buttonViewBook"
         android:backgroundTint="@color/bluish"
-        android:textColor="@android:color/white" 
-         />
-
-
+        android:textColor="@android:color/white"
+        android:textFontWeight="700"
+        android:paddingVertical="16sp"
+        />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/nobooking"/>
 </LinearLayout>

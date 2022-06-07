@@ -61,17 +61,28 @@ namespace SeatSave.Android.App.Fragments
             else bookingSeat.Text = bookingDetail.seat.Name + " - Carrel Desk with Outlet";
         }
 
-        private async void CancelBooking()
-        {    
-            var success = await service.CancelBooking(bookingDetail.id);
-            if (!success)
+        private void CancelBooking()
+        {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this.Activity);
+            AlertDialog alert = dialog.Create();
+
+            alert.SetTitle("Confirm Irreversible Action");
+            alert.SetMessage("Are you sure you want to cancel your booking?");
+            alert.SetButton("Yes", async (c, ev) =>
             {
-                Toast.MakeText(Activity, "Failed to Cancel Booking", ToastLength.Short);
-                return;
-            }
-            Toast.MakeText(Activity, "Successfully Cancelled Booking", ToastLength.Short).Show();
-            var activty = Activity as MainActivity;
-            activty.GoToCurrentBookingFragment();
+                var success = await service.CancelBooking(bookingDetail.id);
+                if (!success)
+                {
+                    Toast.MakeText(Activity, "Failed to Cancel Booking", ToastLength.Short);
+                    return;
+                }
+                Toast.MakeText(Activity, "Successfully Cancelled Booking", ToastLength.Short).Show();
+                var activty = Activity as MainActivity;
+                activty.GoToCurrentBookingFragment();
+            });
+            alert.SetButton2("No", (c, ev) =>{ // do nothing
+            });
+            alert.Show(); 
         }
     }
 }

@@ -66,9 +66,20 @@ namespace SeatSave.Android.App.Fragments
                 Toast.MakeText(Activity, "Failed to Check Out Booking", ToastLength.Short);
                 return;
             }
+           
             Toast.MakeText(Activity, "Successfully Checked Out Booking", ToastLength.Short).Show();
-            var activty = Activity as MainActivity;
-            activty.GoToCurrentBookingFragment();
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this.Activity);
+            AlertDialog alert = dialog.Create();
+
+            alert.SetTitle("See you next time!");
+            alert.SetMessage("You have checked out of your booking. You can now book a seat for your next visit.");
+            alert.SetButton("Ok", (c, ev) =>
+            {
+                var activty = Activity as MainActivity;
+                activty.GoToCreateBookingFragment();
+            });
+            alert.Show();  
         }
     }
 }

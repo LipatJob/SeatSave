@@ -110,7 +110,7 @@ namespace SeatSave.Android
             }
             else if (id == Resource.Id.createBooking)
             {
-                fragment = new CreateBookingFragment();
+                fragment = new CheckCurrentBookingFragment();
             }
             else if (id == Resource.Id.sample)
             {
@@ -126,7 +126,7 @@ namespace SeatSave.Android
 
         public void GoToCreateBookingFragment()
         {
-            var fragment = new CreateBookingFragment();
+            var fragment = new CheckCurrentBookingFragment();
             ChangeFragment(fragment);
         }
 

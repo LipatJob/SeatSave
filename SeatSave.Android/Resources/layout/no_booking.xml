@@ -10,19 +10,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
         android:textColor="@color/duskBlue"
-        android:textStyle="bold"
-        android:textSize="@dimen/abc_text_size_display_2_material"
-        />
-    
-         
+        android:layout_marginTop="32sp"
+        android:layout_marginBottom="32sp"
+        android:textSize="40sp"
+        android:textFontWeight="700"/>
     <Button
         android:text="BOOK A SEAT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/buttonBookSeat"
-        android:layout_marginTop="20px"
         android:backgroundTint="@color/bluish"
-        android:textColor="@android:color/white" 
-        
-         />
+        android:textColor="@android:color/white"
+        android:textFontWeight="700"
+        android:paddingVertical="16sp"
+        />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/nobooking"/>
 </LinearLayout>

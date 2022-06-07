@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/bookingTime"
         android:textColor="@color/duskBlue"
-        android:textStyle="bold"
-        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textFontWeight="700"
+        android:textSize="36sp"
         android:paddingBottom="20px" />
   
     <TextView
@@ -22,7 +22,6 @@
         android:id="@+id/textView8"
         android:paddingTop="40px"
         android:paddingBottom="40px" 
-        android:textColor="@android:color/black" 
          />
     <TextView
         android:text="Date"
@@ -30,14 +29,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView9"
         android:paddingTop="10px"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:textFontWeight="700" />
     <TextView
         android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bookingDate" 
-        android:textColor="@android:color/black" 
     />
     <TextView
         android:text="Time"
@@ -45,35 +42,30 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView11"
         android:paddingTop="10px" 
-        android:textColor="@android:color/black"
-        android:textStyle="bold"/>
+        android:textFontWeight="700"/>
     <TextView
         android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bookingCompleteTime" 
-        android:textColor="@android:color/black" />
+        android:id="@+id/bookingCompleteTime"  />
     <TextView
         android:text="Seat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView13"
         android:paddingTop="10px" 
-        android:textColor="@android:color/black" 
-        android:textStyle="bold"/>
+        android:textFontWeight="700"/>
     <TextView
         android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bookingSeat"
-        android:textColor="@android:color/black"
         android:paddingBottom="60px"/>
     <TextView
         android:text="Are you leaving CLIR?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView15"
-        android:textColor="@android:color/black"
         android:paddingTop="60px"
         android:paddingBottom="10px"/>
     <Button
@@ -83,6 +75,6 @@
         android:id="@+id/buttonCheckOut"
         android:backgroundTint="@color/bluish"
         android:textColor="@android:color/white" 
-        
-         />
+        android:textFontWeight="700"
+        android:paddingVertical="16sp"/>
 </LinearLayout>

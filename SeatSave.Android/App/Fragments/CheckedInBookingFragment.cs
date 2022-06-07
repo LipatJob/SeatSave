@@ -26,6 +26,7 @@ namespace SeatSave.Android.App.Fragments
         {
             bookingDetail = booking;
         }
+
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -42,9 +43,9 @@ namespace SeatSave.Android.App.Fragments
             buttonCheckOut = view.FindViewById<Button>(Resource.Id.buttonCheckOut);
             buttonCheckOut.Click += (_, __) => CheckOutBooking();
             ViewBookingDetails();
-
             return view;
         }
+
         public void ViewBookingDetails()
         {
             DateTime timeStart = DateTime.Parse(bookingDetail.period.timeStart.ToString(), System.Globalization.CultureInfo.CurrentCulture);
@@ -56,15 +57,16 @@ namespace SeatSave.Android.App.Fragments
             if (bookingDetail.seat.Type == "1") bookingSeat.Text = bookingDetail.seat.Name + " - Carrel Desk";
             else bookingSeat.Text = bookingDetail.seat.Name + " - Carrel Desk with Outlet";
         }
+
         private async void CheckOutBooking()
         {
             var success = await service.CheckOutBooking(bookingDetail.id);
             if (!success)
             {
-                Toast.MakeText(Activity, "Booking CheckOut Failed", ToastLength.Short);
+                Toast.MakeText(Activity, "Failed to Check Out Booking", ToastLength.Short);
                 return;
             }
-            Toast.MakeText(Activity, "Booking CheckOut Success", ToastLength.Short).Show();
+            Toast.MakeText(Activity, "Successfully Checked Out Booking", ToastLength.Short).Show();
             var activty = Activity as MainActivity;
             activty.GoToCurrentBookingFragment();
         }

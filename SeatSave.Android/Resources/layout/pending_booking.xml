@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/bookingTime"
         android:textColor="@color/duskBlue"
-        android:textStyle="bold"
-        android:textSize="@dimen/abc_text_size_display_2_material"
+        android:textFontWeight="700"
+        android:textSize="36sp"
         android:paddingBottom="20px" />
     <LinearLayout
         android:orientation="vertical"
@@ -38,37 +38,28 @@
                 android:text="Code: "
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/textView4"
-                android:textSize="@dimen/abc_text_size_body_1_material"
-                android:textColor="@android:color/black" 
-                
+                android:id="@+id/textView4"               
             />
             <TextView
                 android:text="----"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/bookingCode"
-                android:textStyle="bold"
-                android:textSize="@dimen/abc_text_size_body_1_material"
-                android:textColor="@android:color/black" />
+                android:textFontWeight="700" />
 
         </LinearLayout>
         <TextView
-            android:textSize="@dimen/abc_text_size_body_1_material" 
             android:text="Present this code to the librarian to confirm your booking."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView6"
-            android:paddingTop="20px" 
-            android:textColor="@android:color/black" />
+            android:paddingTop="20px"/>
         <TextView
-            android:textSize="@dimen/abc_text_size_body_1_material" 
             android:text=" A proof of booking has also been sent to your email address."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView7"
-            android:paddingTop="20px" 
-            android:textColor="@android:color/black" />
+            android:paddingTop="20px"/>
     </LinearLayout>
     <TextView
         android:text="Booking Details"
@@ -77,22 +68,18 @@
         android:id="@+id/textView8"
         android:paddingTop="40px"
         android:paddingBottom="40px" 
-        android:textColor="@android:color/black" 
          />
     <TextView
         android:text="Date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView9"
-        android:paddingTop="10px"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:textFontWeight="700" />
     <TextView
         android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bookingDate" 
-        android:textColor="@android:color/black" 
     />
     <TextView
         android:text="Time"
@@ -100,28 +87,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView11"
         android:paddingTop="10px" 
-        android:textColor="@android:color/black"
-        android:textStyle="bold"/>
+        android:textFontWeight="700"/>
     <TextView
         android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bookingCompleteTime" 
-        android:textColor="@android:color/black" />
+        android:id="@+id/bookingCompleteTime" />
     <TextView
         android:text="Seat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView13"
         android:paddingTop="10px" 
-        android:textColor="@android:color/black" 
-        android:textStyle="bold"/>
+        android:textFontWeight="700"/>
     <TextView
         android:text="----"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bookingSeat"
-        android:textColor="@android:color/black"
         android:paddingBottom="60px" 
         />
     <Button
@@ -131,5 +114,6 @@
         android:id="@+id/buttonCancel"
         android:backgroundTint="@color/valentineRed"
         android:textColor="@android:color/white" 
-         />
+        android:textFontWeight="700"
+        android:paddingVertical="16sp"/>
 </LinearLayout>

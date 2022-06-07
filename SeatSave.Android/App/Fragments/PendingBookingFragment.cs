@@ -36,7 +36,6 @@ namespace SeatSave.Android.App.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view =  inflater.Inflate(Resource.Layout.pending_booking, container, false);
-
             service = new BookingService();
             bookingTime = view.FindViewById<TextView>(Resource.Id.bookingTime);
             bookingCode = view.FindViewById<TextView>(Resource.Id.bookingCode);
@@ -46,9 +45,9 @@ namespace SeatSave.Android.App.Fragments
             buttonCancel = view.FindViewById<Button>(Resource.Id.buttonCancel);
             buttonCancel.Click += (_, __) => CancelBooking();
             ViewBookingDetails();
-
             return view;
         }
+
         public void ViewBookingDetails()
         {
             DateTime timeStart = DateTime.Parse(bookingDetail.period.timeStart.ToString(), System.Globalization.CultureInfo.CurrentCulture);
@@ -60,21 +59,19 @@ namespace SeatSave.Android.App.Fragments
             bookingCompleteTime.Text = timeStart.ToString("hh:mm tt") + " to " + timeEnd.ToString("hh:mm tt");
             if (bookingDetail.seat.Type == "1") bookingSeat.Text = bookingDetail.seat.Name + " - Carrel Desk";
             else bookingSeat.Text = bookingDetail.seat.Name + " - Carrel Desk with Outlet";
-
-            
         }
+
         private async void CancelBooking()
         {    
             var success = await service.CancelBooking(bookingDetail.id);
             if (!success)
             {
-                Toast.MakeText(Activity, "Booking Canceled Failed", ToastLength.Short);
+                Toast.MakeText(Activity, "Failed to Cancel Booking", ToastLength.Short);
                 return;
             }
-            Toast.MakeText(Activity, "Booking Canceled Success", ToastLength.Short).Show();
+            Toast.MakeText(Activity, "Successfully Cancelled Booking", ToastLength.Short).Show();
             var activty = Activity as MainActivity;
             activty.GoToCurrentBookingFragment();
-            
         }
     }
 }

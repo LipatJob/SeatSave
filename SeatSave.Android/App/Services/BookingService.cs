@@ -28,6 +28,14 @@ namespace SeatSave.Android.App.Services
             client.DefaultRequestHeaders.Authorization = authenticationService.CreateHeader();
         }
 
+        // for sample only
+        public async Task<string> GetBookingDetails(int id) {
+            var uri = new Uri(Endpoints.Booking + id.ToString()) ;
+            var response = await client.GetAsync(uri);
+            var content = await response.Content.ReadAsStringAsync();
+            return content;
+        }
+
         public async Task<Booking> GetCurrentBooking()
         {
             var uri = new Uri(Endpoints.CurrentBooking);

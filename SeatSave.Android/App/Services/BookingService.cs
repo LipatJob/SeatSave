@@ -48,9 +48,11 @@ namespace SeatSave.Android.App.Services
             }
             else
             {
-                return new Booking();
+                return null;
             }
         }
+
+
         public async Task<bool> CancelBooking(int id)
         {       
             var uri = new Uri(Endpoints.BookingWithId(id));    

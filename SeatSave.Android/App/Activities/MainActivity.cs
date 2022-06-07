@@ -44,7 +44,6 @@ namespace SeatSave.Android
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
-
             var button = FindViewById<Button>(Resource.Id.logout);
             button.Click += (_, __) => LogoutClicked();
 

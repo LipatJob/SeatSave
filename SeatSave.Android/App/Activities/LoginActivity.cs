@@ -105,6 +105,10 @@ namespace SeatSave.Android.App.Activities
             fieldsGroup.Visibility = ViewStates.Gone;
 
             var success = await authService.TryLogin(email, password);
+
+            loadingGroup.Visibility = ViewStates.Gone;
+            fieldsGroup.Visibility = ViewStates.Visible;
+
             if (!success)
             {
                 emailEditTextLayout.Error = "Please check your email";
@@ -117,8 +121,7 @@ namespace SeatSave.Android.App.Activities
             intent.AddFlags(ActivityFlags.ClearTask);
             base.StartActivity(intent);
 
-            loadingGroup.Visibility = ViewStates.Gone;
-            fieldsGroup.Visibility = ViewStates.Visible;
+
 
         }
 

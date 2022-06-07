@@ -38,6 +38,9 @@ namespace SeatSave.Android.App.Fragments
         LinearLayout dateGroup;
         LinearLayout periodGroup;
         LinearLayout seatGroup;
+        LinearLayout selectionGroup;
+        LinearLayout loadingGroup;
+
 
         ProgressBar dateProgressBar;
         ProgressBar periodProgressBar;
@@ -50,6 +53,19 @@ namespace SeatSave.Android.App.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            RedirectExistingBooking();
+        }
+
+        private async void RedirectExistingBooking()
+        {
+            var bookingService = new BookingService();
+            var currentBooking = await bookingService.GetCurrentBooking();
+            if (currentBooking != null)
+            {
+                var fragment = new CannotBookFragment();
+                var activty = Activity as MainActivity;
+                activty.ChangeFragment(fragment);
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -60,6 +76,8 @@ namespace SeatSave.Android.App.Fragments
             dateGroup = view.FindViewById<LinearLayout>(Resource.Id.dateGroup);
             periodGroup = view.FindViewById<LinearLayout>(Resource.Id.periodGroup);
             seatGroup = view.FindViewById<LinearLayout>(Resource.Id.seatGroup);
+            selectionGroup = view.FindViewById<LinearLayout>(Resource.Id.selectionGroup);
+            loadingGroup = view.FindViewById<LinearLayout>(Resource.Id.loadingGroup);
             bookSeatbutton = view.FindViewById<Button>(Resource.Id.bookSeatButton);
 
             dateProgressBar = view.FindViewById<ProgressBar>(Resource.Id.dateProgressLoader);
@@ -69,11 +87,9 @@ namespace SeatSave.Android.App.Fragments
             periodProgressBar.Visibility = ViewStates.Gone;
             seatProgressBar.Visibility = ViewStates.Gone;
 
-
             periodGroup.Visibility = ViewStates.Gone;
             seatGroup.Visibility = ViewStates.Gone;
             bookSeatbutton.Visibility = ViewStates.Gone;
-
 
             dateRecyclerView = view.FindViewById<RecyclerView>(Resource.Id.date_recyler_view);
             dateAdapter = new DateRecyclerViewAdapter(Activity, dates);
@@ -125,7 +141,6 @@ namespace SeatSave.Android.App.Fragments
             periods.AddRange(bookablePeriods);
             periodAdapter.NotifyDataSetChanged();
 
-            Toast.MakeText(Activity, "You selected Date " + date.ToString("yyyy-MM-dd"), ToastLength.Short).Show();
             periodProgressBar.Visibility = ViewStates.Gone;
         }
 
@@ -145,7 +160,6 @@ namespace SeatSave.Android.App.Fragments
             seats.AddRange(bookableSeats);
             seatAdapter.NotifyDataSetChanged();
 
-            Toast.MakeText(Activity, "You selected Period " + period.Id, ToastLength.Short).Show();
             seatProgressBar.Visibility = ViewStates.Gone;
         }
 
@@ -159,19 +173,23 @@ namespace SeatSave.Android.App.Fragments
             seatAdapter.selectedSeat = selectedSeat; // TODO: REFACTOR THIS
             seatAdapter.NotifyDataSetChanged();
 
-            Toast.MakeText(Activity, "You selected Seat " + seat.Name, ToastLength.Short).Show();
         }
 
         private async void BookSeat(DateTime selectedDate, Period selectedPeriod, Seat selectedSeat)
         {
+            selectionGroup.Visibility = ViewStates.Gone;
+            loadingGroup.Visibility = ViewStates.Visible;
+
             var success = await service.CreateBooking(selectedDate, selectedPeriod, selectedSeat);
+
+            selectionGroup.Visibility = ViewStates.Visible;
+            loadingGroup.Visibility = ViewStates.Gone;
+
             if (!success)
             {
                 Toast.MakeText(Activity, "Booking failed", ToastLength.Short);
                 return;
             }
-
-            Toast.MakeText(Activity, $"Creating booking for Date:{selectedDate} Period:{selectedPeriod} Seat:{selectedSeat}", ToastLength.Short).Show();
 
             var activty = Activity as MainActivity;
             activty.GoToCurrentBookingFragment();

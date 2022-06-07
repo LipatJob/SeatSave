@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SeatSave.Android.App.Models
 {
-    class StatusHistory
+    public class StatusHistory
     {
         public int Id { get; set; }
         public DateTime DateTimeCreated { get; set; }

@@ -74,6 +74,9 @@
     <Compile Include="App\Activities\PendingBookingActivity.cs" />
     <Compile Include="App\Endpoints.cs" />
     <Compile Include="App\Fragments\CreateBookingFragment.cs" />
+    <Compile Include="App\Fragments\CheckedInBookingFragment.cs" />
+    <Compile Include="App\Fragments\PendingBookingFragment.cs" />
+    <Compile Include="App\Fragments\NoBookingFragment.cs" />
     <Compile Include="App\Fragments\CurrentBookingFragment.cs" />
     <Compile Include="App\Helpers\JsonHelper.cs" />
     <Compile Include="App\Helpers\SharedPreferencesSingleton.cs" />

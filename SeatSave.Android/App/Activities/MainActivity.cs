@@ -53,6 +53,8 @@ namespace SeatSave.Android
 
             NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
+
+            GoToCurrentBookingFragment();
         }
 
         private void StartBlankActivity(Type type)
@@ -124,6 +126,12 @@ namespace SeatSave.Android
             DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             drawer.CloseDrawer(GravityCompat.Start);
             return true;
+        }
+
+        public void GoToCreateBookingFragment()
+        {
+            var fragment = new CreateBookingFragment();
+            ChangeFragment(fragment);
         }
 
         public void GoToCurrentBookingFragment()

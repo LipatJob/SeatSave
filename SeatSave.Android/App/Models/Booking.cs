@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SeatSave.Android.App.Models
 {
-    class Booking
+    public class Booking
     {
         public int id { get; set; }
         public string bookingCode { get; set; }

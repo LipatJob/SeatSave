@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SeatSave.Android.App.Services;
+
 
 namespace SeatSave.Android.App.Fragments
 {
@@ -17,14 +19,39 @@ namespace SeatSave.Android.App.Fragments
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
+            ViewCurrentBooking();
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
-            return inflater.Inflate(Resource.Layout.cannot_book, container, false);
+            return inflater.Inflate(Resource.Layout.loading, container, false);
         }
+
+        public async void ViewCurrentBooking()
+        {
+            var service = new BookingService();
+            var curentBooking = await service.GetCurrentBooking();
+           
+            if (curentBooking.status == null)
+            {
+                var fragment = new NoBookingFragment();
+                var activty = Activity as MainActivity;
+                activty.ChangeFragment(fragment);
+            }
+            else if (curentBooking.status == "Pending")
+            {
+                var fragment = new PendingBookingFragment();
+                fragment.SetDetail(curentBooking);
+                var activty = Activity as MainActivity;
+                activty.ChangeFragment(fragment);
+            }
+            else if (curentBooking.status == "Checked In")
+            {
+                var fragment = new CheckedInBookingFragment();
+                fragment.SetDetail(curentBooking);
+                var activty = Activity as MainActivity;
+                activty.ChangeFragment(fragment);
+            }
+        }     
     }
 }

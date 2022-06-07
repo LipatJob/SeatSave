@@ -21,7 +21,7 @@ namespace SeatSave.Android.App
         public const string Sample = "https://seatsave.azurewebsites.net/Api/Sample";
         public const string Booking = "https://seatsave.azurewebsites.net/Api/Booking/";
         public const string CurrentBooking = "https://seatsave.azurewebsites.net/Api/Booking/Current";
-        public static string BookingWithId(int id) => "https://seatsave.azurewebsites.net/Api/Booking/{id}";
+        public static string BookingWithId(int id) => $"https://seatsave.azurewebsites.net/Api/Booking/{id}";
 
         public const string Schedule = "https://seatsave.azurewebsites.net/Api/Schedule";
         public static string BookablePeriods(DateTime date) => $"https://seatsave.azurewebsites.net/Api/Schedule/{date.ToString("yyyy-MM-dd")}/Periods";

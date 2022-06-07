@@ -11,9 +11,10 @@ using System.Text;
 
 namespace SeatSave.Android.App.Models
 {
-    class Seat
+    public class Seat
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Type { get; set; }
     }
 }

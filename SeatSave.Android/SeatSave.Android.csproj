@@ -76,6 +76,8 @@
     <Compile Include="App\Fragments\CannotBookFragment.cs" />
     <Compile Include="App\Fragments\CreateBookingFragment.cs" />
     <Compile Include="App\Fragments\CheckedInBookingFragment.cs" />
+    <Compile Include="App\Fragments\CheckCurrentBookingFragment.cs" />
+    <Compile Include="App\Fragments\CannotBookFragment.cs" />
     <Compile Include="App\Fragments\PendingBookingFragment.cs" />
     <Compile Include="App\Fragments\NoBookingFragment.cs" />
     <Compile Include="App\Fragments\CurrentBookingFragment.cs" />

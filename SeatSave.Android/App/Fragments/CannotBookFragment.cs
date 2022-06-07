@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SeatSave.Android.App.Services;
-using SeatSave.Android.App.Models;
+
 
 namespace SeatSave.Android.App.Fragments
 {
     public class CannotBookFragment : AndroidX.Fragment.App.Fragment
     {
-        Button viewBookingButton;
+        Button buttonViewBook;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -26,17 +26,14 @@ namespace SeatSave.Android.App.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var view =  inflater.Inflate(Resource.Layout.cannot_book, container, false);
-            viewBookingButton = view.FindViewById<Button>(Resource.Id.viewBookingDetails);
-            viewBookingButton.Click += (_, __) => ViewBooking();
-
+            buttonViewBook = view.FindViewById<Button>(Resource.Id.buttonViewBook);
+            buttonViewBook.Click += (_, __) => ViewBooking();
             return view;
         }
-
         private void ViewBooking()
         {
-            var fragment = new CurrentBookingFragment();
             var activty = Activity as MainActivity;
-            activty.ChangeFragment(fragment);
+            activty.GoToCurrentBookingFragment();
         }
     }
 }

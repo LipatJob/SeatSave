@@ -39,7 +39,6 @@ namespace SeatSave.Android.App.Activities
             var service = new BookingService();
             var data = await service.GetBookingDetails(bookingID);
             JObject json = JObject.Parse(data);
-            var curentBooking = await service.GetCurrentBooking();
 
             DateTime timeStart = DateTime.Parse(json["period"]["timeStart"].ToString(), System.Globalization.CultureInfo.CurrentCulture);
             DateTime timeEnd = DateTime.Parse(json["period"]["timeEnd"].ToString(), System.Globalization.CultureInfo.CurrentCulture);

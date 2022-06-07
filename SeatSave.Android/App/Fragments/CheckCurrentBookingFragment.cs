@@ -32,7 +32,7 @@ namespace SeatSave.Android.App.Fragments
             var service = new BookingService();
             var curentBooking = await service.GetCurrentBooking();
            
-            if (curentBooking.status == null)
+            if (curentBooking == null)
             {
                 var fragment = new CreateBookingFragment();
                 var activty = Activity as MainActivity;

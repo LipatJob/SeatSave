@@ -12,10 +12,6 @@
             android:id="@+id/createBooking"
             android:icon="@drawable/ic_chair"
             android:title="Book a Seat" />
-		<item
-            android:id="@+id/sample"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Sample" />
     </group>
 
 </menu>

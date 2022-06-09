@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/refreshLayout" >
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="40px"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40px"
+    >
+
+        <TextView
+            android:text="Your booking is at --"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookingTime"
+            android:textColor="@color/duskBlue"
+            android:textFontWeight="700"
+            android:textSize="36sp"
+            android:paddingBottom="20px" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1"
+            android:background="@color/pearlBrush"
+            android:padding="40px">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+            
+           >
+                <TextView
+                    android:text="Code: "
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView4"               
+            />
+                <TextView
+                    android:text="----"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/bookingCode"
+                    android:textFontWeight="700" />
+
+            </LinearLayout>
+            <TextView
+                android:text="Present this code to the librarian to confirm your booking."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6"
+                android:paddingTop="20px"/>
+            <TextView
+                android:text=" A proof of booking has also been sent to your email address."
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView7"
+                android:paddingTop="20px"/>
+        </LinearLayout>
+        <TextView
+            android:text="Booking Details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:paddingTop="40px"
+            android:paddingBottom="40px" 
+         />
+        <TextView
+            android:text="Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:textFontWeight="700" />
+        <TextView
+            android:text="----"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookingDate" 
+    />
+        <TextView
+            android:text="Time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            android:paddingTop="10px"
+            android:textFontWeight="700"/>
+        <TextView
+            android:text="----"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookingCompleteTime" />
+        <TextView
+            android:text="Seat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView13"
+            android:paddingTop="10px"
+            android:textFontWeight="700"/>
+        <TextView
+            android:text="----"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bookingSeat"
+            android:paddingBottom="60px" 
+        />
+        <Button
+            android:text="CANCEL BOOKING"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonCancel"
+            android:backgroundTint="@color/valentineRed"
+            android:textColor="@android:color/white"
+            android:textFontWeight="700"
+            android:paddingVertical="16sp"/>
+    </LinearLayout>
+</ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -34,7 +34,7 @@ namespace SeatSave.Core.Booking
         public void CheckIn(DateTime currentDateTime)
         {
             if (this.Status != PendingStatus) { throw new InvalidOperationException(); }
-            if (currentDateTime < GetBookingTimeStart()) { throw new InvalidOperationException(); }
+            // if (currentDateTime < GetBookingTimeStart()) { throw new InvalidOperationException(); } // disabled for demonstration
             StatusHistory.DateTimeCheckedIn = currentDateTime;
             this.Status = CheckedInStatus;
         }
@@ -42,7 +42,7 @@ namespace SeatSave.Core.Booking
         public void CheckOut(DateTime currentDateTime)
         {
             if (this.Status != CheckedInStatus) { throw new InvalidOperationException(); }
-            if (currentDateTime < GetBookingTimeStart()) { throw new InvalidOperationException(); }
+            // if (currentDateTime < GetBookingTimeStart()) { throw new InvalidOperationException(); } // disabled for demonstration
             StatusHistory.DateTimeCheckedOut = currentDateTime;
             this.Status = CheckedOutStatus;
         }

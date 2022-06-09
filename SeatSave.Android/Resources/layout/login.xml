@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingHorizontal="20sp"
+    android:paddingTop="40dp"
+    >
+   
+    <LinearLayout
+        android:id="@+id/fieldsGroup"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="20sp"
+    >
+         <TextView
+            android:text="Welcome Back!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/duskBlue"
+            android:layout_marginBottom="32sp"
+            android:textSize="40sp"
+            android:textFontWeight="700"
+            />
+        <TextView
+            android:text="Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textFontWeight="300"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailEditTextLayout"
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:importantForAutofill="yes"
+            android:autofillHints="emailAddress"
+            android:layout_marginBottom="10dp"
+        >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:inputType="textEmailAddress"
+                android:id="@+id/emailEditText"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:text="Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textFontWeight="300"
+         />
+        <com.google.android.material.textfield.TextInputLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordEditTextLayout"
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:id="@+id/passwordEditText"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/bluish"
+            android:id="@+id/loginButton"
+            android:text="LOG IN"
+            android:textFontWeight="700"
+            android:paddingVertical="16sp"
+        />
+        <TextView
+            android:layout_marginTop="14dp"
+            android:text="Create an Account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/createAccountLink"
+            android:textFontWeight="600"
+            android:textColor="@color/duskBlue"
+        />
+    </LinearLayout>
+     <LinearLayout
+        android:id="@+id/loadingGroup"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20sp"
+        android:visibility="gone"
+    >
+        <TextView
+            android:text="Logging you in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/duskBlue"
+            android:paddingVertical="24sp"
+            android:textSize="30sp"
+            android:textFontWeight="600"
+            />
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar1" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

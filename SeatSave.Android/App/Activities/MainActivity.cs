@@ -25,6 +25,9 @@ namespace SeatSave.Android
     public class MainActivity : AppCompatActivity, NavigationView.IOnNavigationItemSelectedListener
     {
         private AuthenticationService authenticationService;
+        AndroidX.AppCompat.Widget.Toolbar toolbar;
+        NavigationView navigationView;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -40,7 +43,7 @@ namespace SeatSave.Android
 
             SetContentView(Resource.Layout.activity_main);
 
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
+            toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
@@ -52,7 +55,7 @@ namespace SeatSave.Android
             drawer.AddDrawerListener(toggle);
             toggle.SyncState();
 
-            NavigationView navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             navigationView.SetNavigationItemSelectedListener(this);
 
             GoToCurrentBookingFragment();
@@ -110,11 +113,6 @@ namespace SeatSave.Android
             else if (id == Resource.Id.createBooking)
             {
                 fragment = new CheckCurrentBookingFragment();
-            }
-            else if (id == Resource.Id.sample)
-            {
-                StartActivity(new Intent(this, typeof(SampleActivity)));
-                return true;
             }
             ChangeFragment(fragment);
 

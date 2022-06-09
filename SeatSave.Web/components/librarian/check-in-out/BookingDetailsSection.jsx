@@ -102,8 +102,7 @@ export default function BookingDetailsSection({ booking, close }) {
         </div>
       </div>
       {status === 'Pending' &&
-        currentDateTime >= bookingDateTimeStart &&
-        currentDateTime <= bookingDateTimeEnd && (
+        (
           <button
             type='button'
             className='w-full mt-8 button'

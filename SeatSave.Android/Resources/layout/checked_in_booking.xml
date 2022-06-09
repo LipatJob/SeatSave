@@ -1,87 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="25px"
+    android:minHeight="25px"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="40px"
-    >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="40px"
-    >
-    <TextView
-        android:text="Your booking is until --"
+    android:id="@+id/refreshLayout">
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bookingTime"
-        android:textColor="@color/duskBlue"
-        android:textFontWeight="700"
-        android:textSize="36sp"
-        android:paddingBottom="20px" />
-  
-    <TextView
-        android:text="Booking Details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView8"
+        android:layout_height="match_parent"
         android:paddingTop="40px"
-        android:paddingBottom="40px" 
+    >
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="40px"
+    >
+            <TextView
+                android:text="Your booking is until --"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookingTime"
+                android:textColor="@color/duskBlue"
+                android:textFontWeight="700"
+                android:textSize="36sp"
+                android:paddingBottom="20px" />
+
+            <TextView
+                android:text="Booking Details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" 
          />
-    <TextView
-        android:text="Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView9"
-        android:paddingTop="10px"
-        android:textFontWeight="700" />
-    <TextView
-        android:text="----"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bookingDate" 
+            <TextView
+                android:text="Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView9"
+                android:paddingTop="10px"
+                android:textFontWeight="700" />
+            <TextView
+                android:text="----"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookingDate" 
     />
-    <TextView
-        android:text="Time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView11"
-        android:paddingTop="10px" 
-        android:textFontWeight="700"/>
-    <TextView
-        android:text="----"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bookingCompleteTime"  />
-    <TextView
-        android:text="Seat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView13"
-        android:paddingTop="10px" 
-        android:textFontWeight="700"/>
-    <TextView
-        android:text="----"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bookingSeat"
-        android:paddingBottom="60px"/>
-    <TextView
-        android:text="Are you leaving CLIR?"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView15"
-        android:paddingTop="60px"
-        android:paddingBottom="10px"/>
-    <Button
-        android:text="CHECK OUT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonCheckOut"
-        android:backgroundTint="@color/bluish"
-        android:textColor="@android:color/white" 
-        android:textFontWeight="700"
-        android:paddingVertical="16sp"/>
-</LinearLayout>
-</ScrollView>
+            <TextView
+                android:text="Time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView11"
+                android:paddingTop="10px"
+                android:textFontWeight="700"/>
+            <TextView
+                android:text="----"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookingCompleteTime"  />
+            <TextView
+                android:text="Seat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView13"
+                android:paddingTop="10px"
+                android:textFontWeight="700"/>
+            <TextView
+                android:text="----"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookingSeat"
+                android:paddingBottom="60px"/>
+            <TextView
+                android:text="Are you leaving CLIR?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView15"
+                android:paddingTop="60px"
+                android:paddingBottom="10px"/>
+            <Button
+                android:text="CHECK OUT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonCheckOut"
+                android:backgroundTint="@color/bluish"
+                android:textColor="@android:color/white"
+                android:textFontWeight="700"
+                android:paddingVertical="16sp"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

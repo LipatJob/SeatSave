@@ -81,5 +81,11 @@ namespace SeatSave.Android.App.Fragments
             });
             alert.Show();  
         }
+
+        private void RefreshBooking()
+        {
+            var activty = Activity as MainActivity;
+            activty.GoToCurrentBookingFragment();
+        }
     }
 }

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using SeatSave.Android.App.Services;
 using SeatSave.Android.App.Models;
-
+using AndroidX.SwipeRefreshLayout.Widget;
 
 namespace SeatSave.Android.App.Fragments
 {
@@ -44,8 +44,18 @@ namespace SeatSave.Android.App.Fragments
             bookingSeat = view.FindViewById<TextView>(Resource.Id.bookingSeat);
             buttonCancel = view.FindViewById<Button>(Resource.Id.buttonCancel);
             buttonCancel.Click += (_, __) => CancelBooking();
+
+            var pullToRefresh = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refreshLayout);
+            pullToRefresh.Refresh += (_, __) => RefreshBooking();
+
             ViewBookingDetails();
             return view;
+        }
+
+        private void RefreshBooking()
+        {
+            var activty = Activity as MainActivity;
+            activty.GoToCurrentBookingFragment();
         }
 
         public void ViewBookingDetails()

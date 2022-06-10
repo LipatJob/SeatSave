@@ -25,6 +25,8 @@ namespace SeatSave.Android.App.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+            var intent = new Intent();
+
             var view =  inflater.Inflate(Resource.Layout.cannot_book, container, false);
             buttonViewBook = view.FindViewById<Button>(Resource.Id.buttonViewBook);
             buttonViewBook.Click += (_, __) => ViewBooking();

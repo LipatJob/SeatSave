@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using SeatSave.Android.App.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace SeatSave.Android.App.Services
         public AuthenticationService(ISharedPreferences pref)
         {
             this.pref = pref;
-            client = new HttpClient();
+            client = HttpClientSingleton.Instance;
         }
 
         public async Task<bool> TryLogin(string email, string password)

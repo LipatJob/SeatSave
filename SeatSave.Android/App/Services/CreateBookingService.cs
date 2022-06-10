@@ -26,7 +26,7 @@ namespace SeatSave.Android.App.Services
 
         public CreateBookingService()
         {
-            client = new HttpClient();
+            client = HttpClientSingleton.Instance;
             authenticationService = new AuthenticationService(SharedPreferencesSingleton.Instance);
             client.DefaultRequestHeaders.Authorization = authenticationService.CreateHeader();
         }

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SeatSave.Android.App.Helpers;
 
 namespace SeatSave.Android.App.Services
 {
@@ -18,7 +19,7 @@ namespace SeatSave.Android.App.Services
         HttpClient client;
         public SampleService()
         {
-            client = new HttpClient();
+            client = HttpClientSingleton.Instance;
         }
 
         public async Task<string> GetSampleData() {

@@ -48,7 +48,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\AnyCPU\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,6 +56,10 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -82,6 +86,7 @@
     <Compile Include="App\Fragments\PendingBookingFragment.cs" />
     <Compile Include="App\Fragments\NoBookingFragment.cs" />
     <Compile Include="App\Fragments\CurrentBookingFragment.cs" />
+    <Compile Include="App\Helpers\HttpClientSingleton.cs" />
     <Compile Include="App\Helpers\JsonHelper.cs" />
     <Compile Include="App\Helpers\SharedPreferencesSingleton.cs" />
     <Compile Include="App\Models\Booking.cs" />
